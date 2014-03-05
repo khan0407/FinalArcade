@@ -43,6 +43,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @access   public
@@ -54,6 +55,8 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * get html for help button
      *
      * @access   public

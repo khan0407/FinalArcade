@@ -40,6 +40,11 @@
  * See:  http://www.opensource.org/licenses/bsd-license.php
  */
 
+<<<<<<< HEAD
+=======
+defined('MOODLE_INTERNAL') || die();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Combine a base URL and a relative URL to produce a new
  * absolute URL.  The base URL is often the URL of a page,
@@ -79,9 +84,15 @@ function url_to_absolute( $baseUrl, $relativeUrl )
 	if ( $b === FALSE || empty( $b['scheme'] ) || empty( $b['host'] ) )
 		return FALSE;
 	$r['scheme'] = $b['scheme'];
+<<<<<<< HEAD
     if (empty($b['path'])) {
         $b['path'] = '';
     }
+=======
+	if (empty($b['path'])) {
+		$b['path'] = '';
+	}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 	// If relative URL has an authority, clean path and return.
 	if ( isset( $r['host'] ) )
@@ -110,6 +121,7 @@ function url_to_absolute( $baseUrl, $relativeUrl )
 		return join_url( $r );
 	}
 
+<<<<<<< HEAD
 	// If relative URL path doesn't start with /, merge with base path
 	if ( $r['path'][0] != '/' )
 	{
@@ -119,6 +131,18 @@ function url_to_absolute( $baseUrl, $relativeUrl )
 	}
 	$r['path'] = url_remove_dot_segments( $r['path'] );
 	return join_url( $r );
+=======
+	// If relative URL path doesn't start with /, merge with base path.
+	if ($r['path'][0] != '/') {
+		$base = textlib::strrchr($b['path'], '/', TRUE);
+		if ($base === FALSE) {
+			$base = '';
+		}
+		$r['path'] = $base . '/' . $r['path'];
+	}
+	$r['path'] = url_remove_dot_segments($r['path']);
+	return join_url($r);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -152,12 +176,24 @@ function url_remove_dot_segments( $path )
 			array_push( $outSegs, $seg );
 	}
 	$outPath = implode( '/', $outSegs );
+<<<<<<< HEAD
 	if ( $path[0] == '/' )
 		$outPath = '/' . $outPath;
 	// compare last multi-byte character against '/'
 	if ( $outPath != '/' &&
 		(mb_strlen($path)-1) == mb_strrpos( $path, '/', 'UTF-8' ) )
 		$outPath .= '/';
+=======
+
+	if ($path[0] == '/') {
+		$outPath = '/' . $outPath;
+	}
+
+	// Compare last multi-byte character against '/'.
+	if ($outPath != '/' && (textlib::strlen($path) - 1) == textlib::strrpos($path, '/', 'UTF-8')) {
+		$outPath .= '/';
+	}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	return $outPath;
 }
 

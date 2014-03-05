@@ -67,10 +67,17 @@ function resourcelib_try_file_migration($filepath, $cmid, $courseid, $component,
         return false;
     }
 
+<<<<<<< HEAD
     if (!$context = get_context_instance(CONTEXT_MODULE, $cmid)) {
         return false;
     }
     if (!$coursecontext = get_context_instance(CONTEXT_COURSE, $courseid)) {
+=======
+    if (!$context = context_module::instance($cmid)) {
+        return false;
+    }
+    if (!$coursecontext = context_course::instance($courseid)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return false;
     }
 
@@ -262,6 +269,7 @@ function resourcelib_embed_general($fullurl, $title, $clicktoopen, $mimetype) {
         $fullurl = $fullurl->out();
     }
 
+<<<<<<< HEAD
     $iframe = false;
 
     $param = '<param name="src" value="'.$fullurl.'" />';
@@ -275,12 +283,20 @@ function resourcelib_embed_general($fullurl, $title, $clicktoopen, $mimetype) {
 
     if ($iframe) {
         $code = <<<EOT
+=======
+    $param = '<param name="src" value="'.$fullurl.'" />';
+
+    // Always use iframe embedding because object tag does not work much,
+    // this is ok in HTML5.
+    $code = <<<EOT
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 <div class="resourcecontent resourcegeneral">
   <iframe id="resourceobject" src="$fullurl">
     $clicktoopen
   </iframe>
 </div>
 EOT;
+<<<<<<< HEAD
     } else {
         $code = <<<EOT
 <div class="resourcecontent resourcegeneral">
@@ -291,6 +307,8 @@ EOT;
 </div>
 EOT;
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // the size is hardcoded in the boject obove intentionally because it is adjusted by the following function on-the-fly
     $PAGE->requires->js_init_call('M.util.init_maximised_embed', array('resourceobject'), true);

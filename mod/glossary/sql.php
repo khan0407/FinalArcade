@@ -95,10 +95,15 @@
         } else {
             $usernamefield = $DB->sql_fullname('u.lastname' , 'u.firstname');
         }
+<<<<<<< HEAD
         $where = "AND " . $DB->sql_substr("upper($usernamefield)", 1, textlib::strlen($hook)) . " = :hookup";
 
         if ( $hook == 'ALL' ) {
             $where = '';
+=======
+        if ($hook != 'ALL' && ($hookstrlen = textlib::strlen($hook))) {
+            $where = "AND " . $DB->sql_substr("upper($usernamefield)", 1, $hookstrlen) . " = :hookup";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $sqlselect  = "SELECT ge.*, $usernamefield AS glossarypivot, 1 AS userispivot ";
@@ -116,8 +121,13 @@
         $where = '';
         $params['hookup'] = textlib::strtoupper($hook);
 
+<<<<<<< HEAD
         if ($hook != 'ALL' and $hook != 'SPECIAL') {
             $where = "AND " . $DB->sql_substr("upper(concept)", 1, textlib::strlen($hook)) . " = :hookup";
+=======
+        if ($hook != 'ALL' and $hook != 'SPECIAL' and ($hookstrlen = textlib::strlen($hook))) {
+            $where = "AND " . $DB->sql_substr("upper(concept)", 1, $hookstrlen) . " = :hookup";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $sqlselect  = "SELECT ge.*, ge.concept AS glossarypivot";
@@ -156,11 +166,20 @@
 
             if (empty($fullsearch)) {
                 // With fullsearch disabled, look only within concepts and aliases.
+<<<<<<< HEAD
                 $concat = $DB->sql_concat('ge.concept', "' '", "COALESCE(al.alias, '')");
             } else {
                 // With fullsearch enabled, look also within definitions.
                 $concat = $DB->sql_concat('ge.concept', "' '", 'ge.definition', "' '", "COALESCE(al.alias, '')");
             }
+=======
+                $concat = $DB->sql_concat('ge.concept', "' '", "COALESCE(al.alias, :emptychar)");
+            } else {
+                // With fullsearch enabled, look also within definitions.
+                $concat = $DB->sql_concat('ge.concept', "' '", 'ge.definition', "' '", "COALESCE(al.alias, :emptychar)");
+            }
+            $params['emptychar'] = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $searchterms = explode(" ",$hook);
 
@@ -239,9 +258,15 @@
         break;
 
         case 'letter':
+<<<<<<< HEAD
             if ($hook != 'ALL' and $hook != 'SPECIAL') {
                 $params['hookup'] = textlib::strtoupper($hook);
                 $where = "AND " . $DB->sql_substr("upper(concept)", 1, textlib::strlen($hook)) . " = :hookup";
+=======
+            if ($hook != 'ALL' and $hook != 'SPECIAL' and ($hookstrlen = textlib::strlen($hook))) {
+                $params['hookup'] = textlib::strtoupper($hook);
+                $where = "AND " . $DB->sql_substr("upper(concept)", 1, $hookstrlen) . " = :hookup";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($hook == 'SPECIAL') {
                 //Create appropiate IN contents
@@ -278,4 +303,8 @@
     }
 
     $query = "$sqlwrapheader $sqlselect $sqlfrom $sqlwhere $sqlwrapfooter $sqlorderby";
+<<<<<<< HEAD
     $allentries = $DB->get_records_sql($query, $params, $limitfrom, $limitnum);
+=======
+    $allentries = $DB->get_records_sql($query, $params, $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

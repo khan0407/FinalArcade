@@ -17,14 +17,23 @@
 /**
  * Version details
  *
+<<<<<<< HEAD
  * @package    block
  * @subpackage course_overview
+=======
+ * @package    block_course_overview
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
 $plugin->version   = 2012061700;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012061700;        // Requires this Moodle version
+=======
+$plugin->version   = 2012121001;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2012112900;        // Requires this Moodle version
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $plugin->component = 'block_course_overview'; // Full name of the plugin (used for diagnostics)

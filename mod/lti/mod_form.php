@@ -195,14 +195,23 @@ class mod_lti_mod_form extends moodleform_mod {
         // add standard buttons, common to all modules
         $this->add_action_buttons();
 
+<<<<<<< HEAD
         $editurl = new moodle_url("/mod/lti/instructor_edit_tool_type.php?sesskey={$USER->sesskey}&course={$COURSE->id}");
+=======
+        $editurl = new moodle_url('/mod/lti/instructor_edit_tool_type.php',
+                array('sesskey' => sesskey(), 'course' => $COURSE->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $ajaxurl = new moodle_url('/mod/lti/ajax.php');
 
         $jsinfo = (object)array(
                         'edit_icon_url' => (string)$OUTPUT->pix_url('t/edit'),
                         'add_icon_url' => (string)$OUTPUT->pix_url('t/add'),
                         'delete_icon_url' => (string)$OUTPUT->pix_url('t/delete'),
+<<<<<<< HEAD
                         'green_check_icon_url' => (string)$OUTPUT->pix_url('i/tick_green_small'),
+=======
+                        'green_check_icon_url' => (string)$OUTPUT->pix_url('i/valid'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         'warning_icon_url' => (string)$OUTPUT->pix_url('warning', 'lti'),
                         'instructor_tool_type_edit_url' => $editurl->out(false),
                         'ajax_url' => $ajaxurl->out(true),

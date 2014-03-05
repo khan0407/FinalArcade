@@ -36,7 +36,11 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
     /* This is used only when sync suspends users instead of full unenrolment */
+=======
+    /* This is used only when sync suspends users instead of full unenrolment. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'enrol/cohort:unenrol' => array(
 
         'captype' => 'write',
@@ -47,8 +51,11 @@ $capabilities = array(
     ),
 
 );
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

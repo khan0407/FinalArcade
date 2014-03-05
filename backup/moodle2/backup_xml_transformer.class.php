@@ -35,7 +35,11 @@ global $LINKS_ENCODERS_CACHE;
 $LINKS_ENCODERS_CACHE = array();
 
 /**
+<<<<<<< HEAD
  * Class implementing the @xml_contenttrasnformed logic to be applied in moodle2 backups
+=======
+ * Class implementing the @xml_contenttransformed logic to be applied in moodle2 backups
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * TODO: Finish phpdocs
  */
@@ -61,13 +65,21 @@ class backup_xml_transformer extends xml_contenttransformer {
 
         // Array or object, debug and try our best recursively, shouldn't happen but...
         if (is_array($content)) {
+<<<<<<< HEAD
             debugging('Backup XML transformer should process arrays but plain content always', DEBUG_DEVELOPER);
+=======
+            debugging('Backup XML transformer should not process arrays but plain content only', DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach($content as $key => $plaincontent) {
                 $content[$key] = $this->process($plaincontent);
             }
             return $content;
         } else if (is_object($content)) {
+<<<<<<< HEAD
             debugging('Backup XML transformer should not process objects but plain content always', DEBUG_DEVELOPER);
+=======
+            debugging('Backup XML transformer should not process objects but plain content only', DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach((array)$content as $key => $plaincontent) {
                 $content[$key] = $this->process($plaincontent);
             }

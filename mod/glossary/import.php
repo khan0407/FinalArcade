@@ -33,7 +33,11 @@ if (! $glossary = $DB->get_record("glossary", array("id"=>$cm->instance))) {
 
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/glossary:import', $context);
 
 $strglossaries = get_string("modulenameplural", "glossary");
@@ -159,14 +163,21 @@ if ($xml = glossary_read_imported_file($result)) {
                     print_error('cannotaddcoursemodule');
                 }
 
+<<<<<<< HEAD
                 if (! $sectionid = add_mod_to_section($mod) ) {
                     print_error('cannotaddcoursemoduletosection');
                 }
+=======
+                $sectionid = course_add_cm_to_section($course, $mod->coursemodule, 0);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 //We get the section's visible field status
                 $visible = $DB->get_field("course_sections", "visible", array("id"=>$sectionid));
 
                 $DB->set_field("course_modules", "visible", $visible, array("id"=>$mod->coursemodule));
+<<<<<<< HEAD
                 $DB->set_field("course_modules", "section", $sectionid, array("id"=>$mod->coursemodule));
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 add_to_log($course->id, "course", "add mod",
                            "../mod/$mod->modulename/view.php?id=$mod->coursemodule",

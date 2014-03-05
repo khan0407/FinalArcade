@@ -309,7 +309,10 @@ class entities {
             $source = str_split($source, 1);
 
             for ($i = 1; $i <= $length; $i++) {
+<<<<<<< HEAD
                 mt_srand((double) microtime() * 1000000);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $num = mt_rand(1, count($source));
                 $response .= $source[$num - 1];
             }

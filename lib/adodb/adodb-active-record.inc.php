@@ -1,7 +1,11 @@
 <?php
 /*
 
+<<<<<<< HEAD
 @version V5.16 26 Mar 2012   (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+=======
+@version V5.17 17 May 2012   (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   Latest version is available at http://adodb.sourceforge.net
  
   Released under both BSD license and Lesser GPL library license. 

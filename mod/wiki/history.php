@@ -59,7 +59,11 @@ if (!$cm = get_coursemodule_from_instance('wiki', $wiki->id)) {
 $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
 require_login($course, true, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/wiki:viewpage', $context);
 add_to_log($course->id, 'wiki', 'history', "history.php?pageid=".$pageid, $pageid, $cm->id);
 

@@ -113,7 +113,11 @@ class core_notes_external extends external_api {
                 $errormessage = get_string('invalidcourseid', 'error');
             } else {
                 // Ensure the current user is allowed to run this function
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $note['courseid']);
+=======
+                $context = context_course::instance($note['courseid']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 self::validate_context($context);
                 require_capability('moodle/notes:manage', $context);
             }

@@ -1,10 +1,19 @@
+<<<<<<< HEAD
 Description of Typo3 libraries (v 4.6.8) import into Moodle
+=======
+Description of Typo3 libraries (v 4.7.4) import into Moodle
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 Changes: none
 
 skodak, stronk7
 
 
+<<<<<<< HEAD
+=======
+Previous changes:
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 25 June 2010 - Martin D (4.3.0RC1)
   I renamed getURL to getUrl since it was being called that way everywhere.
   I added a check to avoid notices on lib/typo3/class.t3lib_cs.php line 976

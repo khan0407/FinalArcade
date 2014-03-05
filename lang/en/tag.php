@@ -30,7 +30,11 @@ $string['alltagpages'] = 'All tag pages';
 $string['count'] = 'Count';
 $string['delete'] = 'Delete';
 $string['deleted'] = 'Deleted';
+<<<<<<< HEAD
 $string['deletedcoursetags'] = 'Deleted - course tags';
+=======
+$string['deletedcoursetags'] = 'Deleted - Course tags';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['description'] = 'Description';
 $string['edittag'] = 'Edit this tag';
 $string['entertags'] = 'Enter tags separated by commas';

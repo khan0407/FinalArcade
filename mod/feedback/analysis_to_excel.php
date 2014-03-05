@@ -51,9 +51,13 @@ if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
+<<<<<<< HEAD
 if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
         print_error('badcontext');
 }
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login($course, true, $cm);
 
@@ -306,7 +310,11 @@ function feedback_excelprint_detailed_items(&$worksheet, $xls_formats,
     $worksheet->write_number($row_offset, $col_offset, $courseid, $xls_formats->default);
     $col_offset++;
     if (isset($courseid) AND $course = $DB->get_record('course', array('id' => $courseid))) {
+<<<<<<< HEAD
         $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+        $coursecontext = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $shortname = format_string($course->shortname, true, array('context' => $coursecontext));
         $worksheet->write_string($row_offset, $col_offset, $shortname, $xls_formats->default);
     }

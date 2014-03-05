@@ -40,7 +40,11 @@ if (!$cm = get_coursemodule_from_instance('chat', $chat->id, $course->id)) {
     print_error('invalidcoursemodule');
 }
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_login($course, false, $cm);
 require_capability('mod/chat:chat', $context);
 $PAGE->set_pagelayout('base');
@@ -181,7 +185,16 @@ if ($messages) {
         $allmessages[] = chat_format_message($message, $course->id, $USER);
     }
 }
+<<<<<<< HEAD
 
+=======
+echo '<table class="generaltable"><tbody>';
+echo '<tr>
+        <th scope="col" class="cell">' . get_string('from') . '</th>
+        <th scope="col" class="cell">' . get_string('message', 'message') . '</th>
+        <th scope="col" class="cell">' . get_string('time') . '</th>
+      </tr>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (empty($allmessages)) {
     echo get_string('nomessagesfound', 'message');
 } else {
@@ -189,7 +202,11 @@ if (empty($allmessages)) {
         echo $message->basic;
     }
 }
+<<<<<<< HEAD
 
+=======
+echo '</tbody></table>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 echo '</div>';
 echo $OUTPUT->container_end();
 echo $OUTPUT->footer();

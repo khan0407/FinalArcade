@@ -153,7 +153,11 @@ class question_preview_options extends question_display_options {
     protected function get_field_types() {
         return array(
             'behaviour' => PARAM_ALPHA,
+<<<<<<< HEAD
             'maxmark' => PARAM_NUMBER,
+=======
+            'maxmark' => PARAM_FLOAT,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'variant' => PARAM_INT,
             'correctness' => PARAM_BOOL,
             'marks' => PARAM_INT,

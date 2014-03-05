@@ -31,16 +31,34 @@
  */
 class block_html_edit_form extends block_edit_form {
     protected function specific_definition($mform) {
+<<<<<<< HEAD
+=======
+        global $CFG;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Fields for editing HTML block title and contents.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
         $mform->addElement('text', 'config_title', get_string('configtitle', 'block_html'));
+<<<<<<< HEAD
         $mform->setType('config_title', PARAM_MULTILANG);
+=======
+        $mform->setType('config_title', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean'=>true, 'context'=>$this->block->context);
         $mform->addElement('editor', 'config_text', get_string('configcontent', 'block_html'), null, $editoroptions);
         $mform->addRule('config_text', null, 'required', null, 'client');
         $mform->setType('config_text', PARAM_RAW); // XSS is prevented when printing the block contents and serving files
+<<<<<<< HEAD
+=======
+
+        if (!empty($CFG->block_html_allowcssclasses)) {
+            $mform->addElement('text', 'config_classes', get_string('configclasses', 'block_html'));
+            $mform->setType('config_classes', PARAM_TEXT);
+            $mform->addHelpButton('config_classes', 'configclasses', 'block_html');
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function set_data($defaults) {

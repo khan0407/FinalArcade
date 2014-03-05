@@ -13,7 +13,11 @@ $PAGE->set_url('/userpix/index.php');
 require_login();
 
 /// Remove the following three lines if you want everyone to access it
+<<<<<<< HEAD
 $syscontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$syscontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/site:config', $syscontext);
 
 $title = get_string("users");

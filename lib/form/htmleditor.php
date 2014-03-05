@@ -86,6 +86,7 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @param array $helpbuttonargs array of arguments to make a help button
@@ -99,6 +100,8 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns the input field in HTML
      *
      * @return string

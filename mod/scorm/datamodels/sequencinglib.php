@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< HEAD
 require ($CFG->dirroot.'/mod/scorm/datamodels/scormlib.php');
 
 function scorm_seq_evaluate($scoid,$usertracks) {
@@ -390,10 +391,13 @@ function scorm_seq_set($what, $scoid, $userid, $attempt=0, $value='true') {
     scorm_update_grades($scorm, $userid, true);
 }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 function scorm_seq_exit_action_rules($seq,$userid) {
     $sco = $seq->currentactivity;
     $ancestors = scorm_get_ancestors($sco);
     $exittarget = null;
+<<<<<<< HEAD
     foreach (array_reverse($ancestors) as $ancestor) {
         if (scorm_seq_rules_check($ancestor,'exit') != null) {
             $exittarget = $ancestor;
@@ -846,6 +850,51 @@ function scorm_seq_rollup_rule_check ($sco,$userid,$action){
         }
      }
      return false;
+=======
+    foreach (array_reverse($ancestors) as $ancestor) {
+        if (scorm_seq_rules_check($ancestor,'exit') != null) {
+            $exittarget = $ancestor;
+            break;
+        }
+    }
+    if ($exittarget != null) {
+        $commons = array_slice($ancestors,0,scorm_find_common_ancestor($ancestors,$exittarget));
+
+        /// Terminate Descendent Attempts Process
+        if ($commons) {
+            foreach ($commons as $ancestor) {
+
+                scorm_seq_end_attempt($ancestor,$userid,$seq->attempt);
+                $seq->currentactivity = $ancestor;
+            }
+        }
+    }
+    return $seq;
+}
+
+function scorm_seq_post_cond_rules($seq,$userid) {
+    $sco = $seq->currentactivity;
+    if (!$seq->suspended) {
+        if ($action = scorm_seq_rules_check($sco,'post') != null) {
+            switch($action) {
+                case 'retry':
+                case 'continue':
+                case 'previous':
+                    $seq->sequencing = $action;
+                break;
+                case 'exitparent':
+                case 'exitall':
+                    $seq->termination = $action;
+                break;
+                case 'retryall':
+                    $seq->termination = 'exitall';
+                    $seq->sequencing = 'retry';
+                break;
+            }
+        }
+    }
+    return $seq;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -914,6 +963,7 @@ function scorm_seq_evaluate_rollupcond($sco,$conditioncombination,$rolluprulecon
 
 }
 
+<<<<<<< HEAD
 function scorm_evaluate_condition ($rolluprulecond,$sco,$userid){
     global $DB;
 
@@ -1022,6 +1072,8 @@ function scorm_evaluate_condition ($rolluprulecond,$sco,$userid){
             return $res;
 
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 function scorm_seq_check_child ($sco, $action, $userid){
     global $DB;
@@ -1273,7 +1325,10 @@ function scorm_seq_exit_sequencing($scoid,$userid,$seq){
     return $seq;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 function scorm_seq_retry_sequencing($scoid,$userid,$seq){
     if (empty($seq->currentactivity)) {
         $seq->delivery = null;
@@ -1305,6 +1360,7 @@ function scorm_seq_retry_sequencing($scoid,$userid,$seq){
 
 }
 
+<<<<<<< HEAD
 function scorm_seq_flow ($candidate,$direction,$seq,$childrenflag,$userid){
     //TODO: $PREVDIRECTION NOT DEFINED YET
 
@@ -1608,6 +1664,8 @@ function scorm_limit_cond_check ($activity,$userid){
 }
 
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 function scorm_seq_choice_sequencing($sco,$userid,$seq){
 
     $avchildren = Array ();
@@ -2382,8 +2440,11 @@ function scorm_sequencing_exception($seq){
 
     }
 }
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

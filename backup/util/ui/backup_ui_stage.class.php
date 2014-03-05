@@ -473,12 +473,20 @@ class backup_ui_stage_complete extends backup_ui_stage_final {
         case 'activity':
             $cmid = $this->get_ui()->get_controller()->get_id();
             $cm = get_coursemodule_from_id(null, $cmid, $courseid);
+<<<<<<< HEAD
             $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+            $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $restorerul = new moodle_url('/backup/restorefile.php', array('contextid'=>$modcontext->id));
             break;
         case 'course':
         default:
+<<<<<<< HEAD
             $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+            $coursecontext = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $restorerul = new moodle_url('/backup/restorefile.php', array('contextid'=>$coursecontext->id));
         }
 

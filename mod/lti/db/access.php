@@ -31,11 +31,18 @@ defined('MOODLE_INTERNAL') || die;
 
 $capabilities = array(
 
+<<<<<<< HEAD
+=======
+    // Whether the user can see the link to the external tool and follow it.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'mod/lti:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
+<<<<<<< HEAD
             'guest' => CAP_ALLOW,
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
@@ -43,6 +50,10 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    // Add an External tool activity to a course.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'mod/lti:addinstance' => array(
         'riskbitmask' => RISK_XSS,
 
@@ -55,8 +66,15 @@ $capabilities = array(
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
 
+<<<<<<< HEAD
     'mod/lti:grade' => array(
         'riskbitmask' => RISK_XSS,
+=======
+    // Controls access to the grade.php script, which shows all the submissions
+    // made to the external tool that have been reported back to Moodle.
+    'mod/lti:grade' => array(
+        'riskbitmask' => RISK_PERSONAL,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
@@ -67,8 +85,16 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
     'mod/lti:manage' => array(
         'riskbitmask' => RISK_XSS,
+=======
+    // When the user arrives at the external tool, if they have this capability
+    // in Moodle, then they given the Instructor role in the remote system,
+    // otherwise they are given Learner. See the lti_get_ims_role function.
+    'mod/lti:manage' => array(
+        'riskbitmask' => RISK_PERSONAL, // A bit of a guess, but seems likely.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
@@ -79,21 +105,36 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    // The ability to create or edit tool configurations for particular courses.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'mod/lti:addcoursetool' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
+<<<<<<< HEAD
             'teacher' => CAP_ALLOW,
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         )
     ),
 
+<<<<<<< HEAD
+=======
+    // The ability to request the adminstirator to configure a particular
+    // External tool globally.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'mod/lti:requesttooladd' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
+<<<<<<< HEAD
             'teacher' => CAP_ALLOW,
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         )

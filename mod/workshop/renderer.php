@@ -82,6 +82,10 @@ class mod_workshop_renderer extends plugin_renderer_base {
      * @return string HTML
      */
     protected function render_workshop_submission(workshop_submission $submission) {
+<<<<<<< HEAD
+=======
+        global $CFG;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $o  = '';    // output HTML code
         $anonymous = $submission->is_anonymous();
@@ -134,7 +138,19 @@ class mod_workshop_renderer extends plugin_renderer_base {
         $content = file_rewrite_pluginfile_urls($submission->content, 'pluginfile.php', $this->page->context->id,
                                                         'mod_workshop', 'submission_content', $submission->id);
         $content = format_text($content, $submission->contentformat, array('overflowdiv'=>true));
+<<<<<<< HEAD
 
+=======
+        if (!empty($content)) {
+            if (!empty($CFG->enableplagiarism)) {
+                require_once($CFG->libdir.'/plagiarismlib.php');
+                $content .= plagiarism_get_links(array('userid' => $submission->authorid,
+                    'content' => $submission->content,
+                    'cmid' => $this->page->cm->id,
+                    'course' => $this->page->course));
+            }
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $o .= $this->output->container($content, 'content');
 
         $o .= $this->helper_submission_attachments($submission->id, 'html');
@@ -715,6 +731,50 @@ class mod_workshop_renderer extends plugin_renderer_base {
         return $this->output->container($this->output->render($select), 'perpagewidget');
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Renders the user's final grades
+     *
+     * @param workshop_final_grades $grades with the info about grades in the gradebook
+     * @return string HTML
+     */
+    protected function render_workshop_final_grades(workshop_final_grades $grades) {
+
+        $out = html_writer::start_tag('div', array('class' => 'finalgrades'));
+
+        if (!empty($grades->submissiongrade)) {
+            $cssclass = 'grade submissiongrade';
+            if ($grades->submissiongrade->hidden) {
+                $cssclass .= ' hiddengrade';
+            }
+            $out .= html_writer::tag(
+                'div',
+                html_writer::tag('div', get_string('submissiongrade', 'mod_workshop'), array('class' => 'gradetype')) .
+                html_writer::tag('div', $grades->submissiongrade->str_long_grade, array('class' => 'gradevalue')),
+                array('class' => $cssclass)
+            );
+        }
+
+        if (!empty($grades->assessmentgrade)) {
+            $cssclass = 'grade assessmentgrade';
+            if ($grades->assessmentgrade->hidden) {
+                $cssclass .= ' hiddengrade';
+            }
+            $out .= html_writer::tag(
+                'div',
+                html_writer::tag('div', get_string('gradinggrade', 'mod_workshop'), array('class' => 'gradetype')) .
+                html_writer::tag('div', $grades->assessmentgrade->str_long_grade, array('class' => 'gradevalue')),
+                array('class' => $cssclass)
+            );
+        }
+
+        $out .= html_writer::end_tag('div');
+
+        return $out;
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ////////////////////////////////////////////////////////////////////////////
     // Internal rendering helper methods
     ////////////////////////////////////////////////////////////////////////////
@@ -768,6 +828,17 @@ class mod_workshop_renderer extends plugin_renderer_base {
             } else if ($format == 'text') {
                 $outputfiles .= $linktxt . PHP_EOL;
             }
+<<<<<<< HEAD
+=======
+
+            if (!empty($CFG->enableplagiarism)) {
+                require_once($CFG->libdir.'/plagiarismlib.php');
+                $outputfiles .= plagiarism_get_links(array('userid' => $file->get_userid(),
+                    'file' => $file,
+                    'cmid' => $this->page->cm->id,
+                    'course' => $this->page->course->id));
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         if ($format == 'html') {
@@ -840,12 +911,22 @@ class mod_workshop_renderer extends plugin_renderer_base {
             if ($sortby !== $sortid or $sorthow !== 'ASC') {
                 $url = new moodle_url($PAGE->url);
                 $url->params(array('sortby' => $sortid, 'sorthow' => 'ASC'));
+<<<<<<< HEAD
                 $out .= $this->output->action_icon($url, new pix_icon('t/up', get_string('sortasc', 'workshop')), null, array('class' => 'sort asc'));
+=======
+                $out .= $this->output->action_icon($url, new pix_icon('t/sort_asc', get_string('sortasc', 'workshop')),
+                    null, array('class' => 'iconsort sort asc'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($sortby !== $sortid or $sorthow !== 'DESC') {
                 $url = new moodle_url($PAGE->url);
                 $url->params(array('sortby' => $sortid, 'sorthow' => 'DESC'));
+<<<<<<< HEAD
                 $out .= $this->output->action_icon($url, new pix_icon('t/down', get_string('sortdesc', 'workshop')), null, array('class' => 'sort desc'));
+=======
+                $out .= $this->output->action_icon($url, new pix_icon('t/sort_desc', get_string('sortdesc', 'workshop')),
+                    null, array('class' => 'iconsort sort desc'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
         return $out;

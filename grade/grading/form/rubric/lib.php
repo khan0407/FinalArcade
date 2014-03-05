@@ -504,11 +504,30 @@ class gradingform_rubric_controller extends gradingform_controller {
             throw new coding_exception('It is the caller\'s responsibility to make sure that the form is actually defined');
         }
 
+<<<<<<< HEAD
         $output = $this->get_renderer($page);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $criteria = $this->definition->rubric_criteria;
         $options = $this->get_options();
         $rubric = '';
         if (has_capability('moodle/grade:managegradingforms', $page->context)) {
+<<<<<<< HEAD
+=======
+            $showdescription = true;
+        } else {
+            if (empty($options['alwaysshowdefinition']))  {
+                // ensure we don't display unless show rubric option enabled
+                return '';
+            }
+            $showdescription = $options['showdescriptionstudent'];
+        }
+        $output = $this->get_renderer($page);
+        if ($showdescription) {
+            $rubric .= $output->box($this->get_formatted_description(), 'gradingform_rubric-description');
+        }
+        if (has_capability('moodle/grade:managegradingforms', $page->context)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $rubric .= $output->display_rubric_mapping_explained($this->get_min_max_score());
             $rubric .= $output->display_rubric($criteria, $options, self::DISPLAY_PREVIEW, 'rubric');
         } else {

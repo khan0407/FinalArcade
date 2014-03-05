@@ -196,12 +196,20 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->setAdvanced('whatgrade', $cfg_scorm->whatgrade_adv);
 
         // Display attempt status.
+<<<<<<< HEAD
         $mform->addElement('selectyesno', 'displayattemptstatus', get_string('displayattemptstatus', 'scorm'));
+=======
+        $mform->addElement('select', 'displayattemptstatus', get_string('displayattemptstatus', 'scorm'), scorm_get_attemptstatus_array());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->addHelpButton('displayattemptstatus', 'displayattemptstatus', 'scorm');
         $mform->setDefault('displayattemptstatus', $cfg_scorm->displayattemptstatus);
         $mform->setAdvanced('displayattemptstatus', $cfg_scorm->displayattemptstatus_adv);
 
+<<<<<<< HEAD
         // Force completed
+=======
+        // Force completed.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->addElement('selectyesno', 'forcecompleted', get_string('forcecompleted', 'scorm'));
         $mform->addHelpButton('forcecompleted', 'forcecompleted', 'scorm');
         $mform->setDefault('forcecompleted', $cfg_scorm->forcecompleted);
@@ -394,14 +402,38 @@ class mod_scorm_mod_form extends moodleform_mod {
 
         } else if ($type === SCORM_TYPE_EXTERNAL) {
             $reference = $data['packageurl'];
+<<<<<<< HEAD
             if (!preg_match('/(http:\/\/|https:\/\/|www).*\/imsmanifest.xml$/i', $reference)) {
                 $errors['packageurl'] = get_string('invalidurl', 'scorm');
+=======
+            // Syntax check.
+            if (!preg_match('/(http:\/\/|https:\/\/|www).*\/imsmanifest.xml$/i', $reference)) {
+                $errors['packageurl'] = get_string('invalidurl', 'scorm');
+            } else {
+                // Availability check.
+                $result = scorm_check_url($reference);
+                if (is_string($result)) {
+                    $errors['packageurl'] = $result;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
         } else if ($type === 'packageurl') {
             $reference = $data['reference'];
+<<<<<<< HEAD
             if (!preg_match('/(http:\/\/|https:\/\/|www).*(\.zip|\.pif)$/i', $reference)) {
                 $errors['packageurl'] = get_string('invalidurl', 'scorm');
+=======
+            // Syntax check.
+            if (!preg_match('/(http:\/\/|https:\/\/|www).*(\.zip|\.pif)$/i', $reference)) {
+                $errors['packageurl'] = get_string('invalidurl', 'scorm');
+            } else {
+                // Availability check.
+                $result = scorm_check_url($reference);
+                if (is_string($result)) {
+                    $errors['packageurl'] = $result;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
         } else if ($type === SCORM_TYPE_IMSREPOSITORY) {
@@ -409,11 +441,28 @@ class mod_scorm_mod_form extends moodleform_mod {
             if (stripos($reference, '#') !== 0) {
                 $errors['packageurl'] = get_string('invalidurl', 'scorm');
             }
+<<<<<<< HEAD
         } else if ($type === SCORM_TYPE_AICCURL) {
             $reference = $data['packageurl'];
             if (!preg_match('/(http:\/\/|https:\/\/|www).*/', $reference)) {
                 $errors['packageurl'] = get_string('invalidurl', 'scorm');
             }
+=======
+
+        } else if ($type === SCORM_TYPE_AICCURL) {
+            $reference = $data['packageurl'];
+            // Syntax check.
+            if (!preg_match('/(http:\/\/|https:\/\/|www).*/', $reference)) {
+                $errors['packageurl'] = get_string('invalidurl', 'scorm');
+            } else {
+                // Availability check.
+                $result = scorm_check_url($reference);
+                if (is_string($result)) {
+                    $errors['packageurl'] = $result;
+                }
+            }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return $errors;

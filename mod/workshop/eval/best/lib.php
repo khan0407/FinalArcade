@@ -33,7 +33,11 @@ require_once($CFG->libdir . '/gradelib.php');
 /**
  * Defines the computation login of the grading evaluation subplugin
  */
+<<<<<<< HEAD
 class workshop_best_evaluation implements workshop_evaluation {
+=======
+class workshop_best_evaluation extends workshop_evaluation {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /** @var workshop the parent workshop instance */
     protected $workshop;
@@ -67,7 +71,11 @@ class workshop_best_evaluation implements workshop_evaluation {
     public function update_grading_grades(stdclass $settings, $restrict=null) {
         global $DB;
 
+<<<<<<< HEAD
         // remember the recently used settings for this workshop
+=======
+        // Remember the recently used settings for this workshop.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (empty($this->settings)) {
             $record = new stdclass();
             $record->workshopid = $this->workshop->id;
@@ -78,7 +86,11 @@ class workshop_best_evaluation implements workshop_evaluation {
                     array('workshopid' => $this->workshop->id));
         }
 
+<<<<<<< HEAD
         // get the grading strategy instance
+=======
+        // Get the grading strategy instance.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $grader = $this->workshop->grading_strategy_instance();
 
         // get the information about the assessment dimensions
@@ -109,6 +121,7 @@ class workshop_best_evaluation implements workshop_evaluation {
     }
 
     /**
+<<<<<<< HEAD
      * TODO: short description.
      *
      * @return TODO
@@ -117,6 +130,13 @@ class workshop_best_evaluation implements workshop_evaluation {
         global $CFG;    // needed because the included files use it
         global $DB;
         require_once(dirname(__FILE__) . '/settings_form.php');
+=======
+     * Returns an instance of the form to provide evaluation settings.
+     *
+     * @return workshop_best_evaluation_settings_form
+     */
+    public function get_settings_form(moodle_url $actionurl=null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $customdata['workshop'] = $this->workshop;
         $customdata['current'] = $this->settings;
@@ -166,6 +186,19 @@ class workshop_best_evaluation implements workshop_evaluation {
         // get a hypothetical average assessment
         $average = $this->average_assessment($assessments);
 
+<<<<<<< HEAD
+=======
+        // if unable to calculate the average assessment, set the grading grades to null
+        if (is_null($average)) {
+            foreach ($assessments as $asid => $assessment) {
+                if (!is_null($assessment->gradinggrade)) {
+                    $DB->set_field('workshop_assessments', 'gradinggrade', null, array('id' => $asid));
+                }
+            }
+            return;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // calculate variance of dimension grades
         $variances = $this->weighted_variance($assessments);
         foreach ($variances as $dimid => $variance) {
@@ -275,6 +308,11 @@ class workshop_best_evaluation implements workshop_evaluation {
      * Given a set of a submission's assessments, returns a hypothetical average assessment
      *
      * The passed structure must be array of assessments objects with ->weight and ->dimgrades properties.
+<<<<<<< HEAD
+=======
+     * Returns null if all passed assessments have zero weight as there is nothing to choose
+     * from then.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @param array $assessments as prepared by {@link self::prepare_data_from_recordset()}
      * @return null|stdClass
@@ -389,7 +427,13 @@ class workshop_best_evaluation implements workshop_evaluation {
             $n     += $weight;
 
             // variations very close to zero are too sensitive to a small change of data values
+<<<<<<< HEAD
             if ($var > 0.01 and $agrade != $rgrade) {
+=======
+            $var = max($var, 0.01);
+
+            if ($agrade != $rgrade) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $absdelta   = abs($agrade - $rgrade);
                 $reldelta   = pow($agrade - $rgrade, 2) / ($settings->comparison * $var);
                 $distance  += $absdelta * $reldelta * $weight;
@@ -403,3 +447,33 @@ class workshop_best_evaluation implements workshop_evaluation {
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+
+/**
+ * Represents the settings form for this plugin.
+ */
+class workshop_best_evaluation_settings_form extends workshop_evaluation_settings_form {
+
+    /**
+     * Defines specific fields for this evaluation method.
+     */
+    protected function definition_sub() {
+        $mform = $this->_form;
+
+        $plugindefaults = get_config('workshopeval_best');
+        $current = $this->_customdata['current'];
+
+        $options = array();
+        for ($i = 9; $i >= 1; $i = $i-2) {
+            $options[$i] = get_string('comparisonlevel' . $i, 'workshopeval_best');
+        }
+        $mform->addElement('select', 'comparison', get_string('comparison', 'workshopeval_best'), $options);
+        $mform->addHelpButton('comparison', 'comparison', 'workshopeval_best');
+        $mform->setDefault('comparison', $plugindefaults->comparison);
+
+        $this->set_data($current);
+    }
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

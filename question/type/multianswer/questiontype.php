@@ -165,7 +165,11 @@ class qtype_multianswer extends question_type {
             }
         }
 
+<<<<<<< HEAD
         $this->save_hints($question);
+=======
+        $this->save_hints($question, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function save_question($authorizedquestion, $form) {
@@ -183,6 +187,13 @@ class qtype_multianswer extends question_type {
         return parent::save_question($question, $form);
     }
 
+<<<<<<< HEAD
+=======
+    protected function make_hint($hint) {
+        return question_hint_with_parts::load_from_record($hint);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     public function delete_question($questionid, $contextid) {
         global $DB;
         $DB->delete_records('question_multianswer', array('question' => $questionid));

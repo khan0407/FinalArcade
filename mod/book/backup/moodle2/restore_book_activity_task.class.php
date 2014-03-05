@@ -111,6 +111,13 @@ class restore_book_activity_task extends restore_activity_task {
         // To convert old 'generateimscp' log entries
         $rules[] = new restore_log_rule('book', 'generateimscp', 'tool/generateimscp/index.php?id={course_module}', '{book}',
                 'book', 'exportimscp', 'tool/exportimscp/index.php?id={course_module}', '{book}');
+<<<<<<< HEAD
+=======
+        $rules[] = new restore_log_rule('book', 'print chapter', 'tool/print/index.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+        $rules[] = new restore_log_rule('book', 'update chapter', 'view.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+        $rules[] = new restore_log_rule('book', 'add chapter', 'view.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+        $rules[] = new restore_log_rule('book', 'view chapter', 'view.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $rules;
     }

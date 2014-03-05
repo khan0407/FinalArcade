@@ -207,6 +207,25 @@ if ($edit) {
         }
         // store the updated values or re-save the new submission (re-saving needed because URLs are now rewritten)
         $DB->update_record('workshop_submissions', $formdata);
+<<<<<<< HEAD
+=======
+
+        // send submitted content for plagiarism detection
+        $fs = get_file_storage();
+        $files = $fs->get_area_files($workshop->context->id, 'mod_workshop', 'submission_attachment', $submission->id);
+        $eventdata = new stdClass();
+        $eventdata->modulename   = 'workshop';
+        $eventdata->cmid         = $cm->id;
+        $eventdata->itemid       = $submission->id;
+        $eventdata->courseid     = $course->id;
+        $eventdata->userid       = $USER->id;
+        $eventdata->content      = $formdata->content;
+        if ($files) {
+            $eventdata->pathnamehashes = array_keys($files);
+        }
+        events_trigger('assessable_content_uploaded', $eventdata);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         redirect($workshop->submission_url($formdata->id));
     }
 }
@@ -265,6 +284,13 @@ if (trim($workshop->instructauthors)) {
 // if in edit mode, display the form to edit the submission
 
 if ($edit) {
+<<<<<<< HEAD
+=======
+    if (!empty($CFG->enableplagiarism)) {
+        require_once($CFG->libdir.'/plagiarismlib.php');
+        echo plagiarism_print_disclosure($cm->id);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $mform->display();
     echo $output->footer();
     die();

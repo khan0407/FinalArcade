@@ -38,7 +38,11 @@
 
     $PAGE->set_url('/mod/survey/view.php', array('id'=>$id));
     require_login($course, false, $cm);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     require_capability('mod/survey:participate', $context);
 
@@ -198,10 +202,21 @@ $completion->set_module_viewed($cm);
            $checkarray['questions'][] = Array('question'=>$question, 'default'=>$default);
        }
     }
+<<<<<<< HEAD
     $PAGE->requires->js('/mod/survey/survey.js');
     $PAGE->requires->data_for_js('surveycheck', $checkarray);
     $PAGE->requires->string_for_js('questionsnotanswered', 'survey');
     $PAGE->requires->js_function_call('survey_attach_onsubmit');
+=======
+    $PAGE->requires->data_for_js('surveycheck', $checkarray);
+    $module = array(
+        'name'      => 'mod_survey',
+        'fullpath'  => '/mod/survey/survey.js',
+        'requires'  => array('yui2-event'),
+    );
+    $PAGE->requires->string_for_js('questionsnotanswered', 'survey');
+    $PAGE->requires->js_init_call('M.mod_survey.init', $checkarray, true, $module);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     echo '<br />';
     echo '<input type="submit" value="'.get_string("clicktocontinue", "survey").'" />';

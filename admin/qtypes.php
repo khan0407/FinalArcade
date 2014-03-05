@@ -33,7 +33,11 @@ require_once($CFG->libdir . '/tablelib.php');
 
 // Check permissions.
 require_login();
+<<<<<<< HEAD
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/question:config', $systemcontext);
 $canviewreports = has_capability('report/questioninstances:view', $systemcontext);
 
@@ -257,7 +261,11 @@ foreach ($sortedqtypes as $qtypename => $localname) {
             $rowclass = 'dimmed_text';
         }
     } else {
+<<<<<<< HEAD
         $icons = $OUTPUT->spacer() . ' ';
+=======
+        $icons = $OUTPUT->spacer();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // Move icons.
@@ -294,10 +302,17 @@ echo $OUTPUT->footer();
 
 function question_types_enable_disable_icons($qtypename, $createable) {
     if ($createable) {
+<<<<<<< HEAD
         return question_type_icon_html('disable', $qtypename, 'i/hide',
                 get_string('enabled', 'question'), get_string('disable'));
     } else {
         return question_type_icon_html('enable', $qtypename, 'i/show',
+=======
+        return question_type_icon_html('disable', $qtypename, 't/hide',
+                get_string('enabled', 'question'), get_string('disable'));
+    } else {
+        return question_type_icon_html('enable', $qtypename, 't/show',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 get_string('disabled', 'question'), get_string('enable'));
     }
 }
@@ -306,7 +321,12 @@ function question_type_icon_html($action, $qtypename, $icon, $alt, $tip) {
     global $OUTPUT;
     return $OUTPUT->action_icon(new moodle_url('/admin/qtypes.php',
             array($action => $qtypename, 'sesskey' => sesskey())),
+<<<<<<< HEAD
             new pix_icon($icon, $alt, 'moodle', array('title' => '')),
             null, array('title' => $tip)) . ' ';
+=======
+            new pix_icon($icon, $alt, 'moodle', array('title' => '', 'class' => 'iconsmall')),
+            null, array('title' => $tip));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 

@@ -31,6 +31,7 @@ require_once($CFG->dirroot . '/filter/urltolink/filter.php'); // Include the cod
 
 class filter_urltolink_testcase extends basic_testcase {
 
+<<<<<<< HEAD
     /**
      * Helper function that represents the legacy implementation
      * of convert_urls_into_links()
@@ -44,6 +45,8 @@ class filter_urltolink_testcase extends basic_testcase {
             '$1<a href="http://www.$2$3" target="_blank">www.$2$3</a>', $text);
     }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function get_convert_urls_into_links_test_cases() {
         $texts = array (
             //just a url
@@ -144,6 +147,14 @@ class filter_urltolink_testcase extends basic_testcase {
             '<td background="www.moodle.org">&nbsp;</td>' => '<td background="www.moodle.org">&nbsp;</td>',
             '<form name="input" action="http://moodle.org/submit.asp" method="get">'=>'<form name="input" action="http://moodle.org/submit.asp" method="get">',
             '<td background="https://www.moodle.org">&nbsp;</td>' => '<td background="https://www.moodle.org">&nbsp;</td>',
+<<<<<<< HEAD
+=======
+            // CSS URLs.
+            '<table style="background-image: url(\'http://moodle.org/pic.jpg\');">' => '<table style="background-image: url(\'http://moodle.org/pic.jpg\');">',
+            '<table style="background-image: url(http://moodle.org/pic.jpg);">' => '<table style="background-image: url(http://moodle.org/pic.jpg);">',
+            '<table style="background-image: url("http://moodle.org/pic.jpg");">' => '<table style="background-image: url("http://moodle.org/pic.jpg");">',
+            '<table style="background-image: url( http://moodle.org/pic.jpg );">' => '<table style="background-image: url( http://moodle.org/pic.jpg );">',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             //partially escaped img tag
             'partially escaped img tag &lt;img src="http://moodle.org/logo/logo-240x60.gif" />' => 'partially escaped img tag &lt;img src="http://moodle.org/logo/logo-240x60.gif" />',
             //fully escaped img tag. Commented out as part of MDL-21183
@@ -181,6 +192,7 @@ class filter_urltolink_testcase extends basic_testcase {
         $this->assertEquals($correctresult, $text);
     }
 
+<<<<<<< HEAD
     function test_convert_urls_into_links_performance() {
         $testablefilter = new testable_filter_urltolink();
 
@@ -207,6 +219,8 @@ class filter_urltolink_testcase extends basic_testcase {
 
         $this->assertEquals($fast_enough, true, 'Timing test: ' . $new_time . 'secs (new) < ' . $old_time . 'secs (old)');
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 

@@ -137,7 +137,11 @@ abstract class quiz_attempts_report_table extends table_sql {
      */
     public function col_fullname($attempt) {
         $html = parent::col_fullname($attempt);
+<<<<<<< HEAD
         if ($this->is_downloading()) {
+=======
+        if ($this->is_downloading() || empty($attempt->attempt)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return $html;
         }
 
@@ -242,18 +246,30 @@ abstract class quiz_attempts_report_table extends table_sql {
 
         $flag = '';
         if ($stepdata->flagged) {
+<<<<<<< HEAD
             $flag = ' ' . $OUTPUT->pix_icon('i/flagged', get_string('flagged', 'question'),
+=======
+            $flag = $OUTPUT->pix_icon('i/flagged', get_string('flagged', 'question'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     'moodle', array('class' => 'questionflag'));
         }
 
         $feedbackimg = '';
         if ($state->is_finished() && $state != question_state::$needsgrading) {
+<<<<<<< HEAD
             $feedbackimg = ' ' . $this->icon_for_fraction($stepdata->fraction);
         }
 
         $output = html_writer::tag('span', html_writer::tag('span',
                 $data . $feedbackimg . $flag,
                 array('class' => $state->get_state_class(true))), array('class' => 'que'));
+=======
+            $feedbackimg = $this->icon_for_fraction($stepdata->fraction);
+        }
+
+        $output = html_writer::tag('span', $feedbackimg . html_writer::tag('span',
+                $data, array('class' => $state->get_state_class(true))) . $flag, array('class' => 'que'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $url = new moodle_url('/mod/quiz/reviewquestion.php',
                 array('attempt' => $attempt->attempt, 'slot' => $slot));
@@ -273,6 +289,7 @@ abstract class quiz_attempts_report_table extends table_sql {
     protected function icon_for_fraction($fraction) {
         global $OUTPUT;
 
+<<<<<<< HEAD
         $state = question_state::graded_state_for_fraction($fraction);
         if ($state == question_state::$gradedright) {
             $icon = 'i/tick_green_big';
@@ -283,6 +300,10 @@ abstract class quiz_attempts_report_table extends table_sql {
         }
 
         return $OUTPUT->pix_icon($icon, get_string($state->get_feedback_class(), 'question'),
+=======
+        $feedbackclass = question_state::graded_state_for_fraction($fraction)->get_feedback_class();
+        return $OUTPUT->pix_icon('i/grade_' . $feedbackclass, get_string($feedbackclass, 'question'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 'moodle', array('class' => 'icon'));
     }
 

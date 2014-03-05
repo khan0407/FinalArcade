@@ -34,7 +34,11 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2010 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+<<<<<<< HEAD
 class core_textlib_testcase extends basic_testcase {
+=======
+class core_textlib_testcase extends advanced_testcase {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * Tests the static parse charset method
@@ -91,6 +95,17 @@ class core_textlib_testcase extends basic_testcase {
         $this->assertSame(textlib::convert($utf8, 'utf-8', 'GB18030'), $str);
         $this->assertSame(textlib::convert($str, 'GB18030', 'utf-8'), $utf8);
         $this->assertSame(textlib::convert($utf8, 'utf-8', 'utf-8'), $utf8);
+<<<<<<< HEAD
+=======
+
+        $utf8 = "Žluťoučký koníček";
+        $this->assertSame('Zlutoucky konicek', textlib::convert($utf8, 'utf-8', 'ascii'));
+        $this->assertSame($utf8, textlib::convert($utf8.chr(130), 'utf-8', 'utf-8'));
+        $utf8 = "Der eine stößt den Speer zum Mann";
+        $this->assertSame('Der eine stoesst den Speer zum Mann', textlib::convert($utf8, 'utf-8', 'ascii'));
+        $iso1 = textlib::convert($utf8, 'utf-8', 'iso-8859-1');
+        $this->assertSame('Der eine stoesst den Speer zum Mann', textlib::convert($iso1, 'iso-8859-1', 'ascii'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -354,11 +369,16 @@ class core_textlib_testcase extends basic_testcase {
      * @return void
      */
     public function test_deprecated_textlib_get_instance() {
+<<<<<<< HEAD
         ob_start();
         $textlib = textlib_get_instance();
         $output = ob_get_contents();
         $this->assertNotEmpty($output);
         ob_end_clean();
+=======
+        $textlib = textlib_get_instance();
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->assertSame($textlib->substr('abc', 1, 1), 'b');
         $this->assertSame($textlib->strlen('abc'), 3);
         $this->assertSame($textlib->strtoupper('Abc'), 'ABC');
@@ -369,6 +389,21 @@ class core_textlib_testcase extends basic_testcase {
         $this->assertSame($textlib->specialtoascii('ábc'), 'abc');
         $this->assertSame($textlib->strtotitle('abc ABC'), 'Abc Abc');
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Test strrchr.
+     */
+    public function test_strrchr() {
+        $str = "Žluťoučký koníček";
+        $this->assertSame('koníček', textlib::strrchr($str, 'koní'));
+        $this->assertSame('Žluťoučký ', textlib::strrchr($str, 'koní', true));
+        $this->assertFalse(textlib::strrchr($str, 'A'));
+        $this->assertFalse(textlib::strrchr($str, 'ç', true));
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 

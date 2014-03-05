@@ -36,7 +36,11 @@ class HTML_QuickForm_Rule_Range extends HTML_QuickForm_Rule
      */
     function validate($value, $options = null)
     {
+<<<<<<< HEAD
         $length = strlen($value);
+=======
+        $length = textlib::strlen($value);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         switch ($this->name) {
             case 'minlength': return ($length >= $options);
             case 'maxlength': return ($length <= $options);
@@ -61,4 +65,8 @@ class HTML_QuickForm_Rule_Range extends HTML_QuickForm_Rule
     } // end func getValidationScript
 
 } // end class HTML_QuickForm_Rule_Range
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

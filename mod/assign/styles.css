@@ -114,7 +114,13 @@ div.earlysubmission {
 
 .gradingtable .yui3-menu-label {
     padding-left: 0px;
+<<<<<<< HEAD
 }
+=======
+    line-height: 12px;
+}
+.gradingtable .yui3-menu-label img { padding: 0 3px; }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .gradingtable .yui3-menu li {
     list-style-type: none;
 }
@@ -125,8 +131,32 @@ div.earlysubmission {
 
 .gradingtable .yui3-menu .yui3-menu-content {
     border: 0px;
+<<<<<<< HEAD
+=======
+    padding-top: 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 #page-mod-assign-view div.gradingtable tr .quickgrademodified {
     background-color: #FFCC99;
 }
+<<<<<<< HEAD
+=======
+
+td.submissioneditable {
+    color: red;
+}
+
+.expandsummaryicon {
+    cursor: pointer;
+    display: none;
+}
+
+.jsenabled .expandsummaryicon {
+    display: inline;
+}
+
+.hidefull {
+    display: none;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

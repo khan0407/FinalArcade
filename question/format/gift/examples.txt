@@ -2,7 +2,11 @@
 //  by Paul Tsuchido Shew, January 2004.
 
 //-----------------------------------------//
+<<<<<<< HEAD
 //        EXAMPLES FROM DESCRIPTION
+=======
+// Examples from the class description.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 //-----------------------------------------//
 
 Who's buried in Grant's tomb?{~Grant ~Jefferson =no one}
@@ -17,7 +21,11 @@ When was Ulysses S. Grant born?{#1822:1}
 
 
 //-----------------------------------------//
+<<<<<<< HEAD
 //       EXAMPLES FROM DOCUMENTATION
+=======
+// Examples from the documentation.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 //-----------------------------------------//
 
 // ===Multiple Choice===
@@ -161,7 +169,11 @@ Which of the following is NOT a control character for the GIFT import format? {
 
 
 //-----------------------------------------//
+<<<<<<< HEAD
 //     EXAMPLES FROM gift/format.php
+=======
+// Examples from gift/format.php.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 //-----------------------------------------//
 
 Who's buried in Grant's tomb?{~Grant ~Jefferson =no one}
@@ -178,7 +190,11 @@ Match the following countries with their corresponding
 capitals.{=Canada->Ottawa =Italy->Rome =Japan->Tokyo}
 
 //-----------------------------------------//
+<<<<<<< HEAD
 //     MORE COMPLICATED EXAMPLES
+=======
+// More complicated examples.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 //-----------------------------------------//
 
 ::Grant's Tomb::Grant is {

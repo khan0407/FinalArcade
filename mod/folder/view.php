@@ -44,7 +44,11 @@ if ($f) {  // Two ways to specify the module
 $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
 
 require_course_login($course, true, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/folder:view', $context);
 
 add_to_log($course->id, 'folder', 'view', 'view.php?id='.$cm->id, $folder->id, $cm->id);

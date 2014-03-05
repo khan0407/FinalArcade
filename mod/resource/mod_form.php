@@ -211,7 +211,11 @@ class mod_resource_mod_form extends moodleform_mod {
 
         $errors = parent::validation($data, $files);
 
+<<<<<<< HEAD
         $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $fs = get_file_storage();
         if (!$files = $fs->get_area_files($usercontext->id, 'user', 'draft', $data['files'], 'sortorder, id', false)) {
             $errors['files'] = get_string('required');

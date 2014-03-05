@@ -3,7 +3,11 @@
 /**
  * @author Martin Dougiamas
  * @author Jerome GUTIERREZ
+<<<<<<< HEAD
  * @author I�aki Arenaza
+=======
+ * @author Iñaki Arenaza
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package moodle multiauth
  *
@@ -125,7 +129,11 @@ class auth_plugin_cas extends auth_plugin_ldap {
             // test pgtIou parameter for proxy mode (https connection
             // in background from CAS server to the php server)
             if ($authCAS != 'CAS' && !isset($_GET['pgtIou'])) {
+<<<<<<< HEAD
                 $PAGE->set_url('/auth/cas/auth.php');
+=======
+                $PAGE->set_url('/login/index.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $PAGE->navbar->add($CASform);
                 $PAGE->set_title("$site->fullname: $CASform");
                 $PAGE->set_heading($site->fullname);
@@ -162,7 +170,11 @@ class auth_plugin_cas extends auth_plugin_ldap {
      *
      */
     function connectCAS() {
+<<<<<<< HEAD
         global $PHPCAS_CLIENT;
+=======
+        global $CFG, $PHPCAS_CLIENT;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!is_object($PHPCAS_CLIENT)) {
             // Make sure phpCAS doesn't try to start a new PHP session when connecting to the CAS server.
@@ -173,6 +185,30 @@ class auth_plugin_cas extends auth_plugin_ldap {
             }
         }
 
+<<<<<<< HEAD
+=======
+        // If Moodle is configured to use a proxy, phpCAS needs some curl options set.
+        if (!empty($CFG->proxyhost) && !is_proxybypass($this->config->hostname)) {
+            phpCAS::setExtraCurlOption(CURLOPT_PROXY, $CFG->proxyhost);
+            if (!empty($CFG->proxyport)) {
+                phpCAS::setExtraCurlOption(CURLOPT_PROXYPORT, $CFG->proxyport);
+            }
+            if (!empty($CFG->proxytype)) {
+                // Only set CURLOPT_PROXYTYPE if it's something other than the curl-default http
+                if ($CFG->proxytype == 'SOCKS5') {
+                    phpCAS::setExtraCurlOption(CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+                }
+            }
+            if (!empty($CFG->proxyuser) and !empty($CFG->proxypassword)) {
+                phpCAS::setExtraCurlOption(CURLOPT_PROXYUSERPWD, $CFG->proxyuser.':'.$CFG->proxypassword);
+                if (defined('CURLOPT_PROXYAUTH')) {
+                    // any proxy authentication if PHP 5.1
+                    phpCAS::setExtraCurlOption(CURLOPT_PROXYAUTH, CURLAUTH_BASIC | CURLAUTH_NTLM);
+                }
+            }
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if($this->config->certificate_check && $this->config->certificate_path){
             phpCAS::setCasServerCACert($this->config->certificate_path);
         }else{
@@ -268,6 +304,12 @@ class auth_plugin_cas extends auth_plugin_ldap {
         if (!isset($config->certificate_path)) {
             $config->certificate_path = '';
         }
+<<<<<<< HEAD
+=======
+        if (!isset($config->logout_return_url)) {
+            $config->logout_return_url = '';
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // LDAP settings
         if (!isset($config->host_url)) {
@@ -276,6 +318,12 @@ class auth_plugin_cas extends auth_plugin_ldap {
         if (empty($config->ldapencoding)) {
             $config->ldapencoding = 'utf-8';
         }
+<<<<<<< HEAD
+=======
+        if (!isset($config->pagesize)) {
+            $config->pagesize = LDAP_DEFAULT_PAGESIZE;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!isset($config->contexts)) {
             $config->contexts = '';
         }
@@ -331,10 +379,18 @@ class auth_plugin_cas extends auth_plugin_ldap {
         set_config('multiauth', $config->multiauth, $this->pluginconfig);
         set_config('certificate_check', $config->certificate_check, $this->pluginconfig);
         set_config('certificate_path', $config->certificate_path, $this->pluginconfig);
+<<<<<<< HEAD
+=======
+        set_config('logout_return_url', $config->logout_return_url, $this->pluginconfig);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // save LDAP settings
         set_config('host_url', trim($config->host_url), $this->pluginconfig);
         set_config('ldapencoding', trim($config->ldapencoding), $this->pluginconfig);
+<<<<<<< HEAD
+=======
+        set_config('pagesize', (int)trim($config->pagesize), $this->pluginconfig);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         set_config('contexts', trim($config->contexts), $this->pluginconfig);
         set_config('user_type', textlib::strtolower(trim($config->user_type)), $this->pluginconfig);
         set_config('user_attribute', textlib::strtolower(trim($config->user_attribute)), $this->pluginconfig);
@@ -439,4 +495,22 @@ class auth_plugin_cas extends auth_plugin_ldap {
         }
         parent::sync_users($do_updates);
     }
+<<<<<<< HEAD
+=======
+
+    /**
+    * Hook for logout page
+    */
+    function logoutpage_hook() {
+        global $USER, $redirect;
+        // Only do this if the user is actually logged in via CAS
+        if ($USER->auth === $this->authtype) {
+            // Check if there is an alternative logout return url defined
+            if (isset($this->config->logout_return_url) && !empty($this->config->logout_return_url)) {
+                // Set redirect to alternative return url
+                $redirect = $this->config->logout_return_url;
+            }
+        }
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

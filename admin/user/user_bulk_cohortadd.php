@@ -32,7 +32,11 @@ $sort = optional_param('sort', 'fullname', PARAM_ALPHA);
 $dir  = optional_param('dir', 'asc', PARAM_ALPHA);
 
 admin_externalpage_setup('userbulk');
+<<<<<<< HEAD
 require_capability('moodle/cohort:assign', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/cohort:assign', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $users = $SESSION->bulk_users;
 
@@ -45,7 +49,11 @@ foreach ($allcohorts as $c) {
         // external cohorts can not be modified
         continue;
     }
+<<<<<<< HEAD
     $context = get_context_instance_by_id($c->contextid);
+=======
+    $context = context::instance_by_id($c->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (!has_capability('moodle/cohort:assign', $context)) {
         continue;
     }

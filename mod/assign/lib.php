@@ -31,7 +31,11 @@ defined('MOODLE_INTERNAL') || die();
  * @param mod_assign_mod_form $form
  * @return int The instance id of the new assignment
  */
+<<<<<<< HEAD
 function assign_add_instance(stdClass $data, mod_assign_mod_form $form) {
+=======
+function assign_add_instance(stdClass $data, mod_assign_mod_form $form = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     global $CFG;
     require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
@@ -77,6 +81,20 @@ function assign_reset_userdata($data) {
             $status = array_merge($status, $assignment->reset_userdata($data));
         }
     }
+<<<<<<< HEAD
+=======
+    // Updating dates - shift may be negative too.
+    if ($data->timeshift) {
+        shift_course_mod_dates('assign',
+                                array('duedate', 'allowsubmissionsfromdate', 'cutoffdate'),
+                                $data->timeshift,
+                                $data->courseid);
+
+        $status[] = array('component' => get_string('modulenameplural', 'assign'),
+                          'item' => get_string('datechanged'),
+                          'error' => false);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return $status;
 }
 
@@ -149,11 +167,19 @@ function assign_supports($feature) {
         case FEATURE_GROUPMEMBERSONLY:        return true;
         case FEATURE_MOD_INTRO:               return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+<<<<<<< HEAD
+=======
+        case FEATURE_COMPLETION_HAS_RULES:    return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         case FEATURE_GRADE_HAS_GRADE:         return true;
         case FEATURE_GRADE_OUTCOMES:          return true;
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
         case FEATURE_ADVANCED_GRADING:        return true;
+<<<<<<< HEAD
+=======
+        case FEATURE_PLAGIARISM:              return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         default: return null;
     }
@@ -177,7 +203,11 @@ function assign_grading_areas_list() {
  * @return void
  */
 function assign_extend_settings_navigation(settings_navigation $settings, navigation_node $navref) {
+<<<<<<< HEAD
     global $PAGE;
+=======
+    global $PAGE, $DB;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $cm = $PAGE->cm;
     if (!$cm) {
@@ -208,6 +238,17 @@ function assign_extend_settings_navigation(settings_navigation $settings, naviga
        $node = $navref->add(get_string('downloadall', 'assign'), $link, navigation_node::TYPE_SETTING);
    }
 
+<<<<<<< HEAD
+=======
+   if (has_capability('mod/assign:revealidentities', $context)) {
+       $assignment = $DB->get_record('assign', array('id'=>$cm->instance), 'blindmarking, revealidentities');
+
+       if ($assignment && $assignment->blindmarking && !$assignment->revealidentities) {
+           $link = new moodle_url('/mod/assign/view.php', array('id' => $cm->id,'action'=>'revealidentities'));
+           $node = $navref->add(get_string('revealidentities', 'assign'), $link, navigation_node::TYPE_SETTING);
+       }
+   }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -280,9 +321,20 @@ function assign_print_overview($courses, &$htmlarray) {
         $time = time();
         $isopen = false;
         if ($assignment->duedate) {
+<<<<<<< HEAD
             $isopen = $assignment->allowsubmissionsfromdate <= $time;
             if ($assignment->preventlatesubmissions) {
                 $isopen = ($isopen && $time <= $assignment->duedate);
+=======
+            $duedate = false;
+            if ($assignment->cutoffdate) {
+                $duedate = $assignment->cutoffdate;
+            }
+            if ($duedate) {
+                $isopen = ($assignment->allowsubmissionsfromdate <= $time && $time <= $duedate);
+            } else {
+                $isopen = ($assignment->allowsubmissionsfromdate <= $time);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
         if ($isopen) {
@@ -299,6 +351,12 @@ function assign_print_overview($courses, &$htmlarray) {
     require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
     $strduedate = get_string('duedate', 'assign');
+<<<<<<< HEAD
+=======
+    $strcutoffdate = get_string('nosubmissionsacceptedafter', 'assign');
+    $strnolatesubmissions = get_string('nolatesubmissions', 'assign');
+    $strduedateno = get_string('duedateno', 'assign');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $strduedateno = get_string('duedateno', 'assign');
     $strgraded = get_string('graded', 'assign');
     $strnotgradedyet = get_string('notgradedyet', 'assign');
@@ -329,6 +387,16 @@ function assign_print_overview($courses, &$htmlarray) {
         } else {
             $str .= '<div class="info">'.$strduedateno.'</div>';
         }
+<<<<<<< HEAD
+=======
+        if ($assignment->cutoffdate) {
+            if ($assignment->cutoffdate == $assignment->duedate) {
+                $str .= '<div class="info">'.$strnolatesubmissions.'</div>';
+            } else {
+                $str .= '<div class="info">'.$strcutoffdate.': '.userdate($assignment->cutoffdate).'</div>';
+            }
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $context = context_module::instance($assignment->coursemodule);
         if (has_capability('mod/assign:grade', $context)) {
             if (!isset($unmarkedsubmissions)) {
@@ -1026,3 +1094,32 @@ function assign_user_outline($course, $user, $coursemodule, $assignment) {
 
     return $result;
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * Obtains the automatic completion state for this module based on any conditions
+ * in assign settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not, $type if conditions not set.
+ */
+function assign_get_completion_state($course, $cm, $userid, $type) {
+    global $CFG,$DB;
+    require_once($CFG->dirroot . '/mod/assign/locallib.php');
+
+    $assign = new assign(null, $cm, $course);
+
+    // If completion option is enabled, evaluate it and return true/false.
+    if ($assign->get_instance()->completionsubmit) {
+        $submission = $DB->get_record('assign_submission', array('assignment'=>$assign->get_instance()->id, 'userid'=>$userid), '*', IGNORE_MISSING);
+        return $submission && $submission->status == ASSIGN_SUBMISSION_STATUS_SUBMITTED;
+    } else {
+        // Completion option is not enabled so just return $type.
+        return $type;
+    }
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

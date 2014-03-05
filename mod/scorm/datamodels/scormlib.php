@@ -275,6 +275,20 @@ function scorm_get_manifest($blocks, $scoes) {
                                     $scoes->elements[$manifest][$parent->organization][$parent->identifier]->usecurrentattemptprogressinfo = $sequencing['attrs']['USECURRENTATTEMPTPROGRESSINFO'] == 'true'?1:0;
                                 }
                             }
+<<<<<<< HEAD
+=======
+                            if ($sequencing['name'] == 'IMSSS:DELIVERYCONTROLS') {
+                                if (isset($sequencing['attrs']['TRACKED'])) {
+                                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->tracked = $sequencing['attrs']['TRACKED'] == 'true'?1:0;
+                                }
+                                if (isset($sequencing['attrs']['COMPLETIONSETBYCONTENT'])) {
+                                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->completionsetbycontent = $sequencing['attrs']['COMPLETIONSETBYCONTENT'] == 'true'?1:0;
+                                }
+                                if (isset($sequencing['attrs']['OBJECTIVESETBYCONTENT'])) {
+                                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->objectivesetbycontent = $sequencing['attrs']['OBJECTIVESETBYCONTENT'] == 'true'?1:0;
+                                }
+                            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             if ($sequencing['name']=='ADLSEQ:CONSTRAINEDCHOICECONSIDERATIONS') {
                                 if (isset($sequencing['attrs']['CONSTRAINCHOICE'])) {
                                     $scoes->elements[$manifest][$parent->organization][$parent->identifier]->constrainChoice = $sequencing['attrs']['CONSTRAINCHOICE'] == 'true'?1:0;
@@ -564,6 +578,10 @@ function scorm_parse_scorm($scorm, $manifest) {
                                     $rulecond->ruleconditionsid = $ruleid;
                                     $rulecond->referencedobjective = $rulecondition->referencedobjective;
                                     $rulecond->measurethreshold = $rulecondition->measurethreshold;
+<<<<<<< HEAD
+=======
+                                    $rulecond->operator = $rulecondition->operator;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                     $rulecond->cond = $rulecondition->cond;
                                     $rulecondid = $DB->insert_record('scorm_seq_rulecond', $rulecond);
                                 }
@@ -669,7 +687,11 @@ function scorm_optionals_data($item, $standarddata) {
 function scorm_is_leaf($sco) {
     global $DB;
 
+<<<<<<< HEAD
     if ($DB->get_record('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->identifier))) {
+=======
+    if ($DB->record_exists('scorm_scoes', array('scorm' => $sco->scorm, 'parent' => $sco->identifier))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return false;
     }
     return true;
@@ -695,6 +717,7 @@ function scorm_get_children($sco) {
     return null;
 }
 
+<<<<<<< HEAD
 function scorm_get_available_children($sco) {  // TODO: undefined vars!!!
     global $DB;
 
@@ -705,6 +728,19 @@ function scorm_get_available_children($sco) {  // TODO: undefined vars!!!
         return false;
     } else {
         return unserialize($res->value);
+=======
+function scorm_get_available_children($sco) {
+    global $DB;
+
+    $res = $DB->get_records('scorm_scoes', array('scorm' => $sco->scorm, 'parent' => $sco->identifier));
+    if (!$res || $res == null) {
+        return false;
+    } else {
+        foreach ($res as $sco) {
+            $result[] = $sco;
+        }
+        return $result;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 
@@ -752,6 +788,7 @@ function scorm_get_ancestors($sco) {
     return $ancestors;
 }
 
+<<<<<<< HEAD
 function scorm_get_preorder($preorder=array(), $sco) {
     if ($sco != null) {
         array_push($preorder, $sco);
@@ -762,6 +799,18 @@ function scorm_get_preorder($preorder=array(), $sco) {
     } else {
         return $preorder;
     }
+=======
+function scorm_get_preorder(&$preorder = array(), $sco = null) {
+    if ($sco != null) {
+        array_push($preorder, $sco);
+        if ($children = scorm_get_children($sco)) {
+            foreach ($children as $child) {
+                scorm_get_preorder($preorder, $child);
+            }
+        }
+    }
+    return $preorder;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 function scorm_find_common_ancestor($ancestors, $sco) {

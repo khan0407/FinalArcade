@@ -911,6 +911,11 @@ class grade_category extends grade_object {
                     break;
                 }
 
+<<<<<<< HEAD
+=======
+                // Now iterate over the remaining grade items
+                // We're looking for other grade items with the same grade value but a higher grademax
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $i = 1;
                 while ($originalindex + $i < $gradekeycount) {
 
@@ -918,7 +923,11 @@ class grade_category extends grade_object {
                     $i++;
 
                     if ($grade_values[$founditemid] != $grade_values[$possibleitemid]) {
+<<<<<<< HEAD
                         // The next grade item has a different grade. Stop looking.
+=======
+                        // The next grade item has a different grade value. Stop looking.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         break;
                     }
 
@@ -928,10 +937,17 @@ class grade_category extends grade_object {
                     }
 
                     if ($foundmax < $items[$possibleitemid]->grademax) {
+<<<<<<< HEAD
                         // Found a grade item with the same grade and a higher grademax
                         $foundmax = $items[$possibleitemid]->grademax;
                         $founditemid = $possibleitemid;
                         // Continue searching to see if there is an even higher grademax...
+=======
+                        // Found a grade item with the same grade value and a higher grademax
+                        $foundmax = $items[$possibleitemid]->grademax;
+                        $founditemid = $possibleitemid;
+                        // Continue searching to see if there is an even higher grademax
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 }
 
@@ -965,10 +981,27 @@ class grade_category extends grade_object {
      *
      * @return bool True if extra credit used
      */
+<<<<<<< HEAD
     function is_extracredit_used() {
         return ($this->aggregation == GRADE_AGGREGATE_WEIGHTED_MEAN2
              or $this->aggregation == GRADE_AGGREGATE_EXTRACREDIT_MEAN
              or $this->aggregation == GRADE_AGGREGATE_SUM);
+=======
+    public function is_extracredit_used() {
+        return self::aggregation_uses_extracredit($this->aggregation);
+    }
+
+    /**
+     * Returns true if aggregation passed is using extracredit.
+     *
+     * @param int $aggregation Aggregation const.
+     * @return bool True if extra credit used
+     */
+    public static function aggregation_uses_extracredit($aggregation) {
+        return ($aggregation == GRADE_AGGREGATE_WEIGHTED_MEAN2
+             or $aggregation == GRADE_AGGREGATE_EXTRACREDIT_MEAN
+             or $aggregation == GRADE_AGGREGATE_SUM);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -977,10 +1010,28 @@ class grade_category extends grade_object {
      * @return bool True if an aggregation coefficient is being used
      */
     public function is_aggregationcoef_used() {
+<<<<<<< HEAD
         return ($this->aggregation == GRADE_AGGREGATE_WEIGHTED_MEAN
              or $this->aggregation == GRADE_AGGREGATE_WEIGHTED_MEAN2
              or $this->aggregation == GRADE_AGGREGATE_EXTRACREDIT_MEAN
              or $this->aggregation == GRADE_AGGREGATE_SUM);
+=======
+        return self::aggregation_uses_aggregationcoef($this->aggregation);
+
+    }
+
+    /**
+     * Returns true if aggregation uses aggregationcoef
+     *
+     * @param int $aggregation Aggregation const.
+     * @return bool True if an aggregation coefficient is being used
+     */
+    public static function aggregation_uses_aggregationcoef($aggregation) {
+        return ($aggregation == GRADE_AGGREGATE_WEIGHTED_MEAN
+             or $aggregation == GRADE_AGGREGATE_WEIGHTED_MEAN2
+             or $aggregation == GRADE_AGGREGATE_EXTRACREDIT_MEAN
+             or $aggregation == GRADE_AGGREGATE_SUM);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     }
 
@@ -1161,7 +1212,11 @@ class grade_category extends grade_object {
             $sortorder = $item->sortorder;
 
             while (array_key_exists($categoryid, $cats)
+<<<<<<< HEAD
                 && array_key_exists($sortorder, $cats[$categoryid]->children)) {
+=======
+               && array_key_exists($sortorder, $cats[$categoryid]->children)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 $sortorder++;
             }
@@ -1571,6 +1626,7 @@ class grade_category extends grade_object {
 
             //weight and extra credit share a column :( Would like a default of 1 for weight and 0 for extra credit
             //Flip from the default of 0 to 1 (or vice versa) if ALL items in the category are still set to the old default.
+<<<<<<< HEAD
             if ($params->aggregation==GRADE_AGGREGATE_WEIGHTED_MEAN || $params->aggregation==GRADE_AGGREGATE_EXTRACREDIT_MEAN) {
                 $sql = $defaultaggregationcoef = null;
 
@@ -1579,6 +1635,16 @@ class grade_category extends grade_object {
                     $sql = "select count(id) from {grade_items} where categoryid=:categoryid and aggregationcoef!=0";
                     $defaultaggregationcoef = 1;
                 } else if ($params->aggregation==GRADE_AGGREGATE_EXTRACREDIT_MEAN) {
+=======
+            if (self::aggregation_uses_aggregationcoef($params->aggregation)) {
+                $sql = $defaultaggregationcoef = null;
+
+                if (!self::aggregation_uses_extracredit($params->aggregation)) {
+                    //if all items in this category have aggregation coefficient of 0 we can change it to 1 ie evenly weighted
+                    $sql = "select count(id) from {grade_items} where categoryid=:categoryid and aggregationcoef!=0";
+                    $defaultaggregationcoef = 1;
+                } else {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     //if all items in this category have aggregation coefficient of 1 we can change it to 0 ie no extra credit
                     $sql = "select count(id) from {grade_items} where categoryid=:categoryid and aggregationcoef!=1";
                     $defaultaggregationcoef = 0;
@@ -1614,7 +1680,13 @@ class grade_category extends grade_object {
             if ($children = grade_item::fetch_all(array('categoryid'=>$this->id))) {
 
                 foreach ($children as $child) {
+<<<<<<< HEAD
                     $child->set_hidden($hidden, $cascade);
+=======
+                    if ($child->can_control_visibility()) {
+                        $child->set_hidden($hidden, $cascade);
+                    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
 

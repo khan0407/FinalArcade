@@ -509,8 +509,27 @@ function survey_print_multi($question) {
     $options = explode( ",", $question->options);
     $numoptions = count($options);
 
+<<<<<<< HEAD
     $oneanswer = ($question->type == 1 || $question->type == 2) ? true : false;
 
+=======
+    // COLLES Actual (which is having questions of type 1) and COLLES Preferred (type 2)
+    // expect just one answer per question. COLLES Actual and Preferred (type 3) expects
+    // two answers per question. ATTLS (having a single question of type 1) expects one
+    // answer per question. CIQ is not using multiquestions (i.e. a question with subquestions).
+    // Note that the type of subquestions does not really matter, it's the type of the
+    // question itself that determines everything.
+    $oneanswer = ($question->type == 1 || $question->type == 2) ? true : false;
+
+    // COLLES Preferred (having questions of type 2) will use the radio elements with the name
+    // like qP1, qP2 etc. COLLES Actual and ATTLS have radios like q1, q2 etc.
+    if ($question->type == 2) {
+        $P = "P";
+    } else {
+        $P = "";
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo "<tr class=\"smalltext\"><th scope=\"row\">$strresponses</th>";
     echo "<th scope=\"col\" class=\"hresponse\">". get_string('notyetanswered', 'survey'). "</th>";
     while (list ($key, $val) = each ($options)) {
@@ -518,21 +537,34 @@ function survey_print_multi($question) {
     }
     echo "</tr>\n";
 
+<<<<<<< HEAD
     if ($oneanswer) {
         echo "<tr><th scope=\"col\" colspan=\"7\">$question->intro</th></tr>\n";
     } else {
         echo "<tr><th scope=\"col\" colspan=\"7\">$question->intro</th></tr>\n";
     }
+=======
+    echo "<tr><th scope=\"col\" colspan=\"7\">$question->intro</th></tr>\n";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $subquestions = $DB->get_records_list("survey_questions", "id", explode(',', $question->multi));
 
     foreach ($subquestions as $q) {
         $qnum++;
+<<<<<<< HEAD
         $rowclass = survey_question_rowclass($qnum);
+=======
+        if ($oneanswer) {
+            $rowclass = survey_question_rowclass($qnum);
+        } else {
+            $rowclass = survey_question_rowclass(round($qnum / 2));
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($q->text) {
             $q->text = get_string($q->text, "survey");
         }
 
+<<<<<<< HEAD
         $oneanswer = ($q->type == 1 || $q->type == 2) ? true : false;
         if ($q->type == 2) {
             $P = "P";
@@ -540,6 +572,8 @@ function survey_print_multi($question) {
             $P = "";
         }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo "<tr class=\"$rowclass rblock\">";
         if ($oneanswer) {
             echo "<th scope=\"row\" class=\"optioncell\">";
@@ -557,6 +591,7 @@ function survey_print_multi($question) {
             $checklist["q$P$q->id"] = 0;
 
         } else {
+<<<<<<< HEAD
             // yu : fix for MDL-7501, possibly need to use user flag as this is quite ugly.
             echo "<th scope=\"row\" class=\"optioncell\">";
             echo "<b class=\"qnumtopcell\">$qnum</b> &nbsp; ";
@@ -566,6 +601,16 @@ function survey_print_multi($question) {
 
             $default = get_accesshide($strdefault);
             echo '<td class="whitecell"><label for="qP'. $P.$q->id .'"><input type="radio" name="qP'.$P.$q->id. '" id="qP'. $q->id .'" value="0" checked="checked" />'.$default.'</label></td>';
+=======
+            echo "<th scope=\"row\" class=\"optioncell\">";
+            echo "<b class=\"qnumtopcell\">$qnum</b> &nbsp; ";
+            $qnum++;
+            echo "<span class=\"preferthat\">$stripreferthat</span> &nbsp; ";
+            echo "<span class=\"option\">$q->text</span></th>\n";
+
+            $default = get_accesshide($strdefault);
+            echo '<td class="whitecell"><label for="qP'.$q->id.'"><input type="radio" name="qP'.$q->id.'" id="qP'.$q->id.'" value="0" checked="checked" />'.$default.'</label></td>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 
             for ($i=1;$i<=$numoptions;$i++) {
@@ -578,7 +623,11 @@ function survey_print_multi($question) {
             echo "<tr class=\"$rowclass rblock\">";
             echo "<th scope=\"row\" class=\"optioncell\">";
             echo "<b class=\"qnumtopcell\">$qnum</b> &nbsp; ";
+<<<<<<< HEAD
             echo "<span class=\"foundthat smalltext\">$strifoundthat</span> &nbsp; ";
+=======
+            echo "<span class=\"foundthat\">$strifoundthat</span> &nbsp; ";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo "<span class=\"option\">$q->text</span></th>\n";
 
             $default = get_accesshide($strdefault);

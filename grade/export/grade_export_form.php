@@ -119,7 +119,11 @@ class grade_export_form extends moodleform {
 
         if ($grade_items = $gseq->items) {
             $needs_multiselect = false;
+<<<<<<< HEAD
             $canviewhidden = has_capability('moodle/grade:viewhidden', get_context_instance(CONTEXT_COURSE, $COURSE->id));
+=======
+            $canviewhidden = has_capability('moodle/grade:viewhidden', context_course::instance($COURSE->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             foreach ($grade_items as $grade_item) {
                 // Is the grade_item hidden? If so, can the user see hidden grade_items?

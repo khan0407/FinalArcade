@@ -35,7 +35,14 @@ $string['configenrolplugins'] = 'Please select all required plugins and arrange 
 $string['custominstancename'] = 'Custom instance name';
 $string['defaultenrol'] = 'Add instance to new courses';
 $string['defaultenrol_desc'] = 'It is possible to add this plugin to all new courses by default.';
+<<<<<<< HEAD
 $string['deleteinstanceconfirm'] = 'Do you really want to delete enrol plugin instance "{$a->name}" with {$a->users} enrolled users?';
+=======
+$string['deleteinstanceconfirm'] = 'You are about to delete the enrolment method "{$a->name}". All {$a->users} users currently enrolled using this method will be unenrolled and any course-related data such as users\' grades, group membership or forum subscriptions will be deleted.
+
+Are you sure you want to continue?';
+$string['deleteinstancenousersconfirm'] = 'You are about to delete the enrolment method "{$a->name}". Are you sure you want to continue?';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['durationdays'] = '{$a} days';
 $string['enrol'] = 'Enrol';
 $string['enrolcandidates'] = 'Not enrolled users';
@@ -55,6 +62,10 @@ $string['enrolnotpermitted'] = 'You do not have permission or are not allowed to
 $string['enrolperiod'] = 'Enrolment duration';
 $string['enrolusage'] = 'Instances / enrolments';
 $string['enrolusers'] = 'Enrol users';
+<<<<<<< HEAD
+=======
+$string['enroltimecreated'] = 'Enrolment created';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['enroltimeend'] = 'Enrolment ends';
 $string['enroltimestart'] = 'Enrolment starts';
 $string['errajaxfailedenrol'] = 'Failed to enrol user';
@@ -62,7 +73,19 @@ $string['errajaxsearch'] = 'Error when searching users';
 $string['erroreditenrolment'] = 'An error occurred while trying to edit a users enrolment';
 $string['errorenrolcohort'] = 'Error creating cohort sync enrolment instance in this course.';
 $string['errorenrolcohortusers'] = 'Error enrolling cohort members in this course.';
+<<<<<<< HEAD
 $string['errorwithbulkoperation'] = 'There was an error while processing your bulk enrolment change.';
+=======
+$string['errorthresholdlow'] = 'Notification threshold must be at least 1 day.';
+$string['errorwithbulkoperation'] = 'There was an error while processing your bulk enrolment change.';
+$string['expirynotify'] = 'Notify before enrolment expires';
+$string['expirynotify_help'] = 'This setting determines whether enrolment expiry notification messages are sent.';
+$string['expirynotifyall'] = 'Enroller and enrolled user';
+$string['expirynotifyenroller'] = 'Enroller only';
+$string['expirynotifyhour'] = 'Hour to send enrolment expiry notifications';
+$string['expirythreshold'] = 'Notification threshold';
+$string['expirythreshold_help'] = 'How long before expiration should be users notified?';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['finishenrollingusers'] = 'Finish enrolling users';
 $string['invalidenrolinstance'] = 'Invalid enrolment instance';
 $string['invalidrole'] = 'Invalid role';
@@ -79,6 +102,10 @@ $string['participationactive'] = 'Active';
 $string['participationstatus'] = 'Status';
 $string['participationsuspended'] = 'Suspended';
 $string['periodend'] = 'until {$a}';
+<<<<<<< HEAD
+=======
+$string['periodnone'] = 'enrolled {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['periodstart'] = 'from {$a}';
 $string['periodstartend'] = 'from {$a->start} until {$a->end}';
 $string['recovergrades'] = 'Recover user\'s old grades if possible';
@@ -96,8 +123,18 @@ $string['unenrolconfirm'] = 'Do you really want to unenrol user "{$a->user}" fro
 $string['unenrolme'] = 'Unenrol me from {$a}';
 $string['unenrolnotpermitted'] = 'You do not have permission or can not unenrol this user from this course.';
 $string['unenrolroleusers'] = 'Unenrol users';
+<<<<<<< HEAD
 $string['uninstallconfirm'] = 'You are about to completely delete the enrol plugin \'{$a}\'.  This will completely delete everything in the database associated with this enrolment type.  Are you SURE you want to continue?';
 $string['uninstalldeletefiles'] = 'All data associated with the enrol plugin \'{$a->plugin}\' has been deleted from the database.  To complete the deletion (and prevent the plugin re-installing itself), you should now delete this directory from your server: {$a->directory}';
+=======
+$string['uninstallconfirm'] = 'You are about to uninstall the enrolment plugin \'{$a}\'. This will result in the deletion of all data associated with this enrolment type, including users\' grades, group membership, forum subscriptions and any other course-related data.
+
+Are you SURE you want to continue?';
+$string['uninstalldelete'] = 'Delete all enrolments and uninstall';
+$string['uninstalldeletefiles'] = 'All data associated with the enrol plugin \'{$a->plugin}\' has been deleted from the database.  To complete the deletion (and prevent the plugin re-installing itself), you should now delete this directory from your server: {$a->directory}';
+$string['uninstallmigrate'] = 'Uninstall but keep all enrolments';
+$string['uninstallmigrating'] = 'Migrating "{$a}" enrolments';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['unknowajaxaction'] = 'Unknown action requested';
 $string['unlimitedduration'] = 'Unlimited';
 $string['usersearch'] = 'Search ';

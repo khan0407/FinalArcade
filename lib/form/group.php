@@ -59,6 +59,7 @@ class MoodleQuickForm_group extends HTML_QuickForm_group{
 
     /**
      * set html for help button
+<<<<<<< HEAD
      *
      * @param array $helpbuttonargs array of arguments to make a help button
      * @param string $function function name to call to get html
@@ -72,6 +73,8 @@ class MoodleQuickForm_group extends HTML_QuickForm_group{
 
     /**
      * set html for help button
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     function getHelpButton(){
         return $this->_helpbutton;
@@ -90,6 +93,12 @@ class MoodleQuickForm_group extends HTML_QuickForm_group{
                 return 'static';
             }
         } else {
+<<<<<<< HEAD
+=======
+            if ($this->getGroupType() == 'submit') {
+                return 'actionbuttons';
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return 'fieldset';
         }
     }

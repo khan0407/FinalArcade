@@ -120,7 +120,11 @@ class comment {
             $this->contextid = $this->context->id;
         } else if(!empty($options->contextid)) {
             $this->contextid = $options->contextid;
+<<<<<<< HEAD
             $this->context = get_context_instance_by_id($this->contextid);
+=======
+            $this->context = context::instance_by_id($this->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             print_error('invalidcontext');
         }
@@ -201,12 +205,28 @@ class comment {
         $this->check_permissions();
 
         // load template
+<<<<<<< HEAD
         $this->template  = html_writer::tag('div', '___picture___', array('class' => 'comment-userpicture'));
         $this->template .= html_writer::start_tag('div', array('class' => 'comment-content'));
         $this->template .= '___name___ - ';
         $this->template .= html_writer::tag('span', '___time___');
         $this->template .= html_writer::tag('div', '___content___');
         $this->template .= html_writer::end_tag('div'); // .comment-content
+=======
+        $this->template = html_writer::start_tag('div', array('class' => 'comment-message'));
+
+        $this->template .= html_writer::start_tag('div', array('class' => 'comment-message-meta'));
+
+        $this->template .= html_writer::tag('span', '___picture___', array('class' => 'picture'));
+        $this->template .= html_writer::tag('span', '___name___', array('class' => 'user')) . ' - ';
+        $this->template .= html_writer::tag('span', '___time___', array('class' => 'time'));
+
+        $this->template .= html_writer::end_tag('div'); // .comment-message-meta
+        $this->template .= html_writer::tag('div', '___content___', array('class' => 'text'));
+
+        $this->template .= html_writer::end_tag('div'); // .comment-message
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!empty($this->plugintype)) {
             $this->template = plugin_callback($this->plugintype, $this->pluginname, 'comment', 'template', array($this->comment_param), $this->template);
         }
@@ -519,10 +539,18 @@ class comment {
             $c->content     = $u->ccontent;
             $c->format      = $u->cformat;
             $c->timecreated = $u->ctimecreated;
+<<<<<<< HEAD
             $url = new moodle_url('/user/view.php', array('id'=>$u->id, 'course'=>$this->courseid));
             $c->profileurl = $url->out(true);
             $c->fullname = fullname($u);
             $c->time = userdate($c->timecreated, get_string('strftimerecent', 'langconfig'));
+=======
+            $c->strftimeformat = get_string('strftimerecent', 'langconfig');
+            $url = new moodle_url('/user/view.php', array('id'=>$u->id, 'course'=>$this->courseid));
+            $c->profileurl = $url->out(true);
+            $c->fullname = fullname($u);
+            $c->time = userdate($c->timecreated, $c->strftimeformat);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $c->content = format_text($c->content, $c->format, $formatoptions);
             $c->avatar = $OUTPUT->user_picture($u, array('size'=>18));
 
@@ -621,12 +649,34 @@ class comment {
         $cmt_id = $DB->insert_record('comments', $newcmt);
         if (!empty($cmt_id)) {
             $newcmt->id = $cmt_id;
+<<<<<<< HEAD
             $newcmt->time = userdate($now, get_string('strftimerecent', 'langconfig'));
+=======
+            $newcmt->strftimeformat = get_string('strftimerecent', 'langconfig');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $newcmt->fullname = fullname($USER);
             $url = new moodle_url('/user/view.php', array('id' => $USER->id, 'course' => $this->courseid));
             $newcmt->profileurl = $url->out();
             $newcmt->content = format_text($newcmt->content, $format, array('overflowdiv'=>true));
             $newcmt->avatar = $OUTPUT->user_picture($USER, array('size'=>16));
+<<<<<<< HEAD
+=======
+
+            $commentlist = array($newcmt);
+
+            if (!empty($this->plugintype)) {
+                // Call the display callback to allow the plugin to format the newly added comment.
+                $commentlist = plugin_callback($this->plugintype,
+                                               $this->pluginname,
+                                               'comment',
+                                               'display',
+                                               array($commentlist, $this->comment_param),
+                                               $commentlist);
+                $newcmt = $commentlist[0];
+            }
+            $newcmt->time = userdate($newcmt->timecreated, $newcmt->strftimeformat);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return $newcmt;
         } else {
             throw new comment_exception('dbupdatefailed');
@@ -786,7 +836,11 @@ class comment {
         $replacements[] = $cmt->avatar;
         $replacements[] = html_writer::link($cmt->profileurl, $cmt->fullname);
         $replacements[] = $cmt->content;
+<<<<<<< HEAD
         $replacements[] = userdate($cmt->timecreated, get_string('strftimerecent', 'langconfig'));
+=======
+        $replacements[] = $cmt->time;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // use html template to format a single comment.
         return str_replace($patterns, $replacements, $this->template);

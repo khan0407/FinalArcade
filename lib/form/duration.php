@@ -58,8 +58,13 @@ class MoodleQuickForm_duration extends MoodleQuickForm_group {
     * @param string $elementName Element's name
     * @param mixed $elementLabel Label(s) for an element
     * @param array $options Options to control the element's display. Recognised values are
+<<<<<<< HEAD
                    'optional' => true/false - whether to display an 'enabled' checkbox next to the element.
                    'defaultunit' => 1|60|3600|86400 - the default unit to display when the time is blank.
+=======
+    *              'optional' => true/false - whether to display an 'enabled' checkbox next to the element.
+    *              'defaultunit' => 1|60|3600|86400|604800 - the default unit to display when the time is blank.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     *              If not specified, minutes is used.
     * @param mixed $attributes Either a typical HTML attribute string or an associative array
     */
@@ -91,6 +96,10 @@ class MoodleQuickForm_duration extends MoodleQuickForm_group {
     public function get_units() {
         if (is_null($this->_units)) {
             $this->_units = array(
+<<<<<<< HEAD
+=======
+                604800 => get_string('weeks'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 86400 => get_string('days'),
                 3600 => get_string('hours'),
                 60 => get_string('minutes'),
@@ -188,7 +197,11 @@ class MoodleQuickForm_duration extends MoodleQuickForm_group {
                 if ($arg[2]['optional']) {
                     $caller->disabledIf($arg[0], $arg[0] . '[enabled]');
                 }
+<<<<<<< HEAD
                 $caller->setType($arg[0] . '[number]', PARAM_NUMBER);
+=======
+                $caller->setType($arg[0] . '[number]', PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 return parent::onQuickFormEvent($event, $arg, $caller);
                 break;
 

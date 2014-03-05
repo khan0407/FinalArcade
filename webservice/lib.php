@@ -102,7 +102,11 @@ class webservice {
         }
 
         //Non admin can not authenticate if maintenance mode
+<<<<<<< HEAD
         $hassiteconfig = has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM), $user);
+=======
+        $hassiteconfig = has_capability('moodle/site:config', context_system::instance(), $user);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!empty($CFG->maintenance_enabled) and !$hassiteconfig) {
             //this is usually temporary, client want to implement code logic  => moodle_exception
             throw new moodle_exception('sitemaintenance', 'admin');
@@ -116,7 +120,11 @@ class webservice {
         }
 
         //check if there is any required system capability
+<<<<<<< HEAD
         if ($service->requiredcapability and !has_capability($service->requiredcapability, get_context_instance(CONTEXT_SYSTEM), $user)) {
+=======
+        if ($service->requiredcapability and !has_capability($service->requiredcapability, context_system::instance(), $user)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             throw new webservice_access_exception('The capability ' . $service->requiredcapability . ' is required.');
         }
 
@@ -262,7 +270,11 @@ class webservice {
         global $CFG, $DB;
 
         // generate a token for non admin if web service are enable and the user has the capability to create a token
+<<<<<<< HEAD
         if (!is_siteadmin() && has_capability('moodle/webservice:createtoken', get_context_instance(CONTEXT_SYSTEM), $userid) && !empty($CFG->enablewebservices)) {
+=======
+        if (!is_siteadmin() && has_capability('moodle/webservice:createtoken', context_system::instance(), $userid) && !empty($CFG->enablewebservices)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // for every service than the user is authorised on, create a token (if it doesn't already exist)
 
             // get all services which are set to all user (no restricted to specific users)
@@ -298,7 +310,11 @@ class webservice {
                     $newtoken->userid = $userid;
                     $newtoken->externalserviceid = $serviceid;
                     // TODO MDL-31190 find a way to get the context - UPDATE FOLLOWING LINE
+<<<<<<< HEAD
                     $newtoken->contextid = get_context_instance(CONTEXT_SYSTEM)->id;
+=======
+                    $newtoken->contextid = context_system::instance()->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $newtoken->creatorid = $userid;
                     $newtoken->timecreated = time();
 
@@ -835,7 +851,11 @@ abstract class webservice_server implements webservice_server_interface {
                 throw new webservice_access_exception('The web service authentication plugin is missing.');
             }
 
+<<<<<<< HEAD
             $this->restricted_context = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $this->restricted_context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if (!$this->username) {
                 throw new moodle_exception('missingusername', 'webservice');
@@ -860,7 +880,11 @@ abstract class webservice_server implements webservice_server_interface {
         }
 
         //Non admin can not authenticate if maintenance mode
+<<<<<<< HEAD
         $hassiteconfig = has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM), $user);
+=======
+        $hassiteconfig = has_capability('moodle/site:config', context_system::instance(), $user);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!empty($CFG->maintenance_enabled) and !$hassiteconfig) {
             throw new moodle_exception('sitemaintenance', 'admin');
         }
@@ -949,7 +973,11 @@ abstract class webservice_server implements webservice_server_interface {
                     . ' is not supported - check this allowed user');
         }
 
+<<<<<<< HEAD
         $this->restricted_context = get_context_instance_by_id($token->contextid);
+=======
+        $this->restricted_context = context::instance_by_id($token->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->restricted_serviceid = $token->externalserviceid;
 
         $user = $DB->get_record('user', array('id'=>$token->userid), '*', MUST_EXIST);

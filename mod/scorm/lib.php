@@ -41,6 +41,15 @@ define('SCORM_12', 1);
 define('SCORM_13', 2);
 define('SCORM_AICC', 3);
 
+<<<<<<< HEAD
+=======
+// List of possible attemptstatusdisplay options.
+define('SCORM_DISPLAY_ATTEMPTSTATUS_NO', 0);
+define('SCORM_DISPLAY_ATTEMPTSTATUS_ALL', 1);
+define('SCORM_DISPLAY_ATTEMPTSTATUS_MY', 2);
+define('SCORM_DISPLAY_ATTEMPTSTATUS_ENTRY', 3);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Return an array of status options
  *
@@ -98,7 +107,11 @@ function scorm_add_instance($scorm, $mform=null) {
     $cmidnumber = $scorm->cmidnumber;
     $courseid   = $scorm->course;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $scorm = scorm_option2text($scorm);
     $scorm->width  = (int)str_replace('%', '', $scorm->width);
@@ -189,7 +202,11 @@ function scorm_update_instance($scorm, $mform=null) {
 
     $scorm->id = $scorm->instance;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ($scorm->scormtype === SCORM_TYPE_LOCAL) {
         if ($mform) {
@@ -1053,7 +1070,11 @@ function scorm_debug_log_remove($type, $scoid) {
  * @return mixed
  */
 function scorm_print_overview($courses, &$htmlarray) {
+<<<<<<< HEAD
     global $USER, $CFG, $DB;
+=======
+    global $USER, $CFG;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (empty($courses) || !is_array($courses) || count($courses) == 0) {
         return array();
@@ -1063,6 +1084,7 @@ function scorm_print_overview($courses, &$htmlarray) {
         return;
     }
 
+<<<<<<< HEAD
     $scormids = array();
 
     // Do scorm::isopen() here without loading the whole thing for speed
@@ -1082,10 +1104,13 @@ function scorm_print_overview($courses, &$htmlarray) {
         // no scorms to look at - we're done
         return true;
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $strscorm   = get_string('modulename', 'scorm');
     $strduedate = get_string('duedate', 'scorm');
 
     foreach ($scorms as $scorm) {
+<<<<<<< HEAD
         $str = '<div class="scorm overview"><div class="name">'.$strscorm. ': '.
                '<a '.($scorm->visible ? '':' class="dimmed"').
                'title="'.$strscorm.'" href="'.$CFG->wwwroot.
@@ -1103,6 +1128,36 @@ function scorm_print_overview($courses, &$htmlarray) {
             $htmlarray[$scorm->course]['scorm'] = $str;
         } else {
             $htmlarray[$scorm->course]['scorm'] .= $str;
+=======
+        $time = time();
+        $showattemptstatus = false;
+        if ($scorm->timeopen) {
+            $isopen = ($scorm->timeopen <= $time && $time <= $scorm->timeclose);
+        }
+        if ($scorm->displayattemptstatus == SCORM_DISPLAY_ATTEMPTSTATUS_ALL ||
+                $scorm->displayattemptstatus == SCORM_DISPLAY_ATTEMPTSTATUS_MY) {
+            $showattemptstatus = true;
+        }
+        if ($showattemptstatus || !empty($isopen) || !empty($scorm->timeclose)) {
+            $str = '<div class="scorm overview"><div class="name">'.$strscorm. ': '.
+                '<a '.($scorm->visible ? '':' class="dimmed"').
+                'title="'.$strscorm.'" href="'.$CFG->wwwroot.
+                '/mod/scorm/view.php?id='.$scorm->coursemodule.'">'.
+                $scorm->name.'</a></div>';
+            if ($scorm->timeclose) {
+                $str .= '<div class="info">'.$strduedate.': '.userdate($scorm->timeclose).'</div>';
+            }
+            if ($showattemptstatus) {
+                require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+                $str .= '<div class="details">'.scorm_get_attempt_status($USER, $scorm).'</div>';
+            }
+            $str .= '</div>';
+            if (empty($htmlarray[$scorm->course]['scorm'])) {
+                $htmlarray[$scorm->course]['scorm'] = $str;
+            } else {
+                $htmlarray[$scorm->course]['scorm'] .= $str;
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 }
@@ -1351,3 +1406,40 @@ function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COM
         $completion->update_state($cm, $completionstate, $userid);
     }
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * Check and set the correct mode and attempt when entering a SCORM package.
+ *
+ * @param object $scorm object
+ * @param string $newattempt should a new attempt be generated here.
+ * @param int $attempt the attempt number this is for.
+ * @param int $userid the userid of the user.
+ * @param string $mode the current mode that has been selected.
+ */
+function scorm_check_mode($scorm, $newattempt, &$attempt, $userid, &$mode) {
+    global $DB;
+    if (($newattempt == 'on') && (($attempt < $scorm->maxattempt) || ($scorm->maxattempt == 0))) {
+        $attempt++;
+        $mode = 'normal';
+    } else if ($mode != 'browse') { // Check if review mode should be set.
+        $mode = 'normal'; // Set to normal mode by default.
+
+        // If all tracks == passed, failed or completed then use review mode.
+        $tracks = $DB->get_recordset('scorm_scoes_track', array('scormid' => $scorm->id, 'userid' => $userid,
+            'attempt' => $attempt, 'element' => 'cmi.core.lesson_status'));
+        foreach ($tracks as $track) {
+            if (($track->value == 'completed') || ($track->value == 'passed') || ($track->value == 'failed')) {
+                $mode = 'review';
+            } else { // Found an incomplete sco so exit and use normal mode.
+                $mode = 'normal';
+                break;
+            }
+        }
+        $tracks->close();
+    } else if (($mode == 'browse') && ($scorm->hidebrowse == 1)) { // Prevent Browse mode if hidebrowse is set.
+        $mode = 'normal';
+    }
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

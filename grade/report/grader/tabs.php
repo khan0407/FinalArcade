@@ -23,7 +23,11 @@
  */
 
     $row = $tabs = array();
+<<<<<<< HEAD
     $tabcontext = get_context_instance(CONTEXT_COURSE, $COURSE->id);
+=======
+    $tabcontext = context_course::instance($COURSE->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $row[] = new tabobject('graderreport',
                            $CFG->wwwroot.'/grade/report/grader/index.php?id='.$courseid,
                            get_string('pluginname', 'gradereport_grader'));

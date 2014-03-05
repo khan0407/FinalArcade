@@ -181,7 +181,11 @@ class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
         // (3) some sort of specific discovery code based on request
         //
         // either way should return a string representation of the certificate
+<<<<<<< HEAD
         throw Exception("fetch_public_cert not implemented");
+=======
+        throw OAuthException("fetch_public_cert not implemented");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function fetch_private_cert(&$request) {
@@ -189,7 +193,11 @@ class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod {
         // (1) do a lookup in a table of trusted certs keyed off of consumer
         //
         // either way should return a string representation of the certificate
+<<<<<<< HEAD
         throw Exception("fetch_private_cert not implemented");
+=======
+        throw OAuthException("fetch_private_cert not implemented");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function build_signature(&$request, $consumer, $token) {

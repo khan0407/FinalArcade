@@ -109,7 +109,10 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
         $data->criterionid = $this->get_mappingid('gradingform_rubric_criterion', $data->criterionid);
         $data->levelid = $this->get_mappingid('gradingform_rubric_level', $data->levelid);
 
+<<<<<<< HEAD
         // MDL-32499 Avoid fatal errors when restoring backups created after patching MDL-32499
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!empty($data->criterionid)) {
             $DB->insert_record('gradingform_rubric_fillings', $data);
         }

@@ -47,6 +47,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 }
 
 require_login($course);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('moodle/grade:manage', $context);
 
@@ -58,6 +59,12 @@ $PAGE->requires->yui2_lib('dragdrop');
 $PAGE->requires->yui2_lib('element');
 $PAGE->requires->yui2_lib('container');
 $PAGE->requires->yui2_lib('animation');
+=======
+$context = context_course::instance($course->id);
+require_capability('moodle/grade:manage', $context);
+
+// todo $PAGE->requires->js_module() should be used here instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->requires->js('/grade/edit/tree/functions.js');
 
 /// return tracking object
@@ -272,7 +279,11 @@ if ($data = data_submitted() and confirm_sesskey()) {
             $aid   = $matches[2];
 
             $value = unformat_float($value);
+<<<<<<< HEAD
             $value = clean_param($value, PARAM_NUMBER);
+=======
+            $value = clean_param($value, PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $grade_item = grade_item::fetch(array('id'=>$aid, 'courseid'=>$courseid));
 

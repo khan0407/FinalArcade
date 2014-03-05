@@ -29,6 +29,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+// Disable moodle specific debug messages and any errors in output,
+// comment out when debugging or better look into error log!
+define('NO_DEBUG_DISPLAY', true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require("../../config.php");
 require_once("lib.php");
@@ -36,6 +42,12 @@ require_once($CFG->libdir.'/eventslib.php');
 require_once($CFG->libdir.'/enrollib.php');
 require_once($CFG->libdir . '/filelib.php');
 
+<<<<<<< HEAD
+=======
+// PayPal does not like when we return error messages here,
+// the custom handler just logs exceptions and stops.
+set_exception_handler('enrol_paypal_ipn_exception_handler');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// Keep out casual intruders
 if (empty($_POST) or !empty($_GET)) {
@@ -77,7 +89,11 @@ if (! $course = $DB->get_record("course", array("id"=>$data->courseid))) {
     die;
 }
 
+<<<<<<< HEAD
 if (! $context = get_context_instance(CONTEXT_COURSE, $course->id)) {
+=======
+if (! $context = context_course::instance($course->id, IGNORE_MISSING)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     message_paypal_error_to_admin("Not a valid context id", $data);
     die;
 }
@@ -189,7 +205,11 @@ if (strlen($result) > 0) {
             die;
         }
 
+<<<<<<< HEAD
         $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $coursecontext = context_course::instance($course->id, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Check that amount paid is the correct amount
         if ( (float) $plugin_instance->cost <= 0 ) {
@@ -236,6 +256,10 @@ if (strlen($result) > 0) {
 
 
         if (!empty($mailstudents)) {
+<<<<<<< HEAD
+=======
+            $a = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $a->coursename = format_string($course->fullname, true, array('context' => $coursecontext));
             $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id";
 
@@ -243,7 +267,11 @@ if (strlen($result) > 0) {
             $eventdata->modulename        = 'moodle';
             $eventdata->component         = 'enrol_paypal';
             $eventdata->name              = 'paypal_enrolment';
+<<<<<<< HEAD
             $eventdata->userfrom          = $teacher;
+=======
+            $eventdata->userfrom          = empty($teacher) ? get_admin() : $teacher;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $eventdata->userto            = $user;
             $eventdata->subject           = get_string("enrolmentnew", 'enrol', $shortname);
             $eventdata->fullmessage       = get_string('welcometocoursetext', '', $a);
@@ -254,7 +282,11 @@ if (strlen($result) > 0) {
 
         }
 
+<<<<<<< HEAD
         if (!empty($mailteachers)) {
+=======
+        if (!empty($mailteachers) && !empty($teacher)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $a->course = format_string($course->fullname, true, array('context' => $coursecontext));
             $a->user = fullname($user);
 
@@ -329,4 +361,24 @@ function message_paypal_error_to_admin($subject, $data) {
     message_send($eventdata);
 }
 
+<<<<<<< HEAD
 
+=======
+/**
+ * Silent exception handler.
+ *
+ * @param Exception $ex
+ * @return void - does not return. Terminates execution!
+ */
+function enrol_paypal_ipn_exception_handler($ex) {
+    $info = get_exception_info($ex);
+
+    $logerrmsg = "enrol_paypal IPN exception handler: ".$info->message;
+    if (debugging('', DEBUG_NORMAL)) {
+        $logerrmsg .= ' Debug: '.$info->debuginfo."\n".format_backtrace($info->backtrace, true);
+    }
+    error_log($logerrmsg);
+
+    exit(0);
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -10,6 +10,19 @@ $showsidepost = ($hassidepost && !$PAGE->blocks->region_completely_docked('side-
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
+<<<<<<< HEAD
+=======
+$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
+if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
+    $courseheader = $OUTPUT->course_header();
+    $coursecontentheader = $OUTPUT->course_content_header();
+    if (empty($PAGE->layout_options['nocoursefooter'])) {
+        $coursecontentfooter = $OUTPUT->course_content_footer();
+        $coursefooter = $OUTPUT->course_footer();
+    }
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $bodyclasses = array();
   if ($showsidepost) {
     $bodyclasses[] = 'side-post-only';
@@ -77,6 +90,13 @@ echo $OUTPUT->doctype() ?>
 
 	<?php } ?>
 
+<<<<<<< HEAD
+=======
+    <?php if (!empty($courseheader)) { ?>
+    <div id="course-header"><?php echo $courseheader; ?></div>
+    <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 <!-- START OF CONTENT -->
 
@@ -106,7 +126,13 @@ echo $OUTPUT->doctype() ?>
 							    	    </div>
 						        	<?php } ?>
 
+<<<<<<< HEAD
             	            	    <?php echo $OUTPUT->main_content() ?>
+=======
+                                    <?php echo $coursecontentheader; ?>
+            	            	    <?php echo $OUTPUT->main_content() ?>
+                                    <?php echo $coursecontentfooter; ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	                	        </div>
     	                	</div>
 	    	            </div>
@@ -130,6 +156,13 @@ echo $OUTPUT->doctype() ?>
 
 <!-- END OF CONTENT -->
 
+<<<<<<< HEAD
+=======
+    <?php if (!empty($coursefooter)) { ?>
+    <div id="course-footer"><?php echo $coursefooter; ?></div>
+    <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	<?php if ($hasheading || $hasnavbar) { ?>
 		</div>
 

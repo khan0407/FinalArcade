@@ -125,11 +125,15 @@ if (empty($param->crosstab)) {
     $times = array();
     $roles = array();
     $missedlines = array();
+<<<<<<< HEAD
     $rolenames = get_all_roles();
     foreach ($rolenames as $r) {
         $rolenames[$r->id] = $r->name;
     }
     $rolenames = role_fix_names($rolenames, get_context_instance(CONTEXT_COURSE, $course->id));
+=======
+    $rolenames = role_fix_names(get_all_roles($coursecontext), $coursecontext, ROLENAME_ALIAS, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     foreach ($stats as $stat) {
         $data[$stat->roleid][$stat->timeend] = $stat->line1;
         if (!empty($stat->zerofixed)) {

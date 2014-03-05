@@ -18,7 +18,11 @@ class mod_glossary_entry_form extends moodleform {
         $definitionoptions = $this->_customdata['definitionoptions'];
         $attachmentoptions = $this->_customdata['attachmentoptions'];
 
+<<<<<<< HEAD
         $context  = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context  = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Prepare format_string/text options
         $fmtoptions = array(
             'context' => $context);
@@ -96,7 +100,11 @@ class mod_glossary_entry_form extends moodleform {
 
         $glossary = $this->_customdata['glossary'];
         $cm       = $this->_customdata['cm'];
+<<<<<<< HEAD
         $context  = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context  = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $id = (int)$data['id'];
         $data['concept'] = trim($data['concept']);

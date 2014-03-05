@@ -621,3 +621,35 @@ class question_deleted_question_attempt_updater extends question_qtype_attempt_u
         $data['upgradedfromdeletedquestion'] = $state->answer;
     }
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * This check verifies that all quiz attempts were upgraded since following
+ * the question engine upgrade in Moodle 2.1.
+ *
+ * @param environment_results object to update, if relevant.
+ * @return environment_results updated results object, or null if this test is not relevant.
+ */
+function quiz_attempts_upgraded(environment_results $result) {
+    global $DB;
+
+    $dbman = $DB->get_manager();
+    $table = new xmldb_table('quiz_attempts');
+    $field = new xmldb_field('needsupgradetonewqe');
+
+    if (!$dbman->table_exists($table) || !$dbman->field_exists($table, $field)) {
+        // DB already upgraded. This test is no longer relevant.
+        return null;
+    }
+
+    if (!$DB->record_exists('quiz_attempts', array('needsupgradetonewqe' => 1))) {
+        // No 1s present in that column means there are no problems.
+        return null;
+    }
+
+    // Only display anything if the admins need to be aware of the problem.
+    $result->setStatus(false);
+    return $result;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

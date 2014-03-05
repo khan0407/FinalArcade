@@ -55,7 +55,11 @@ if ($pageid !== null) {
 }
 $PAGE->set_url($url);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $canmanage = has_capability('mod/lesson:manage', $context);
 
 $lessonoutput = $PAGE->get_renderer('mod_lesson');
@@ -73,7 +77,11 @@ if ($userhasgrade && !$lesson->retake) {
 ///     Check for high scores
 if (!$canmanage) {
     if (!$lesson->is_accessible()) {  // Deadline restrictions
+<<<<<<< HEAD
         echo $lessonoutput->header($lesson, $cm);
+=======
+        echo $lessonoutput->header($lesson, $cm, '', false, null, get_string('notavailable'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($lesson->deadline != 0 && time() > $lesson->deadline) {
             echo $lessonoutput->lesson_inaccessible(get_string('lessonclosed', 'lesson', userdate($lesson->deadline)));
         } else {
@@ -91,7 +99,11 @@ if (!$canmanage) {
                 redirect("$CFG->wwwroot/mod/lesson/view.php?id=$cm->id");
             }
         } else {
+<<<<<<< HEAD
             echo $lessonoutput->header($lesson, $cm);
+=======
+            echo $lessonoutput->header($lesson, $cm, '', false, null, get_string('passwordprotectedlesson', 'lesson', format_string($lesson->name)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo $lessonoutput->login_prompt($lesson, $userpassword !== '');
             echo $lessonoutput->footer();
             exit();
@@ -144,7 +156,11 @@ if (!$canmanage) {
             }
 
             if (!empty($errors)) {  // print out the errors if any
+<<<<<<< HEAD
                 echo $lessonoutput->header($lesson, $cm);
+=======
+                echo $lessonoutput->header($lesson, $cm, '', false, null, get_string('completethefollowingconditions', 'lesson', format_string($lesson->name)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 echo $lessonoutput->dependancy_errors($dependentlesson, $errors);
                 echo $lessonoutput->footer();
                 exit();
@@ -191,6 +207,7 @@ if (empty($pageid)) {
         unset($USER->modattempts[$lesson->id]);  // if no pageid, then student is NOT reviewing
     }
 
+<<<<<<< HEAD
     // if there are any questions have been answered correctly in this attempt
     $corrrectattempts = $lesson->get_attempts($retries, true);
     if (!empty($corrrectattempts)) {
@@ -204,16 +221,43 @@ if (empty($pageid)) {
                 // no nextpage go to end of lesson
                 $lastpageseen = LESSON_EOL;
             }
+=======
+    // If there are any questions that have been answered correctly (or not) in this attempt.
+    $allattempts = $lesson->get_attempts($retries);
+    if (!empty($allattempts)) {
+        $attempt = end($allattempts);
+        $attemptpage = $lesson->load_page($attempt->pageid);
+        $jumpto = $DB->get_field('lesson_answers', 'jumpto', array('id' => $attempt->answerid));
+        // convert the jumpto to a proper page id
+        if ($jumpto == 0) {
+            // Check if a question has been incorrectly answered AND no more attempts at it are left.
+            $nattempts = $lesson->get_attempts($attempt->retry, false, $attempt->pageid, $USER->id);
+            if (count($nattempts) >= $lesson->maxattempts) {
+                $lastpageseen = $lesson->get_next_page($attemptpage->nextpageid);
+            } else {
+                $lastpageseen = $attempt->pageid;
+            }
+        } elseif ($jumpto == LESSON_NEXTPAGE) {
+            $lastpageseen = $lesson->get_next_page($attemptpage->nextpageid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $lastpageseen = $jumpto;
         }
     }
 
+<<<<<<< HEAD
     if ($branchtables = $DB->get_records('lesson_branch', array("lessonid"=>$lesson->id, "userid"=>$USER->id, "retry"=>$retries), 'timeseen DESC')) {
         // in here, user has viewed a branch table
         $lastbranchtable = current($branchtables);
         if (count($corrrectattempts)>0) {
             foreach($corrrectattempts as $attempt) {
+=======
+    if ($branchtables = $DB->get_records('lesson_branch', array("lessonid" => $lesson->id, "userid" => $USER->id, "retry" => $retries), 'timeseen DESC')) {
+        // in here, user has viewed a branch table
+        $lastbranchtable = current($branchtables);
+        if (count($allattempts) > 0) {
+            foreach($allattempts as $attempt) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if ($lastbranchtable->timeseen > $attempt->timeseen) {
                     // branch table was viewed later than the last attempt
                     $lastpageseen = $lastbranchtable->pageid;
@@ -226,7 +270,11 @@ if (empty($pageid)) {
         }
     }
     if (isset($lastpageseen) && $DB->count_records('lesson_attempts', array('lessonid'=>$lesson->id, 'userid'=>$USER->id, 'retry'=>$retries)) > 0) {
+<<<<<<< HEAD
         echo $lessonoutput->header($lesson, $cm);
+=======
+        echo $lessonoutput->header($lesson, $cm, '', false, null, get_string('leftduringtimedsession', 'lesson'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($lesson->timed) {
             if ($lesson->retake) {
                 $continuelink = new single_button(new moodle_url('/mod/lesson/view.php', array('id'=>$cm->id, 'pageid'=>$lesson->firstpageid, 'startlastseen'=>'no')), get_string('continue', 'lesson'), 'get');
@@ -244,7 +292,11 @@ if (empty($pageid)) {
 
     if ($attemptflag) {
         if (!$lesson->retake) {
+<<<<<<< HEAD
             echo $lessonoutput->header($lesson, $cm, 'view');
+=======
+            echo $lessonoutput->header($lesson, $cm, 'view', '', null, get_string("noretake", "lesson"));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $courselink = new single_button(new moodle_url('/course/view.php', array('id'=>$PAGE->course->id)), get_string('returntocourse', 'lesson'), 'get');
             echo $lessonoutput->message(get_string("noretake", "lesson"), $courselink);
             echo $lessonoutput->footer();
@@ -350,6 +402,10 @@ if ($pageid != LESSON_EOL) {
     $currenttab = 'view';
     $extraeditbuttons = true;
     $lessonpageid = $page->id;
+<<<<<<< HEAD
+=======
+    $extrapagetitle = $page->title;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (($edit != -1) && $PAGE->user_allowed_editing()) {
         $USER->editing = $edit;
@@ -388,7 +444,11 @@ if ($pageid != LESSON_EOL) {
     }
 
     lesson_add_fake_blocks($PAGE, $cm, $lesson, $timer);
+<<<<<<< HEAD
     echo $lessonoutput->header($lesson, $cm, $currenttab, $extraeditbuttons, $lessonpageid);
+=======
+    echo $lessonoutput->header($lesson, $cm, $currenttab, $extraeditbuttons, $lessonpageid, $extrapagetitle);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($attemptflag) {
         // We are using level 3 header because attempt heading is a sub-heading of lesson title (MDL-30911).
         echo $OUTPUT->heading(get_string('attempt', 'lesson', $retries), 3);
@@ -573,7 +633,11 @@ if ($pageid != LESSON_EOL) {
     $lessoncontent .= html_writer::link($url, get_string('viewgrades', 'lesson'), array('class'=>'centerpadded lessonbutton standardbutton'));
 
     lesson_add_fake_blocks($PAGE, $cm, $lesson, $timer);
+<<<<<<< HEAD
     echo $lessonoutput->header($lesson, $cm, $currenttab, $extraeditbuttons, $lessonpageid);
+=======
+    echo $lessonoutput->header($lesson, $cm, $currenttab, $extraeditbuttons, $lessonpageid, get_string("congratulations", "lesson"));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo $lessoncontent;
     echo $lessonoutput->footer();
 }

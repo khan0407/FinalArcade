@@ -343,6 +343,10 @@ function question_delete_question($questionid) {
 
     // Finally delete the question record itself
     $DB->delete_records('question', array('id' => $questionid));
+<<<<<<< HEAD
+=======
+    question_bank::notify_question_edited($questionid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -360,7 +364,11 @@ function question_delete_course($course, $feedback=true) {
 
     //Cache some strings
     $strcatdeleted = get_string('unusedcategorydeleted', 'quiz');
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $categoriescourse = $DB->get_records('question_categories',
             array('contextid' => $coursecontext->id), 'parent', 'id, parent, name, contextid');
 
@@ -412,7 +420,11 @@ function question_delete_course($course, $feedback=true) {
 function question_delete_course_category($category, $newcategory, $feedback=true) {
     global $DB, $OUTPUT;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSECAT, $category->id);
+=======
+    $context = context_coursecat::instance($category->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (empty($newcategory)) {
         $feedbackdata   = array(); // To store feedback to be showed at the end of the process
         $rescueqcategory = null; // See the code around the call to question_save_from_deletion.
@@ -469,7 +481,11 @@ function question_delete_course_category($category, $newcategory, $feedback=true
 
     } else {
         // Move question categories ot the new context.
+<<<<<<< HEAD
         if (!$newcontext = get_context_instance(CONTEXT_COURSECAT, $newcategory->id)) {
+=======
+        if (!$newcontext = context_coursecat::instance($newcategory->id)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return false;
         }
         $DB->set_field('question_categories', 'contextid', $newcontext->id,
@@ -534,7 +550,11 @@ function question_delete_activity($cm, $feedback=true) {
 
     //Cache some strings
     $strcatdeleted = get_string('unusedcategorydeleted', 'quiz');
+<<<<<<< HEAD
     $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($categoriesmods = $DB->get_records('question_categories',
             array('contextid' => $modcontext->id), 'parent', 'id, parent, name, contextid')) {
         //Sort categories following their tree (parent-child) relationships
@@ -607,6 +627,14 @@ function question_move_questions_to_category($questionids, $newcategoryid) {
 
     // TODO Deal with datasets.
 
+<<<<<<< HEAD
+=======
+    // Purge these questions from the cache.
+    foreach ($questions as $question) {
+        question_bank::notify_question_edited($question->id);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return true;
 }
 
@@ -626,6 +654,11 @@ function question_move_category_to_context($categoryid, $oldcontextid, $newconte
     foreach ($questionids as $questionid => $qtype) {
         question_bank::get_qtype($qtype)->move_files(
                 $questionid, $oldcontextid, $newcontextid);
+<<<<<<< HEAD
+=======
+        // Purge this question from the cache.
+        question_bank::notify_question_edited($questionid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     $subcatids = $DB->get_records_menu('question_categories',
@@ -860,8 +893,16 @@ function question_hash($question) {
  * Saves question options
  *
  * Simply calls the question type specific save_question_options() method.
+<<<<<<< HEAD
  */
 function save_question_options($question) {
+=======
+ * @deprecated all code should now call the question type method directly.
+ */
+function save_question_options($question) {
+    debugging('Please do not call save_question_options any more. Call the question type method directly.',
+            DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     question_bank::get_qtype($question->qtype)->save_question_options($question);
 }
 
@@ -1361,7 +1402,11 @@ function question_has_capability_on($question, $cap, $cachecat = -1) {
         }
     }
     $category = $categories[$question->category];
+<<<<<<< HEAD
     $context = get_context_instance_by_id($category->contextid);
+=======
+    $context = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (array_search($cap, $question_questioncaps)!== false) {
         if (!has_capability('moodle/question:' . $cap . 'all', $context)) {
@@ -1393,6 +1438,7 @@ function question_require_capability_on($question, $cap) {
  * Get the real state - the correct question id and answer - for a random
  * question.
  * @param object $state with property answer.
+<<<<<<< HEAD
  * @return mixed return integer real question id or false if there was an
  * error..
  */
@@ -1408,6 +1454,13 @@ function question_get_real_state($state) {
         $realstate->answer = $matches[2];
         return $realstate;
     }
+=======
+ * @deprecated this function has not been relevant since Moodle 2.1!
+ */
+function question_get_real_state($state) {
+    throw new coding_exception('question_get_real_state has not been relevant since Moodle 2.1. ' .
+            'I am not sure what you are trying to do, but stop it at once!');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**

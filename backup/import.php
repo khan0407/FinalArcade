@@ -18,7 +18,11 @@ $restoretarget = optional_param('target', backup::TARGET_CURRENT_ADDING, PARAM_I
 
 // Load the course and context
 $course = $DB->get_record('course', array('id'=>$courseid), '*', MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+$context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Must pass login
 require_login($course);
@@ -52,7 +56,11 @@ if ($importcourseid === false || $searchcourses) {
 
 // Load the course +context to import from
 $importcourse = $DB->get_record('course', array('id'=>$importcourseid), '*', MUST_EXIST);
+<<<<<<< HEAD
 $importcontext = get_context_instance(CONTEXT_COURSE, $importcourseid);
+=======
+$importcontext = context_course::instance($importcourseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Make sure the user can backup from that course
 require_capability('moodle/backup:backuptargetimport', $importcontext);
@@ -113,6 +121,7 @@ if ($backup->get_stage() == backup_ui::STAGE_FINAL) {
     // Mark the UI finished.
     $rc->finish_ui();
     // Execute prechecks
+<<<<<<< HEAD
     if (!$rc->execute_precheck()) {
         $precheckresults = $rc->get_precheck_results();
         if (is_array($precheckresults) && !empty($precheckresults['errors'])) {
@@ -131,13 +140,52 @@ if ($backup->get_stage() == backup_ui::STAGE_FINAL) {
         // Execute the restore
         $rc->execute_plan();
     }
+=======
+    $warnings = false;
+    if (!$rc->execute_precheck()) {
+        $precheckresults = $rc->get_precheck_results();
+        if (is_array($precheckresults)) {
+            if (!empty($precheckresults['errors'])) { // If errors are found, terminate the import.
+                fulldelete($tempdestination);
+
+                echo $OUTPUT->header();
+                echo $renderer->precheck_notices($precheckresults);
+                echo $OUTPUT->continue_button(new moodle_url('/course/view.php', array('id'=>$course->id)));
+                echo $OUTPUT->footer();
+                die();
+            }
+            if (!empty($precheckresults['warnings'])) { // If warnings are found, go ahead but display warnings later.
+                $warnings = $precheckresults['warnings'];
+            }
+        }
+    }
+    if ($restoretarget == backup::TARGET_CURRENT_DELETING || $restoretarget == backup::TARGET_EXISTING_DELETING) {
+        restore_dbops::delete_course_content($course->id);
+    }
+    // Execute the restore.
+    $rc->execute_plan();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Delete the temp directory now
     fulldelete($tempdestination);
 
     // Display a notification and a continue button
     echo $OUTPUT->header();
+<<<<<<< HEAD
     echo $OUTPUT->notification(get_string('importsuccess', 'backup'),'notifysuccess');
+=======
+    if ($warnings) {
+        echo $OUTPUT->box_start();
+        echo $OUTPUT->notification(get_string('warning'), 'notifywarning');
+        echo html_writer::start_tag('ul', array('class'=>'list'));
+        foreach ($warnings as $warning) {
+            echo html_writer::tag('li', $warning);
+        }
+        echo html_writer::end_tag('ul');
+        echo $OUTPUT->box_end();
+    }
+    echo $OUTPUT->notification(get_string('importsuccess', 'backup'), 'notifysuccess');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo $OUTPUT->continue_button(new moodle_url('/course/view.php', array('id'=>$course->id)));
     echo $OUTPUT->footer();
 

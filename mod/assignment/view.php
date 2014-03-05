@@ -40,7 +40,15 @@ require_login($course, true, $cm);
 
 $PAGE->requires->js('/mod/assignment/assignment.js');
 
+<<<<<<< HEAD
 require ("$CFG->dirroot/mod/assignment/type/$assignment->assignmenttype/assignment.class.php");
+=======
+$classfile = "$CFG->dirroot/mod/assignment/type/$assignment->assignmenttype/assignment.class.php";
+if (!file_exists($classfile)) {
+    throw new moodle_exception('unsupportedsubplugin', 'assignment', new moodle_url('/course/view.php', array('id' => $course->id)), $assignment->assignmenttype);
+}
+require_once($classfile);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $assignmentclass = "assignment_$assignment->assignmenttype";
 $assignmentinstance = new $assignmentclass($cm->id, $assignment, $cm, $course);
 

@@ -23,6 +23,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['activityoverview'] = 'There are new forum posts';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['addanewdiscussion'] = 'Add a new discussion topic';
 $string['addanewquestion'] = 'Add a new question';
 $string['addanewtopic'] = 'Add a new topic';
@@ -179,7 +183,10 @@ $string['forums'] = 'Forums';
 $string['forum:splitdiscussions'] = 'Split discussions';
 $string['forum:startdiscussion'] = 'Start new discussions';
 $string['forumsubjecthidden'] = 'Subject (hidden)';
+<<<<<<< HEAD
 $string['forum:throttlingapplies'] = 'Throttling applies';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['forumtracked'] = 'Unread posts are being tracked';
 $string['forumtrackednot'] = 'Unread posts are not being tracked';
 $string['forumtype'] = 'Forum type';
@@ -387,7 +394,13 @@ $string['subscribestop'] = 'I don\'t want email copies of posts to this forum';
 $string['subscription'] = 'Subscription';
 $string['subscription_help'] = 'If you are subscribed to a forum it means you will receive email copies of forum posts. Usually you can choose whether you wish to be subscribed, though sometimes subscription is forced so that everyone receives email copies of forum posts.';
 $string['subscriptionmode'] = 'Subscription mode';
+<<<<<<< HEAD
 $string['subscriptionmode_help'] = 'When a participant is subscribed to a forum it means they will receive forum post notifications. There are 4 subscription mode options:
+=======
+$string['subscriptionmode_help'] = 'When a participant is subscribed to a forum it means they will receive forum post notifications.
+
+There are 4 subscription mode options:
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 * Optional subscription - Participants can choose whether to be subscribed
 * Forced subscription - Everyone is subscribed and cannot unsubscribe
@@ -406,6 +419,7 @@ $string['tracking'] = 'Track';
 $string['trackingoff'] = 'Off';
 $string['trackingon'] = 'On';
 $string['trackingoptional'] = 'Optional';
+<<<<<<< HEAD
 $string['trackingtype'] = 'Read tracking for this forum?';
 $string['trackingtype_help'] = 'If enabled, participants can track read and unread messages in the forum and in discussions.
 
@@ -414,6 +428,16 @@ There are three options:
 * Optional - Participants can choose whether to turn tracking on or off
 * On - Tracking is always on
 * Off - Tracking is always off';
+=======
+$string['trackingtype'] = 'Read tracking';
+$string['trackingtype_help'] = 'If enabled, participants can track read and unread posts in the forum and in discussions. There are three options:
+
+* Optional - Participants can choose whether to turn tracking on or off via a link in the administration block
+* On - Tracking is always on
+* Off - Read and unread posts are not tracked
+
+Note: Forum tracking must also be enabled in the user\'s profile settings.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['unread'] = 'Unread';
 $string['unreadposts'] = 'Unread posts';
 $string['unreadpostsnumber'] = '{$a} unread posts';

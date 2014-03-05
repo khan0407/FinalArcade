@@ -24,4 +24,8 @@
  */
 
 $string['coursesummary'] = 'Course summary';
+<<<<<<< HEAD
+=======
+$string['course_summary:addinstance'] = 'Add a new course/site summary block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['pluginname'] = 'Course/site summary';

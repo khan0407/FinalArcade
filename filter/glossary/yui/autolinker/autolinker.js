@@ -131,4 +131,8 @@ YUI.add('moodle-filter_glossary-autolinker', function(Y) {
         return new AUTOLINKER(config);
     }
 
+<<<<<<< HEAD
 }, '@VERSION@', {requires:['base','node','io-base','json-parse','event-delegate','overlay','moodle-enrol-notification']});
+=======
+}, '@VERSION@', {requires:['base','node','io-base','json-parse','event-delegate','overlay','moodle-core-notification']});
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

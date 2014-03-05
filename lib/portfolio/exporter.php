@@ -66,10 +66,17 @@ class portfolio_exporter {
     public $instancefile;
 
     /**
+<<<<<<< HEAD
      * @var string the file to include that contains the class definition of
      *             the caller object used to re-waken the object after sleep
      */
     public $callerfile;
+=======
+     * @var string the component that contains the class definition of
+     *             the caller object used to re-waken the object after sleep
+     */
+    public $callercomponent;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /** @var int the current stage of the export */
     private $stage;
@@ -115,16 +122,26 @@ class portfolio_exporter {
      *
      * @param portfolio_plugin_base $instance portfolio instance (passed by reference)
      * @param portfolio_caller_base $caller portfolio caller (passed by reference)
+<<<<<<< HEAD
      * @param string $callerfile path to callerfile (relative to dataroot)
      */
     public function __construct(&$instance, &$caller, $callerfile) {
+=======
+     * @param string $callercomponent the name of the callercomponent
+     */
+    public function __construct(&$instance, &$caller, $callercomponent) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->instance =& $instance;
         $this->caller =& $caller;
         if ($instance) {
             $this->instancefile = 'portfolio/' . $instance->get('plugin') . '/lib.php';
             $this->instance->set('exporter', $this);
         }
+<<<<<<< HEAD
         $this->callerfile = $callerfile;
+=======
+        $this->callercomponent = $callercomponent;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->stage = PORTFOLIO_STAGE_CONFIG;
         $this->caller->set('exporter', $this);
         $this->alreadystolen = array();
@@ -395,7 +412,17 @@ class portfolio_exporter {
             foreach ($previous as $row) {
                 $previousstr .= userdate($row->time);
                 if ($row->caller_class != get_class($this->caller)) {
+<<<<<<< HEAD
                     require_once($CFG->dirroot . '/' . $row->caller_file);
+=======
+                    if (!empty($row->caller_file)) {
+                        portfolio_include_callback_file($row->caller_file);
+                    } else if (!empty($row->caller_component)) {
+                        portfolio_include_callback_file($row->caller_component);
+                    } else { // Ok, that's weird - this should never happen. Is the apocalypse coming?
+                        continue;
+                    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $previousstr .= ' (' . call_user_func(array($row->caller_class, 'display_name')) . ')';
                 }
                 $previousstr .= '<br />';
@@ -522,6 +549,7 @@ class portfolio_exporter {
     public function log_transfer() {
         global $DB;
         $l = array(
+<<<<<<< HEAD
             'userid'         => $this->user->id,
             'portfolio'      => $this->instance->get('id'),
             'caller_file'    => $this->callerfile,
@@ -531,6 +559,18 @@ class portfolio_exporter {
             'returnurl'      => $this->caller->get_return_url(),
             'tempdataid'     => $this->id,
             'time'           => time(),
+=======
+            'userid' => $this->user->id,
+            'portfolio' => $this->instance->get('id'),
+            'caller_file'=> '',
+            'caller_component' => $this->callercomponent,
+            'caller_sha1' => $this->caller->get_sha1(),
+            'caller_class' => get_class($this->caller),
+            'continueurl' => $this->instance->get_static_continue_url(),
+            'returnurl' => $this->caller->get_return_url(),
+            'tempdataid' => $this->id,
+            'time' => time(),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         );
         $DB->insert_record('portfolio_log', $l);
     }
@@ -681,7 +721,18 @@ class portfolio_exporter {
         if ($exporter->instancefile) {
             require_once($CFG->dirroot . '/' . $exporter->instancefile);
         }
+<<<<<<< HEAD
         require_once($CFG->dirroot . '/' . $exporter->callerfile);
+=======
+        if (!empty($exporter->callerfile)) {
+            portfolio_include_callback_file($exporter->callerfile);
+        } else if (!empty($exporter->callercomponent)) {
+            portfolio_include_callback_file($exporter->callercomponent);
+        } else {
+            return; // Should never get here!
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $exporter = unserialize(serialize($exporter));
         if (!$exporter->get('id')) {
             // workaround for weird case

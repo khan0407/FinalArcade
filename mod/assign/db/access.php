@@ -81,6 +81,31 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
+<<<<<<< HEAD
+=======
+
+    'mod/assign:grantextension' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'gradereport/grader:view'
+    ),
+
+    'mod/assign:revealidentities' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        )
+    ),
+
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 );
 
 

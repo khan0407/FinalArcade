@@ -124,7 +124,11 @@
 <tr valign="top" class="required">
     <td align="right"><label for="pass"><?php print_string("auth_dbpass_key", "auth_db") ?></label></td>
     <td>
+<<<<<<< HEAD
         <input id="pass" name="pass" type="text" size="30" value="<?php echo $config->pass?>" />
+=======
+        <input id="pass" name="pass" type="password" size="30" value="<?php p($config->pass)?>" autocomplete="off"/>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <?php
 
         if (isset($err["pass"])) {

@@ -26,7 +26,11 @@ class block_participants extends block_list {
             $this->content = '';
             return $this->content;
         } else if ($this->page->course->id == SITEID) {
+<<<<<<< HEAD
             if (!has_capability('moodle/site:viewparticipants', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+            if (!has_capability('moodle/site:viewparticipants', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $this->content = '';
                 return $this->content;
             }
@@ -37,7 +41,11 @@ class block_participants extends block_list {
             }
         }
 
+<<<<<<< HEAD
         $icon = '<img src="'.$OUTPUT->pix_url('i/users') . '" class="icon" alt="" />&nbsp;';
+=======
+        $icon = '<img src="'.$OUTPUT->pix_url('i/users') . '" class="icon" alt="" />';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->content->items[] = '<a title="'.get_string('listofallpeople').'" href="'.
                                   $CFG->wwwroot.'/user/index.php?contextid='.$currentcontext->id.'">'.$icon.get_string('participants').'</a>';
 

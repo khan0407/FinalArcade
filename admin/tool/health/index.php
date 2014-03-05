@@ -39,7 +39,11 @@
     $solution = optional_param('solution', 0, PARAM_PLUGIN);
 
     require_login();
+<<<<<<< HEAD
     require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+    require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $site = get_site();
 

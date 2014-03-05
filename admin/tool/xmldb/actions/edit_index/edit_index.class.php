@@ -125,6 +125,12 @@ class edit_index extends XMLDBAction {
         // xmldb_index Fields
         $o.= '      <tr valign="top"><td><label for="fields" accesskey="f">Fields:</label></td>';
         $o.= '        <td colspan="2"><input name="fields" type="text" size="40" maxlength="80" id="fields" value="' . s(implode(', ', $index->getFields())) . '" /></td></tr>';
+<<<<<<< HEAD
+=======
+        // xmldb_index hints
+        $o.= '      <tr valign="top"><td><label for="hints" accesskey="h">Hints:</label></td>';
+        $o.= '        <td colspan="2"><input name="hints" type="text" size="40" maxlength="80" id="hints" value="' . s(implode(', ', $index->getHints())) . '" /></td></tr>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Change button
         $o.= '      <tr valign="top"><td>&nbsp;</td><td colspan="2"><input type="submit" value="' .$this->str['change'] . '" /></td></tr>';
         $o.= '    </table>';

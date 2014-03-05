@@ -31,7 +31,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['admindirname'] = 'Admin-map';
+<<<<<<< HEAD
 $string['availablelangs'] = 'Lijst met beschikbare talen';
+=======
+$string['availablelangs'] = 'Beschikbare taalpakketten';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['chooselanguagehead'] = 'Kies een taal';
 $string['chooselanguagesub'] = 'Kies een taal voor de installatie. Deze taal zal ook als standaardtaal voor de site gebruikt worden, maar die instelling kun je later nog wijzigen.';
 $string['clialreadyconfigured'] = 'Bestand config.php bestaat al, maak aub gebruik van admin/cli/install_database.php indien je deze site wenst te installeren.';

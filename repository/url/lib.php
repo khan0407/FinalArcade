@@ -168,6 +168,11 @@ EOD;
             } else if (strstr($info['content_type'], 'image/')) {
                 // download this file
                 $this->add_image_to_list($info['url'], $info['url'], $list);
+<<<<<<< HEAD
+=======
+            } else {
+                $list['error'] = get_string('validfiletype', 'repository_url');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             // parse all found css styles

@@ -121,7 +121,11 @@ class edit_outcome_form extends moodleform {
             if (empty($courseid)) {
                 $mform->hardFreeze('standard');
 
+<<<<<<< HEAD
             } else if (!has_capability('moodle/grade:manage', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+            } else if (!has_capability('moodle/grade:manage', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $mform->hardFreeze('standard');
 
             } else if ($coursecount and empty($outcome->courseid)) {
@@ -130,7 +134,11 @@ class edit_outcome_form extends moodleform {
 
 
         } else {
+<<<<<<< HEAD
             if (empty($courseid) or !has_capability('moodle/grade:manage', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+            if (empty($courseid) or !has_capability('moodle/grade:manage', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $mform->hardFreeze('standard');
             }
         }

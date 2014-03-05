@@ -29,7 +29,11 @@ require_once($CFG->libdir.'/adminlib.php');
 admin_externalpage_setup('managemessageoutputs');
 
 // Require site configuration capability
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Get the submitted params
 $disable    = optional_param('disable', 0, PARAM_INT);
@@ -82,7 +86,11 @@ if ($disable || $enable || $uninstall) {
     redirect($url);
 }
 // Page settings
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Grab the renderer
 $renderer = $PAGE->get_renderer('core', 'message');

@@ -121,8 +121,13 @@ class enrol_flatfile_plugin extends enrol_plugin {
                         continue;
                     }
 
+<<<<<<< HEAD
                     if (! $user = $DB->get_record("user", array("idnumber"=>$fields[2]))) {
                         $this->log .= "Unknown user idnumber in field 3 - ignoring line\n";
+=======
+                    if (! $user = $DB->get_record("user", array("idnumber"=>$fields[2], 'deleted'=>0))) {
+                        $this->log .= "Unknown user idnumber or deleted user in field 3 - ignoring line\n";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         continue;
                     }
 
@@ -229,7 +234,11 @@ class enrol_flatfile_plugin extends enrol_plugin {
         unset($elog);
 
         // Create/resurrect a context object
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($action == 'add') {
             $instance = $DB->get_record('enrol',

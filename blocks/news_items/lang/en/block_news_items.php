@@ -23,4 +23,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['news_items:addinstance'] = 'Add a new latest news block';
+$string['news_items:myaddinstance'] = 'Add a new latest news block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['pluginname'] = 'Latest news';

@@ -32,7 +32,11 @@ $string['allmine'] = 'All messages to me or from me';
 $string['allstudents'] = 'All messages between students in course';
 $string['allusers'] = 'All messages from all users';
 $string['backupmessageshelp'] = 'If enabled, then instant messages will be included in SITE automated backups';
+<<<<<<< HEAD
 $string['beepnewmessage'] = 'Beep on new message';
+=======
+$string['beepnewmessage'] = 'Beep when popup notification is displayed';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['blockcontact'] = 'Block contact';
 $string['blockedmessages'] = '{$a} message(s) to/from blocked users';
 $string['blockedusers'] = 'Blocked users ({$a})';
@@ -40,7 +44,10 @@ $string['blocknoncontacts'] = 'Prevent non-contacts from messaging me';
 $string['contactlistempty'] = 'Your contact list is empty';
 $string['contacts'] = 'Contacts';
 $string['context'] = 'context';
+<<<<<<< HEAD
 $string['couldnotfindpreference'] = 'Could not load preference {$a}. Does the component and name you supplied to message_send() match a row in message_providers? Message providers must appear in the database so users can configure how they will be notified when they receive messages.';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['defaultmessageoutputs'] = 'Default message outputs';
 $string['defaults'] = 'Defaults';
 $string['deletemessagesdays'] = 'Number of days before old messages are automatically deleted';
@@ -49,7 +56,10 @@ $string['disableall_help'] = 'Temporarily disable all notifications except those
 $string['disabled'] = 'Messaging is disabled on this site';
 $string['disallowed'] = 'Disallowed';
 $string['discussion'] = 'Discussion';
+<<<<<<< HEAD
 $string['editmymessage'] = 'Messaging';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['emailmessages'] = 'Email messages when I am offline';
 $string['emailtagline'] = 'This is a copy of a message sent to you at "{$a->sitename}". Go to {$a->url} to reply.';
 $string['emptysearchstring'] = 'You must search for something';

@@ -26,3 +26,9 @@
 $string['managemyfiles'] = 'Manage my files';
 $string['pluginname'] = 'My private files';
 $string['privatefiles'] = 'Private files';
+<<<<<<< HEAD
+=======
+$string['private_files:addinstance'] = 'Add a new private files block';
+$string['private_files:myaddinstance'] = 'Add a new my private files block to My home';
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

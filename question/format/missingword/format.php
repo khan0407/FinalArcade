@@ -52,11 +52,19 @@ defined('MOODLE_INTERNAL') || die();
  */
 class qformat_missingword extends qformat_default {
 
+<<<<<<< HEAD
     function provide_import() {
       return true;
     }
 
     function readquestion($lines) {
+=======
+    public function provide_import() {
+      return true;
+    }
+
+    public function readquestion($lines) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /// Given an array of lines known to define a question in
     /// this format, this function converts it into a question
     /// object suitable for processing and insertion into Moodle.
@@ -105,7 +113,11 @@ class qformat_missingword extends qformat_default {
                 return false;
 
             case 1:
+<<<<<<< HEAD
                 $question->qtype = SHORTANSWER;
+=======
+                $question->qtype = 'shortanswer';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 $answer = trim($answers[0]);
                 if ($answer[0] == "=") {
@@ -118,8 +130,12 @@ class qformat_missingword extends qformat_default {
                 return $question;
 
             default:
+<<<<<<< HEAD
                 $question->qtype = MULTICHOICE;
 
+=======
+                $question->qtype = 'multichoice';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $question = $this->add_blank_combined_feedback($question);
                 $question->single = 1; // Only one answer allowed.
 

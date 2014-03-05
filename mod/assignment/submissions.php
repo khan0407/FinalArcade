@@ -42,7 +42,11 @@ if ($mode !== 'all') {
 $PAGE->set_url($url);
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 require_capability('mod/assignment:grade', get_context_instance(CONTEXT_MODULE, $cm->id));
+=======
+require_capability('mod/assignment:grade', context_module::instance($cm->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->requires->js('/mod/assignment/assignment.js');
 

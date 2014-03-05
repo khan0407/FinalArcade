@@ -27,3 +27,7 @@ $string['alreadyselfcompleted'] = 'You have already marked yourself as complete 
 $string['completecourse'] = 'Complete course';
 $string['pluginname'] = 'Self completion';
 $string['selfcompletionnotenabled'] = 'The self completion criteria has not been enabled for this course';
+<<<<<<< HEAD
+=======
+$string['selfcompletion:addinstance'] = 'Add a new self completion block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

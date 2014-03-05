@@ -36,9 +36,15 @@ $courseid = required_param('courseid', PARAM_INT);
 $user = $DB->get_record('user', array('id' => $userid), '*', MUST_EXIST);
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
+<<<<<<< HEAD
 $usercontext = get_context_instance(CONTEXT_USER, $user->id);
 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$usercontext = context_user::instance($user->id);
+$coursecontext = context_course::instance($course->id);
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $baseurl = new moodle_url('/admin/roles/usersroles.php', array('userid'=>$userid, 'courseid'=>$courseid));
 
@@ -68,14 +74,21 @@ if ($course->id != $SITE->id || $userid != $USER->id) {
 /// Now get the role assignments for this user.
 $sql = "SELECT
         ra.id, ra.userid, ra.contextid, ra.roleid, ra.component, ra.itemid,
+<<<<<<< HEAD
         c.path,
         r.name AS rolename,
         COALESCE(rn.name, r.name) AS localname
+=======
+        c.path
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     FROM
         {role_assignments} ra
         JOIN {context} c ON ra.contextid = c.id
         JOIN {role} r ON ra.roleid = r.id
+<<<<<<< HEAD
         LEFT JOIN {role_names} rn ON rn.roleid = ra.roleid AND rn.contextid = ra.contextid
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     WHERE
         ra.userid = ?
     "./*AND ra.active = 1*/"
@@ -83,6 +96,11 @@ $sql = "SELECT
         contextlevel DESC, contextid ASC, r.sortorder ASC";
 $roleassignments = $DB->get_records_sql($sql, array($user->id));
 
+<<<<<<< HEAD
+=======
+$allroles = role_fix_names(get_all_roles());
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /// In order to display a nice tree of contexts, we need to get all the
 /// ancestors of all the contexts in the query we just did.
 $requiredcontexts = array();
@@ -142,14 +160,22 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal');
 if (!$roleassignments) {
     echo '<p>', get_string('noroleassignments', 'role'), '</p>';
 } else {
+<<<<<<< HEAD
     print_report_tree($systemcontext->id, $contexts, $systemcontext, $fullname);
+=======
+    print_report_tree($systemcontext->id, $contexts, $systemcontext, $fullname, $allroles);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /// End of page.
 echo $OUTPUT->box_end();
 echo $OUTPUT->footer();
 
+<<<<<<< HEAD
 function print_report_tree($contextid, $contexts, $systemcontext, $fullname) {
+=======
+function print_report_tree($contextid, $contexts, $systemcontext, $fullname, $allroles) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     global $CFG, $OUTPUT;
 
     // Only compute lang strings, etc once.
@@ -171,15 +197,24 @@ function print_report_tree($contextid, $contexts, $systemcontext, $fullname) {
 
     // If there are any role assignments here, print them.
     foreach ($contexts[$contextid]->roleassignments as $ra) {
+<<<<<<< HEAD
+=======
+        $role = $allroles[$ra->roleid];
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $value = $ra->contextid . ',' . $ra->roleid;
         $inputid = 'unassign' . $value;
 
         echo '<p>';
+<<<<<<< HEAD
         if ($ra->rolename == $ra->localname) {
             echo strip_tags(format_string($ra->localname));
         } else {
             echo strip_tags(format_string($ra->localname . ' (' . $ra->rolename . ')'));
         }
+=======
+        echo $role->localname;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('moodle/role:assign', $context)) {
             $raurl = $assignurl . '?contextid=' . $ra->contextid . '&amp;roleid=' .
                     $ra->roleid . '&amp;removeselect[]=' . $ra->userid;
@@ -211,7 +246,11 @@ function print_report_tree($contextid, $contexts, $systemcontext, $fullname) {
         echo '<ul>';
         foreach ($contexts[$contextid]->children as $childcontextid) {
             echo '<li>';
+<<<<<<< HEAD
             print_report_tree($childcontextid, $contexts, $systemcontext, $fullname);
+=======
+            print_report_tree($childcontextid, $contexts, $systemcontext, $fullname, $allroles);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo '</li>';
         }
         echo '</ul>';

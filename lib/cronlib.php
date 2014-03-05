@@ -67,7 +67,10 @@ function cron_run() {
     // Run cleanup core cron jobs, but not every time since they aren't too important.
     // These don't have a timer to reduce load, so we'll use a random number
     // to randomly choose the percentage of times we should run these jobs.
+<<<<<<< HEAD
     srand ((double) microtime() * 10000000);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $random100 = rand(0,100);
     if ($random100 < 20) {     // Approximately 20% of the time.
         mtrace("Running clean-up tasks...");
@@ -98,6 +101,12 @@ function cron_run() {
                                                   AND (lastname = '' OR firstname = '' OR email = '')",
                                           array($cuttime));
             foreach ($rs as $user) {
+<<<<<<< HEAD
+=======
+                if (isguestuser($user) or is_siteadmin($user)) {
+                    continue;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 delete_user($user);
                 mtrace(" Deleted not fully setup user $user->username ($user->id)");
             }
@@ -318,7 +327,11 @@ function cron_run() {
     if ($CFG->enablecompletion) {
         // Completion cron
         mtrace('Starting the completion cron...');
+<<<<<<< HEAD
         require_once($CFG->libdir . '/completion/cron.php');
+=======
+        require_once($CFG->dirroot.'/completion/cron.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         completion_cron();
         mtrace('done');
     }
@@ -350,9 +363,18 @@ function cron_run() {
     cron_execute_plugin_type('gradereport');
     mtrace('Finished gradebook plugins');
 
+<<<<<<< HEAD
 
     // Run external blog cron if needed
     if ($CFG->useexternalblogs) {
+=======
+    // run calendar cron
+    require_once "{$CFG->dirroot}/calendar/lib.php";
+    calendar_cron();
+
+    // Run external blog cron if needed
+    if (!empty($CFG->enableblogs) && $CFG->useexternalblogs) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         require_once($CFG->dirroot . '/blog/lib.php');
         mtrace("Fetching external blog entries...", '');
         $sql = "timefetched < ? OR timefetched = 0";
@@ -364,7 +386,11 @@ function cron_run() {
         mtrace('done.');
     }
     // Run blog associations cleanup
+<<<<<<< HEAD
     if ($CFG->useblogassociations) {
+=======
+    if (!empty($CFG->enableblogs) && $CFG->useblogassociations) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         require_once($CFG->dirroot . '/blog/lib.php');
         // delete entries whose contextids no longer exists
         mtrace("Deleting blog associations linked to non-existent contexts...", '');
@@ -432,6 +458,12 @@ function cron_run() {
         mtrace('done.');
     }
 
+<<<<<<< HEAD
+=======
+    mtrace('Running cache cron routines');
+    cache_helper::cron();
+    mtrace('done.');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Run automated backups if required - these may take a long time to execute
     require_once($CFG->dirroot.'/backup/util/includes/backup_includes.php');

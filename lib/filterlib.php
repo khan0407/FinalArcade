@@ -84,7 +84,11 @@ class filter_manager {
     public static function instance() {
         global $CFG;
         if (is_null(self::$singletoninstance)) {
+<<<<<<< HEAD
             if (!empty($CFG->perfdebug)) {
+=======
+            if (!empty($CFG->perfdebug) and $CFG->perfdebug > 7) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 self::$singletoninstance = new performance_measuring_filter_manager();
             } else {
                 self::$singletoninstance = new self();
@@ -605,7 +609,11 @@ function filter_set_global_state($filter, $state, $sortorder = false) {
     }
 
     // See if there is an existing record.
+<<<<<<< HEAD
     $syscontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $syscontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $rec = $DB->get_record('filter_active', array('filter' => $filter, 'contextid' => $syscontext->id));
     if (empty($rec)) {
         $insert = true;
@@ -717,13 +725,31 @@ function filter_get_string_filters() {
  */
 function filter_set_applies_to_strings($filter, $applytostrings) {
     $stringfilters = filter_get_string_filters();
+<<<<<<< HEAD
     $numstringfilters = count($stringfilters);
+=======
+    $prevfilters = $stringfilters;
+    $allfilters = filter_get_all_installed();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($applytostrings) {
         $stringfilters[$filter] = $filter;
     } else {
         unset($stringfilters[$filter]);
     }
+<<<<<<< HEAD
     if (count($stringfilters) != $numstringfilters) {
+=======
+
+    // Remove missing filters.
+    foreach ($stringfilters as $filter) {
+        if (!isset($allfilters[$filter])) {
+            unset($stringfilters[$filter]);
+        }
+    }
+
+    if ($prevfilters != $stringfilters) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         set_config('stringfilters', implode(',', $stringfilters));
         set_config('filterall', !empty($stringfilters));
     }
@@ -747,7 +773,11 @@ function filter_set_local_state($filter, $contextid, $state) {
                 "Must be one of TEXTFILTER_ON, TEXTFILTER_OFF or TEXTFILTER_INHERIT.");
     }
 
+<<<<<<< HEAD
     if ($contextid == get_context_instance(CONTEXT_SYSTEM)->id) {
+=======
+    if ($contextid == context_system::instance()->id) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         throw new coding_exception('You cannot use filter_set_local_state ' .
                 'with $contextid equal to the system context id.');
     }
@@ -847,7 +877,11 @@ function filter_get_local_config($filter, $contextid) {
  */
 function filter_get_all_local_settings($contextid) {
     global $DB;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return array(
         $DB->get_records('filter_active', array('contextid' => $contextid), 'filter', 'filter,active'),
         $DB->get_records('filter_config', array('contextid' => $contextid), 'filter,name', 'filter,name,value'),
@@ -940,13 +974,21 @@ function filter_preload_activities(course_modinfo $modinfo) {
     $cmcontexts = array();
     $cmcontextids = array();
     foreach ($modinfo->get_cms() as $cm) {
+<<<<<<< HEAD
         $modulecontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $modulecontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $cmcontextids[] = $modulecontext->id;
         $cmcontexts[] = $modulecontext;
     }
 
     // Get course context and all other parents...
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $modinfo->get_course_id());
+=======
+    $coursecontext = context_course::instance($modinfo->get_course_id());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $parentcontextids = explode('/', substr($coursecontext->path, 1));
     $allcontextids = array_merge($cmcontextids, $parentcontextids);
 
@@ -1094,7 +1136,11 @@ function filter_get_available_in_context($context) {
  */
 function filter_get_global_states() {
     global $DB;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return $DB->get_records('filter_active', array('contextid' => $context->id), 'sortorder', 'filter,active,sortorder');
 }
 
@@ -1106,6 +1152,12 @@ function filter_get_global_states() {
  */
 function filter_delete_all_for_filter($filter) {
     global $DB;
+<<<<<<< HEAD
+=======
+
+    filter_set_applies_to_strings($filter, false);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (substr($filter, 0, 7) == 'filter/') {
         unset_all_config_for_plugin('filter_' . basename($filter));
     }

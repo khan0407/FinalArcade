@@ -256,19 +256,27 @@ class permissions_table extends capability_table_base {
      * @param string $contextname print_context_name($context) - to save recomputing.
      */
     public function __construct($context, $contextname, $allowoverrides, $allowsafeoverrides, $overridableroles) {
+<<<<<<< HEAD
         global $DB;
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::__construct($context, 'permissions');
         $this->contextname = $contextname;
         $this->allowoverrides = $allowoverrides;
         $this->allowsafeoverrides = $allowsafeoverrides;
         $this->overridableroles = $overridableroles;
 
+<<<<<<< HEAD
         $roles = $DB->get_records('role', null, 'sortorder DESC');
         foreach ($roles as $roleid=>$role) {
             $roles[$roleid] = $role->name;
         }
         $this->roles = role_fix_names($roles, $context);
+=======
+        $roles = get_all_roles($context);
+        $this->roles = role_fix_names(array_reverse($roles, true), $context, ROLENAME_ALIAS, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     }
 
@@ -593,6 +601,7 @@ class define_role_table_advanced extends capability_table_with_risks {
         global $DB;
         $this->errors = array();
 
+<<<<<<< HEAD
         // Role name.
         $name = optional_param('name', null, PARAM_MULTILANG);
         if (!is_null($name)) {
@@ -605,6 +614,8 @@ class define_role_table_advanced extends capability_table_with_risks {
             $this->errors['name'] = get_string('errorexistsrolename', 'role');
         }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Role short name. We clean this in a special way. We want to end up
         // with only lowercase safe ASCII characters.
         $shortname = optional_param('shortname', null, PARAM_RAW);
@@ -620,6 +631,23 @@ class define_role_table_advanced extends capability_table_with_risks {
             $this->errors['shortname'] = get_string('errorexistsroleshortname', 'role');
         }
 
+<<<<<<< HEAD
+=======
+        // Role name.
+        $name = optional_param('name', null, PARAM_TEXT);
+        if (!is_null($name)) {
+            $this->role->name = $name;
+            // Hack: short names of standard roles are equal to archetypes, empty name means localised via lang packs.
+            $archetypes = get_role_archetypes();
+            if (!isset($archetypes[$shortname]) and html_is_blank($this->role->name)) {
+                $this->errors['name'] = get_string('errorbadrolename', 'role');
+            }
+        }
+        if ($this->role->name !== '' and $DB->record_exists_select('role', 'name = ? and id <> ?', array($this->role->name, $this->roleid))) {
+            $this->errors['name'] = get_string('errorexistsrolename', 'role');
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Description.
         $description = optional_param('description', null, PARAM_RAW);
         if (!is_null($description)) {
@@ -664,7 +692,11 @@ class define_role_table_advanced extends capability_table_with_risks {
     public function make_copy() {
         $this->roleid = 0;
         unset($this->role->id);
+<<<<<<< HEAD
         $this->role->name .= ' ' . get_string('copyasnoun');
+=======
+        $this->role->name = role_get_name($this->role, null, ROLENAME_ORIGINAL) . ' ' . get_string('copyasnoun');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->role->shortname .= 'copy';
     }
 
@@ -779,9 +811,15 @@ class define_role_table_advanced extends capability_table_with_risks {
         global $OUTPUT;
         // Extra fields at the top of the page.
         echo '<div class="topfields clearfix">';
+<<<<<<< HEAD
         $this->print_field('name', get_string('rolefullname', 'role'), $this->get_name_field('name'));
         $this->print_field('shortname', get_string('roleshortname', 'role'), $this->get_shortname_field('shortname'));
         $this->print_field('edit-description', get_string('description'), $this->get_description_field('description'));
+=======
+        $this->print_field('shortname', get_string('roleshortname', 'role').'&nbsp;'.$OUTPUT->help_icon('roleshortname', 'role'), $this->get_shortname_field('shortname'));
+        $this->print_field('name', get_string('customrolename', 'role').'&nbsp;'.$OUTPUT->help_icon('customrolename', 'role'), $this->get_name_field('name'));
+        $this->print_field('edit-description', get_string('customroledescription', 'role').'&nbsp;'.$OUTPUT->help_icon('customroledescription', 'role'), $this->get_description_field('description'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->print_field('menuarchetype', get_string('archetype', 'role').'&nbsp;'.$OUTPUT->help_icon('archetype', 'role'), $this->get_archetype_field('archetype'));
         $this->print_field('', get_string('maybeassignedin', 'role'), $this->get_assignable_levels_control());
         echo "</div>";
@@ -862,7 +900,11 @@ class view_role_definition_table extends define_role_table_advanced {
     }
 
     protected function get_name_field($id) {
+<<<<<<< HEAD
         return strip_tags(format_string($this->role->name));
+=======
+        return role_get_name($this->role);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function get_shortname_field($id) {
@@ -870,7 +912,11 @@ class view_role_definition_table extends define_role_table_advanced {
     }
 
     protected function get_description_field($id) {
+<<<<<<< HEAD
         return format_text($this->role->description, FORMAT_HTML);
+=======
+        return role_get_description($this->role);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function get_archetype_field($id) {
@@ -936,7 +982,11 @@ class override_permissions_table_advanced extends capability_table_with_risks {
         global $DB;
 
     /// Get the capabilities from the parent context, so that can be shown in the interface.
+<<<<<<< HEAD
         $parentcontext = get_context_instance_by_id(get_parent_contextid($this->context));
+=======
+        $parentcontext = context::instance_by_id(get_parent_contextid($this->context));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->parentpermissions = role_context_capabilities($this->roleid, $parentcontext);
     }
 
@@ -999,7 +1049,11 @@ abstract class role_assign_user_selector_base extends user_selector_base {
         if (isset($options['context'])) {
             $this->context = $options['context'];
         } else {
+<<<<<<< HEAD
             $this->context = get_context_instance_by_id($options['contextid']);
+=======
+            $this->context = context::instance_by_id($options['contextid']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $options['accesscontext'] = $this->context;
         parent::__construct($name, $options);
@@ -1046,11 +1100,20 @@ class potential_assignees_below_course extends role_assign_user_selector_base {
                   WHERE u.id IN ($enrolsql)
                         $wherecondition
                         AND ra.id IS NULL";
+<<<<<<< HEAD
         $order = ' ORDER BY lastname ASC, firstname ASC';
 
         $params['contextid'] = $this->context->id;
         $params['roleid'] = $this->roleid;
 
+=======
+        $params['contextid'] = $this->context->id;
+        $params['roleid'] = $this->roleid;
+
+        list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
+        $order = ' ORDER BY ' . $sort;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Check to see if there are too many to show sensibly.
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql($countfields . $sql, $params);
@@ -1060,7 +1123,11 @@ class potential_assignees_below_course extends role_assign_user_selector_base {
         }
 
         // If not, show them.
+<<<<<<< HEAD
         $availableusers = $DB->get_records_sql($fields . $sql . $order, $params);
+=======
+        $availableusers = $DB->get_records_sql($fields . $sql . $order, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (empty($availableusers)) {
             return array();
@@ -1148,10 +1215,18 @@ class role_check_users_selector extends user_selector_base {
                      WHERE $wherecondition";
         }
 
+<<<<<<< HEAD
         $order = " ORDER BY lastname ASC, firstname ASC";
 
         $params['contextid'] = $this->accesscontext->id;
 
+=======
+        $params['contextid'] = $this->accesscontext->id;
+
+        list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
+        $order = ' ORDER BY ' . $sort;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $result = array();
 
         if ($search) {
@@ -1170,7 +1245,11 @@ class role_check_users_selector extends user_selector_base {
                 $result[implode(' - ', array_keys($toomany))] = array();
 
             } else {
+<<<<<<< HEAD
                 $enrolledusers = $DB->get_records_sql($fields . $sql1 . $order, $params);
+=======
+                $enrolledusers = $DB->get_records_sql($fields . $sql1 . $order, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if ($enrolledusers) {
                     $result[$groupname1] = $enrolledusers;
                 }
@@ -1186,7 +1265,11 @@ class role_check_users_selector extends user_selector_base {
                 $toomany = $this->too_many_results($search, $otheruserscount);
                 $result[implode(' - ', array_keys($toomany))] = array();
             } else {
+<<<<<<< HEAD
                 $otherusers = $DB->get_records_sql($fields . $sql2 . $order, $params);
+=======
+                $otherusers = $DB->get_records_sql($fields . $sql2 . $order, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if ($otherusers) {
                     $result[$groupname2] = $otherusers;
                 }
@@ -1225,7 +1308,13 @@ class potential_assignees_course_and_above extends role_assign_user_selector_bas
                            FROM {role_assignments} r
                           WHERE r.contextid = :contextid
                                 AND r.roleid = :roleid)";
+<<<<<<< HEAD
         $order = ' ORDER BY lastname ASC, firstname ASC';
+=======
+
+        list($sort, $sortparams) = users_order_by_sql('', $search, $this->accesscontext);
+        $order = ' ORDER BY ' . $sort;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $params['contextid'] = $this->context->id;
         $params['roleid'] = $this->roleid;
@@ -1237,7 +1326,11 @@ class potential_assignees_course_and_above extends role_assign_user_selector_bas
             }
         }
 
+<<<<<<< HEAD
         $availableusers = $DB->get_records_sql($fields . $sql . $order, $params);
+=======
+        $availableusers = $DB->get_records_sql($fields . $sql . $order, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (empty($availableusers)) {
             return array();
@@ -1271,6 +1364,12 @@ class existing_role_holders extends role_assign_user_selector_base {
         $params = array_merge($params, $ctxparams);
         $params['roleid'] = $this->roleid;
 
+<<<<<<< HEAD
+=======
+        list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
+        $params = array_merge($params, $sortparams);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $sql = "SELECT ra.id as raid," . $this->required_fields_sql('u') . ",ra.contextid,ra.component
                 FROM {role_assignments} ra
                 JOIN {user} u ON u.id = ra.userid
@@ -1279,7 +1378,11 @@ class existing_role_holders extends role_assign_user_selector_base {
                     $wherecondition AND
                     ctx.id $ctxcondition AND
                     ra.roleid = :roleid
+<<<<<<< HEAD
                 ORDER BY ctx.depth DESC, ra.component, u.lastname, u.firstname";
+=======
+                ORDER BY ctx.depth DESC, ra.component, $sort";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $contextusers = $DB->get_records_sql($sql, $params);
 
         // No users at all.
@@ -1361,7 +1464,11 @@ class existing_role_holders extends role_assign_user_selector_base {
     }
 
     protected function parent_con_group_name($search, $contextid) {
+<<<<<<< HEAD
         $context = get_context_instance_by_id($contextid);
+=======
+        $context = context::instance_by_id($contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $contextname = print_context_name($context, true, true);
         if ($search) {
             $a = new stdClass;
@@ -1399,8 +1506,12 @@ abstract class role_allow_role_page {
      */
     protected function load_required_roles() {
     /// Get all roles
+<<<<<<< HEAD
         $this->roles = get_all_roles();
         role_fix_names($this->roles, get_context_instance(CONTEXT_SYSTEM), ROLENAME_ORIGINAL);
+=======
+        $this->roles = role_fix_names(get_all_roles(), context_system::instance(), ROLENAME_ORIGINAL);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1609,7 +1720,11 @@ class role_allow_switch_page extends role_allow_role_page {
 function roles_get_potential_user_selector($context, $name, $options) {
         $blockinsidecourse = false;
         if ($context->contextlevel == CONTEXT_BLOCK) {
+<<<<<<< HEAD
             $parentcontext = get_context_instance_by_id(get_parent_contextid($context));
+=======
+            $parentcontext = context::instance_by_id(get_parent_contextid($context));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $blockinsidecourse = in_array($parentcontext->contextlevel, array(CONTEXT_MODULE, CONTEXT_COURSE));
         }
 
@@ -1627,10 +1742,21 @@ class admins_potential_selector extends user_selector_base {
      * @param string $name control name
      * @param array $options should have two elements with keys groupid and courseid.
      */
+<<<<<<< HEAD
     public function __construct() {
         global $CFG, $USER;
         $admins = explode(',', $CFG->siteadmins);
         parent::__construct('addselect', array('multiselect'=>false, 'exclude'=>$admins));
+=======
+    public function __construct($name = null, $options = array()) {
+        global $CFG;
+        if (is_null($name)) {
+            $name = 'addselect';
+        }
+        $options['multiselect'] = false;
+        $options['exclude'] = explode(',', $CFG->siteadmins);
+        parent::__construct($name, $options);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function find_users($search) {
@@ -1642,9 +1768,18 @@ class admins_potential_selector extends user_selector_base {
 
         $sql = " FROM {user}
                 WHERE $wherecondition AND mnethostid = :localmnet";
+<<<<<<< HEAD
         $order = ' ORDER BY lastname ASC, firstname ASC';
         $params['localmnet'] = $CFG->mnet_localhost_id; // it could be dangerous to make remote users admins and also this could lead to other problems
 
+=======
+
+        $params['localmnet'] = $CFG->mnet_localhost_id; // it could be dangerous to make remote users admins and also this could lead to other problems
+
+        list($sort, $sortparams) = users_order_by_sql('', $search, $this->accesscontext);
+        $order = ' ORDER BY ' . $sort;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Check to see if there are too many to show sensibly.
         if (!$this->is_validating()) {
             $potentialcount = $DB->count_records_sql($countfields . $sql, $params);
@@ -1653,7 +1788,11 @@ class admins_potential_selector extends user_selector_base {
             }
         }
 
+<<<<<<< HEAD
         $availableusers = $DB->get_records_sql($fields . $sql . $order, $params);
+=======
+        $availableusers = $DB->get_records_sql($fields . $sql . $order, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (empty($availableusers)) {
             return array();
@@ -1681,9 +1820,18 @@ class admins_existing_selector extends user_selector_base {
      * @param string $name control name
      * @param array $options should have two elements with keys groupid and courseid.
      */
+<<<<<<< HEAD
     public function __construct() {
         global $CFG, $USER;
         parent::__construct('removeselect', array('multiselect'=>false));
+=======
+    public function __construct($name = null, $options = array()) {
+        if (is_null($name)) {
+            $name = 'removeselect';
+        }
+        $options['multiselect'] = false;
+        parent::__construct($name, $options);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function find_users($search) {
@@ -1700,7 +1848,14 @@ class admins_existing_selector extends user_selector_base {
         }
         $sql = " FROM {user}
                 WHERE $wherecondition";
+<<<<<<< HEAD
         $order = ' ORDER BY lastname ASC, firstname ASC';
+=======
+
+        list($sort, $sortparams) = users_order_by_sql('', $search, $this->accesscontext);
+        $params = array_merge($params, $sortparams);
+        $order = ' ORDER BY ' . $sort;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $availableusers = $DB->get_records_sql($fields . $sql . $order, $params);
 
@@ -1709,6 +1864,7 @@ class admins_existing_selector extends user_selector_base {
         }
 
         $mainadmin = array();
+<<<<<<< HEAD
         $adminids = explode(',', $CFG->siteadmins);
         foreach ($adminids as $id) {
             if (isset($availableusers[$id])) {
@@ -1716,6 +1872,12 @@ class admins_existing_selector extends user_selector_base {
                 unset($availableusers[$id]);
                 break;
             }
+=======
+        $mainadminuser = get_admin();
+        if ($mainadminuser && isset($availableusers[$mainadminuser->id])) {
+            $mainadmin = array($mainadminuser->id => $availableusers[$mainadminuser->id]);
+            unset($availableusers[$mainadminuser->id]);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $result = array();

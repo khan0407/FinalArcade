@@ -111,13 +111,25 @@ if ($hostid == $CFG->mnet_localhost_id) {
 
 require_login($course);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_capability('report/log:view', $context);
 
 add_to_log($course->id, "course", "report log", "report/log/index.php?id=$course->id", $course->id);
 
+<<<<<<< HEAD
 $strlogs = get_string('logs');
+=======
+if (!empty($page)) {
+    $strlogs = get_string('logs'). ": ". get_string('page', 'report_log', $page+1);
+} else {
+    $strlogs = get_string('logs');
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $stradministration = get_string('administration');
 $strreports = get_string('reports');
 
@@ -144,6 +156,10 @@ if (!empty($chooselog)) {
         case 'showashtml':
             if ($hostid != $CFG->mnet_localhost_id || $course->id == SITEID) {
                 admin_externalpage_setup('reportlog');
+<<<<<<< HEAD
+=======
+                $PAGE->set_title($course->shortname .': '. $strlogs);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 echo $OUTPUT->header();
 
             } else {

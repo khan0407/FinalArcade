@@ -32,8 +32,13 @@ if (isguestuser()) {
 }
 
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
+<<<<<<< HEAD
 $courseid = optional_param('courseid', 0, PARAM_INTEGER);
 $rssid = required_param('rssid', PARAM_INTEGER);
+=======
+$courseid = optional_param('courseid', 0, PARAM_INT);
+$rssid = required_param('rssid', PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($courseid = SITEID) {
     $courseid = 0;
@@ -43,7 +48,11 @@ if ($courseid) {
     $PAGE->set_course($course);
     $context = $PAGE->context;
 } else {
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_context($context);
 }
 

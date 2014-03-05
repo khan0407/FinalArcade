@@ -87,7 +87,11 @@ class quiz {
         $this->quiz->cmid = $this->cm->id;
         $this->course = $course;
         if ($getcontext && !empty($cm->id)) {
+<<<<<<< HEAD
             $this->context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+            $this->context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $questionids = quiz_questions_in_quiz($this->quiz->questions);
         if ($questionids) {
@@ -441,9 +445,25 @@ class quiz_attempt {
     protected $quizobj;
     protected $attempt;
 
+<<<<<<< HEAD
     // More details of what happened for each question.
     protected $quba;
     protected $pagelayout; // Array page no => array of numbers on the page in order.
+=======
+    /** @var question_usage_by_activity the question usage for this quiz attempt. */
+    protected $quba;
+
+    /** @var array page no => array of slot numbers on the page in order. */
+    protected $pagelayout;
+
+    /** @var array slot => displayed question number for this slot. (E.g. 1, 2, 3 or 'i'.) */
+    protected $questionnumbers;
+
+    /** @var array slot => page number for this slot. */
+    protected $questionpages;
+
+    /** @var mod_quiz_display_options cache for the appropriate review options. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     protected $reviewoptions = null;
 
     // Constructor =============================================================
@@ -545,12 +565,21 @@ class quiz_attempt {
             foreach ($slots as $slot) {
                 $question = $this->quba->get_question($slot);
                 if ($question->length > 0) {
+<<<<<<< HEAD
                     $question->_number = $number;
                     $number += $question->length;
                 } else {
                     $question->_number = get_string('infoshort', 'quiz');
                 }
                 $question->_page = $page;
+=======
+                    $this->questionnumbers[$slot] = $number;
+                    $number += $question->length;
+                } else {
+                    $this->questionnumbers[$slot] = get_string('infoshort', 'quiz');
+                }
+                $this->questionpages[$slot] = $page;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
     }
@@ -906,6 +935,7 @@ class quiz_attempt {
     }
 
     /**
+<<<<<<< HEAD
      * Return the grade obtained on a particular question, if the user is permitted
      * to see it. You must previously have called load_question_states to load the
      * state data about this question.
@@ -916,6 +946,22 @@ class quiz_attempt {
      */
     public function get_question_number($slot) {
         return $this->quba->get_question($slot)->_number;
+=======
+     * @param int $slot the number used to identify this question within this attempt.
+     * @return string the displayed question number for the question in this slot.
+     *      For example '1', '2', '3' or 'i'.
+     */
+    public function get_question_number($slot) {
+        return $this->questionnumbers[$slot];
+    }
+
+    /**
+     * @param int $slot the number used to identify this question within this attempt.
+     * @return int the page of the quiz this question appears on.
+     */
+    public function get_question_page($slot) {
+        return $this->questionpages[$slot];
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1048,7 +1094,11 @@ class quiz_attempt {
      */
     public function start_attempt_url($slot = null, $page = -1) {
         if ($page == -1 && !is_null($slot)) {
+<<<<<<< HEAD
             $page = $this->quba->get_question($slot)->_page;
+=======
+            $page = $this->get_question_page($slot);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $page = 0;
         }
@@ -1163,7 +1213,11 @@ class quiz_attempt {
     public function render_question($slot, $reviewing, $thispageurl = null) {
         return $this->quba->render_question($slot,
                 $this->get_display_options_with_edit_link($reviewing, $slot, $thispageurl),
+<<<<<<< HEAD
                 $this->quba->get_question($slot)->_number);
+=======
+                $this->get_question_number($slot));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1178,8 +1232,13 @@ class quiz_attempt {
      */
     public function render_question_at_step($slot, $seq, $reviewing, $thispageurl = '') {
         return $this->quba->render_question_at_step($slot, $seq,
+<<<<<<< HEAD
                 $this->get_display_options($reviewing),
                 $this->quba->get_question($slot)->_number);
+=======
+                $this->get_display_options_with_edit_link($reviewing, $slot, $thispageurl),
+                $this->get_question_number($slot));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1192,7 +1251,11 @@ class quiz_attempt {
         $options->hide_all_feedback();
         $options->manualcomment = question_display_options::EDITABLE;
         return $this->quba->render_question($slot, $options,
+<<<<<<< HEAD
                 $this->quba->get_question($slot)->_number);
+=======
+                $this->get_question_number($slot));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1514,7 +1577,11 @@ class quiz_attempt {
         // Fix up $page.
         if ($page == -1) {
             if (!is_null($slot) && !$showall) {
+<<<<<<< HEAD
                 $page = $this->quba->get_question($slot)->_page;
+=======
+                $page = $this->get_question_page($slot);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             } else {
                 $page = 0;
             }
@@ -1605,14 +1672,22 @@ abstract class quiz_nav_panel_base {
 
             $button = new quiz_nav_question_button();
             $button->id          = 'quiznavbutton' . $slot;
+<<<<<<< HEAD
             $button->number      = $qa->get_question()->_number;
+=======
+            $button->number      = $this->attemptobj->get_question_number($slot);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $button->stateclass  = $qa->get_state_class($showcorrectness);
             $button->navmethod   = $this->attemptobj->get_navigation_method();
             if (!$showcorrectness && $button->stateclass == 'notanswered') {
                 $button->stateclass = 'complete';
             }
             $button->statestring = $this->get_state_string($qa, $showcorrectness);
+<<<<<<< HEAD
             $button->currentpage = $qa->get_question()->_page == $this->page;
+=======
+            $button->currentpage = $this->showall || $this->attemptobj->get_question_page($slot) == $this->page;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $button->flagged     = $qa->is_flagged();
             $button->url         = $this->get_question_url($slot);
             $buttons[] = $button;
@@ -1662,6 +1737,23 @@ abstract class quiz_nav_panel_base {
         $userpicture->courseid = $this->attemptobj->get_courseid();
         return $userpicture;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Return 'allquestionsononepage' as CSS class name when $showall is set,
+     * otherwise, return 'multipages' as CSS class name.
+     * @return string, CSS class name
+     */
+    public function get_button_container_class() {
+        // Quiz navigation is set on 'Show all questions on one page'.
+        if ($this->showall) {
+            return 'allquestionsononepage';
+        }
+        // Quiz navigation is set on 'Show one page at a time'.
+        return 'multipages';
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -1718,7 +1810,11 @@ class quiz_review_nav_panel extends quiz_nav_panel_base {
                         get_string('showall', 'quiz'));
             }
         }
+<<<<<<< HEAD
         $html .= $output->finish_review_link($this->attemptobj->view_url());
+=======
+        $html .= $output->finish_review_link($this->attemptobj);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $html .= $this->render_restart_preview_link($output);
         return $html;
     }

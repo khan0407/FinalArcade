@@ -228,9 +228,13 @@ class oauth_helper {
         //     oauth_token_secret
         $result = $this->parse_result($content);
         if (empty($result['oauth_token'])) {
+<<<<<<< HEAD
             // failed
             var_dump($result);
             exit;
+=======
+            throw new moodle_exception('Error while requesting an oauth token');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         // build oauth authrize url
         if (!empty($this->oauth_callback)) {
@@ -620,6 +624,42 @@ abstract class oauth2_client extends curl {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Get access token.
+     *
+     * This is just a getter to read the private property.
+     *
+     * @return string
+     */
+    public function get_accesstoken() {
+        return $this->accesstoken;
+    }
+
+    /**
+     * Get the client ID.
+     *
+     * This is just a getter to read the private property.
+     *
+     * @return string
+     */
+    public function get_clientid() {
+        return $this->clientid;
+    }
+
+    /**
+     * Get the client secret.
+     *
+     * This is just a getter to read the private property.
+     *
+     * @return string
+     */
+    public function get_clientsecret() {
+        return $this->clientsecret;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Should HTTP GET be used instead of POST?
      * Some APIs do not support POST and want oauth to use
      * GET instead (with the auth_token passed as a GET param).

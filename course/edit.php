@@ -45,17 +45,28 @@ if ($id) { // editing course
         print_error('cannoteditsiteform');
     }
 
+<<<<<<< HEAD
     $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
     require_login($course);
     $category = $DB->get_record('course_categories', array('id'=>$course->category), '*', MUST_EXIST);
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $course = course_get_format($id)->get_course();
+    require_login($course);
+    $category = $DB->get_record('course_categories', array('id'=>$course->category), '*', MUST_EXIST);
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('moodle/course:update', $coursecontext);
 
 } else if ($categoryid) { // creating new course in this category
     $course = null;
     require_login();
     $category = $DB->get_record('course_categories', array('id'=>$categoryid), '*', MUST_EXIST);
+<<<<<<< HEAD
     $catcontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
+=======
+    $catcontext = context_coursecat::instance($category->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('moodle/course:create', $catcontext);
     $PAGE->set_context($catcontext);
 
@@ -71,6 +82,15 @@ if (!empty($course)) {
     $editoroptions['context'] = $coursecontext;
     $course = file_prepare_standard_editor($course, 'summary', $editoroptions, $coursecontext, 'course', 'summary', 0);
 
+<<<<<<< HEAD
+=======
+    // Inject current aliases
+    $aliases = $DB->get_records('role_names', array('contextid'=>$coursecontext->id));
+    foreach($aliases as $alias) {
+        $course->{'role_'.$alias->roleid} = $alias->name;
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 } else {
     //editor should respect category context if course context is not set.
     $editoroptions['context'] = $catcontext;
@@ -105,7 +125,11 @@ if ($editform->is_cancelled()) {
         $course = create_course($data, $editoroptions);
 
         // Get the context of the newly created course
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+        $context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!empty($CFG->creatornewroleid) and !is_viewing($context, NULL, 'moodle/role:assign') and !is_enrolled($context, NULL, 'moodle/role:assign')) {
             // deal with course creators - enrol them internally with default role
@@ -128,7 +152,10 @@ if ($editform->is_cancelled()) {
         // Save any changes to the files used in the editor
         update_course($data, $editoroptions);
     }
+<<<<<<< HEAD
     rebuild_course_cache($course->id);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Redirect user to newly created/updated course.
     redirect(new moodle_url('/course/view.php', array('id' => $course->id)));

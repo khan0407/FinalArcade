@@ -44,7 +44,11 @@ function lesson_add_instance($data, $mform) {
 
     $cmid = $data->coursemodule;
     $draftitemid = $data->mediafile;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     lesson_process_pre_save($data);
 
@@ -78,7 +82,11 @@ function lesson_update_instance($data, $mform) {
     $data->id = $data->instance;
     $cmid = $data->coursemodule;
     $draftitemid = $data->mediafile;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     lesson_process_pre_save($data);
 
@@ -285,7 +293,11 @@ function lesson_print_overview($courses, &$htmlarray) {
             $str .= $OUTPUT->box(get_string('lessoncloseson', 'lesson', userdate($lesson->deadline)), 'info');
 
             // Attempt information
+<<<<<<< HEAD
             if (has_capability('mod/lesson:manage', get_context_instance(CONTEXT_MODULE, $lesson->coursemodule))) {
+=======
+            if (has_capability('mod/lesson:manage', context_module::instance($lesson->coursemodule))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // Number of user attempts
                 $attempts = $DB->count_records('lesson_attempts', array('lessonid'=>$lesson->id));
                 $str     .= $OUTPUT->box(get_string('xattempts', 'lesson', $attempts), 'info');
@@ -890,14 +902,22 @@ function lesson_pluginfile($course, $cm, $context, $filearea, $args, $forcedownl
  *
  * @package  mod_lesson
  * @category files
+<<<<<<< HEAD
  * @todo MDL-31048 localize
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @return array a list of available file areas
  */
 function lesson_get_file_areas() {
     $areas = array();
+<<<<<<< HEAD
     $areas['page_contents'] = 'Page contents'; //TODO: localize!!!!
     $areas['mediafile'] = 'Media file'; //TODO: localize!!!!
 
+=======
+    $areas['page_contents'] = get_string('pagecontents', 'mod_lesson');
+    $areas['mediafile'] = get_string('mediafile', 'mod_lesson');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return $areas;
 }
 
@@ -919,6 +939,7 @@ function lesson_get_file_areas() {
  * @return file_info_stored
  */
 function lesson_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
+<<<<<<< HEAD
     global $CFG;
     if (has_capability('moodle/course:managefiles', $context)) {
         // no peaking here for students!!
@@ -933,6 +954,46 @@ function lesson_get_file_info($browser, $areas, $course, $cm, $context, $fileare
         return null;
     }
     return new file_info_stored($browser, $context, $storedfile, $urlbase, $filearea, $itemid, true, true, false);
+=======
+    global $CFG, $DB;
+
+    if (!has_capability('moodle/course:managefiles', $context)) {
+        // No peaking here for students!
+        return null;
+    }
+
+    // Mediafile area does not have sub directories, so let's select the default itemid to prevent
+    // the user from selecting a directory to access the mediafile content.
+    if ($filearea == 'mediafile' && is_null($itemid)) {
+        $itemid = 0;
+    }
+
+    if (is_null($itemid)) {
+        require_once(__DIR__ . '/locallib.php');
+        return new mod_lesson_file_info($browser, $course, $cm, $context, $areas, $filearea);
+    }
+
+    $fs = get_file_storage();
+    $filepath = is_null($filepath) ? '/' : $filepath;
+    $filename = is_null($filename) ? '.' : $filename;
+    if (!$storedfile = $fs->get_file($context->id, 'mod_lesson', $filearea, $itemid, $filepath, $filename)) {
+        return null;
+    }
+
+    $itemname = $filearea;
+    if ($filearea == 'page_contents') {
+        $itemname = $DB->get_field('lesson_pages', 'title', array('lessonid' => $cm->instance, 'id' => $itemid));
+        $itemname = format_string($itemname, true, array('context' => $context));
+    } else {
+        $areas = lesson_get_file_areas();
+        if (isset($areas[$filearea])) {
+            $itemname = $areas[$filearea];
+        }
+    }
+
+    $urlbase = $CFG->wwwroot . '/pluginfile.php';
+    return new file_info_stored($browser, $context, $storedfile, $urlbase, $itemname, $itemid, true, true, false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -967,7 +1028,11 @@ function lesson_update_media_file($lessonid, $context, $draftitemid) {
     // Save the file if it exists that is currently in the draft area.
     file_save_draft_area_files($draftitemid, $context->id, 'mod_lesson', 'mediafile', 0);
     // Get the file if it exists.
+<<<<<<< HEAD
     $files = $fs->get_area_files($context->id, 'mod_lesson', 'mediafile', 0, 'sortorder, itemid, filepath, filename', false);
+=======
+    $files = $fs->get_area_files($context->id, 'mod_lesson', 'mediafile', 0, 'itemid, filepath, filename', false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // Check that there is a file to process.
     if (count($files) == 1) {
         // Get the first (and only) file.

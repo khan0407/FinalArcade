@@ -225,7 +225,11 @@ function resource_user_complete($course, $user, $mod, $resource) {
  *
  * See {@link get_array_of_activities()} in course/lib.php
  *
+<<<<<<< HEAD
  * @param cm_info $coursemodule
+=======
+ * @param stdClass $coursemodule
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @return cached_cm_info info
  */
 function resource_get_coursemodule_info($coursemodule) {
@@ -234,7 +238,11 @@ function resource_get_coursemodule_info($coursemodule) {
     require_once("$CFG->dirroot/mod/resource/locallib.php");
     require_once($CFG->libdir.'/completionlib.php');
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $coursemodule->id);
+=======
+    $context = context_module::instance($coursemodule->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (!$resource = $DB->get_record('resource', array('id'=>$coursemodule->instance),
             'id, name, display, displayoptions, tobemigrated, revision, intro, introformat')) {
@@ -249,14 +257,22 @@ function resource_get_coursemodule_info($coursemodule) {
     }
 
     if ($resource->tobemigrated) {
+<<<<<<< HEAD
         $info->icon ='i/cross_red_big';
+=======
+        $info->icon ='i/invalid';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $info;
     }
     $fs = get_file_storage();
     $files = $fs->get_area_files($context->id, 'mod_resource', 'content', 0, 'sortorder DESC, id ASC', false); // TODO: this is not very efficient!!
     if (count($files) >= 1) {
         $mainfile = reset($files);
+<<<<<<< HEAD
         $info->icon = file_file_icon($mainfile);
+=======
+        $info->icon = file_file_icon($mainfile, 24);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $resource->mainfile = $mainfile->get_filename();
     }
 
@@ -455,7 +471,11 @@ function resource_page_type_list($pagetype, $parentcontext, $currentcontext) {
 function resource_export_contents($cm, $baseurl) {
     global $CFG, $DB;
     $contents = array();
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $resource = $DB->get_record('resource', array('id'=>$cm->instance), '*', MUST_EXIST);
 
     $fs = get_file_storage();

@@ -231,7 +231,11 @@ class restore_ui_stage_destination extends restore_ui_independent_stage {
             'filepath'=>$this->filepath,
             'contextid'=>$this->contextid,
             'stage'=>restore_ui::STAGE_DESTINATION));
+<<<<<<< HEAD
         $this->coursesearch = new restore_course_search(array('url'=>$url), get_context_instance_by_id($contextid)->instanceid);
+=======
+        $this->coursesearch = new restore_course_search(array('url'=>$url), context::instance_by_id($contextid)->instanceid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->categorysearch = new restore_category_search(array('url'=>$url));
     }
     public function process() {
@@ -286,7 +290,11 @@ class restore_ui_stage_destination extends restore_ui_independent_stage {
             'contextid' => $this->contextid,
             'filepath'  => $this->filepath,
             'stage'     => restore_ui::STAGE_SETTINGS));
+<<<<<<< HEAD
         $context = get_context_instance_by_id($this->contextid);
+=======
+        $context = context::instance_by_id($this->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($context->contextlevel == CONTEXT_COURSE and has_capability('moodle/restore:restorecourse', $context)) {
             $currentcourse = $context->instanceid;
@@ -475,8 +483,14 @@ class restore_ui_stage_schema extends restore_ui_stage {
         if ($this->stageform === null) {
             $form = new restore_schema_form($this, $PAGE->url);
             $tasks = $this->ui->get_tasks();
+<<<<<<< HEAD
             $content = '';
             $courseheading = false;
+=======
+            $courseheading = false;
+
+            $allsettings = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach ($tasks as $task) {
                 if (!($task instanceof restore_root_task)) {
                     if (!$courseheading) {
@@ -484,6 +498,7 @@ class restore_ui_stage_schema extends restore_ui_stage {
                         $form->add_heading('coursesettings', get_string('coursesettings', 'backup'));
                         $courseheading = true;
                     }
+<<<<<<< HEAD
                     // First add each setting
                     foreach ($task->get_settings() as $setting) {
                         $form->add_setting($setting, $task);
@@ -491,6 +506,13 @@ class restore_ui_stage_schema extends restore_ui_stage {
                     // The add all the dependencies
                     foreach ($task->get_settings() as $setting) {
                         $form->add_dependencies($setting);
+=======
+                    // Put each setting into an array of settings to add. Adding
+                    // a setting individually is a very slow operation, so we add
+                    // them all in a batch later on.
+                    foreach ($task->get_settings() as $setting) {
+                        $allsettings[] = array($setting, $task);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 } else if ($this->ui->enforce_changed_dependencies()) {
                     // Only show these settings if dependencies changed them.
@@ -505,6 +527,18 @@ class restore_ui_stage_schema extends restore_ui_stage {
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+
+            // Actually add all the settings that we put in the array.
+            $form->add_settings($allsettings);
+
+            // Add the dependencies for all the settings.
+            foreach ($allsettings as $settingtask) {
+                $form->add_dependencies($settingtask[0]);
+            }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->stageform = $form;
         }
         return $this->stageform;
@@ -689,6 +723,10 @@ class restore_ui_stage_process extends restore_ui_stage {
         $html .= html_writer::start_tag('form', array(
             'action'    => $url->out_omit_querystring(),
             'class'     => 'backup-restore',
+<<<<<<< HEAD
+=======
+            'enctype'   => 'application/x-www-form-urlencoded', // Enforce compatibility with our max_input_vars hack.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'method'    => 'post'));
         foreach ($url->params() as $name => $value) {
             $html .= html_writer::empty_tag('input', array(
@@ -703,7 +741,11 @@ class restore_ui_stage_process extends restore_ui_stage {
                 $haserrors = (!empty($results['errors']));
                 $html .= $renderer->precheck_notices($results);
                 if (!empty($info->role_mappings->mappings)) {
+<<<<<<< HEAD
                     $context = get_context_instance(CONTEXT_COURSE, $this->ui->get_controller()->get_courseid());
+=======
+                    $context = context_course::instance($this->ui->get_controller()->get_courseid());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $assignableroles = get_assignable_roles($context, ROLENAME_ALIAS, false);
                     $html .= $renderer->role_mappings($info->role_mappings->mappings, $assignableroles);
                 }

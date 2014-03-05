@@ -53,7 +53,11 @@ abstract class backup_block_task extends backup_task {
 
         $this->blockid    = $blockid;
         $this->blockname  = $block->blockname;
+<<<<<<< HEAD
         $this->contextid  = get_context_instance(CONTEXT_BLOCK, $this->blockid)->id;
+=======
+        $this->contextid  = context_block::instance($this->blockid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->moduleid   = $moduleid;
         $this->modulename = null;
         $this->parentcontextid = null;
@@ -71,7 +75,11 @@ abstract class backup_block_task extends backup_task {
 
             $this->moduleid   = $moduleid;
             $this->modulename = $coursemodule->modname;
+<<<<<<< HEAD
             $this->parentcontextid  = get_context_instance(CONTEXT_MODULE, $this->moduleid)->id;
+=======
+            $this->parentcontextid  = context_module::instance($this->moduleid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         parent::__construct($name, $plan);

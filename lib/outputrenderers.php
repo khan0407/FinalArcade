@@ -304,6 +304,7 @@ class core_renderer extends renderer_base {
      * Get the DOCTYPE declaration that should be used with this page. Designed to
      * be called in theme layout.php files.
      *
+<<<<<<< HEAD
      * @return string the DOCTYPE declaration (and any XML prologue) that should be used.
      */
     public function doctype() {
@@ -332,6 +333,24 @@ class core_renderer extends renderer_base {
         }
 
         return $prolog . $doctype;
+=======
+     * @return string the DOCTYPE declaration that should be used.
+     */
+    public function doctype() {
+        if ($this->page->theme->doctype === 'html5') {
+            $this->contenttype = 'text/html; charset=utf-8';
+            return "<!DOCTYPE html>\n";
+
+        } else if ($this->page->theme->doctype === 'xhtml5') {
+            $this->contenttype = 'application/xhtml+xml; charset=utf-8';
+            return "<!DOCTYPE html>\n";
+
+        } else {
+            // legacy xhtml 1.0
+            $this->contenttype = 'text/html; charset=utf-8';
+            return ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n");
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -341,7 +360,15 @@ class core_renderer extends renderer_base {
      * @return string HTML fragment.
      */
     public function htmlattributes() {
+<<<<<<< HEAD
         return get_html_lang(true) . ' xmlns="http://www.w3.org/1999/xhtml"';
+=======
+        $return = get_html_lang(true);
+        if ($this->page->theme->doctype !== 'html5') {
+            $return .= ' xmlns="http://www.w3.org/1999/xhtml"';
+        }
+        return $return;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -462,7 +489,11 @@ class core_renderer extends renderer_base {
         if (!empty($CFG->debugpageinfo)) {
             $output .= '<div class="performanceinfo pageinfo">This page is: ' . $this->page->debug_summary() . '</div>';
         }
+<<<<<<< HEAD
         if (debugging(null, DEBUG_DEVELOPER) and has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {  // Only in developer mode
+=======
+        if (debugging(null, DEBUG_DEVELOPER) and has_capability('moodle/site:config', context_system::instance())) {  // Only in developer mode
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // Add link to profiling report if necessary
             if (function_exists('profiling_is_running') && profiling_is_running()) {
                 $txt = get_string('profiledscript', 'admin');
@@ -471,7 +502,14 @@ class core_renderer extends renderer_base {
                 $link= '<a title="' . $title . '" href="' . $url . '">' . $txt . '</a>';
                 $output .= '<div class="profilingfooter">' . $link . '</div>';
             }
+<<<<<<< HEAD
             $output .= '<div class="purgecaches"><a href="'.$CFG->wwwroot.'/'.$CFG->admin.'/purgecaches.php?confirm=1&amp;sesskey='.sesskey().'">'.get_string('purgecaches', 'admin').'</a></div>';
+=======
+            $purgeurl = new moodle_url('/admin/purgecaches.php', array('confirm' => 1,
+                'sesskey' => sesskey(), 'returnurl' => $this->page->url->out_as_local_url(false)));
+            $output .= '<div class="purgecaches">' .
+                    html_writer::link($purgeurl, get_string('purgecaches', 'admin')) . '</div>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         if (!empty($CFG->debugvalidators)) {
             // NOTE: this is not a nice hack, $PAGE->url is not always accurate and $FULLME neither, it is not a bug if it fails. --skodak
@@ -494,7 +532,17 @@ class core_renderer extends renderer_base {
      * @return string HTML fragment.
      */
     public function main_content() {
+<<<<<<< HEAD
         return $this->unique_main_content_token;
+=======
+        // This is here because it is the only place we can inject the "main" role over the entire main content area
+        // without requiring all theme's to manually do it, and without creating yet another thing people need to
+        // remember in the theme.
+        // This is an unfortunate hack. DO NO EVER add anything more here.
+        // DO NOT add classes.
+        // DO NOT add an id.
+        return '<div role="main">'.$this->unique_main_content_token.'</div>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -513,16 +561,26 @@ class core_renderer extends renderer_base {
     /**
      * Return the standard string that says whether you are logged in (and switched
      * roles/logged in as another user).
+<<<<<<< HEAD
      *
      * @return string HTML fragment.
      */
     public function login_info() {
+=======
+     * @param bool $withlinks if false, then don't include any links in the HTML produced.
+     * If not set, the default is the nologinlinks option from the theme config.php file,
+     * and if that is not set, then links are included.
+     * @return string HTML fragment.
+     */
+    public function login_info($withlinks = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $USER, $CFG, $DB, $SESSION;
 
         if (during_initial_install()) {
             return '';
         }
 
+<<<<<<< HEAD
         $loginpage = ((string)$this->page->url === get_login_url());
         $course = $this->page->course;
 
@@ -532,6 +590,24 @@ class core_renderer extends renderer_base {
             $loginastitle = get_string('loginas');
             $realuserinfo = " [<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".sesskey()."\"";
             $realuserinfo .= "title =\"".$loginastitle."\">$fullname</a>] ";
+=======
+        if (is_null($withlinks)) {
+            $withlinks = empty($this->page->layout_options['nologinlinks']);
+        }
+
+        $loginpage = ((string)$this->page->url === get_login_url());
+        $course = $this->page->course;
+        if (session_is_loggedinas()) {
+            $realuser = session_get_realuser();
+            $fullname = fullname($realuser, true);
+            if ($withlinks) {
+                $loginastitle = get_string('loginas');
+                $realuserinfo = " [<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".sesskey()."\"";
+                $realuserinfo .= "title =\"".$loginastitle."\">$fullname</a>] ";
+            } else {
+                $realuserinfo = " [$fullname] ";
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $realuserinfo = '';
         }
@@ -542,6 +618,7 @@ class core_renderer extends renderer_base {
             // $course->id is not defined during installation
             return '';
         } else if (isloggedin()) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
             $fullname = fullname($USER, true);
@@ -554,11 +631,34 @@ class core_renderer extends renderer_base {
             if (isguestuser()) {
                 $loggedinas = $realuserinfo.get_string('loggedinasguest');
                 if (!$loginpage) {
+=======
+            $context = context_course::instance($course->id);
+
+            $fullname = fullname($USER, true);
+            // Since Moodle 2.0 this link always goes to the public profile page (not the course profile page)
+            if ($withlinks) {
+                $linktitle = get_string('viewprofile');
+                $username = "<a href=\"$CFG->wwwroot/user/profile.php?id=$USER->id\" title=\"$linktitle\">$fullname</a>";
+            } else {
+                $username = $fullname;
+            }
+            if (is_mnet_remote_user($USER) and $idprovider = $DB->get_record('mnet_host', array('id'=>$USER->mnethostid))) {
+                if ($withlinks) {
+                    $username .= " from <a href=\"{$idprovider->wwwroot}\">{$idprovider->name}</a>";
+                } else {
+                    $username .= " from {$idprovider->name}";
+                }
+            }
+            if (isguestuser()) {
+                $loggedinas = $realuserinfo.get_string('loggedinasguest');
+                if (!$loginpage && $withlinks) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $loggedinas .= " (<a href=\"$loginurl\">".get_string('login').'</a>)';
                 }
             } else if (is_role_switched($course->id)) { // Has switched roles
                 $rolename = '';
                 if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
+<<<<<<< HEAD
                     $rolename = ': '.format_string($role->name);
                 }
                 $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename.
@@ -570,6 +670,23 @@ class core_renderer extends renderer_base {
         } else {
             $loggedinas = get_string('loggedinnot', 'moodle');
             if (!$loginpage) {
+=======
+                    $rolename = ': '.role_get_name($role, $context);
+                }
+                $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename;
+                if ($withlinks) {
+                    $loggedinas .= " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\">".get_string('switchrolereturn').'</a>)';
+                }
+            } else {
+                $loggedinas = $realuserinfo.get_string('loggedinas', 'moodle', $username);
+                if ($withlinks) {
+                    $loggedinas .= " (<a href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\">".get_string('logout').'</a>)';
+                }
+            }
+        } else {
+            $loggedinas = get_string('loggedinnot', 'moodle');
+            if (!$loginpage && $withlinks) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $loggedinas .= " (<a href=\"$loginurl\">".get_string('login').'</a>)';
             }
         }
@@ -587,7 +704,11 @@ class core_renderer extends renderer_base {
                         } else {
                             $loggedinas .= get_string('failedloginattemptsall', '', $count);
                         }
+<<<<<<< HEAD
                         if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+                        if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $loggedinas .= ' (<a href="'.$CFG->wwwroot.'/report/log/index.php'.
                                                  '?chooselog=1&amp;id=1&amp;modid=site_errors">'.get_string('logs').'</a>)';
                         }
@@ -737,6 +858,26 @@ class core_renderer extends renderer_base {
             $header = $this->doctype() . $header;
         }
 
+<<<<<<< HEAD
+=======
+        // If this theme version is below 2.4 release and this is a course view page
+        if ((!isset($this->page->theme->settings->version) || $this->page->theme->settings->version < 2012101500) &&
+                $this->page->pagelayout === 'course' && $this->page->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
+            // check if course content header/footer have not been output during render of theme layout
+            $coursecontentheader = $this->course_content_header(true);
+            $coursecontentfooter = $this->course_content_footer(true);
+            if (!empty($coursecontentheader)) {
+                // display debug message and add header and footer right above and below main content
+                // Please note that course header and footer (to be displayed above and below the whole page)
+                // are not displayed in this case at all.
+                // Besides the content header and footer are not displayed on any other course page
+                debugging('The current theme is not optimised for 2.4, the course-specific header and footer defined in course format will not be output', DEBUG_DEVELOPER);
+                $header .= $coursecontentheader;
+                $footer = $coursecontentfooter. $footer;
+            }
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         send_headers($this->contenttype, $this->page->cacheable);
 
         $this->opencontainers->push('header/footer', $footer);
@@ -824,6 +965,103 @@ class core_renderer extends renderer_base {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns course-specific information to be output immediately above content on any course page
+     * (for the current course)
+     *
+     * @param bool $onlyifnotcalledbefore output content only if it has not been output before
+     * @return string
+     */
+    public function course_content_header($onlyifnotcalledbefore = false) {
+        global $CFG;
+        if ($this->page->course->id == SITEID) {
+            // return immediately and do not include /course/lib.php if not necessary
+            return '';
+        }
+        static $functioncalled = false;
+        if ($functioncalled && $onlyifnotcalledbefore) {
+            // we have already output the content header
+            return '';
+        }
+        require_once($CFG->dirroot.'/course/lib.php');
+        $functioncalled = true;
+        $courseformat = course_get_format($this->page->course);
+        if (($obj = $courseformat->course_content_header()) !== null) {
+            return $courseformat->get_renderer($this->page)->render($obj);
+        }
+        return '';
+    }
+
+    /**
+     * Returns course-specific information to be output immediately below content on any course page
+     * (for the current course)
+     *
+     * @param bool $onlyifnotcalledbefore output content only if it has not been output before
+     * @return string
+     */
+    public function course_content_footer($onlyifnotcalledbefore = false) {
+        global $CFG;
+        if ($this->page->course->id == SITEID) {
+            // return immediately and do not include /course/lib.php if not necessary
+            return '';
+        }
+        static $functioncalled = false;
+        if ($functioncalled && $onlyifnotcalledbefore) {
+            // we have already output the content footer
+            return '';
+        }
+        $functioncalled = true;
+        require_once($CFG->dirroot.'/course/lib.php');
+        $courseformat = course_get_format($this->page->course);
+        if (($obj = $courseformat->course_content_footer()) !== null) {
+            return $courseformat->get_renderer($this->page)->render($obj);
+        }
+        return '';
+    }
+
+    /**
+     * Returns course-specific information to be output on any course page in the header area
+     * (for the current course)
+     *
+     * @return string
+     */
+    public function course_header() {
+        global $CFG;
+        if ($this->page->course->id == SITEID) {
+            // return immediately and do not include /course/lib.php if not necessary
+            return '';
+        }
+        require_once($CFG->dirroot.'/course/lib.php');
+        $courseformat = course_get_format($this->page->course);
+        if (($obj = $courseformat->course_header()) !== null) {
+            return $courseformat->get_renderer($this->page)->render($obj);
+        }
+        return '';
+    }
+
+    /**
+     * Returns course-specific information to be output on any course page in the footer area
+     * (for the current course)
+     *
+     * @return string
+     */
+    public function course_footer() {
+        global $CFG;
+        if ($this->page->course->id == SITEID) {
+            // return immediately and do not include /course/lib.php if not necessary
+            return '';
+        }
+        require_once($CFG->dirroot.'/course/lib.php');
+        $courseformat = course_get_format($this->page->course);
+        if (($obj = $courseformat->course_footer()) !== null) {
+            return $courseformat->get_renderer($this->page)->render($obj);
+        }
+        return '';
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns lang menu or '', this method also checks forcing of languages in courses.
      *
      * @return string The lang menu HTML or empty string
@@ -898,6 +1136,15 @@ class core_renderer extends renderer_base {
         if (empty($bc->blockinstanceid) || !strip_tags($bc->title)) {
             $bc->collapsible = block_contents::NOT_HIDEABLE;
         }
+<<<<<<< HEAD
+=======
+        $skiptitle = strip_tags($bc->title);
+        if ($bc->blockinstanceid && !empty($skiptitle)) {
+            $bc->attributes['aria-labelledby'] = 'instance-'.$bc->blockinstanceid.'-header';
+        } else if (!empty($bc->arialabel)) {
+            $bc->attributes['aria-label'] = $bc->arialabel;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($bc->collapsible == block_contents::HIDDEN) {
             $bc->add_class('hidden');
         }
@@ -905,7 +1152,11 @@ class core_renderer extends renderer_base {
             $bc->add_class('block_with_controls');
         }
 
+<<<<<<< HEAD
         $skiptitle = strip_tags($bc->title);
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (empty($skiptitle)) {
             $output = '';
             $skipdest = '';
@@ -939,7 +1190,15 @@ class core_renderer extends renderer_base {
 
         $title = '';
         if ($bc->title) {
+<<<<<<< HEAD
             $title = html_writer::tag('h2', $bc->title, null);
+=======
+            $attributes = array();
+            if ($bc->blockinstanceid) {
+                $attributes['id'] = 'instance-'.$bc->blockinstanceid.'-header';
+            }
+            $title = html_writer::tag('h2', $bc->title, $attributes);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $controlshtml = $this->block_controls($bc->controls);
@@ -1356,7 +1615,11 @@ class core_renderer extends renderer_base {
         $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
 
         $go = html_writer::empty_tag('input', array('type'=>'submit', 'value'=>get_string('go')));
+<<<<<<< HEAD
         $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('style'=>'inline'));
+=======
+        $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('class' => 'inline'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $nothing = empty($select->nothing) ? false : key($select->nothing);
         $this->page->requires->yui_module('moodle-core-formautosubmit',
@@ -1494,7 +1757,11 @@ class core_renderer extends renderer_base {
 
         if (!$select->showbutton) {
             $go = html_writer::empty_tag('input', array('type'=>'submit', 'value'=>get_string('go')));
+<<<<<<< HEAD
             $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('style'=>'inline'));
+=======
+            $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('class' => 'inline'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $nothing = empty($select->nothing) ? false : key($select->nothing);
             $this->page->requires->yui_module('moodle-core-formautosubmit',
                 'M.core.init_formautosubmit',
@@ -1529,7 +1796,11 @@ class core_renderer extends renderer_base {
     public function doc_link($path, $text = '', $forcepopup = false) {
         global $CFG;
 
+<<<<<<< HEAD
         $icon = $this->pix_icon('docs', $text, 'moodle', array('class'=>'iconhelp'));
+=======
+        $icon = $this->pix_icon('docs', $text, 'moodle', array('class'=>'iconhelp icon-pre'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $url = new moodle_url(get_docs_url($path));
 
@@ -2112,7 +2383,11 @@ EOD;
      */
     public function update_module_button($cmid, $modulename) {
         global $CFG;
+<<<<<<< HEAD
         if (has_capability('moodle/course:manageactivities', get_context_instance(CONTEXT_MODULE, $cmid))) {
+=======
+        if (has_capability('moodle/course:manageactivities', context_module::instance($cmid))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $modulename = get_string('modulename', $modulename);
             $string = get_string('updatethis', '', $modulename);
             $url = new moodle_url("$CFG->wwwroot/course/mod.php", array('update' => $cmid, 'return' => true, 'sesskey' => sesskey()));
@@ -2524,7 +2799,11 @@ EOD;
 
         //accessibility: heading for navbar list  (MDL-20446)
         $navbarcontent = html_writer::tag('span', get_string('pagepath'), array('class'=>'accesshide'));
+<<<<<<< HEAD
         $navbarcontent .= html_writer::tag('ul', join('', $htmlblocks));
+=======
+        $navbarcontent .= html_writer::tag('ul', join('', $htmlblocks), array('role'=>'navigation'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // XHTML
         return $navbarcontent;
     }

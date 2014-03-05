@@ -33,7 +33,11 @@ use moodle\mod\lti as lti;
 
 $rawbody = file_get_contents("php://input");
 
+<<<<<<< HEAD
 foreach (getallheaders() as $name => $value) {
+=======
+foreach (lti\OAuthUtil::get_headers() as $name => $value) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($name === 'Authorization') {
         // TODO: Switch to core oauthlib once implemented - MDL-30149
         $oauthparams = lti\OAuthUtil::split_header($value);
@@ -98,7 +102,11 @@ switch ($messagetype) {
         $ltiinstance = $DB->get_record('lti', array('id' => $parsed->instanceid));
 
         //Getting the grade requires the context is set
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $ltiinstance->course);
+=======
+        $context = context_course::instance($ltiinstance->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $PAGE->set_context($context);
 
         lti_verify_sourcedid($ltiinstance, $parsed);
@@ -106,7 +114,11 @@ switch ($messagetype) {
         $grade = lti_read_grade($ltiinstance, $parsed->userid);
 
         $responsexml = lti_get_response_xml(
+<<<<<<< HEAD
                 isset($grade) ? 'success' : 'failure',
+=======
+                'success',  // Empty grade is also 'success'
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 'Result read',
                 $parsed->messageid,
                 'readResultResponse'

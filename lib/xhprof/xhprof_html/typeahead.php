@@ -25,7 +25,11 @@
 require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 require_once($CFG->libdir . '/xhprof/xhprof_moodle.php');
 require_login();
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // end moodle modification
 
 // by default assume that xhprof_html & xhprof_lib directories

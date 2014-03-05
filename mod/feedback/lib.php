@@ -39,6 +39,18 @@ define('FEEDBACK_MAX_PIX_LENGTH', '400'); //max. Breite des grafischen Balkens i
 define('FEEDBACK_DEFAULT_PAGE_COUNT', 20);
 
 /**
+<<<<<<< HEAD
+=======
+ * Returns all other caps used in module.
+ *
+ * @return array
+ */
+function feedback_get_extra_capabilities() {
+    return array('moodle/site:accessallgroups');
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @uses FEATURE_GROUPS
  * @uses FEATURE_GROUPINGS
  * @uses FEATURE_GROUPMEMBERSONLY
@@ -102,7 +114,11 @@ function feedback_add_instance($feedback) {
         $cm = get_coursemodule_from_id('feedback', $feedback->id);
         $feedback->coursemodule = $cm->id;
     }
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $feedback->coursemodule);
+=======
+    $context = context_module::instance($feedback->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $editoroptions = feedback_get_editor_options();
 
@@ -150,7 +166,11 @@ function feedback_update_instance($feedback) {
     //create or update the new events
     feedback_set_events($feedback);
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $feedback->coursemodule);
+=======
+    $context = context_module::instance($feedback->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $editoroptions = feedback_get_editor_options();
 
@@ -416,7 +436,11 @@ function feedback_get_recent_mod_activity(&$activities, &$index,
         return;
     }
 
+<<<<<<< HEAD
     $cm_context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $cm_context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (!has_capability('mod/feedback:view', $cm_context)) {
         return;
@@ -842,9 +866,13 @@ function feedback_get_context($cmid) {
         return $context;
     }
 
+<<<<<<< HEAD
     if (!$context = get_context_instance(CONTEXT_MODULE, $cmid)) {
             print_error('badcontext');
     }
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return $context;
 }
 
@@ -885,7 +913,11 @@ function feedback_get_incomplete_users($cm,
 
     global $DB;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //first get all user who can complete this feedback
     $cap = 'mod/feedback:complete';
@@ -991,9 +1023,13 @@ function feedback_get_complete_users($cm,
 
     global $DB;
 
+<<<<<<< HEAD
     if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
             print_error('badcontext');
     }
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $params = (array)$params;
 
@@ -1039,9 +1075,13 @@ function feedback_get_complete_users($cm,
  */
 function feedback_get_viewreports_users($cmid, $groups = false) {
 
+<<<<<<< HEAD
     if (!$context = get_context_instance(CONTEXT_MODULE, $cmid)) {
             print_error('badcontext');
     }
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //description of the call below:
     //get_users_by_capability($context, $capability, $fields='', $sort='', $limitfrom='',
@@ -1067,9 +1107,13 @@ function feedback_get_viewreports_users($cmid, $groups = false) {
  */
 function feedback_get_receivemail_users($cmid, $groups = false) {
 
+<<<<<<< HEAD
     if (!$context = get_context_instance(CONTEXT_MODULE, $cmid)) {
             print_error('badcontext');
     }
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //description of the call below:
     //get_users_by_capability($context, $capability, $fields='', $sort='', $limitfrom='',
@@ -1142,10 +1186,17 @@ function feedback_save_as_template($feedback, $name, $ispublic = 0) {
     if ($ispublic) {
         $s_context = get_system_context();
     } else {
+<<<<<<< HEAD
         $s_context = get_context_instance(CONTEXT_COURSE, $newtempl->course);
     }
     $cm = get_coursemodule_from_instance('feedback', $feedback->id);
     $f_context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $s_context = context_course::instance($newtempl->course);
+    }
+    $cm = get_coursemodule_from_instance('feedback', $feedback->id);
+    $f_context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //create items of this new template
     //depend items we are storing temporary in an mapping list array(new id => dependitem)
@@ -1247,11 +1298,19 @@ function feedback_items_from_template($feedback, $templateid, $deleteold = false
     if ($template->ispublic) {
         $s_context = get_system_context();
     } else {
+<<<<<<< HEAD
         $s_context = get_context_instance(CONTEXT_COURSE, $feedback->course);
     }
     $course = $DB->get_record('course', array('id'=>$feedback->course));
     $cm = get_coursemodule_from_instance('feedback', $feedback->id);
     $f_context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $s_context = context_course::instance($feedback->course);
+    }
+    $course = $DB->get_record('course', array('id'=>$feedback->course));
+    $cm = get_coursemodule_from_instance('feedback', $feedback->id);
+    $f_context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //if deleteold then delete all old items before
     //get all items
@@ -1550,7 +1609,11 @@ function feedback_delete_item($itemid, $renumber = true, $template = false) {
         if ($template->ispublic) {
             $context = get_system_context();
         } else {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $template->course);
+=======
+            $context = context_course::instance($template->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $templatefiles = $fs->get_area_files($context->id,
                                     'mod_feedback',
@@ -1566,7 +1629,11 @@ function feedback_delete_item($itemid, $renumber = true, $template = false) {
         if (!$cm = get_coursemodule_from_instance('feedback', $item->feedback)) {
             return false;
         }
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $itemfiles = $fs->get_area_files($context->id,
                                     'mod_feedback',
@@ -3004,7 +3071,11 @@ function feedback_send_email_anonym($cm, $feedback, $course) {
  * @return string the text you want to post
  */
 function feedback_send_email_text($info, $course) {
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
     $posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'feedback').' -> '.
                     $info->feedback."\n";
@@ -3025,7 +3096,11 @@ function feedback_send_email_text($info, $course) {
  */
 function feedback_send_email_html($info, $course, $cm) {
     global $CFG;
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
     $course_url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
     $feedback_all_url = $CFG->wwwroot.'/mod/feedback/index.php?id='.$course->id;
@@ -3065,7 +3140,11 @@ function feedback_extend_settings_navigation(settings_navigation $settings,
 
     global $PAGE, $DB;
 
+<<<<<<< HEAD
     if (!$context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id)) {
+=======
+    if (!$context = context_module::instance($PAGE->cm->id, IGNORE_MISSING)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         print_error('badcontext');
     }
 

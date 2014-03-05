@@ -44,10 +44,17 @@ if ($ADMIN->fulltree) {
     if (!during_initial_install()) {
         $settings->add(new admin_setting_heading('enrol_flatfile_mapping', get_string('mapping', 'enrol_flatfile'), ''));
 
+<<<<<<< HEAD
         $roles = $DB->get_records('role', null, '', 'id, name, shortname');
 
         foreach ($roles as $id => $record) {
             $settings->add(new admin_setting_configtext('enrol_flatfile/map_'.$id, format_string($record->name), '', format_string($record->shortname)));
+=======
+        $roles = role_fix_names(get_all_roles());
+
+        foreach ($roles as $id => $role) {
+            $settings->add(new admin_setting_configtext('enrol_flatfile/map_'.$id, $role->localname, '', $role->shortname));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 }

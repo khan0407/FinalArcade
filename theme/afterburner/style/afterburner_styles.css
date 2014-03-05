@@ -4,7 +4,11 @@ General Styles
 body {
     margin: 0;
     padding: 0;
+<<<<<<< HEAD
     color:#4b4b4b;
+=======
+    color: #4b4b4b;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 h1,h2,h3,h4,h5,h6,p,ul,ol,dl,input,textarea {
     font-family: Helvetica,Arial,sans-serif;
@@ -31,8 +35,13 @@ h2.headingblock {
 Page
 -----------------------*/
 #page {
+<<<<<<< HEAD
     font-size: 90%;
     font-family: Helvetica,Arial,sans-serif
+=======
+    font-size: 108%;
+    font-family: Helvetica, Arial, sans-serif
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 #page-content {
     border-bottom: 1px solid #ddd;
@@ -57,9 +66,15 @@ a.logo {
 .langmenu {
     float:right;
     clear: right;
+<<<<<<< HEAD
     font-size:1em;
     margin:0px;
     text-align:right;
+=======
+    font-size: 1em;
+    margin: 0;
+    text-align: right;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     position: relative;
     top: 10px;
 }
@@ -85,12 +100,20 @@ Page Footer
 #page-footer a:link,
 #page-footer a:visited  {
     color: #aaa;
+<<<<<<< HEAD
     text-decoration:none;
+=======
+    text-decoration: none;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 #page-footer a:hover,
 #page-footer a:active {
     color: #c30;
+<<<<<<< HEAD
     text-decoration:none;
+=======
+    text-decoration: none;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 #page-footer .footer-left {
     float: left;
@@ -112,39 +135,68 @@ Navbar & Breadcrumb
 -----------------------*/
 .navbar {
     background: url([[pix:theme|images/light3]]) 0 -68px repeat-x;
+<<<<<<< HEAD
     margin:0;
     padding:5px 10px 4px;
     color:#777;
+=======
+    margin: 0;
+    padding: 5px 10px 4px;
+    color: #777;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     border-top: 1px solid #d9d9d9;
     border-bottom: 1px solid #e6e6e6;
 }
 .breadcrumb {
+<<<<<<< HEAD
     float:left;
     color: #616161;
 }
 .navbutton {
     text-align:right;
+=======
+    float: left;
+    color: #616161;
+}
+.navbutton {
+    text-align: right;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     float: right;
     margin-top: 5px;
     margin-right: 5px;
 }
 .navbutton .singlebutton input {
+<<<<<<< HEAD
     border-width:1px;
     border-style:outset;
     border-color:#787878;
+=======
+    border-width: 1px;
+    border-style: outset;
+    border-color: #787878;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     font-size: 85%;
     cursor: pointer;
 }
 .breadcrumb ul {
     margin-top: 5px;
     margin-left: 10px;
+<<<<<<< HEAD
     text-indent:0;
     list-style:none;
+=======
+    text-indent: 0;
+    list-style: none;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 .breadcrumb li,
 .navbutton div,
 .navbutton form {
+<<<<<<< HEAD
     display:inline;
+=======
+    display: inline;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 .logininfo
 .breadcrumb {
@@ -157,9 +209,18 @@ Navbar & Breadcrumb
     text-decoration: none;
 }
 .breadcrumb a:hover,
+<<<<<<< HEAD
 .breadcrumb a:active { color: #787878;}
 .jsenabled .course_category_tree .controls {
     visibility:visible;
+=======
+.breadcrumb a:active {
+    color: #787878;
+}
+
+.jsenabled .course_category_tree .controls {
+    visibility: visible;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     float: right;
 }
 .category_label {
@@ -191,7 +252,11 @@ div.controls .collapseall {
 General Box
 -----------------------*/
 .generalbox {
+<<<<<<< HEAD
     border:0 none;
+=======
+    border: 0 none;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 /*
 Font Size
@@ -241,7 +306,13 @@ Coursebox Info & Summary
 .coursebox .summary {
     float: right;
 }
+<<<<<<< HEAD
 .coursebox .summary p { margin: 5px 0 0;}
+=======
+.coursebox .summary p {
+    margin: 5px 0 0;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .coursebox .info h3.name {
     padding: 0;
     margin: 5px 0 0;
@@ -264,13 +335,23 @@ Course Section Topic & Weekly
     margin-bottom: 9px;
 }
 /*Login (Login page)*/
+<<<<<<< HEAD
 .loginbox .loginform .form-label {width:46%;}
 .dir-rtl .loginbox .loginform .form-label {width:46%;}
 .loginbox .loginform .form-input {width:53%;}
+=======
+.loginbox .loginform .form-label {
+    width:46%;
+}
+.loginbox .loginform .form-input {
+    width:53%;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /*
 Login (Front Page)
 -----------------------*/
+<<<<<<< HEAD
 .block_login
 {
     margin: 0;
@@ -278,6 +359,13 @@ Login (Front Page)
 }
 .block_login .footer
 {
+=======
+.block_login {
+    margin: 0;
+    padding: 0;
+}
+.block_login .footer {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     text-align: right;
     clear: both
 }
@@ -346,10 +434,17 @@ Tabs
 .tabtree .tabrow0 li a span {
     background-image:url([[pix:theme|tab/right]]);
     background-repeat:no-repeat;
+<<<<<<< HEAD
     background-position:100% 0%;
     padding-right:14px;
     padding-top:10px;
     padding-bottom:3px;
+=======
+    background-position: 100% 0;
+    padding-right: 14px;
+    padding-top: 10px;
+    padding-bottom: 3px;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 .tabtree .tabrow0 li a:hover span {
     background-image:url([[pix:theme|tab/right_hover]]);
@@ -376,7 +471,11 @@ Tabs
 .tabtree .tabrow1 li a:hover,
 .tabtree .tabrow1 li a span,
 .tabtree .tabrow1 li a:hover span {
+<<<<<<< HEAD
     background-image:none !important;
+=======
+    background-image: none !important;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 .tabtree a.nolink,
 .tabtree .here ul a.nolink,
@@ -389,7 +488,12 @@ Tabs
 .tabtree .here ul .here a.nolink,
 .tabtree .here a.nolink:hover,
 .tabtree .here ul .here a.nolink:hover {
+<<<<<<< HEAD
     color: black;text-decoration: none;
+=======
+    color: black;
+    text-decoration: none;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 /*
 tab styles for ie6 & ie7
@@ -452,12 +556,15 @@ tab styles for ie6 & ie7
     top: 3.5em;
     padding: 0.2em 0;
 }
+<<<<<<< HEAD
 .yui-skin-sam .yui-panel-container {
     z-index: 999999!important;
 }
 body#page-course-view-topics.path-course div.moodle-dialogue-base div.yui3-widget{
     z-index: 600!important;
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /* Filemanager
 -------------------------*/
 .filemanager select,
@@ -470,3 +577,14 @@ body#page-course-view-topics.path-course div.moodle-dialogue-base div.yui3-widge
 .file-picker textarea {
     background-color: #EEE;
 }
+<<<<<<< HEAD
+=======
+/* Important z-index fixes
+-------------------------*/
+.yui-skin-sam .yui-panel-container {
+    z-index: 999999!important;
+}
+body#page-course-view-topics.path-course div.moodle-dialogue-base div.yui3-widget{
+    z-index: 600!important;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

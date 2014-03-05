@@ -72,6 +72,56 @@ class core_setuplib_testcase extends basic_testcase {
                 get_docs_url('%%WWWROOT%%/lib/tests/setuplib_test.php'));
     }
 
+<<<<<<< HEAD
+=======
+    public function test_is_web_crawler() {
+        $browsers = array(
+            'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:18.0) Gecko/18.0 Firefox/18.0',
+            'Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en) AppleWebKit/412 (KHTML, like Gecko) Safari/412',
+            'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_5; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.215 Safari/534.10',
+            'Opera/9.0 (Windows NT 5.1; U; en)',
+            'Mozilla/5.0 (Linux; U; Android 2.1; en-us; Nexus One Build/ERD62) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17 –Nexus',
+            'Mozilla/5.0 (iPad; U; CPU OS 4_2_1 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8C148 Safari/6533.18.5',
+        );
+        $crawlers = array(
+            // Google
+            'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+            'Googlebot/2.1 (+http://www.googlebot.com/bot.html)',
+            'Googlebot-Image/1.0',
+            // Yahoo
+            'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)',
+            // Bing
+            'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)',
+            'Mozilla/5.0 (compatible; bingbot/2.0 +http://www.bing.com/bingbot.htm)',
+            // MSN
+            'msnbot/2.1',
+            // Yandex
+            'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)',
+            'Mozilla/5.0 (compatible; YandexImages/3.0; +http://yandex.com/bots)',
+            // AltaVista
+            'AltaVista V2.0B crawler@evreka.com',
+            // ZoomSpider
+            'ZoomSpider - wrensoft.com [ZSEBOT]',
+            // Baidu
+            'Baiduspider+(+http://www.baidu.com/search/spider_jp.html)',
+            'Baiduspider+(+http://www.baidu.com/search/spider.htm)',
+            'BaiDuSpider',
+            // Ask.com
+            'User-Agent: Mozilla/2.0 (compatible; Ask Jeeves/Teoma)',
+        );
+
+        foreach ($browsers as $agent) {
+            $_SERVER['HTTP_USER_AGENT'] = $agent;
+            $this->assertFalse(is_web_crawler());
+        }
+        foreach ($crawlers as $agent) {
+            $_SERVER['HTTP_USER_AGENT'] = $agent;
+            $this->assertTrue(is_web_crawler(), "$agent should be considered a search engine");
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Test if get_exception_info() removes file system paths
      */
@@ -95,4 +145,85 @@ class core_setuplib_testcase extends basic_testcase {
         $this->assertContains($expected, $exceptioninfo->message, 'Exception message does not contain system paths');
         $this->assertContains($expected, $exceptioninfo->debuginfo, 'Exception debug info does not contain system paths');
     }
+<<<<<<< HEAD
+=======
+
+    public function test_merge_query_params() {
+        $original = array(
+            'id' => '1',
+            'course' => '2',
+            'action' => 'delete',
+            'grade' => array(
+                0 => 'a',
+                1 => 'b',
+                2 => 'c',
+            ),
+            'items' => array(
+                'a' => 'aa',
+                'b' => 'bb',
+            ),
+            'mix' => array(
+                0 => '2',
+            ),
+            'numerical' => array(
+                '2' => array('a' => 'b'),
+                '1' => '2',
+            ),
+        );
+
+        $chunk = array(
+            'numerical' => array(
+                '0' => 'z',
+                '2' => array('d' => 'e'),
+            ),
+            'action' => 'create',
+            'next' => '2',
+            'grade' => array(
+                0 => 'e',
+                1 => 'f',
+                2 => 'g',
+            ),
+            'mix' => 'mix',
+        );
+
+        $expected = array(
+            'id' => '1',
+            'course' => '2',
+            'action' => 'create',
+            'grade' => array(
+                0 => 'a',
+                1 => 'b',
+                2 => 'c',
+                3 => 'e',
+                4 => 'f',
+                5 => 'g',
+            ),
+            'items' => array(
+                'a' => 'aa',
+                'b' => 'bb',
+            ),
+            'mix' => 'mix',
+            'numerical' => array(
+                '2' => array('a' => 'b', 'd' => 'e'),
+                '1' => '2',
+                '0' => 'z',
+            ),
+            'next' => '2',
+        );
+
+        $array = $original;
+        merge_query_params($array, $chunk);
+
+        $this->assertSame($expected, $array);
+        $this->assertNotSame($original, $array);
+
+        $query = "id=1&course=2&action=create&grade%5B%5D=a&grade%5B%5D=b&grade%5B%5D=c&grade%5B%5D=e&grade%5B%5D=f&grade%5B%5D=g&items%5Ba%5D=aa&items%5Bb%5D=bb&mix=mix&numerical%5B2%5D%5Ba%5D=b&numerical%5B2%5D%5Bd%5D=e&numerical%5B1%5D=2&numerical%5B0%5D=z&next=2";
+        $decoded = array();
+        parse_str($query, $decoded);
+        $this->assertSame($expected, $decoded);
+
+        // Prove that we cannot use array_merge_recursive() instead.
+        $this->assertNotSame($expected, array_merge_recursive($original, $chunk));
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

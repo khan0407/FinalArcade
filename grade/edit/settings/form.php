@@ -39,7 +39,11 @@ class course_settings_form extends moodleform {
 
         $mform =& $this->_form;
 
+<<<<<<< HEAD
         $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $can_view_admin_links = false;
         if (has_capability('moodle/grade:manage', $systemcontext)) {
             $can_view_admin_links = true;

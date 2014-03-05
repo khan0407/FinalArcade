@@ -313,6 +313,7 @@ class moodle_page {
     protected $_periodicrefreshdelay = null;
 
     /**
+<<<<<<< HEAD
      * @var stdClass This is simply to improve backwards compatibility. If old
      * code relies on a page class that implements print_header, or complex logic
      * in user_allowed_editing then we stash an instance of that other class here,
@@ -321,6 +322,8 @@ class moodle_page {
     protected $_legacypageobject = null;
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @var array Associative array of browser shortnames (as used by check_browser_version)
      * and their minimum required versions
      */
@@ -457,7 +460,11 @@ class moodle_page {
                     .'to call require_login() or $PAGE->set_context(). The page may not display '
                     .'correctly as a result');
             }
+<<<<<<< HEAD
             $this->_context = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $this->_context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return $this->_context;
     }
@@ -586,6 +593,12 @@ class moodle_page {
         global $CFG;
         if (is_null($this->_blocks)) {
             if (!empty($CFG->blockmanagerclass)) {
+<<<<<<< HEAD
+=======
+                if (!empty($CFG->blockmanagerclassfile)) {
+                    require_once($CFG->blockmanagerclassfile);
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $classname = $CFG->blockmanagerclass;
             } else {
                 $classname = 'block_manager';
@@ -654,6 +667,7 @@ class moodle_page {
     }
 
     /**
+<<<<<<< HEAD
      * Please do not call this method directly, use the ->legacythemeinuse syntax. {@link moodle_page::__get()}.
      * @deprecated since 2.1
      * @return bool
@@ -664,6 +678,8 @@ class moodle_page {
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Please do not call this method directly use the ->periodicrefreshdelay syntax
      * {@link moodle_page::__get()}
      * @return int The periodic refresh delay to use with meta refresh
@@ -805,9 +821,12 @@ class moodle_page {
      * @return bool
      */
     public function user_allowed_editing() {
+<<<<<<< HEAD
         if ($this->_legacypageobject) {
             return $this->_legacypageobject->user_allowed_editing();
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return has_any_capability($this->all_editing_caps(), $this->_context);
     }
 
@@ -863,7 +882,11 @@ class moodle_page {
      * @param stdClass $course the course to set as the global course.
      */
     public function set_course($course) {
+<<<<<<< HEAD
         global $COURSE, $PAGE;
+=======
+        global $COURSE, $PAGE, $CFG, $SITE;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (empty($course->id)) {
             throw new coding_exception('$course passed to moodle_page::set_course does not look like a proper course object.');
@@ -883,7 +906,21 @@ class moodle_page {
         }
 
         if (!$this->_context) {
+<<<<<<< HEAD
             $this->set_context(get_context_instance(CONTEXT_COURSE, $this->_course->id));
+=======
+            $this->set_context(context_course::instance($this->_course->id));
+        }
+
+        // notify course format that this page is set for the course
+        if ($this->_course->id != $SITE->id) {
+            require_once($CFG->dirroot.'/course/lib.php');
+            $courseformat = course_get_format($this->_course);
+            $this->add_body_class('format-'. $courseformat->get_format());
+            $courseformat->page_set_course($this);
+        } else {
+            $this->add_body_class('format-site');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -897,7 +934,11 @@ class moodle_page {
             // extremely ugly hack which sets context to some value in order to prevent warnings,
             // use only for core error handling!!!!
             if (!$this->_context) {
+<<<<<<< HEAD
                 $this->_context = get_context_instance(CONTEXT_SYSTEM);
+=======
+                $this->_context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             return;
         }
@@ -929,7 +970,11 @@ class moodle_page {
      * @return void
      */
     public function set_cm($cm, $course = null, $module = null) {
+<<<<<<< HEAD
         global $DB;
+=======
+        global $DB, $CFG, $SITE;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!isset($cm->id) || !isset($cm->course)) {
             throw new coding_exception('Invalid $cm parameter for $PAGE object, it has to be instance of cm_info or record from the course_modules table.');
@@ -954,13 +999,26 @@ class moodle_page {
 
         // unfortunately the context setting is a mess, let's try to work around some common block problems and show some debug messages
         if (empty($this->_context) or $this->_context->contextlevel != CONTEXT_BLOCK) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+            $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->set_context($context);
         }
 
         if ($module) {
             $this->set_activity_record($module);
         }
+<<<<<<< HEAD
+=======
+
+        // notify course format that this page is set for the course module
+        if ($this->_course->id != $SITE->id) {
+            require_once($CFG->dirroot.'/course/lib.php');
+            course_get_format($this->_course)->page_set_cm($this);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1118,7 +1176,11 @@ class moodle_page {
         $this->ensure_theme_not_set();
         $this->set_course($SITE);
         $this->load_category($categoryid);
+<<<<<<< HEAD
         $this->set_context(get_context_instance(CONTEXT_COURSECAT, $categoryid));
+=======
+        $this->set_context(context_coursecat::instance($categoryid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1172,9 +1234,12 @@ class moodle_page {
         if (is_null($this->_pagetype)) {
             $this->initialise_default_pagetype($shorturl);
         }
+<<<<<<< HEAD
         if (!is_null($this->_legacypageobject)) {
             $this->_legacypageobject->set_url($url, $params);
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1782,6 +1847,7 @@ class moodle_page {
         return $caps;
     }
 
+<<<<<<< HEAD
     // Deprecated fields and methods for backwards compatibility ==================
 
     /**
@@ -1968,6 +2034,8 @@ class moodle_page {
         return $this->cm;
     }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Returns true if the page URL has beem set.
      *
@@ -2005,6 +2073,7 @@ class moodle_page {
         $this->_popup_notification_allowed = $allowed;
     }
 }
+<<<<<<< HEAD
 
 /**
  * Not needed any more. DO NOT USE!
@@ -2221,3 +2290,5 @@ class page_generic_activity extends page_base {
         echo $OUTPUT->header();
     }
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

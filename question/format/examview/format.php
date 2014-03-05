@@ -37,6 +37,7 @@ require_once($CFG->libdir . '/xmlize.php');
 class qformat_examview extends qformat_based_on_xml {
 
     public $qtypes = array(
+<<<<<<< HEAD
         'tf' => TRUEFALSE,
         'mc' => MULTICHOICE,
         'yn' => TRUEFALSE,
@@ -49,6 +50,20 @@ class qformat_examview extends qformat_based_on_xml {
         'ca' => 99,
         'ot' => 99,
         'sa' => SHORTANSWER,
+=======
+        'tf' => 'truefalse',
+        'mc' => 'multichoice',
+        'yn' => 'truefalse',
+        'co' => 'shortanswer',
+        'ma' => 'match',
+        'mtf' => 99,
+        'nr' => 'numerical',
+        'pr' => 99,
+        'es' => 'essay',
+        'ca' => 99,
+        'ot' => 99,
+        'sa' => 'shortanswer',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     );
 
     public $matching_questions = array();
@@ -132,7 +147,11 @@ class qformat_examview extends qformat_based_on_xml {
             $question->questiontextformat = FORMAT_HTML;
             $question->questiontextfiles = array();
             $question->name = $this->create_default_question_name($question->questiontext, get_string('questionname', 'question'));
+<<<<<<< HEAD
             $question->qtype = MATCH;
+=======
+            $question->qtype = 'match';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $question = $this->add_blank_combined_feedback($question);
             $question->subquestions = array();
             $question->subanswers = array();
@@ -204,6 +223,7 @@ class qformat_examview extends qformat_based_on_xml {
         $question->name = $this->create_default_question_name($question->questiontext, get_string('questionname', 'question'));
 
         switch ($question->qtype) {
+<<<<<<< HEAD
             case MULTICHOICE:
                 $question = $this->parse_mc($qrec['#'], $question);
                 break;
@@ -221,6 +241,25 @@ class qformat_examview extends qformat_based_on_xml {
                 $question = $this->parse_es($qrec['#'], $question);
                 break;
             case NUMERICAL:
+=======
+            case 'multichoice':
+                $question = $this->parse_mc($qrec['#'], $question);
+                break;
+            case 'match':
+                $groupname = trim($qrec['@']['group']);
+                $question = $this->parse_ma($qrec['#'], $groupname);
+                break;
+            case 'truefalse':
+                $question = $this->parse_tf_yn($qrec['#'], $question);
+                break;
+            case 'shortanswer':
+                $question = $this->parse_co($qrec['#'], $question);
+                break;
+            case 'essay':
+                $question = $this->parse_es($qrec['#'], $question);
+                break;
+            case 'numerical':
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $question = $this->parse_nr($qrec['#'], $question);
                 break;
                 break;

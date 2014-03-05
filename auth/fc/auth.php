@@ -180,7 +180,11 @@ class auth_plugin_fc extends auth_plugin_base {
 
         if ($roles = get_archetype_roles('coursecreator')) {
             $creatorrole = array_shift($roles);      // We can only use one, let's use the first one
+<<<<<<< HEAD
             $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if ($iscreator) { // Following calls will not create duplicates
                 role_assign($creatorrole->id, $user->id, $systemcontext->id, 'auth_fc');

@@ -54,11 +54,19 @@ $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 if (in_array($class, array('resource'))) {
     $cm = get_coursemodule_from_id(null, $id, $course->id, false, MUST_EXIST);
     require_login($course, false, $cm);
+<<<<<<< HEAD
     $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
 } else {
     require_login($course);
 }
 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $modcontext = context_module::instance($cm->id);
+} else {
+    require_login($course);
+}
+$coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_sesskey();
 
 echo $OUTPUT->header(); // send headers
@@ -88,6 +96,7 @@ switch($requestmethod) {
                         break;
 
                     case 'move':
+<<<<<<< HEAD
                         require_capability('moodle/course:update', $coursecontext);
                         move_section_to($course, $id, $value);
                         // See if format wants to do something about it
@@ -102,6 +111,17 @@ switch($requestmethod) {
                         break;
                 }
                 rebuild_course_cache($course->id);
+=======
+                        require_capability('moodle/course:movesections', $coursecontext);
+                        move_section_to($course, $id, $value);
+                        // See if format wants to do something about it
+                        $response = course_get_format($course)->ajax_section_move();
+                        if ($response !== null) {
+                            echo json_encode($response);
+                        }
+                        break;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 break;
 
             case 'resource':
@@ -121,6 +141,10 @@ switch($requestmethod) {
                         $cm->indent = $value;
                         if ($cm->indent >= 0) {
                             $DB->update_record('course_modules', $cm);
+<<<<<<< HEAD
+=======
+                            rebuild_course_cache($cm->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         }
                         break;
 
@@ -165,6 +189,10 @@ switch($requestmethod) {
 
                         if (!empty($module->name)) {
                             $DB->update_record($cm->modname, $module);
+<<<<<<< HEAD
+=======
+                            rebuild_course_cache($cm->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         } else {
                             $module->name = $cm->name;
                         }
@@ -181,7 +209,10 @@ switch($requestmethod) {
                         echo json_encode(array('instancename' => html_entity_decode(format_string($module->name, true,  $stringoptions))));
                         break;
                 }
+<<<<<<< HEAD
                 rebuild_course_cache($course->id);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 break;
 
             case 'course':
@@ -234,8 +265,11 @@ switch($requestmethod) {
                 $eventdata->userid     = $USER->id;
                 events_trigger('mod_deleted', $eventdata);
 
+<<<<<<< HEAD
                 rebuild_course_cache($course->id);
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 add_to_log($courseid, "course", "delete mod",
                            "view.php?id=$courseid",
                            "$cm->modname $cm->instance", $cm->id);

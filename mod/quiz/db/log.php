@@ -40,4 +40,8 @@ $logs = array(
     array('module'=>'quiz', 'action'=>'continue attempt', 'mtable'=>'quiz', 'field'=>'name'),
     array('module'=>'quiz', 'action'=>'edit override', 'mtable'=>'quiz', 'field'=>'name'),
     array('module'=>'quiz', 'action'=>'delete override', 'mtable'=>'quiz', 'field'=>'name'),
+<<<<<<< HEAD
+=======
+    array('module'=>'quiz', 'action'=>'view summary', 'mtable'=>'quiz', 'field'=>'name'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 );

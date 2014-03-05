@@ -1,9 +1,15 @@
 <?php
 //============================================================+
 // File name   : 2dbarcodes.php
+<<<<<<< HEAD
 // Version     : 1.0.013
 // Begin       : 2009-04-07
 // Last Update : 2012-01-12
+=======
+// Version     : 1.0.014
+// Begin       : 2009-04-07
+// Last Update : 2012-04-30
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Author      : Nicola Asuni - Tecnick.com LTD - Manor Coach House, Church Hill, Aldershot, Hants, GU12 4RQ, UK - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -37,14 +43,22 @@
  * PHP class to creates array representations for 2D barcodes to be used with TCPDF.
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
+<<<<<<< HEAD
  * @version 1.0.013
+=======
+ * @version 1.0.014
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 
 /**
  * @class TCPDF2DBarcode
  * PHP class to creates array representations for 2D barcodes to be used with TCPDF (http://www.tcpdf.org).
  * @package com.tecnick.tcpdf
+<<<<<<< HEAD
  * @version 1.0.013
+=======
+ * @version 1.0.014
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @author Nicola Asuni
  */
 class TCPDF2DBarcode {
@@ -202,9 +216,15 @@ class TCPDF2DBarcode {
 				if ($this->barcode_array['bcode'][$r][$c] == 1) {
 					// draw a single barcode cell
 					if ($imagick) {
+<<<<<<< HEAD
 						$bar->rectangle($x, $y, ($x + $w), ($y + $h));
 					} else {
 						imagefilledrectangle($png, $x, $y, ($x + $w), ($y + $h), $fgcol);
+=======
+						$bar->rectangle($x, $y, ($x + $w - 1), ($y + $h - 1));
+					} else {
+						imagefilledrectangle($png, $x, $y, ($x + $w - 1), ($y + $h - 1), $fgcol);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 					}
 				}
 				$x += $w;

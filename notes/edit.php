@@ -50,7 +50,11 @@ if (!$user = $DB->get_record('user', array('id'=>$note->userid))) {
 require_login($course);
 
 /// locate context information
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/notes:manage', $context);
 
 if (empty($CFG->enablenotes)) {
@@ -93,7 +97,11 @@ if ($noteid) {
 
 /// output HTML
 $link = null;
+<<<<<<< HEAD
 if (has_capability('moodle/course:viewparticipants', $context) || has_capability('moodle/site:viewparticipants', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+if (has_capability('moodle/course:viewparticipants', $context) || has_capability('moodle/site:viewparticipants', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $link = new moodle_url('/user/index.php',array('id'=>$course->id));
 }
 $PAGE->navbar->add(get_string('participants'), $link);

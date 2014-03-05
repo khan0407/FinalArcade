@@ -32,7 +32,11 @@ if (!isset($cm)) {
     $cm = get_coursemodule_from_instance('scorm', $scorm->id);
 }
 
+<<<<<<< HEAD
 $contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$contextmodule = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $tabs = array();
 $row = array();

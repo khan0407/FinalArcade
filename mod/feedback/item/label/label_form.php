@@ -29,8 +29,11 @@ class feedback_label_form extends feedback_item_form {
         $positionlist = $this->_customdata['positionlist'];
         $position = $this->_customdata['position'];
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $common['cmid']);
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform =& $this->_form;
 
         $mform->addElement('hidden', 'required', 0);

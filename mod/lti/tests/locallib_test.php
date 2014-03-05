@@ -104,7 +104,11 @@ class mod_lti_locallib_testcase extends basic_testcase {
      */
     public function disabled_test_parse_grade_replace_message() {
         $message = '
+<<<<<<< HEAD
             <imsx_POXEnvelopeRequest xmlns = "http://www.imsglobal.org/lis/oms1p0/pox">
+=======
+            <imsx_POXEnvelopeRequest xmlns = "http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0">
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
               <imsx_POXHeader>
                 <imsx_POXRequestHeaderInfo>
                   <imsx_version>V1.0</imsx_version>
@@ -139,4 +143,13 @@ class mod_lti_locallib_testcase extends basic_testcase {
 
         lti_verify_sourcedid($ltiinstance, $parsed);
     }
+<<<<<<< HEAD
+=======
+
+    public function test_lti_ensure_url_is_https() {
+        $this->assertEquals('https://moodle.org', lti_ensure_url_is_https('http://moodle.org'));
+        $this->assertEquals('https://moodle.org', lti_ensure_url_is_https('moodle.org'));
+        $this->assertEquals('https://moodle.org', lti_ensure_url_is_https('https://moodle.org'));
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

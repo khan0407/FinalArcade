@@ -54,7 +54,11 @@ if (!$wiki = wiki_get_wiki($subwiki->wikiid)) {
 }
 
 require_login($course, true, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/wiki:viewpage', $context);
 
 $wikipage = new page_wiki_map($wiki, $subwiki, $cm);

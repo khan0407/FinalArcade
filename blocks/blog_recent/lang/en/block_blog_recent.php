@@ -23,6 +23,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['blog_recent:addinstance'] = 'Add a new recent blog entries block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['norecentblogentries'] = 'No recent entries';
 $string['numentriestodisplay'] = 'Number of recent entries to display';
 $string['pluginname'] = 'Recent blog entries';

@@ -46,6 +46,7 @@ $currentgroup = groups_get_activity_group($cm, true);
 
 // Group Check
 if (empty($currentgroup)) {
+<<<<<<< HEAD
     // all users who can attempt scoes
     if (!$students = get_users_by_capability($contextmodule, 'mod/scorm:savetrack', '', '', '', '', '', '', false)) {
         $nostudents = true;
@@ -76,6 +77,18 @@ if (scorm_version_check($scorm->version, SCORM_13)) {
     $minkey = 'cmi.core.score.min';
     $scorekey = 'cmi.core.score.raw';
 }
+=======
+    // All users who can attempt scoes.
+    $students = get_users_by_capability($contextmodule, 'mod/scorm:savetrack', 'u.id' , '', '', '', '', '', false);
+    $allowedlist = empty($students) ? array() : array_keys($students);
+} else {
+    // All users who can attempt scoes and who are in the currently selected group.
+    $groupstudents = get_users_by_capability($contextmodule, 'mod/scorm:savetrack', 'u.id', '', '', '', $currentgroup, '', false);
+    $allowedlist = empty($groupstudents) ? array() : array_keys($groupstudents);
+}
+
+$params = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $bands = 11;
 $bandwidth = 10;
 
@@ -86,10 +99,18 @@ for ($i = 0; $i < $bands; $i++) {
     $graphdata[$i] = 0;
 }
 
+<<<<<<< HEAD
 
 // Do this only if we have students to report
 if(!$nostudents) {
     // Construct the SQL
+=======
+// Do this only if we have students to report.
+if (!empty($allowedlist)) {
+    list($usql, $params) = $DB->get_in_or_equal($allowedlist);
+    $params[] = $scoid;
+    // Construct the SQL.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $select = 'SELECT DISTINCT '.$DB->sql_concat('st.userid', '\'#\'', 'COALESCE(st.attempt, 0)').' AS uniqueid, ';
     $select .= 'st.userid AS userid, st.scormid AS scormid, st.attempt AS attempt, st.scoid AS scoid ';
     $from = 'FROM {scorm_scoes_track} st ';
@@ -98,6 +119,7 @@ if(!$nostudents) {
 
     foreach ($attempts as $attempt) {
         if ($trackdata = scorm_get_tracks($scoid, $attempt->userid, $attempt->attempt)) {
+<<<<<<< HEAD
             if (isset($trackdata->$scorekey)) {
                 $score = $trackdata->$scorekey;
                 if (!isset($trackdata->$minkey) || empty($trackdata->$minkey)) {
@@ -109,6 +131,19 @@ if(!$nostudents) {
                     $maxmark = 100;
                 } else {
                     $maxmark = $trackdata->$maxkey;
+=======
+            if (isset($trackdata->score_raw)) {
+                $score = $trackdata->score_raw;
+                if (empty($trackdata->score_min)) {
+                    $minmark = 0;
+                } else {
+                    $minmark = $trackdata->score_min;
+                }
+                if (empty($trackdata->score_max)) {
+                    $maxmark = 100;
+                } else {
+                    $maxmark = $trackdata->score_max;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
                 $range = ($maxmark - $minmark);
                 if (empty($range)) {
@@ -187,7 +222,12 @@ while ($gridlines >= 10) {
         $gridlines /= 2;
     }
 }
+<<<<<<< HEAD
 
 $line->parameter['y_axis_gridlines'] = $gridlines + 1;
+=======
+$gridlines = max(2, ($gridlines + 1)); // We need a minimum of two lines.
+$line->parameter['y_axis_gridlines'] = $gridlines;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $line->draw();

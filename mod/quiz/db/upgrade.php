@@ -360,7 +360,11 @@ function xmldb_quiz_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2012061703, 'quiz');
     }
 
+<<<<<<< HEAD
     if ($oldversion < 2012061704) {
+=======
+    if ($oldversion < 2012100801) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Define field timecheckstate to be added to quiz_attempts
         $table = new xmldb_table('quiz_attempts');
@@ -389,15 +393,29 @@ function xmldb_quiz_upgrade($oldversion) {
         quiz_update_open_attempts(array());
 
         // quiz savepoint reached
+<<<<<<< HEAD
         upgrade_mod_savepoint(true, 2012061704, 'quiz');
     }
 
     if ($oldversion < 2012061705) {
+=======
+        upgrade_mod_savepoint(true, 2012100801, 'quiz');
+    }
+
+    // Moodle v2.4.0 release upgrade line
+    // Put any upgrade step following this
+
+    if ($oldversion < 2012112901) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Quiz manual grading UI should be controlled by mod/quiz:grade, not :viewreports.
         $DB->set_field('quiz_reports', 'capability', 'mod/quiz:grade', array('name' => 'grading'));
 
         // Mod quiz savepoint reached.
+<<<<<<< HEAD
         upgrade_mod_savepoint(true, 2012061705, 'quiz');
+=======
+        upgrade_mod_savepoint(true, 2012112901, 'quiz');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return true;

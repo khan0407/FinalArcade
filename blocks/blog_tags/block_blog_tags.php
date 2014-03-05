@@ -118,7 +118,11 @@ class block_blog_tags extends block_base {
 
         // admins should be able to read all tags
         $type = '';
+<<<<<<< HEAD
         if (!has_capability('moodle/user:readuserblogs', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if (!has_capability('moodle/user:readuserblogs', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $type = " AND (p.publishstate = 'site' or p.publishstate='public')";
         }
 

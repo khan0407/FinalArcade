@@ -46,7 +46,11 @@ $configstr = get_string('manageuserrepository', 'repository');
 $pluginstr = get_string('plugin', 'repository');
 
 require_login($course, false);
+<<<<<<< HEAD
 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$coursecontext = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $link = new moodle_url('/user/view.php', array('id'=>$user->id));
 $PAGE->navbar->add($fullname, $link);

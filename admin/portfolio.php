@@ -5,7 +5,11 @@ require_once($CFG->libdir . '/portfoliolib.php');
 require_once($CFG->libdir . '/portfolio/forms.php');
 require_once($CFG->libdir . '/adminlib.php');
 
+<<<<<<< HEAD
 $portfolio     = optional_param('pf', '', PARAM_FORMAT);
+=======
+$portfolio     = optional_param('pf', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $action        = optional_param('action', '', PARAM_ALPHA);
 $sure          = optional_param('sure', '', PARAM_ALPHA);
 
@@ -35,7 +39,11 @@ if ($action == 'newon') {
 
 admin_externalpage_setup($pagename);
 
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $baseurl    = "$CFG->wwwroot/$CFG->admin/portfolio.php";
 $sesskeyurl = "$CFG->wwwroot/$CFG->admin/portfolio.php?sesskey=" . sesskey();

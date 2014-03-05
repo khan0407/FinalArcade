@@ -5,7 +5,11 @@
 // since they need to exist *before* settingpages and externalpages
 // are added to them.
 
+<<<<<<< HEAD
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $hassiteconfig = has_capability('moodle/site:config', $systemcontext);
 
 $ADMIN->add('root', new admin_externalpage('adminnotifications', new lang_string('notifications'), "$CFG->wwwroot/$CFG->admin/index.php"));

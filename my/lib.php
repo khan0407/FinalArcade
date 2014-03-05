@@ -74,8 +74,13 @@ function my_copy_page($userid, $private=MY_PAGE_PRIVATE, $pagetype='my-index') {
     $page->id = $DB->insert_record('my_pages', $page);
 
     // Clone ALL the associated blocks as well
+<<<<<<< HEAD
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
     $usercontext = get_context_instance(CONTEXT_USER, $userid);
+=======
+    $systemcontext = context_system::instance();
+    $usercontext = context_user::instance($userid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $blockinstances = $DB->get_records('block_instances', array('parentcontextid' => $systemcontext->id,
                                                                 'pagetypepattern' => $pagetype,
@@ -85,7 +90,11 @@ function my_copy_page($userid, $private=MY_PAGE_PRIVATE, $pagetype='my-index') {
         $instance->parentcontextid = $usercontext->id;
         $instance->subpagepattern = $page->id;
         $instance->id = $DB->insert_record('block_instances', $instance);
+<<<<<<< HEAD
         $blockcontext = get_context_instance(CONTEXT_BLOCK, $instance->id);  // Just creates the context record
+=======
+        $blockcontext = context_block::instance($instance->id);  // Just creates the context record
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // FIXME: block position overrides should be merged in with block instance
@@ -110,7 +119,11 @@ class my_syspage_block_manager extends block_manager {
      */
     public function load_blocks($includeinvisible = null) {
         $origcontext = $this->page->context;
+<<<<<<< HEAD
         $this->page->context = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $this->page->context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::load_blocks($includeinvisible);
         $this->page->context = $origcontext;
     }

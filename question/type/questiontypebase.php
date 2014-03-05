@@ -47,7 +47,11 @@ require_once($CFG->dirroot . '/question/engine/lib.php');
  */
 class question_type {
     protected $fileoptions = array(
+<<<<<<< HEAD
         'subdirs' => false,
+=======
+        'subdirs' => true,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         'maxfiles' => -1,
         'maxbytes' => 0,
     );
@@ -129,7 +133,11 @@ class question_type {
      * method, and the question_definition class must implement the
      * classify_response method.
      *
+<<<<<<< HEAD
      * @return bool whether this report can analyse all the student reponses
+=======
+     * @return bool whether this report can analyse all the student responses
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * for things like the quiz statistics report.
      */
     public function can_analyse_responses() {
@@ -996,7 +1004,11 @@ class question_type {
         $form->penalty = 0.3333333;
         $form->generalfeedback = "Well done";
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+        $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $newcategory = question_make_default_categories(array($context));
         $form->category = $newcategory->id . ',1';
 
@@ -1014,7 +1026,11 @@ class question_type {
     protected function get_context_by_category_id($category) {
         global $DB;
         $contextid = $DB->get_field('question_categories', 'contextid', array('id'=>$category));
+<<<<<<< HEAD
         $context = get_context_instance_by_id($contextid);
+=======
+        $context = context::instance_by_id($contextid, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $context;
     }
 

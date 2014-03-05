@@ -65,7 +65,11 @@ class question_dataset_dependent_definitions_form extends question_wizard_form {
             print_error('categorydoesnotexist', 'question', $returnurl);
         }
         $this->category = $category;
+<<<<<<< HEAD
         $this->categorycontext = get_context_instance_by_id($category->contextid);
+=======
+        $this->categorycontext = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::__construct($submiturl);
     }
 

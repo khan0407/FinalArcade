@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,21 +21,34 @@
 /**
  * Cohort related management functions, this file needs to be included manually.
  *
+<<<<<<< HEAD
  * @package    core
  * @subpackage cohort
+=======
+ * @package    core_cohort
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 require_once('../config.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
+=======
+require('../config.php');
+require_once($CFG->dirroot.'/cohort/locallib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $id = required_param('id', PARAM_INT);
 
 require_login();
 
 $cohort = $DB->get_record('cohort', array('id'=>$id), '*', MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance_by_id($cohort->contextid, MUST_EXIST);
+=======
+$context = context::instance_by_id($cohort->contextid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_capability('moodle/cohort:assign', $context);
 
@@ -42,7 +58,11 @@ $PAGE->set_url('/cohort/assign.php', array('id'=>$id));
 $returnurl = new moodle_url('/cohort/index.php', array('contextid'=>$cohort->contextid));
 
 if (!empty($cohort->component)) {
+<<<<<<< HEAD
     // we can not manually edit cohorts that were created by external systems, sorry
+=======
+    // We can not manually edit cohorts that were created by external systems, sorry.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     redirect($returnurl);
 }
 
@@ -80,10 +100,14 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     if (!empty($userstoassign)) {
 
         foreach ($userstoassign as $adduser) {
+<<<<<<< HEAD
             // no duplicates please
             if (!$DB->record_exists('cohort_members', array('cohortid'=>$cohort->id, 'userid'=>$adduser->id))) {
                 cohort_add_member($cohort->id, $adduser->id);
             }
+=======
+            cohort_add_member($cohort->id, $adduser->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $potentialuserselector->invalidate_selected_users();

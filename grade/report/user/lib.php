@@ -203,7 +203,11 @@ class grade_report_user extends grade_report {
 
         $this->tabledata = array();
 
+<<<<<<< HEAD
         $this->canviewhidden = has_capability('moodle/grade:viewhidden', get_context_instance(CONTEXT_COURSE, $this->courseid));
+=======
+        $this->canviewhidden = has_capability('moodle/grade:viewhidden', context_course::instance($this->courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // get the user (for full name)
         $this->user = $DB->get_record('user', array('id' => $userid));
@@ -219,7 +223,18 @@ class grade_report_user extends grade_report {
         $this->calculate_averages();
     }
 
+<<<<<<< HEAD
     function inject_rowspans(&$element) {
+=======
+    /**
+     * Recurses through a tree of elements setting the rowspan property on each element
+     *
+     * @param array $element Either the top element or, during recursion, the current element
+     * @return int The number of elements processed
+     */
+    function inject_rowspans(&$element) {
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($element['depth'] > $this->maxdepth) {
             $this->maxdepth = $element['depth'];
         }
@@ -227,9 +242,17 @@ class grade_report_user extends grade_report {
             return 1;
         }
         $count = 1;
+<<<<<<< HEAD
         foreach ($element['children'] as $key=>$child) {
             $count += $this->inject_rowspans($element['children'][$key]);
         }
+=======
+
+        foreach ($element['children'] as $key=>$child) {
+            $count += $this->inject_rowspans($element['children'][$key]);
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $element['rowspan'] = $count;
         return $count;
     }
@@ -328,6 +351,12 @@ class grade_report_user extends grade_report {
 
         /// Process those items that have scores associated
         if ($type == 'item' or $type == 'categoryitem' or $type == 'courseitem') {
+<<<<<<< HEAD
+=======
+            $header_row = "row_{$eid}_{$this->user->id}";
+            $header_cat = "cat_{$grade_object->categoryid}_{$this->user->id}";
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (! $grade_grade = grade_grade::fetch(array('itemid'=>$grade_object->id,'userid'=>$this->user->id))) {
                 $grade_grade = new grade_grade();
                 $grade_grade->userid = $this->user->id;
@@ -356,7 +385,12 @@ class grade_report_user extends grade_report {
                     $cm = $instances[$grade_object->iteminstance];
                     if (!$cm->uservisible) {
                         // Further checks are required to determine whether the activity is entirely hidden or just greyed out.
+<<<<<<< HEAD
                         if ($cm->is_user_access_restricted_by_group() || $cm->is_user_access_restricted_by_conditional_access()) {
+=======
+                        if ($cm->is_user_access_restricted_by_group() || $cm->is_user_access_restricted_by_conditional_access() ||
+                                $cm->is_user_access_restricted_by_capability()) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $hide = true;
                         }
                     }
@@ -377,11 +411,22 @@ class grade_report_user extends grade_report {
                 } else {
                    $class .= ($type == 'categoryitem' or $type == 'courseitem') ? " ".$alter."d$depth baggb" : " item b1b";
                 }
+<<<<<<< HEAD
+=======
+                if ($type == 'categoryitem' or $type == 'courseitem') {
+                    $header_cat = "cat_{$grade_object->iteminstance}_{$this->user->id}";
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 /// Name
                 $data['itemname']['content'] = $fullname;
                 $data['itemname']['class'] = $class;
                 $data['itemname']['colspan'] = ($this->maxdepth - $depth);
+<<<<<<< HEAD
+=======
+                $data['itemname']['celltype'] = 'th';
+                $data['itemname']['id'] = $header_row;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 /// Actual Grade
                 $gradeval = $grade_grade->finalgrade;
@@ -394,6 +439,10 @@ class grade_report_user extends grade_report {
                 if ($this->showweight) {
                     $data['weight']['class'] = $class;
                     $data['weight']['content'] = '-';
+<<<<<<< HEAD
+=======
+                    $data['weight']['headers'] = "$header_cat $header_row weight";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     // has a weight assigned, might be extra credit
                     if ($grade_object->aggregationcoef > 0 && $type <> 'courseitem') {
                         $data['weight']['content'] = number_format($grade_object->aggregationcoef,2).'%';
@@ -419,12 +468,20 @@ class grade_report_user extends grade_report {
                         $gradeval = $this->blank_hidden_total($this->courseid, $grade_grade->grade_item, $gradeval);
                         $data['grade']['content'] = grade_format_gradevalue($gradeval, $grade_grade->grade_item, true);
                     }
+<<<<<<< HEAD
+=======
+                    $data['grade']['headers'] = "$header_cat $header_row grade";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
 
                 // Range
                 if ($this->showrange) {
                     $data['range']['class'] = $class;
                     $data['range']['content'] = $grade_grade->grade_item->get_formatted_range(GRADE_DISPLAY_TYPE_REAL, $this->rangedecimals);
+<<<<<<< HEAD
+=======
+                    $data['range']['headers'] = "$header_cat $header_row range";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
 
                 // Percentage
@@ -439,6 +496,10 @@ class grade_report_user extends grade_report {
                         $data['percentage']['class'] = $class;
                         $data['percentage']['content'] = grade_format_gradevalue($gradeval, $grade_grade->grade_item, true, GRADE_DISPLAY_TYPE_PERCENTAGE);
                     }
+<<<<<<< HEAD
+=======
+                    $data['percentage']['headers'] = "$header_cat $header_row percentage";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
 
                 // Lettergrade
@@ -457,6 +518,10 @@ class grade_report_user extends grade_report {
                         $data['lettergrade']['class'] = $class;
                         $data['lettergrade']['content'] = grade_format_gradevalue($gradeval, $grade_grade->grade_item, true, GRADE_DISPLAY_TYPE_LETTER);
                     }
+<<<<<<< HEAD
+=======
+                    $data['lettergrade']['headers'] = "$header_cat $header_row lettergrade";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
 
                 // Rank
@@ -484,6 +549,10 @@ class grade_report_user extends grade_report {
                         $data['rank']['class'] = $class;
                         $data['rank']['content'] = "$rank/".$this->get_numusers(false); // total course users
                     }
+<<<<<<< HEAD
+=======
+                    $data['rank']['headers'] = "$header_cat $header_row rank";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
 
                 // Average
@@ -494,6 +563,10 @@ class grade_report_user extends grade_report {
                     } else {
                         $data['average']['content'] = '-';
                     }
+<<<<<<< HEAD
+=======
+                    $data['average']['headers'] = "$header_cat $header_row average";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
 
                 // Feedback
@@ -508,6 +581,10 @@ class grade_report_user extends grade_report {
                         $data['feedback']['class'] = $classfeedback.' feedbacktext';
                         $data['feedback']['content'] = format_text($grade_grade->feedback, $grade_grade->feedbackformat);
                     }
+<<<<<<< HEAD
+=======
+                    $data['feedback']['headers'] = "$header_cat $header_row feedback";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
         }
@@ -524,6 +601,11 @@ class grade_report_user extends grade_report {
             }
             $data['itemname']['colspan'] = ($this->maxdepth - $depth + count($this->tablecolumns) - 1);
             $data['itemname']['content'] = $fullname;
+<<<<<<< HEAD
+=======
+            $data['itemname']['celltype'] = 'th';
+            $data['itemname']['id'] = "cat_{$grade_object->id}_{$this->user->id}";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         /// Add this row to the overall system
@@ -547,6 +629,7 @@ class grade_report_user extends grade_report {
 
         /// Build table structure
         $html = "
+<<<<<<< HEAD
             <table cellspacing='0' cellpadding='0' class='boxaligncenter generaltable user-grade'>
             <thead>
                 <tr>
@@ -554,6 +637,18 @@ class grade_report_user extends grade_report {
 
         for ($i = 1; $i < count($this->tableheaders); $i++) {
             $html .= "<th class=\"header\">".$this->tableheaders[$i]."</th>\n";
+=======
+            <table cellspacing='0'
+                   cellpadding='0'
+                   summary='" . s($this->get_lang_string('tablesummary', 'gradereport_user')) . "'
+                   class='boxaligncenter generaltable user-grade'>
+            <thead>
+                <tr>
+                    <th id='".$this->tablecolumns[0]."' class=\"header\" colspan='$maxspan'>".$this->tableheaders[0]."</th>\n";
+
+        for ($i = 1; $i < count($this->tableheaders); $i++) {
+            $html .= "<th id='".$this->tablecolumns[$i]."' class=\"header\">".$this->tableheaders[$i]."</th>\n";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $html .= "
@@ -574,8 +669,16 @@ class grade_report_user extends grade_report {
                 $class = (isset($this->tabledata[$i][$name]['class'])) ? $this->tabledata[$i][$name]['class'] : '';
                 $colspan = (isset($this->tabledata[$i][$name]['colspan'])) ? "colspan='".$this->tabledata[$i][$name]['colspan']."'" : '';
                 $content = (isset($this->tabledata[$i][$name]['content'])) ? $this->tabledata[$i][$name]['content'] : null;
+<<<<<<< HEAD
                 if (isset($content)) {
                     $html .= "<td class='$class' $colspan>$content</td>\n";
+=======
+                $celltype = (isset($this->tabledata[$i][$name]['celltype'])) ? $this->tabledata[$i][$name]['celltype'] : 'td';
+                $id = (isset($this->tabledata[$i][$name]['id'])) ? "id='{$this->tabledata[$i][$name]['id']}'" : '';
+                $headers = (isset($this->tabledata[$i][$name]['headers'])) ? "headers='{$this->tabledata[$i][$name]['headers']}'" : '';
+                if (isset($content)) {
+                    $html .= "<$celltype $id $headers class='$class' $colspan>$content</$celltype>\n";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
             $html .= "</tr>\n";
@@ -876,7 +979,11 @@ function grade_report_user_profilereport($course, $user) {
     global $OUTPUT;
     if (!empty($course->showgrades)) {
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         //first make sure we have proper final grades - this must be done before constructing of the grade tree
         grade_regrade_final_grades($course->id);

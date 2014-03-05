@@ -35,12 +35,20 @@ require_once("$CFG->dirroot/group/lib.php");
 
 // Must have the sesskey
 $id      = required_param('id', PARAM_INT); // course id
+<<<<<<< HEAD
 $action  = required_param('action', PARAM_ACTION);
+=======
+$action  = required_param('action', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_url(new moodle_url('/enrol/ajax.php', array('id'=>$id, 'action'=>$action)));
 
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($course->id == SITEID) {
     throw new moodle_exception('invalidcourse');
@@ -59,11 +67,20 @@ $outcome->success = true;
 $outcome->response = new stdClass();
 $outcome->error = '';
 
+<<<<<<< HEAD
+=======
+$searchanywhere = get_user_preferences('userselector_searchanywhere', false);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 switch ($action) {
     case 'unenrol':
         $ue = $DB->get_record('user_enrolments', array('id'=>required_param('ue', PARAM_INT)), '*', MUST_EXIST);
         list ($instance, $plugin) = $manager->get_user_enrolment_components($ue);
+<<<<<<< HEAD
         if (!$instance || !$plugin || !$plugin->allow_unenrol_user($instance, $ue) || !has_capability("enrol/$instance->enrol:unenrol", $manager->get_context()) || !$manager->unenrol_user($ue)) {
+=======
+        if (!$instance || !$plugin || !enrol_is_enabled($instance->enrol) || !$plugin->allow_unenrol_user($instance, $ue) || !has_capability("enrol/$instance->enrol:unenrol", $manager->get_context()) || !$manager->unenrol_user($ue)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             throw new enrol_ajax_exception('unenrolnotpermitted');
         }
         break;
@@ -90,6 +107,7 @@ switch ($action) {
         $outcome->response = array_reverse($manager->get_assignable_roles($otheruserroles), true);
         break;
     case 'searchotherusers':
+<<<<<<< HEAD
         $search  = optional_param('search', '', PARAM_RAW);
         $page = optional_param('page', 0, PARAM_INT);
         $outcome->response = $manager->search_other_users($search, false, $page);
@@ -97,6 +115,29 @@ switch ($action) {
             $user->userId = $user->id;
             $user->picture = $OUTPUT->user_picture($user);
             $user->fullname = fullname($user);
+=======
+        $search = optional_param('search', '', PARAM_RAW);
+        $page = optional_param('page', 0, PARAM_INT);
+        $outcome->response = $manager->search_other_users($search, $searchanywhere, $page);
+        $extrafields = get_extra_user_fields($context);
+        $useroptions = array();
+        // User is not enrolled, either link to site profile or do not link at all.
+        if (has_capability('moodle/user:viewdetails', context_system::instance())) {
+            $useroptions['courseid'] = SITEID;
+        } else {
+            $useroptions['link'] = false;
+        }
+        foreach ($outcome->response['users'] as &$user) {
+            $user->userId = $user->id;
+            $user->picture = $OUTPUT->user_picture($user, $useroptions);
+            $user->fullname = fullname($user);
+            $fieldvalues = array();
+            foreach ($extrafields as $field) {
+                $fieldvalues[] = s($user->{$field});
+                unset($user->{$field});
+            }
+            $user->extrafields = implode(', ', $fieldvalues);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             unset($user->id);
         }
         // Chrome will display users in the order of the array keys, so we need

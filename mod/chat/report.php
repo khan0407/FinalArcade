@@ -37,7 +37,11 @@
         print_error('coursemisconf');
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_context($context);
     $PAGE->set_heading($course->fullname);
 
@@ -113,7 +117,11 @@
                     'end'   => $end,
                 );
                 $button = new portfolio_add_button();
+<<<<<<< HEAD
                 $button->set_callback_options('chat_portfolio_caller', $buttonoptions, '/mod/chat/locallib.php');
+=======
+                $button->set_callback_options('chat_portfolio_caller', $buttonoptions, 'mod_chat');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $button->render();
             }
             echo $OUTPUT->box_end();
@@ -239,7 +247,11 @@
                         'end'   => $sessionend,
                     );
                     $button = new portfolio_add_button();
+<<<<<<< HEAD
                     $button->set_callback_options('chat_portfolio_caller', $buttonoptions, '/mod/chat/locallib.php');
+=======
+                    $button->set_callback_options('chat_portfolio_caller', $buttonoptions, 'mod_chat');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $portfoliobutton = $button->to_html(PORTFOLIO_ADD_TEXT_LINK);
                     if (!empty($portfoliobutton)) {
                         echo '<br />' . $portfoliobutton;
@@ -265,7 +277,11 @@
     if (!empty($CFG->enableportfolios) && $canexportsess) {
         require_once($CFG->libdir . '/portfoliolib.php');
         $button = new portfolio_add_button();
+<<<<<<< HEAD
         $button->set_callback_options('chat_portfolio_caller', array('id' => $cm->id), '/mod/chat/locallib.php');
+=======
+        $button->set_callback_options('chat_portfolio_caller', array('id' => $cm->id), 'mod_chat');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $button->render(null, get_string('addalltoportfolio', 'portfolio'));
     }
 

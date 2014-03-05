@@ -53,8 +53,17 @@ class qformat_blackboard_six_qti_test extends question_testcase {
         $questions = $importer->readquestions($xml);
         $q = $questions[3];
 
+<<<<<<< HEAD
         $expectedq = new stdClass();
         $expectedq->qtype = 'match';
+=======
+        // If qtype_ddmatch is installed, the formatter produces ddmatch
+        // qtypes, not match ones.
+        $ddmatchisinstalled = question_bank::is_qtype_installed('ddmatch');
+
+        $expectedq = new stdClass();
+        $expectedq->qtype = $ddmatchisinstalled ? 'ddmatch' : 'match';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $expectedq->name = 'Classify the animals.';
         $expectedq->questiontext = 'Classify the animals.';
         $expectedq->questiontextformat = FORMAT_HTML;
@@ -75,7 +84,20 @@ class qformat_blackboard_six_qti_test extends question_testcase {
             array('text' => 'cat', 'format' => FORMAT_HTML),
             array('text' => 'frog', 'format' => FORMAT_HTML),
             array('text' => 'newt', 'format' => FORMAT_HTML));
+<<<<<<< HEAD
         $expectedq->subanswers = array('insect', 'mammal', 'amphibian', 'amphibian');
+=======
+        if ($ddmatchisinstalled) {
+            $expectedq->subanswers = array(
+                array('text' => 'insect', 'format' => FORMAT_HTML),
+                array('text' => 'mammal', 'format' => FORMAT_HTML),
+                array('text' => 'amphibian', 'format' => FORMAT_HTML),
+                array('text' => 'amphibian', 'format' => FORMAT_HTML),
+            );
+        } else {
+            $expectedq->subanswers = array('insect', 'mammal', 'amphibian', 'amphibian');
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }

@@ -371,11 +371,14 @@ class global_navigation_testcase extends basic_testcase {
         $res3 = $section2->add('resource 3', null, navigation_node::TYPE_RESOURCE, null, 'res3');
     }
 
+<<<<<<< HEAD
     public function test_format_display_course_content() {
         $this->assertTrue($this->node->exposed_format_display_course_content('topic'));
         $this->assertFalse($this->node->exposed_format_display_course_content('scorm'));
         $this->assertTrue($this->node->exposed_format_display_course_content('dummy'));
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     public function test_module_extends_navigation() {
         $this->assertTrue($this->node->exposed_module_extends_navigation('data'));
         $this->assertFalse($this->node->exposed_module_extends_navigation('test1'));

@@ -28,7 +28,11 @@
         require_login();
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (!$course->visible and !has_capability('moodle/course:viewhiddencourses', $context)) {
         print_error('coursehidden', '', $CFG->wwwroot .'/');
     }
@@ -51,6 +55,7 @@
         echo $OUTPUT->box_end();
     }
 
+<<<<<<< HEAD
     echo $OUTPUT->box_start('generalbox info');
 
     $course->summary = file_rewrite_pluginfile_urls($course->summary, 'pluginfile.php', $context->id, 'course', 'summary', NULL);
@@ -80,6 +85,10 @@
 // TODO: print some enrol icons
 
     echo $OUTPUT->box_end();
+=======
+    $courserenderer = $PAGE->get_renderer('core', 'course');
+    echo $courserenderer->course_info_box($course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     echo "<br />";
 

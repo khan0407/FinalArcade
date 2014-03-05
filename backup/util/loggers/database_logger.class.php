@@ -59,7 +59,17 @@ class database_logger extends base_logger {
         if ($this->levelcol) {
             $columns[$this->levelcol] = $level;
         }
+<<<<<<< HEAD
         $columns[$this->messagecol] = $message; //TODO: should this be cleaned?
+=======
+        $message = clean_param($message, PARAM_NOTAGS);
+        // Check if the message exceeds the 255 character limit in the database,
+        // if it does, shorten it so that it can be inserted successfully.
+        if (textlib::strlen($message) > 255) {
+            $message = textlib::substr($message, 0, 252) . '...';
+        }
+        $columns[$this->messagecol] = $message;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $this->insert_log_record($this->logtable, $columns);
     }
 
@@ -69,6 +79,10 @@ class database_logger extends base_logger {
         // to preserve DB logs if the whole backup/restore transaction is
         // rollback
         global $DB;
+<<<<<<< HEAD
         return $DB->insert_record($this->logtable, $columns, false); // Don't return inserted id
+=======
+        return $DB->insert_record($table, $columns, false); // Don't return inserted id
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }

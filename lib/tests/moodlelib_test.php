@@ -41,8 +41,16 @@ class moodlelib_testcase extends advanced_testcase {
             '6.0' => array('Windows XP SP2' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)'),
             '7.0' => array('Windows XP SP2' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; YPC 3.0.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)'),
             '8.0' => array('Windows Vista' => 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 1.1.4322; .NET CLR 3.0.04506.30; .NET CLR 3.0.04506.648)'),
+<<<<<<< HEAD
             '9.0' => array('Windows 7' => 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))'),
 
+=======
+            '9.0' => array('Windows 7' => 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)'),
+            '9.0i' => array('Windows 7' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)'),
+            '10.0' => array('Windows 8' => 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; Touch)'),
+            '10.0i' => array('Windows 8' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.2; Trident/6.0; Touch; .NET4.0E; .NET4.0C; Tablet PC 2.0)'),
+            '11.0' => array('Windows 8.1' => 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0)'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         ),
         'Firefox' => array(
             '1.0.6'   => array('Windows XP' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6'),
@@ -276,6 +284,41 @@ class moodlelib_testcase extends advanced_testcase {
         $this->assertTrue(check_browser_version('MSIE', '9.0'));
         $this->assertFalse(check_browser_version('MSIE', '10'));
 
+<<<<<<< HEAD
+=======
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['9.0i']['Windows 7'];
+        $this->assertTrue(check_browser_version('MSIE'));
+        $this->assertTrue(check_browser_version('MSIE', 0));
+        $this->assertTrue(check_browser_version('MSIE', '5.0'));
+        $this->assertTrue(check_browser_version('MSIE', '9.0'));
+        $this->assertFalse(check_browser_version('MSIE', '10'));
+
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['10.0']['Windows 8'];
+        $this->assertTrue(check_browser_version('MSIE'));
+        $this->assertTrue(check_browser_version('MSIE', 0));
+        $this->assertTrue(check_browser_version('MSIE', '5.0'));
+        $this->assertTrue(check_browser_version('MSIE', '9.0'));
+        $this->assertTrue(check_browser_version('MSIE', '10'));
+        $this->assertFalse(check_browser_version('MSIE', '11'));
+
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['10.0i']['Windows 8'];
+        $this->assertTrue(check_browser_version('MSIE'));
+        $this->assertTrue(check_browser_version('MSIE', 0));
+        $this->assertTrue(check_browser_version('MSIE', '5.0'));
+        $this->assertTrue(check_browser_version('MSIE', '9.0'));
+        $this->assertTrue(check_browser_version('MSIE', '10'));
+        $this->assertFalse(check_browser_version('MSIE', '11'));
+
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['11.0']['Windows 8.1'];
+        $this->assertTrue(check_browser_version('MSIE'));
+        $this->assertTrue(check_browser_version('MSIE', 0));
+        $this->assertTrue(check_browser_version('MSIE', '5.0'));
+        $this->assertTrue(check_browser_version('MSIE', '9.0'));
+        $this->assertTrue(check_browser_version('MSIE', '10'));
+        $this->assertTrue(check_browser_version('MSIE', '11'));
+        $this->assertFalse(check_browser_version('MSIE', '12'));
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['Firefox']['2.0']['Windows XP'];
         $this->assertTrue(check_browser_version('Firefox'));
         $this->assertTrue(check_browser_version('Firefox', '1.5'));
@@ -417,6 +460,21 @@ class moodlelib_testcase extends advanced_testcase {
         $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['8.0']['Windows Vista'];
         $this->assertEquals(array('ie', 'ie8'), get_browser_version_classes());
 
+<<<<<<< HEAD
+=======
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['9.0']['Windows 7'];
+        $this->assertEquals(array('ie', 'ie9'), get_browser_version_classes());
+
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['9.0i']['Windows 7'];
+        $this->assertEquals(array('ie', 'ie9'), get_browser_version_classes());
+
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['10.0']['Windows 8'];
+        $this->assertEquals(array('ie', 'ie10'), get_browser_version_classes());
+
+        $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['MSIE']['10.0i']['Windows 8'];
+        $this->assertEquals(array('ie', 'ie10'), get_browser_version_classes());
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $_SERVER['HTTP_USER_AGENT'] = $this->user_agents['Firefox']['2.0']['Windows XP'];
         $this->assertEquals(array('gecko', 'gecko18'), get_browser_version_classes());
 
@@ -496,6 +554,7 @@ class moodlelib_testcase extends advanced_testcase {
         }
 
         // make sure warning is displayed if array submitted - TODO: throw exception in Moodle 2.3
+<<<<<<< HEAD
         $debugging = isset($CFG->debug) ? $CFG->debug : null;
         $debugdisplay = isset($CFG->debugdisplay) ? $CFG->debugdisplay : null;
         $CFG->debug = DEBUG_DEVELOPER;
@@ -516,6 +575,11 @@ class moodlelib_testcase extends advanced_testcase {
         } else {
             unset($CFG->debugdisplay);
         }
+=======
+        $_POST['username'] = array('a'=>'a');
+        $this->assertSame(optional_param('username', 'default_user', PARAM_RAW), $_POST['username']);
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function test_optional_param_array() {
@@ -568,6 +632,7 @@ class moodlelib_testcase extends advanced_testcase {
         }
 
         // do not allow non-arrays
+<<<<<<< HEAD
         $debugging = isset($CFG->debug) ? $CFG->debug : null;
         $debugdisplay = isset($CFG->debugdisplay) ? $CFG->debugdisplay : null;
         $CFG->debug = DEBUG_DEVELOPER;
@@ -596,6 +661,16 @@ class moodlelib_testcase extends advanced_testcase {
         } else {
             unset($CFG->debugdisplay);
         }
+=======
+        $_POST['username'] = 'post_user';
+        $this->assertSame(optional_param_array('username', array('a'=>'default_user'), PARAM_RAW), array('a'=>'default_user'));
+        $this->assertDebuggingCalled();
+
+        // make sure array keys are sanitised
+        $_POST['username'] = array('abc123_;-/*-+ '=>'arrggh', 'a1_-'=>'post_user');
+        $this->assertSame(optional_param_array('username', array(), PARAM_RAW), array('a1_-'=>'post_user'));
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function test_required_param() {
@@ -638,6 +713,7 @@ class moodlelib_testcase extends advanced_testcase {
         }
 
         // make sure warning is displayed if array submitted - TODO: throw exception in Moodle 2.3
+<<<<<<< HEAD
         $debugging = isset($CFG->debug) ? $CFG->debug : null;
         $debugdisplay = isset($CFG->debugdisplay) ? $CFG->debugdisplay : null;
         $CFG->debug = DEBUG_DEVELOPER;
@@ -658,6 +734,11 @@ class moodlelib_testcase extends advanced_testcase {
         } else {
             unset($CFG->debugdisplay);
         }
+=======
+        $_POST['username'] = array('a'=>'a');
+        $this->assertSame(required_param('username', PARAM_RAW), $_POST['username']);
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function test_required_param_array() {
@@ -709,6 +790,7 @@ class moodlelib_testcase extends advanced_testcase {
             $this->assertTrue(true);
         }
 
+<<<<<<< HEAD
         // do not allow non-arrays
         $debugging = isset($CFG->debug) ? $CFG->debug : null;
         $debugdisplay = isset($CFG->debugdisplay) ? $CFG->debugdisplay : null;
@@ -732,6 +814,12 @@ class moodlelib_testcase extends advanced_testcase {
         } else {
             unset($CFG->debugdisplay);
         }
+=======
+        // make sure array keys are sanitised
+        $_POST['username'] = array('abc123_;-/*-+ '=>'arrggh', 'a1_-'=>'post_user');
+        $this->assertSame(required_param_array('username', PARAM_RAW), array('a1_-'=>'post_user'));
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function test_clean_param() {
@@ -2287,8 +2375,11 @@ class moodlelib_testcase extends advanced_testcase {
             $this->assertTrue(true);
         }
 
+<<<<<<< HEAD
         $CFG->debug = DEBUG_MINIMAL; // Prevent standard debug warnings.
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $record = new stdClass();
         $record->id = 666;
         $record->username = 'xx';
@@ -2301,6 +2392,11 @@ class moodlelib_testcase extends advanced_testcase {
 
         $result = delete_user($admin);
         $this->assertFalse($result);
+<<<<<<< HEAD
+=======
+
+        $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -2382,4 +2478,39 @@ class moodlelib_testcase extends advanced_testcase {
         date_default_timezone_set($systemdefaulttimezone);
         setlocale(LC_TIME, $oldlocale);
     }
+<<<<<<< HEAD
+=======
+
+    public function test_email_to_user() {
+        $this->resetAfterTest();
+
+        $user1 = $this->getDataGenerator()->create_user();
+        $user2 = $this->getDataGenerator()->create_user();
+
+        $subject = 'subject';
+        $messagetext = 'message text';
+        $subject2 = 'subject 2';
+        $messagetext2 = 'message text 2';
+
+        unset_config('noemailever');
+
+        $sink = $this->redirectEmails();
+        email_to_user($user1, $user2, $subject, $messagetext);
+        email_to_user($user2, $user1, $subject2, $messagetext2);
+        $this->assertSame(2, $sink->count());
+        $result = $sink->get_messages();
+        $this->assertCount(2, $result);
+        $sink->close();
+
+        $this->assertSame($subject, $result[0]->subject);
+        $this->assertSame($messagetext, trim($result[0]->body));
+        $this->assertSame($user1->email, $result[0]->to);
+        $this->assertSame($user2->email, $result[0]->from);
+
+        $this->assertSame($subject2, $result[1]->subject);
+        $this->assertSame($messagetext2, trim($result[1]->body));
+        $this->assertSame($user2->email, $result[1]->to);
+        $this->assertSame($user1->email, $result[1]->from);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

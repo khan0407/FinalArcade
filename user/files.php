@@ -38,7 +38,11 @@ if (empty($returnurl)) {
     $returnurl = new moodle_url('/user/files.php');
 }
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+$context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/user:manageownfiles', $context);
 
 $title = get_string('myfiles');
@@ -51,9 +55,23 @@ $PAGE->set_heading($title);
 $PAGE->set_pagelayout('mydashboard');
 $PAGE->set_pagetype('user-files');
 
+<<<<<<< HEAD
 $data = new stdClass();
 $data->returnurl = $returnurl;
 $options = array('subdirs'=>1, 'maxbytes'=>$CFG->userquota, 'maxfiles'=>-1, 'accepted_types'=>'*');
+=======
+$maxbytes = $CFG->userquota;
+$maxareabytes = $CFG->userquota;
+if (has_capability('moodle/user:ignoreuserquota', $context)) {
+    $maxbytes = USER_CAN_IGNORE_FILE_SIZE_LIMITS;
+    $maxareabytes = FILE_AREA_MAX_BYTES_UNLIMITED;
+}
+
+$data = new stdClass();
+$data->returnurl = $returnurl;
+$options = array('subdirs' => 1, 'maxbytes' => $maxbytes, 'maxfiles' => -1, 'accepted_types' => '*',
+        'areamaxbytes' => $maxareabytes);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 file_prepare_standard_filemanager($data, 'files', $options, $context, 'user', 'private', 0);
 
 $mform = new user_files_form(null, array('data'=>$data, 'options'=>$options));

@@ -106,7 +106,11 @@ class backup_gradingform_rubric_plugin extends backup_gradingform_plugin {
 
         // Set sources to populate the data
 
+<<<<<<< HEAD
         // MDL-32499 Binding criterionid to ensure it's existence
+=======
+        // Binding criterionid to ensure it's existence
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $filling->set_source_sql('SELECT rf.*
                 FROM {gradingform_rubric_fillings} rf
                 JOIN {grading_instances} gi ON gi.id = rf.instanceid

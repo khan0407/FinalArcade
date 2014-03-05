@@ -17,8 +17,12 @@
 /**
  * Local stuff for cohort enrolment plugin.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage cohort
+=======
+ * @package    enrol_cohort
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,18 +40,31 @@ require_once($CFG->dirroot . '/enrol/locallib.php');
  */
 class enrol_cohort_handler {
     /**
+<<<<<<< HEAD
      * Event processor - cohort member added
+=======
+     * Event processor - cohort member added.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param stdClass $ca
      * @return bool
      */
     public static function member_added($ca) {
+<<<<<<< HEAD
         global $DB;
+=======
+        global $DB, $CFG;
+        require_once("$CFG->dirroot/group/lib.php");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!enrol_is_enabled('cohort')) {
             return true;
         }
 
+<<<<<<< HEAD
         // does any enabled cohort instance want to sync with this cohort?
+=======
+        // Does any enabled cohort instance want to sync with this cohort?
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $sql = "SELECT e.*, r.id as roleexists
                   FROM {enrol} e
              LEFT JOIN {role} r ON (r.id = e.roleid)
@@ -60,6 +77,7 @@ class enrol_cohort_handler {
         $plugin = enrol_get_plugin('cohort');
         foreach ($instances as $instance) {
             if ($instance->status != ENROL_INSTANCE_ENABLED ) {
+<<<<<<< HEAD
                 // no roles for disabled instances
                 $instance->roleid = 0;
             } else if ($instance->roleid and !$instance->roleexists) {
@@ -69,20 +87,48 @@ class enrol_cohort_handler {
             unset($instance->roleexists);
             // no problem if already enrolled
             $plugin->enrol_user($instance, $ca->userid, $instance->roleid, 0, 0, ENROL_USER_ACTIVE);
+=======
+                // No roles for disabled instances.
+                $instance->roleid = 0;
+            } else if ($instance->roleid and !$instance->roleexists) {
+                // Invalid role - let's just enrol, they will have to create new sync and delete this one.
+                $instance->roleid = 0;
+            }
+            unset($instance->roleexists);
+            // No problem if already enrolled.
+            $plugin->enrol_user($instance, $ca->userid, $instance->roleid, 0, 0, ENROL_USER_ACTIVE);
+
+            // Sync groups.
+            if ($instance->customint2) {
+                if (!groups_is_member($instance->customint2, $ca->userid)) {
+                    if ($group = $DB->get_record('groups', array('id'=>$instance->customint2, 'courseid'=>$instance->courseid))) {
+                        groups_add_member($group->id, $ca->userid, 'enrol_cohort', $instance->id);
+                    }
+                }
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return true;
     }
 
     /**
+<<<<<<< HEAD
      * Event processor - cohort member removed
+=======
+     * Event processor - cohort member removed.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param stdClass $ca
      * @return bool
      */
     public static function member_removed($ca) {
         global $DB;
 
+<<<<<<< HEAD
         // does anything want to sync with this cohort?
+=======
+        // Does anything want to sync with this cohort?
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!$instances = $DB->get_records('enrol', array('customint1'=>$ca->cohortid, 'enrol'=>'cohort'), 'id ASC')) {
             return true;
         }
@@ -110,14 +156,22 @@ class enrol_cohort_handler {
     }
 
     /**
+<<<<<<< HEAD
      * Event processor - cohort deleted
+=======
+     * Event processor - cohort deleted.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param stdClass $cohort
      * @return bool
      */
     public static function deleted($cohort) {
         global $DB;
 
+<<<<<<< HEAD
         // does anything want to sync with this cohort?
+=======
+        // Does anything want to sync with this cohort?
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!$instances = $DB->get_records('enrol', array('customint1'=>$cohort->id, 'enrol'=>'cohort'), 'id ASC')) {
             return true;
         }
@@ -148,8 +202,14 @@ class enrol_cohort_handler {
  */
 function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     global $CFG, $DB;
+<<<<<<< HEAD
 
     // purge all roles if cohort sync disabled, those can be recreated later here by cron or CLI
+=======
+    require_once("$CFG->dirroot/group/lib.php");
+
+    // Purge all roles if cohort sync disabled, those can be recreated later here by cron or CLI.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (!enrol_is_enabled('cohort')) {
         if ($verbose) {
             mtrace('Cohort sync plugin is disabled, unassigning all plugin roles and stopping.');
@@ -158,7 +218,11 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
         return 2;
     }
 
+<<<<<<< HEAD
     // unfortunately this may take a long time, this script can be interrupted without problems
+=======
+    // Unfortunately this may take a long time, this script can be interrupted without problems.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     @set_time_limit(0);
     raise_memory_limit(MEMORY_HUGE);
 
@@ -173,11 +237,19 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     $unenrolaction = $plugin->get_config('unenrolaction', ENROL_EXT_REMOVED_UNENROL);
 
 
+<<<<<<< HEAD
     // iterate through all not enrolled yet users
+=======
+    // Iterate through all not enrolled yet users.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $onecourse = $courseid ? "AND e.courseid = :courseid" : "";
     $sql = "SELECT cm.userid, e.id AS enrolid, ue.status
               FROM {cohort_members} cm
               JOIN {enrol} e ON (e.customint1 = cm.cohortid AND e.enrol = 'cohort' $onecourse)
+<<<<<<< HEAD
+=======
+              JOIN {user} u ON (u.id = cm.userid AND u.deleted = 0)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
          LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = cm.userid)
              WHERE ue.id IS NULL OR ue.status = :suspended";
     $params = array();
@@ -204,7 +276,11 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     $rs->close();
 
 
+<<<<<<< HEAD
     // unenrol as necessary
+=======
+    // Unenrol as necessary.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $sql = "SELECT ue.*, e.courseid
               FROM {user_enrolments} ue
               JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = 'cohort' $onecourse)
@@ -217,14 +293,22 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
         }
         $instance = $instances[$ue->enrolid];
         if ($unenrolaction == ENROL_EXT_REMOVED_UNENROL) {
+<<<<<<< HEAD
             // remove enrolment together with group membership, grades, preferences, etc.
+=======
+            // Remove enrolment together with group membership, grades, preferences, etc.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $plugin->unenrol_user($instance, $ue->userid);
             if ($verbose) {
                 mtrace("  unenrolling: $ue->userid ==> $instance->courseid via cohort $instance->customint1");
             }
 
         } else { // ENROL_EXT_REMOVED_SUSPENDNOROLES
+<<<<<<< HEAD
             // just disable and ignore any changes
+=======
+            // Just disable and ignore any changes.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if ($ue->status != ENROL_USER_SUSPENDED) {
                 $plugin->update_user_enrol($instance, $ue->userid, ENROL_USER_SUSPENDED);
                 $context = context_course::instance($instance->courseid);
@@ -239,13 +323,21 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     unset($instances);
 
 
+<<<<<<< HEAD
     // now assign all necessary roles to enrolled users - skip suspended instances and users
+=======
+    // Now assign all necessary roles to enrolled users - skip suspended instances and users.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $onecourse = $courseid ? "AND e.courseid = :courseid" : "";
     $sql = "SELECT e.roleid, ue.userid, c.id AS contextid, e.id AS itemid, e.courseid
               FROM {user_enrolments} ue
               JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = 'cohort' AND e.status = :statusenabled $onecourse)
               JOIN {role} r ON (r.id = e.roleid)
               JOIN {context} c ON (c.instanceid = e.courseid AND c.contextlevel = :coursecontext)
+<<<<<<< HEAD
+=======
+              JOIN {user} u ON (u.id = ue.userid AND u.deleted = 0)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
          LEFT JOIN {role_assignments} ra ON (ra.contextid = c.id AND ra.userid = ue.userid AND ra.itemid = e.id AND ra.component = 'enrol_cohort' AND e.roleid = ra.roleid)
              WHERE ue.status = :useractive AND ra.id IS NULL";
     $params = array();
@@ -264,7 +356,11 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     $rs->close();
 
 
+<<<<<<< HEAD
     // remove unwanted roles - sync role can not be changed, we only remove role when unenrolled
+=======
+    // Remove unwanted roles - sync role can not be changed, we only remove role when unenrolled.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $onecourse = $courseid ? "AND e.courseid = :courseid" : "";
     $sql = "SELECT ra.roleid, ra.userid, ra.contextid, ra.itemid, e.courseid
               FROM {role_assignments} ra
@@ -288,6 +384,52 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     $rs->close();
 
 
+<<<<<<< HEAD
+=======
+    // Finally sync groups.
+    $onecourse = $courseid ? "AND e.courseid = :courseid" : "";
+
+    // Remove invalid.
+    $sql = "SELECT gm.*, e.courseid, g.name AS groupname
+              FROM {groups_members} gm
+              JOIN {groups} g ON (g.id = gm.groupid)
+              JOIN {enrol} e ON (e.enrol = 'cohort' AND e.courseid = g.courseid $onecourse)
+              JOIN {user_enrolments} ue ON (ue.userid = gm.userid AND ue.enrolid = e.id)
+             WHERE gm.component='enrol_cohort' AND gm.itemid = e.id AND g.id <> e.customint2";
+    $params = array();
+    $params['courseid'] = $courseid;
+
+    $rs = $DB->get_recordset_sql($sql, $params);
+    foreach($rs as $gm) {
+        groups_remove_member($gm->groupid, $gm->userid);
+        if ($verbose) {
+            mtrace("  removing user from group: $gm->userid ==> $gm->courseid - $gm->groupname");
+        }
+    }
+    $rs->close();
+
+    // Add missing.
+    $sql = "SELECT ue.*, g.id AS groupid, e.courseid, g.name AS groupname
+              FROM {user_enrolments} ue
+              JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = 'cohort' $onecourse)
+              JOIN {groups} g ON (g.courseid = e.courseid AND g.id = e.customint2)
+              JOIN {user} u ON (u.id = ue.userid AND u.deleted = 0)
+         LEFT JOIN {groups_members} gm ON (gm.groupid = g.id AND gm.userid = ue.userid)
+             WHERE gm.id IS NULL";
+    $params = array();
+    $params['courseid'] = $courseid;
+
+    $rs = $DB->get_recordset_sql($sql, $params);
+    foreach($rs as $ue) {
+        groups_add_member($ue->groupid, $ue->userid, 'enrol_cohort', $ue->enrolid);
+        if ($verbose) {
+            mtrace("  adding user to group: $ue->userid ==> $ue->courseid - $ue->groupname");
+        }
+    }
+    $rs->close();
+
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($verbose) {
         mtrace('...user enrolment synchronisation finished.');
     }
@@ -328,8 +470,13 @@ function enrol_cohort_enrol_all_users(course_enrolment_manager $manager, $cohort
               FROM {cohort_members} com
          LEFT JOIN (
                 SELECT *
+<<<<<<< HEAD
                 FROM {user_enrolments} ue
                 WHERE ue.enrolid = :enrolid
+=======
+                  FROM {user_enrolments} ue
+                 WHERE ue.enrolid = :enrolid
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                  ) ue ON ue.userid=com.userid
              WHERE com.cohortid = :cohortid AND ue.id IS NULL";
     $params = array('cohortid' => $cohortid, 'enrolid' => $instance->id);
@@ -362,6 +509,7 @@ function enrol_cohort_get_cohorts(course_enrolment_manager $manager) {
         }
     }
     list($sqlparents, $params) = $DB->get_in_or_equal(get_parent_contexts($context));
+<<<<<<< HEAD
     $sql = "SELECT id, name, contextid
               FROM {cohort}
              WHERE contextid $sqlparents
@@ -369,12 +517,25 @@ function enrol_cohort_get_cohorts(course_enrolment_manager $manager) {
     $rs = $DB->get_recordset_sql($sql, $params);
     foreach ($rs as $c) {
         $context = get_context_instance_by_id($c->contextid);
+=======
+    $sql = "SELECT id, name, idnumber, contextid
+              FROM {cohort}
+             WHERE contextid $sqlparents
+          ORDER BY name ASC, idnumber ASC";
+    $rs = $DB->get_recordset_sql($sql, $params);
+    foreach ($rs as $c) {
+        $context = context::instance_by_id($c->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!has_capability('moodle/cohort:view', $context)) {
             continue;
         }
         $cohorts[$c->id] = array(
             'cohortid'=>$c->id,
+<<<<<<< HEAD
             'name'=>format_string($c->name),
+=======
+            'name'=>format_string($c->name, true, array('context'=>context::instance_by_id($c->contextid))),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'users'=>$DB->count_records('cohort_members', array('cohortid'=>$c->id)),
             'enrolled'=>in_array($c->id, $enrolled)
         );
@@ -384,7 +545,11 @@ function enrol_cohort_get_cohorts(course_enrolment_manager $manager) {
 }
 
 /**
+<<<<<<< HEAD
  * Check if cohort exists and user is allowed to enrol it
+=======
+ * Check if cohort exists and user is allowed to enrol it.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * @global moodle_database $DB
  * @param int $cohortid Cohort ID
@@ -394,7 +559,11 @@ function enrol_cohort_can_view_cohort($cohortid) {
     global $DB;
     $cohort = $DB->get_record('cohort', array('id' => $cohortid), 'id, contextid');
     if ($cohort) {
+<<<<<<< HEAD
         $context = get_context_instance_by_id($cohort->contextid);
+=======
+        $context = context::instance_by_id($cohort->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('moodle/cohort:view', $context)) {
             return true;
         }
@@ -424,27 +593,43 @@ function enrol_cohort_search_cohorts(course_enrolment_manager $manager, $offset 
         }
     }
 
+<<<<<<< HEAD
     list($sqlparents, $params) = $DB->get_in_or_equal(get_parent_contexts($context));
 
     // Add some additional sensible conditions
     $tests = array('contextid ' . $sqlparents);
 
     // Modify the query to perform the search if required
+=======
+    list($sqlparents, $params) = $DB->get_in_or_equal($context->get_parent_context_ids());
+
+    // Add some additional sensible conditions.
+    $tests = array('contextid ' . $sqlparents);
+
+    // Modify the query to perform the search if required.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (!empty($search)) {
         $conditions = array(
             'name',
             'idnumber',
             'description'
         );
+<<<<<<< HEAD
         $searchparam = '%' . $search . '%';
         foreach ($conditions as $key=>$condition) {
             $conditions[$key] = $DB->sql_like($condition,"?", false);
+=======
+        $searchparam = '%' . $DB->sql_like_escape($search) . '%';
+        foreach ($conditions as $key=>$condition) {
+            $conditions[$key] = $DB->sql_like($condition, "?", false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $params[] = $searchparam;
         }
         $tests[] = '(' . implode(' OR ', $conditions) . ')';
     }
     $wherecondition = implode(' AND ', $tests);
 
+<<<<<<< HEAD
     $fields = 'SELECT id, name, contextid, description';
     $countfields = 'SELECT COUNT(1)';
     $sql = " FROM {cohort}
@@ -458,23 +643,54 @@ function enrol_cohort_search_cohorts(course_enrolment_manager $manager, $offset 
         $offset++;
         // Check capabilities
         $context = get_context_instance_by_id($c->contextid);
+=======
+    $sql = "SELECT id, name, idnumber, contextid, description
+              FROM {cohort}
+             WHERE $wherecondition
+          ORDER BY name ASC, idnumber ASC";
+    $rs = $DB->get_recordset_sql($sql, $params, $offset);
+
+    // Produce the output respecting parameters.
+    foreach ($rs as $c) {
+        // Track offset.
+        $offset++;
+        // Check capabilities.
+        $context = context::instance_by_id($c->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!has_capability('moodle/cohort:view', $context)) {
             continue;
         }
         if ($limit === 0) {
+<<<<<<< HEAD
             // we have reached the required number of items and know that there are more, exit now
+=======
+            // We have reached the required number of items and know that there are more, exit now.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $offset--;
             break;
         }
         $cohorts[$c->id] = array(
+<<<<<<< HEAD
             'cohortid'=>$c->id,
             'name'=>  shorten_text(format_string($c->name), 35),
             'users'=>$DB->count_records('cohort_members', array('cohortid'=>$c->id)),
             'enrolled'=>in_array($c->id, $enrolled)
         );
         // Count items
+=======
+            'cohortid' => $c->id,
+            'name'     => shorten_text(format_string($c->name, true, array('context'=>context::instance_by_id($c->contextid))), 35),
+            'users'    => $DB->count_records('cohort_members', array('cohortid'=>$c->id)),
+            'enrolled' => in_array($c->id, $enrolled)
+        );
+        // Count items.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $limit--;
     }
     $rs->close();
     return array('more' => !(bool)$limit, 'offset' => $offset, 'cohorts' => $cohorts);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

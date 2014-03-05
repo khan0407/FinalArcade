@@ -556,7 +556,11 @@ class generator {
                         $module->name = ucfirst($moduledata->name) . ' ' . $moduledata->count++;
 
                         $module->course = $courseid;
+<<<<<<< HEAD
                         $module->section = $i;
+=======
+                        $module->section = 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $module->module = $moduledata->id;
                         $module->modulename = $moduledata->name;
                         $module->add = $moduledata->name;
@@ -564,10 +568,14 @@ class generator {
                         $module->coursemodule = '';
                         $add_instance_function = $moduledata->name . '_add_instance';
 
+<<<<<<< HEAD
                         $section = get_course_section($i, $courseid);
                         $module->section = $section->id;
                         $module->coursemodule = add_course_module($module);
                         $module->section = $i;
+=======
+                        $module->coursemodule = add_course_module($module);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                         if (function_exists($add_instance_function)) {
                             $this->verbose("Calling module function $add_instance_function");
@@ -580,13 +588,20 @@ class generator {
                             }
                         }
 
+<<<<<<< HEAD
                         add_mod_to_section($module);
+=======
+                        $module->section = course_add_cm_to_section($courseid, $module->coursemodule, $i);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                         $module->cmidnumber = set_coursemodule_idnumber($module->coursemodule, '');
 
                         $this->verbose("A $moduledata->name module was added to section $i (id $module->section) "
                             ."of course $courseid.");
+<<<<<<< HEAD
                         rebuild_course_cache($courseid);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                         $module_instance = $DB->get_field('course_modules', 'instance', array('id' => $module->coursemodule));
                         $module_record = $DB->get_record($moduledata->name, array('id' => $module_instance));
@@ -706,7 +721,11 @@ class generator {
                 shuffle($users);
                 $users_to_assign = array_slice($users, 0, $this->get('students_per_course'));
 
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+                $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 foreach ($users_to_assign as $random_user) {
                     role_assign(5, $random_user, $context->id);
 

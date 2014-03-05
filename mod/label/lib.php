@@ -118,7 +118,11 @@ function label_delete_instance($id) {
  *
  * @global object
  * @param object $coursemodule
+<<<<<<< HEAD
  * @return object|null
+=======
+ * @return cached_cm_info|null
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 function label_get_coursemodule_info($coursemodule) {
     global $DB;

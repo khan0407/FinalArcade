@@ -42,7 +42,11 @@ if (count($args) == 2) {
     } else {
         $image = 'f2';
     }
+<<<<<<< HEAD
     if ($usercontext = get_context_instance(CONTEXT_USER, $userid)) {
+=======
+    if ($usercontext = context_user::instance($userid, IGNORE_MISSING)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $url = moodle_url::make_pluginfile_url($usercontext->id, 'user', 'icon', NULL, '/', $image);
         redirect($url);
     }

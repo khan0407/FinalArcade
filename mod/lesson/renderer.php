@@ -30,6 +30,7 @@ class mod_lesson_renderer extends plugin_renderer_base {
     /**
      * Returns the header for the lesson module
      *
+<<<<<<< HEAD
      * @param lesson $lesson
      * @param string $currenttab
      * @param bool $extraeditbuttons
@@ -44,6 +45,27 @@ class mod_lesson_renderer extends plugin_renderer_base {
 
         // Build the buttons
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+     * @param lesson $lesson a lesson object.
+     * @param string $currenttab current tab that is shown.
+     * @param bool   $extraeditbuttons if extra edit buttons should be displayed.
+     * @param int    $lessonpageid id of the lesson page that needs to be displayed.
+     * @param string $extrapagetitle String to appent to the page title.
+     * @return string
+     */
+    public function header($lesson, $cm, $currenttab = '', $extraeditbuttons = false, $lessonpageid = null, $extrapagetitle = null) {
+        global $CFG;
+
+        $activityname = format_string($lesson->name, true, $lesson->course);
+        if (empty($extrapagetitle)) {
+            $title = $this->page->course->shortname.": ".$activityname;
+        } else {
+            $title = $this->page->course->shortname.": ".$activityname.": ".$extrapagetitle;
+        }
+
+        // Build the buttons
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /// Header setup
         $this->page->set_title($title);
@@ -215,7 +237,11 @@ class mod_lesson_renderer extends plugin_renderer_base {
         $table->width = '80%';
         $table->data = array();
 
+<<<<<<< HEAD
         $canedit = has_capability('mod/lesson:edit', get_context_instance(CONTEXT_MODULE, $this->page->cm->id));
+=======
+        $canedit = has_capability('mod/lesson:edit', context_module::instance($this->page->cm->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         while ($pageid != 0) {
             $page = $lesson->load_page($pageid);
@@ -250,7 +276,11 @@ class mod_lesson_renderer extends plugin_renderer_base {
         $manager = lesson_page_type_manager::get($lesson);
         $qtypes = $manager->get_page_type_strings();
         $npages = count($lesson->load_all_pages());
+<<<<<<< HEAD
         $canedit = has_capability('mod/lesson:edit', get_context_instance(CONTEXT_MODULE, $this->page->cm->id));
+=======
+        $canedit = has_capability('mod/lesson:edit', context_module::instance($this->page->cm->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $content = '';
         if ($canedit) {
@@ -296,7 +326,13 @@ class mod_lesson_renderer extends plugin_renderer_base {
 
             $pagetable = $page->display_answers($pagetable);
 
+<<<<<<< HEAD
             $content .= html_writer::table($pagetable);
+=======
+            $content .= html_writer::start_tag('div', array('class' => 'no-overflow'));
+            $content .= html_writer::table($pagetable);
+            $content .= html_writer::end_tag('div');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if ($canedit) {
                 $content .= $this->add_page_links($lesson, $pageid);
@@ -449,7 +485,11 @@ class mod_lesson_renderer extends plugin_renderer_base {
     public function ongoing_score(lesson $lesson) {
         global $USER, $DB;
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $this->page->cm->id);
+=======
+        $context = context_module::instance($this->page->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('mod/lesson:manage', $context)) {
             return $this->output->box(get_string('teacherongoingwarning', 'lesson'), "ongoing center");
         } else {
@@ -480,7 +520,11 @@ class mod_lesson_renderer extends plugin_renderer_base {
     public function progress_bar(lesson $lesson) {
         global $CFG, $USER, $DB;
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $this->page->cm->id);
+=======
+        $context = context_module::instance($this->page->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // lesson setting to turn progress bar on or off
         if (!$lesson->progressbar) {

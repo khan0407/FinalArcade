@@ -52,6 +52,11 @@ $attemptobj->check_review_capability();
 
 // Create an object to manage all the other (non-roles) access rules.
 $accessmanager = $attemptobj->get_access_manager(time());
+<<<<<<< HEAD
+=======
+$accessmanager->setup_attempt_page($PAGE);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $options = $attemptobj->get_display_options(true);
 
 // Check permissions.
@@ -103,7 +108,10 @@ if ($attemptobj->is_preview_user() && $attemptobj->is_own_attempt()) {
 $headtags = $attemptobj->get_html_head_contributions($page, $showall);
 $PAGE->set_title(format_string($attemptobj->get_quiz_name()));
 $PAGE->set_heading($attemptobj->get_course()->fullname);
+<<<<<<< HEAD
 $accessmanager->setup_attempt_page($PAGE);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Summary table start. ============================================================================
 
@@ -186,10 +194,14 @@ $grade = quiz_rescale_grade($attempt->sumgrades, $quiz, false);
 if ($options->marks >= question_display_options::MARK_AND_MAX && quiz_has_grades($quiz)) {
 
     if ($attempt->state != quiz_attempt::FINISHED) {
+<<<<<<< HEAD
         $summarydata['grade'] = array(
             'title'   => get_string('grade', 'quiz'),
             'content' => get_string('attemptstillinprogress', 'quiz'),
         );
+=======
+        // Cannot display grade.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     } else if (is_null($grade)) {
         $summarydata['grade'] = array(

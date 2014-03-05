@@ -401,7 +401,11 @@ class stored_file {
                 throw new file_exception('storedfilecannotread', '', $path);
             }
         }
+<<<<<<< HEAD
         readfile($path);
+=======
+        readfile_allow_large($path, $this->get_filesize());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**

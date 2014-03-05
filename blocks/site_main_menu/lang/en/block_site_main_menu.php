@@ -24,4 +24,8 @@
  */
 
 $string['pluginname'] = 'Main menu';
+<<<<<<< HEAD
 
+=======
+$string['site_main_menu:addinstance'] = 'Add a new main menu block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -2,7 +2,11 @@ This files describes API changes in /mod/forum/*,
 information provided here is intended especially for developers.
 
 
+<<<<<<< HEAD
 === 2.3.5 ===
+=======
+=== 2.3.5, 2.4.2 ===
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 * mod/forum:allowforcesubscribe capability will be forcefully assigned to frontpage role, as it was mistakenly missed off
 when the capability was initially created. If you don't want users with frontpage role to get forum (with forcesubscribe) emails,
 then please remove this capability for frontpage role.

@@ -43,10 +43,13 @@ class conditionlib_testcase extends advanced_testcase {
         $CFG->enablecompletion = 1;
         $user = $this->getDataGenerator()->create_user();;
         $this->setUser($user);
+<<<<<<< HEAD
 
         // Reset modinfo cache before each request
         $reset = 'reset';
         get_fast_modinfo($reset);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function test_constructor() {
@@ -71,7 +74,11 @@ class conditionlib_testcase extends advanced_testcase {
             (object)array('id'=>$id,'showavailability'=>1,
                 'availablefrom'=>17,'availableuntil'=>398,'course'=>64,
                 'conditionsgrade'=>array(), 'conditionscompletion'=>array(),
+<<<<<<< HEAD
                 'visible' => 1),
+=======
+                'visible' => 1, 'conditionsfield' => array()),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $test->get_full_course_module());
 
         // just the course_modules stuff; check it doesn't request that from db
@@ -85,7 +92,11 @@ class conditionlib_testcase extends advanced_testcase {
             (object)array('id'=>$id,'showavailability'=>0,
                 'availablefrom'=>2,'availableuntil'=>74,'course'=>38,
                 'conditionsgrade' => array(), 'conditionscompletion' => array(),
+<<<<<<< HEAD
                 'visible' => 1),
+=======
+                'visible' => 1, 'conditionsfield' => array()),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $test->get_full_course_module());
 
         // Now let's add some actual grade/completion conditions
@@ -140,7 +151,11 @@ class conditionlib_testcase extends advanced_testcase {
                 (object)array('id' => $id, 'showavailability' => 1, 'groupingid' => 13,
                     'availablefrom' => 17, 'availableuntil' => 398, 'course' => 64,
                     'conditionsgrade' => array(), 'conditionscompletion' => array(),
+<<<<<<< HEAD
                     'visible' => 1),
+=======
+                    'visible' => 1, 'conditionsfield' => array()),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $test->get_full_section());
 
         // Just the course_sections stuff; check it doesn't request that from db
@@ -156,7 +171,11 @@ class conditionlib_testcase extends advanced_testcase {
                 (object)array('id' => $id, 'showavailability' => 0, 'groupingid' => 99,
                     'availablefrom' => 2, 'availableuntil' => 74, 'course' => 38,
                     'conditionsgrade' => array(), 'conditionscompletion' => array(),
+<<<<<<< HEAD
                     'visible' => 1),
+=======
+                    'visible' => 1, 'conditionsfield' => array()),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $test->get_full_section());
 
         // Now let's add some actual grade/completion conditions
@@ -208,7 +227,13 @@ class conditionlib_testcase extends advanced_testcase {
         foreach($params as $name=>$value) {
             $settings->{$name}=$value;
         }
+<<<<<<< HEAD
         return $DB->insert_record('course_modules',$settings);
+=======
+        $cmid = $DB->insert_record('course_modules', $settings);
+        rebuild_course_cache($courseid, true);
+        return $cmid;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     private function make_section($courseid, $cmids, $sectionnum=0, $params=array()) {
@@ -220,7 +245,13 @@ class conditionlib_testcase extends advanced_testcase {
         foreach ($params as $name => $value) {
             $record->{$name} = $value;
         }
+<<<<<<< HEAD
         return $DB->insert_record('course_sections', $record);
+=======
+        $sectionid = $DB->insert_record('course_sections', $record);
+        rebuild_course_cache($courseid, true);
+        return $sectionid;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     private function make_grouping($courseid, $name) {
@@ -272,8 +303,12 @@ class conditionlib_testcase extends advanced_testcase {
         ));
 
         // Okay sweet, now get modinfo
+<<<<<<< HEAD
         $course = $DB->get_record('course',array('id'=>$courseid));
         $modinfo=get_fast_modinfo($course);
+=======
+        $modinfo=get_fast_modinfo($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Test basic data
         $this->assertEquals(1,$modinfo->cms[$cmid1]->showavailability);
@@ -321,9 +356,15 @@ class conditionlib_testcase extends advanced_testcase {
             'grademin' => 5.5
         ));
 
+<<<<<<< HEAD
         // Okay sweet, now get modinfo
         $course = $DB->get_record('course', array('id' => $courseid));
         $modinfo = get_fast_modinfo($course);
+=======
+        rebuild_course_cache($courseid, true);
+        // Okay sweet, now get modinfo
+        $modinfo = get_fast_modinfo($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Test basic data
         $section1 = $modinfo->get_section_info(1);
@@ -476,8 +517,11 @@ class conditionlib_testcase extends advanced_testcase {
 
         // Need to reset modinfo after changing the options
         rebuild_course_cache($courseid);
+<<<<<<< HEAD
         $reset = 'reset';
         get_fast_modinfo($reset);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $ci=new condition_info((object)array('id'=>$cmid),CONDITION_MISSING_EVERYTHING);
         $ci->add_completion_condition($oldid,COMPLETION_COMPLETE);
@@ -626,8 +670,11 @@ class conditionlib_testcase extends advanced_testcase {
 
         // Completion: Reset modinfo after changing the options
         rebuild_course_cache($courseid);
+<<<<<<< HEAD
         $reset = 'reset';
         get_fast_modinfo($reset);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Completion: Add condition
         $ci = new condition_info_section((object)array('id' => $sectionid),
@@ -740,5 +787,70 @@ class conditionlib_testcase extends advanced_testcase {
         $this->assertFalse($ci->is_available($text, false, $USER->id + 1));
         $this->assertFalse($ci->is_available($text, true, $USER->id + 1));
     }
+<<<<<<< HEAD
 }
 
+=======
+
+    /**
+     * Tests user fields to ensure that the list of provided fields includes only
+     * fields which the equivalent function can be used to obtain the value of.
+     */
+    public function test_condition_user_fields() {
+        global $CFG, $DB, $USER;
+
+        // Set up basic data.
+        $courseid = $this->make_course();
+        $cmid = $this->make_course_module($courseid);
+        $ci = new condition_info_testwrapper(
+                (object)array('id' => $cmid), CONDITION_MISSING_EVERYTHING);
+
+        // Add a custom user profile field. Unfortunately there is no back-end
+        // API for adding profile fields without having an actual form and doing
+        // redirects and stuff! These are the default text field parameters.
+        require_once($CFG->dirroot . '/user/profile/lib.php');
+        $field = (object)array(
+                'shortname' => 'myfield', 'name' => 'My field', 'required' => 0,
+                'locked' => 0, 'forceunique' => 0, 'signup' => 0,
+                'visible' => PROFILE_VISIBLE_ALL,
+                'datatype' => 'text', 'description' => 'A field of mine',
+                'descriptionformat' => FORMAT_HTML, 'defaultdata' => '',
+                'defaultdataformat' => FORMAT_HTML, 'param1' => 30, 'param2' => 2048,
+                'param3' => 0, 'param4' => '', 'param5' => '');
+        $customfieldid = $DB->insert_record('user_info_field', $field);
+
+        // Get list of condition user fields.
+        $fields = condition_info::get_condition_user_fields();
+
+        // Check custom field is included.
+        $this->assertEquals('My field', $fields[$customfieldid]);
+
+        // For all other fields, check it actually works to get data from them.
+        foreach ($fields as $fieldid => $name) {
+            // Not checking the result, just that it's possible to get it
+            // without error.
+            $ci->get_cached_user_profile_field($USER->id, $fieldid);
+        }
+
+        // Change to not logged in user.
+        $this->setUser(null);
+
+        foreach ($fields as $fieldid => $name) {
+            // Should get false always when not logged in.
+            $this->assertEquals(false, $ci->get_cached_user_profile_field($USER->id, $fieldid));
+        }
+
+    }
+}
+
+
+/**
+ * Test wrapper used only to make protected functions public so they can be
+ * tested.
+ */
+class condition_info_testwrapper extends condition_info {
+    public function get_cached_user_profile_field($userid, $fieldid) {
+        return parent::get_cached_user_profile_field($userid, $fieldid);
+    }
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

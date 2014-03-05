@@ -162,7 +162,11 @@ foreach($events as $event) {
         $ev->add_property('dtend', Bennu::timestamp_to_datetime($event->timestart + $event->timeduration));
     }
     if ($event->courseid != 0) {
+<<<<<<< HEAD
         $coursecontext = get_context_instance(CONTEXT_COURSE, $event->courseid);
+=======
+        $coursecontext = context_course::instance($event->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $ev->add_property('categories', format_string($courses[$event->courseid]->shortname, true, array('context' => $coursecontext)));
     }
     $ical->add_component($ev);

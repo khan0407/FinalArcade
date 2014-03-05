@@ -70,6 +70,7 @@ echo $OUTPUT->doctype() ?>
 <!-- begin of page-header -->
                             <?php if ($hasheading) { ?>
                             <div id="page-header">
+<<<<<<< HEAD
                             <?php if ($displaylogo) { ?>
                                 <div id="headerlogo">
                                     <img src="<?php echo $logourl ?>" alt="Custom logo here" />
@@ -77,6 +78,8 @@ echo $OUTPUT->doctype() ?>
                             <?php } else { ?>
                                 <h1 class="headerheading"><?php echo $PAGE->heading ?></h1>
                             <?php } ?>
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                                 <div class="headermenu">
                                     <?php
@@ -87,6 +90,18 @@ echo $OUTPUT->doctype() ?>
                                     echo $PAGE->headingmenu;
                                 ?>
                                 </div>
+<<<<<<< HEAD
+=======
+
+                                <?php if ($displaylogo) { ?>
+                                    <div id="headerlogo">
+                                        <img src="<?php echo $logourl ?>" alt="Custom logo here" />
+                                    </div>
+                                <?php } else { ?>
+                                    <h1 class="headerheading"><?php echo $PAGE->heading ?></h1>
+                                <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             </div>
                             <?php } ?>
 <!-- end of page-header -->

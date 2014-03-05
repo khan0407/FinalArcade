@@ -102,8 +102,14 @@ function plagiarism_save_form_elements($data) {
  *
  * @param object $mform - Moodle form object
  * @param object $context - context object
+<<<<<<< HEAD
  */
 function plagiarism_get_form_elements_module($mform, $context) {
+=======
+ * @param string $modulename - Name of the module
+ */
+function plagiarism_get_form_elements_module($mform, $context, $modulename = "") {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     global $CFG;
     if (empty($CFG->enableplagiarism)) {
         return '';
@@ -113,7 +119,11 @@ function plagiarism_get_form_elements_module($mform, $context) {
         require_once($dir.'/lib.php');
         $plagiarismclass = "plagiarism_plugin_$plugin";
         $plagiarismplugin = new $plagiarismclass;
+<<<<<<< HEAD
         $plagiarismplugin->get_form_elements_module($mform, $context);
+=======
+        $plagiarismplugin->get_form_elements_module($mform, $context, $modulename);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 /**

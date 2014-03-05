@@ -25,7 +25,11 @@ M.block_private_files = {};
 
 M.block_private_files.init_tree = function(Y, expand_all, htmlid) {
     Y.use('yui2-treeview', function(Y) {
+<<<<<<< HEAD
         var tree = new YAHOO.widget.TreeView(htmlid);
+=======
+        var tree = new Y.YUI2.widget.TreeView(htmlid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         tree.subscribe("clickEvent", function(node, event) {
             // we want normal clicking which redirects to url

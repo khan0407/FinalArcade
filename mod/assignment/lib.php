@@ -112,7 +112,11 @@ class assignment_base {
             print_error('invalidcoursemodule');
         }
 
+<<<<<<< HEAD
         $this->context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
+=======
+        $this->context = context_module::instance($this->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($course) {
             $this->course = $course;
@@ -121,7 +125,11 @@ class assignment_base {
         } else if (! $this->course = $DB->get_record('course', array('id'=>$this->cm->course))) {
             print_error('invalidid', 'assignment');
         }
+<<<<<<< HEAD
         $this->coursecontext = get_context_instance(CONTEXT_COURSE, $this->course->id);
+=======
+        $this->coursecontext = context_course::instance($this->course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $courseshortname = format_text($this->course->shortname, true, array('context' => $this->coursecontext));
 
         if ($assignment) {
@@ -153,7 +161,11 @@ class assignment_base {
      */
     function view() {
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE,$this->cm->id);
+=======
+        $context = context_module::instance($this->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         require_capability('mod/assignment:view', $context);
 
         add_to_log($this->course->id, "assignment", "view", "view.php?id={$this->cm->id}",
@@ -197,7 +209,11 @@ class assignment_base {
 
         echo '<div class="reportlink">'.$this->submittedlink().'</div>';
         echo '<div class="clearer"></div>';
+<<<<<<< HEAD
         if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if (has_capability('moodle/site:config', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo $OUTPUT->notification(get_string('upgradenotification', 'assignment'));
             $adminurl = new moodle_url('/admin/tool/assignmentupgrade/listnotupgraded.php');
             echo $OUTPUT->single_button($adminurl, get_string('viewassignmentupgradetool', 'assignment'));
@@ -269,6 +285,10 @@ class assignment_base {
      * @global object
      * @global object
      * @param object $submission The submission object or NULL in which case it will be loaded
+<<<<<<< HEAD
+=======
+     * @return bool
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     function view_feedback($submission=NULL) {
         global $USER, $CFG, $DB, $OUTPUT, $PAGE;
@@ -290,7 +310,11 @@ class assignment_base {
 
         if (!$canviewfeedback) {
             // can not view or submit assignments -> no feedback
+<<<<<<< HEAD
             return;
+=======
+            return false;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $grading_info = grade_get_grades($this->course->id, 'mod', 'assignment', $this->assignment->id, $userid);
@@ -298,6 +322,7 @@ class assignment_base {
         $grade = $item->grades[$userid];
 
         if ($grade->hidden or $grade->grade === false) { // hidden or error
+<<<<<<< HEAD
             return;
         }
 
@@ -315,6 +340,45 @@ class assignment_base {
 
     /// Print the feedback
         echo $OUTPUT->heading(get_string('feedbackfromteacher', 'assignment', fullname($teacher)));
+=======
+            return false;
+        }
+
+        if ($grade->grade === null and empty($grade->str_feedback)) { // No grade to show yet
+            // If sumbission then check if feedback is avaiable to show else return.
+            if (!$submission) {
+                return false;
+            }
+
+            $fs = get_file_storage();
+            $noresponsefiles = $fs->is_area_empty($this->context->id, 'mod_assignment', 'response', $submission->id);
+            if (empty($submission->submissioncomment) && $noresponsefiles) { // Nothing to show yet
+                return false;
+            }
+
+            // We need the teacher info
+            if (!$teacher = $DB->get_record('user', array('id'=>$submission->teacher))) {
+                print_error('cannotfindteacher');
+            }
+
+            $feedbackdate = $submission->timemarked;
+            $feedback = format_text($submission->submissioncomment, $submission->format);
+            $strlonggrade = '-';
+        }
+        else {
+            // We need the teacher info
+            if (!$teacher = $DB->get_record('user', array('id'=>$grade->usermodified))) {
+                print_error('cannotfindteacher');
+            }
+
+            $feedbackdate = $grade->dategraded;
+            $feedback = $grade->str_feedback;
+            $strlonggrade = $grade->str_long_grade;
+        }
+
+        // Print the feedback
+        echo $OUTPUT->heading(get_string('submissionfeedback', 'assignment'), 3);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         echo '<table cellspacing="0" class="feedback">';
 
@@ -329,7 +393,11 @@ class assignment_base {
         if ($teacher) {
             echo '<div class="fullname">'.fullname($teacher).'</div>';
         }
+<<<<<<< HEAD
         echo '<div class="time">'.userdate($graded_date).'</div>';
+=======
+        echo '<div class="time">'.userdate($feedbackdate).'</div>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
         echo '</td>';
         echo '</tr>';
@@ -337,6 +405,7 @@ class assignment_base {
         echo '<tr>';
         echo '<td class="left side">&nbsp;</td>';
         echo '<td class="content">';
+<<<<<<< HEAD
         $gradestr = '<div class="grade">'. get_string("grade").': '.$grade->str_long_grade. '</div>';
         if (!empty($submission) && $controller = get_grading_manager($this->context, 'mod_assignment', 'submission')->get_active_controller()) {
             $controller->set_grade_range(make_grades_menu($this->assignment->grade));
@@ -363,6 +432,30 @@ class assignment_base {
          }
 
         echo '</table>';
+=======
+
+        if ($this->assignment->grade) {
+            $gradestr = '<div class="grade">'. get_string("grade").': '.$strlonggrade. '</div>';
+            if (!empty($submission) && $controller = get_grading_manager($this->context, 'mod_assignment', 'submission')->get_active_controller()) {
+                $controller->set_grade_range(make_grades_menu($this->assignment->grade));
+                echo $controller->render_grade($PAGE, $submission->id, $item, $gradestr, has_capability('mod/assignment:grade', $this->context));
+            } else {
+                echo $gradestr;
+            }
+            echo '<div class="clearer"></div>';
+        }
+
+        echo '<div class="comment">';
+        echo $feedback;
+        echo '</div>';
+        echo '</tr>';
+        if (method_exists($this, 'view_responsefile')) {
+            $this->view_responsefile($submission);
+        }
+        echo '</table>';
+
+        return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -385,7 +478,11 @@ class assignment_base {
         $submitted = '';
         $urlbase = "{$CFG->wwwroot}/mod/assignment/";
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE,$this->cm->id);
+=======
+        $context = context_module::instance($this->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('mod/assignment:grade', $context)) {
             if ($allgroups and has_capability('moodle/site:accessallgroups', $context)) {
                 $group = 0;
@@ -523,7 +620,11 @@ class assignment_base {
         // now get rid of all files
         $fs = get_file_storage();
         if ($cm = get_coursemodule_from_instance('assignment', $assignment->id)) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+            $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $fs->delete_area_files($context->id);
         }
 
@@ -1004,7 +1105,11 @@ class assignment_base {
         $course     = $this->course;
         $assignment = $this->assignment;
         $cm         = $this->cm;
+<<<<<<< HEAD
         $context    = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context    = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         //reset filter to all for offline assignment
         if ($assignment->assignmenttype == 'offline' && $filter == self::FILTER_SUBMITTED) {
@@ -1239,7 +1344,11 @@ class assignment_base {
         //hook to allow plagiarism plugins to update status/print links.
         echo plagiarism_update_status($this->course, $this->cm);
 
+<<<<<<< HEAD
         $course_context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $course_context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('gradereport/grader:view', $course_context) && has_capability('moodle/grade:viewall', $course_context)) {
             echo '<div class="allcoursegrades"><a href="' . $CFG->wwwroot . '/grade/report/grader/index.php?id=' . $course->id . '">'
                 . get_string('seeallcoursegrades', 'grades') . '</a></div>';
@@ -1249,7 +1358,11 @@ class assignment_base {
             echo $message;   // display messages here if any
         }
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /// Check to see if groups are being used in this assignment
 
@@ -1915,10 +2028,17 @@ class assignment_base {
         global $DB;
 
         // Grab the context assocated with our course module
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
 
         // Get ids of users enrolled in the given course.
         list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:view', $groupid);
+=======
+        $context = context_module::instance($this->cm->id);
+
+        // Get ids of users enrolled in the given course.
+        list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:submit', $groupid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $params['assignmentid'] = $this->cm->instance;
 
         // Get ids of users enrolled in the given course.
@@ -2126,7 +2246,13 @@ class assignment_base {
                 $path = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$this->context->id.'/mod_assignment/submission/'.$submission->id.'/'.$filename);
                 $output .= '<a href="'.$path.'" >'.$OUTPUT->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon')).s($filename).'</a>';
                 if ($CFG->enableportfolios && $this->portfolio_exportable() && has_capability('mod/assignment:exportownsubmission', $this->context)) {
+<<<<<<< HEAD
                     $button->set_callback_options('assignment_portfolio_caller', array('id' => $this->cm->id, 'submissionid' => $submission->id, 'fileid' => $file->get_id()), '/mod/assignment/locallib.php');
+=======
+                    $button->set_callback_options('assignment_portfolio_caller',
+                                                  array('id' => $this->cm->id, 'submissionid' => $submission->id, 'fileid' => $file->get_id()),
+                                                  'mod_assignment');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $button->set_format_by_file($file);
                     $output .= $button->to_html(PORTFOLIO_ADD_ICON_LINK);
                 }
@@ -2138,7 +2264,13 @@ class assignment_base {
                 }
             }
             if ($CFG->enableportfolios && count($files) > 1  && $this->portfolio_exportable() && has_capability('mod/assignment:exportownsubmission', $this->context)) {
+<<<<<<< HEAD
                 $button->set_callback_options('assignment_portfolio_caller', array('id' => $this->cm->id, 'submissionid' => $submission->id), '/mod/assignment/locallib.php');
+=======
+                $button->set_callback_options('assignment_portfolio_caller',
+                                              array('id' => $this->cm->id, 'submissionid' => $submission->id),
+                                              'mod_assignment');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $output .= '<br />'  . $button->to_html(PORTFOLIO_ADD_TEXT_LINK);
             }
         }
@@ -2333,7 +2465,11 @@ class assignment_base {
                     if (!$cm = get_coursemodule_from_instance('assignment', $assignmentid)) {
                         continue;
                     }
+<<<<<<< HEAD
                     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+                    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $fs->delete_area_files($context->id, 'mod_assignment', 'submission');
                     $fs->delete_area_files($context->id, 'mod_assignment', 'response');
                 }
@@ -2348,6 +2484,7 @@ class assignment_base {
                 assignment_reset_gradebook($data->courseid, $this->type);
             }
         }
+<<<<<<< HEAD
 
         /// updating dates - shift may be negative too
         if ($data->timeshift) {
@@ -2355,6 +2492,8 @@ class assignment_base {
             $status[] = array('component'=>$componentstr, 'item'=>get_string('datechanged').': '.$typestr, 'error'=>false);
         }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $status;
     }
 
@@ -2544,7 +2683,11 @@ class assignment_grading_form extends moodleform {
                 }
             }
         }
+<<<<<<< HEAD
         $course_context = get_context_instance(CONTEXT_MODULE , $this->_customdata->cm->id);
+=======
+        $course_context = context_module::instance($this->_customdata->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('gradereport/grader:view', $course_context) && has_capability('moodle/grade:viewall', $course_context)) {
             $grade = '<a href="'.$CFG->wwwroot.'/grade/report/grader/index.php?id='. $this->_customdata->courseid .'" >'.
                         $this->_customdata->grading_info->items[0]->grades[$this->_customdata->userid]->str_grade . '</a>';
@@ -2849,7 +2992,11 @@ function assignment_cron () {
             /// mail is customised for the receiver.
             cron_setup_user($user, $course);
 
+<<<<<<< HEAD
             $coursecontext = get_context_instance(CONTEXT_COURSE, $submission->course);
+=======
+            $coursecontext = context_course::instance($submission->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
             if (!is_enrolled($coursecontext, $user->id)) {
                 echo fullname($user)." not an active participant in " . $courseshortname . "\n";
@@ -3149,7 +3296,12 @@ function assignment_scale_used_anywhere($scaleid) {
  * @return boolean Always returns true
  */
 function assignment_refresh_events($courseid = 0) {
+<<<<<<< HEAD
     global $DB;
+=======
+    global $DB, $CFG;
+    require_once($CFG->dirroot.'/calendar/lib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ($courseid == 0) {
         if (! $assignments = $DB->get_records("assignment")) {
@@ -3163,15 +3315,24 @@ function assignment_refresh_events($courseid = 0) {
     $moduleid = $DB->get_field('modules', 'id', array('name'=>'assignment'));
 
     foreach ($assignments as $assignment) {
+<<<<<<< HEAD
         $cm = get_coursemodule_from_id('assignment', $assignment->id);
+=======
+        $cm = get_coursemodule_from_instance('assignment', $assignment->id, $courseid, false, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $event = new stdClass();
         $event->name        = $assignment->name;
         $event->description = format_module_intro('assignment', $assignment, $cm->id);
         $event->timestart   = $assignment->timedue;
 
         if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'assignment', 'instance'=>$assignment->id))) {
+<<<<<<< HEAD
             update_event($event);
 
+=======
+            $calendarevent = calendar_event::load($event->id);
+            $calendarevent->update($event);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $event->courseid    = $assignment->course;
             $event->groupid     = 0;
@@ -3181,7 +3342,11 @@ function assignment_refresh_events($courseid = 0) {
             $event->eventtype   = 'due';
             $event->timeduration = 0;
             $event->visible     = $DB->get_field('course_modules', 'visible', array('module'=>$moduleid, 'instance'=>$assignment->id));
+<<<<<<< HEAD
             add_event($event);
+=======
+            calendar_event::create($event);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
     }
@@ -3232,7 +3397,11 @@ function assignment_print_recent_activity($course, $viewfullnames, $timestart) {
         // the act of sumbitting of assignment may be considered private - only graders will see it if specified
         if (empty($CFG->assignment_showrecentsubmissions)) {
             if (!array_key_exists($cm->id, $grader)) {
+<<<<<<< HEAD
                 $grader[$cm->id] = has_capability('moodle/grade:viewall', get_context_instance(CONTEXT_MODULE, $cm->id));
+=======
+                $grader[$cm->id] = has_capability('moodle/grade:viewall', context_module::instance($cm->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if (!$grader[$cm->id]) {
                 continue;
@@ -3241,7 +3410,11 @@ function assignment_print_recent_activity($course, $viewfullnames, $timestart) {
 
         $groupmode = groups_get_activity_groupmode($cm, $course);
 
+<<<<<<< HEAD
         if ($groupmode == SEPARATEGROUPS and !has_capability('moodle/site:accessallgroups', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+=======
+        if ($groupmode == SEPARATEGROUPS and !has_capability('moodle/site:accessallgroups', context_module::instance($cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (isguestuser()) {
                 // shortcut - guest user does not belong into any group
                 continue;
@@ -3334,7 +3507,11 @@ function assignment_get_recent_mod_activity(&$activities, &$index, $timestart, $
     }
 
     $groupmode       = groups_get_activity_groupmode($cm, $course);
+<<<<<<< HEAD
     $cm_context      = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $cm_context      = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $grader          = has_capability('moodle/grade:viewall', $cm_context);
     $accessallgroups = has_capability('moodle/site:accessallgroups', $cm_context);
     $viewfullnames   = has_capability('moodle/site:viewfullnames', $cm_context);
@@ -3573,7 +3750,11 @@ function assignment_get_all_submissions($assignment, $sort="", $dir="DESC") {
  * Given a course_module object, this function returns any "extra" information that may be needed
  * when printing this activity in a course listing.  See get_array_of_activities() in course/lib.php.
  *
+<<<<<<< HEAD
  * @param $coursemodule object The coursemodule object (record).
+=======
+ * @param stdClass $coursemodule object The coursemodule object (record).
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @return cached_cm_info An object on information that the courses will know about (most noticeably, an icon).
  */
 function assignment_get_coursemodule_info($coursemodule) {
@@ -3713,7 +3894,11 @@ function assignment_print_overview($courses, &$htmlarray) {
         } else {
             $str .= '<div class="info">'.$strduedateno.'</div>';
         }
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $assignment->coursemodule);
+=======
+        $context = context_module::instance($assignment->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('mod/assignment:grade', $context)) {
 
             // count how many people can submit
@@ -3866,6 +4051,19 @@ function assignment_reset_userdata($data) {
         $status = array_merge($status, $ass->reset_userdata($data));
     }
 
+<<<<<<< HEAD
+=======
+    // Updating dates - shift may be negative too.
+    if ($data->timeshift) {
+        shift_course_mod_dates('assignment',
+                                array('timedue', 'timeavailable'),
+                                $data->timeshift,
+                                $data->courseid);
+        $status[] = array('component' => get_string('modulenameplural', 'assignment'),
+                          'item' => get_string('datechanged'),
+                          'error' => false);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return $status;
 }
 
@@ -3910,6 +4108,10 @@ function assignment_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
         case FEATURE_ADVANCED_GRADING:        return true;
+<<<<<<< HEAD
+=======
+        case FEATURE_PLAGIARISM:              return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         default: return null;
     }
@@ -3925,7 +4127,16 @@ function assignment_extend_settings_navigation(settings_navigation $settings, na
     global $PAGE, $DB, $USER, $CFG;
 
     $assignmentrow = $DB->get_record("assignment", array("id" => $PAGE->cm->instance));
+<<<<<<< HEAD
     require_once "$CFG->dirroot/mod/assignment/type/$assignmentrow->assignmenttype/assignment.class.php";
+=======
+
+    $classfile = "$CFG->dirroot/mod/assignment/type/$assignmentrow->assignmenttype/assignment.class.php";
+    if (!file_exists($classfile)) {
+        return;
+    }
+    require_once($classfile);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $assignmentclass = 'assignment_'.$assignmentrow->assignmenttype;
     $assignmentinstance = new $assignmentclass($PAGE->cm->id, $assignmentrow, $PAGE->cm, $PAGE->course);

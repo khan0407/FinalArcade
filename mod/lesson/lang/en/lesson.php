@@ -35,6 +35,10 @@ $string['actions'] = 'Actions';
 $string['activitylink'] = 'Link to an activity';
 $string['activitylink_help'] = 'To provide a link at the end of the lesson to another activity in the course, select the activity from the dropdown list.';
 $string['activitylinkname'] = 'Go to {$a}';
+<<<<<<< HEAD
+=======
+$string['activityoverview'] = 'You have lessons that are due';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['addabranchtable'] = 'Add a content page';
 $string['addanendofbranch'] = 'Add an end of branch';
 $string['addanewpage'] = 'Add a new page';
@@ -193,8 +197,11 @@ $string['checkedthisone'] = 'Checked this one.';
 $string['checknavigation'] = 'Check navigation';
 $string['checkquestion'] = 'Check question';
 $string['importcount'] = 'Importing {$a} questions';
+<<<<<<< HEAD
 $string['importppt'] = 'Import PowerPoint';
 $string['importppt_help'] = 'This feature enables a zip file of PowerPoint 2003 slides saved as web pages to be imported into the lesson.';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['importquestions'] = 'Import questions';
 $string['importquestions_help'] = 'This feature enables questions in a variety of formats to be imported via text file.';
 $string['insertedpage'] = 'Inserted page';
@@ -206,6 +213,10 @@ $string['jump'] = 'Jump';
 $string['jumps'] = 'Jumps';
 $string['jumps_help'] = 'Each answer (for questions) or description (for content pages) has a corresponding jump. The jump can be relative, such as this page or next page, or absolute, specifying any one of the pages in the lesson.';
 $string['jumpsto'] = 'Jumps to <em>{$a}</em>';
+<<<<<<< HEAD
+=======
+$string['leftduringtimedsession'] = 'You have left during a timed lesson.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['leftduringtimed'] = 'You have left during a timed lesson.<br />Please click on Continue to restart the lesson.';
 $string['leftduringtimednoretake'] = 'You have left during a timed lesson and you are<br />not allowed to retake or continue the lesson.';
 $string['lesson:addinstance'] = 'Add a new lesson';
@@ -235,7 +246,11 @@ $string['maxgrade'] = 'Maximum grade';
 $string['maxgrade_help'] = 'This setting specifies the maximum grade for the lesson. If set to 0, the lesson does not appear in the grades pages.';
 $string['maxhighscores'] = 'Number of high scores displayed';
 $string['maximumnumberofanswersbranches'] = 'Maximum number of answers';
+<<<<<<< HEAD
 $string['maximumnumberofanswersbranches_help'] = 'This setting specifies the maximum number of answers that may be used in the lesson. If only true/false questions are used, it can be set to 2. The setting may be changed at any time, since it only effects what the teacher sees, not the data.';
+=======
+$string['maximumnumberofanswersbranches_help'] = 'This setting specifies the maximum number of answers that may be used in the lesson. If only true/false questions are used, it can be set to 2. The setting may be changed at any time, since it only affects what the teacher sees, not the data.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['maximumnumberofattempts'] = 'Maximum number of attempts';
 $string['maximumnumberofattempts_help'] = 'This setting specifies the maximum number of attempts allowed for each question. If answered incorrectly repeatedly, when the maximum is reached, the next page of the lesson is displayed.';
 $string['maximumnumberofattemptsreached'] = 'Maximum number of attempts reached - Moving to next page';
@@ -338,7 +353,10 @@ $string['pluginname'] = 'Lesson';
 $string['pointsearned'] = 'Points earned';
 $string['postprocesserror'] = 'Error occurred during post-processing!';
 $string['postsuccess'] = 'Post successful';
+<<<<<<< HEAD
 $string['pptsuccessfullimport'] = 'Successfully imported pages from the uploaded PowerPoint Presentation';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['practice'] = 'Practice lesson';
 $string['practice_help'] = 'A practice lesson does not appear in the gradebook.';
 $string['preprocesserror'] = 'Error occurred during pre-processing!';

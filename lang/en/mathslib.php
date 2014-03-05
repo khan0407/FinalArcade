@@ -23,7 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 $string['anunexpectederroroccured'] = 'an unexpected error occured';
+=======
+$string['anunexpectederroroccured'] = 'an unexpected error occurred';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotassigntoconstant'] = 'cannot assign to constant \'{$a}\'';
 $string['cannotredefinebuiltinfunction'] = 'cannot redefine built-in function \'{$a}()\'';
 $string['divisionbyzero'] = 'division by zero';

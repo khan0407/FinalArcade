@@ -126,7 +126,11 @@ class lesson_page_type_multichoice extends lesson_page {
         }
 
         if ($this->properties->qoption) {
+<<<<<<< HEAD
             // MULTIANSWER allowed, user's answer is an array
+=======
+            // Multianswer allowed, user's answer is an array
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if (empty($data->answer) || !is_array($data->answer)) {
                 $result->noanswer = true;

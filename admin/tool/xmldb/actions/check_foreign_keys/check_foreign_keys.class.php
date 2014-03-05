@@ -53,6 +53,11 @@ class check_foreign_keys extends XMLDBCheckAction {
             'noviolatedforeignkeysfound' => 'tool_xmldb',
             'violatedforeignkeysfound' => 'tool_xmldb',
             'violations' => 'tool_xmldb',
+<<<<<<< HEAD
+=======
+            'unknowntable' => 'tool_xmldb',
+            'unknownfield' => 'tool_xmldb',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         ));
     }
 
@@ -75,6 +80,22 @@ class check_foreign_keys extends XMLDBCheckAction {
                 }
                 $o.='            <li>' . $this->str['key'] . ': ' . $xmldb_key->readableInfo() . ' ';
 
+<<<<<<< HEAD
+=======
+                $reftable = $xmldb_key->getRefTable();
+                if (!$dbman->table_exists($reftable)) {
+                    $o.='<font color="red">' . $this->str['unknowntable'] . '</font>';
+                    // Add the missing index to the list
+                    $violation = new stdClass();
+                    $violation->string = 'fkunknowntable';
+                    $violation->table = $xmldb_table;
+                    $violation->key = $xmldb_key;
+                    $violation->reftable = $reftable;
+                    $violatedkeys[] = $violation;
+                    continue;
+                }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // Work out the SQL to find key violations.
                 $keyfields = $xmldb_key->getFields();
                 $reffields = $xmldb_key->getRefFields();
@@ -82,6 +103,22 @@ class check_foreign_keys extends XMLDBCheckAction {
                 $nullnessconditions = array();
                 $params = array();
                 foreach ($keyfields as $i => $field) {
+<<<<<<< HEAD
+=======
+                    if (!$dbman->field_exists($reftable, $reffields[$i])) {
+                        $o.='<font color="red">' . $this->str['unknownfield'] . '</font>';
+                        // Add the missing index to the list
+                        $violation = new stdClass();
+                        $violation->string = 'fkunknownfield';
+                        $violation->table = $xmldb_table;
+                        $violation->key = $xmldb_key;
+                        $violation->reftable = $reftable;
+                        $violation->reffield = $reffields[$i];
+                        $violatedkeys[] = $violation;
+                        continue 2;
+                    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $joinconditions[] = 't1.' . $field . ' = t2.' . $reffields[$i];
                     $xmldb_field = $xmldb_table->getField($field);
                     $default = $xmldb_field->getDefault();
@@ -97,7 +134,11 @@ class check_foreign_keys extends XMLDBCheckAction {
                 }
                 $nullnessconditions[] = 't2.id IS NULL';
                 $sql = 'SELECT count(1) FROM {' . $xmldb_table->getName() .
+<<<<<<< HEAD
                         '} t1 LEFT JOIN {' . $xmldb_key->getRefTable() . '} t2 ON ' .
+=======
+                        '} t1 LEFT JOIN {' . $reftable . '} t2 ON ' .
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         implode(' AND ', $joinconditions) . ' WHERE ' .
                         implode(' AND ', $nullnessconditions);
 
@@ -109,6 +150,10 @@ class check_foreign_keys extends XMLDBCheckAction {
                     $o.='<font color="red">' . $this->str['violations'] . '</font>';
                     // Add the missing index to the list
                     $violation = new stdClass;
+<<<<<<< HEAD
+=======
+                    $violation->string = 'fkviolationdetails';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $violation->table = $xmldb_table;
                     $violation->key = $xmldb_key;
                     $violation->numviolations = $violations;
@@ -145,8 +190,16 @@ class check_foreign_keys extends XMLDBCheckAction {
                 $violation->tablename = $violation->table->getName();
                 $violation->keyname = $violation->key->getName();
 
+<<<<<<< HEAD
                 $r.= '            <li>' .get_string('fkviolationdetails', 'tool_xmldb', $violation) .
                         '<pre>' . s($violation->sql) . '; ' . s($violation->sqlparams) . '</pre></li>';
+=======
+                $r.= '            <li>' .get_string($violation->string, 'tool_xmldb', $violation);
+                if (!empty($violation->sql)) {
+                    $r.= '<pre>' . s($violation->sql) . '; ' . s($violation->sqlparams) . '</pre>';
+                }
+                $r.= '</li>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $r.= '        </ul>';
         } else {

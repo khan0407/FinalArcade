@@ -58,7 +58,11 @@ $display = true; // set this to false in the conditions to stop processing
 require_login($course, false);
 
 $PAGE->set_url($url);
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_USER, $user->id));
+=======
+$PAGE->set_context(context_user::instance($user->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_title("$course->fullname: $fullname: $strportfolios");
 $PAGE->set_heading($course->fullname);
 $PAGE->set_pagelayout('standard');

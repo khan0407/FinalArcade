@@ -32,4 +32,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['parentlanguage'] = 'ja';
 $string['thisdirection'] = 'ltr';
+<<<<<<< HEAD
 $string['thislanguage'] = '日本語 小学生';
+=======
+$string['thislanguage'] = 'Japanese - kids';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

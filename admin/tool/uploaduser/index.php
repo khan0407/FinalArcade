@@ -40,7 +40,11 @@ raise_memory_limit(MEMORY_HUGE);
 
 require_login();
 admin_externalpage_setup('tooluploaduser');
+<<<<<<< HEAD
 require_capability('moodle/site:uploadusers', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:uploadusers', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $struserrenamed             = get_string('userrenamed', 'tool_uploaduser');
 $strusernotrenamedexists    = get_string('usernotrenamedexists', 'error');
@@ -98,12 +102,25 @@ $STD_FIELDS = array('id', 'firstname', 'lastname', 'username', 'email',
 
 $PRF_FIELDS = array();
 
+<<<<<<< HEAD
 if ($prof_fields = $DB->get_records('user_info_field')) {
     foreach ($prof_fields as $prof_field) {
         $PRF_FIELDS[] = 'profile_field_'.$prof_field->shortname;
     }
 }
 unset($prof_fields);
+=======
+if ($proffields = $DB->get_records('user_info_field')) {
+    foreach ($proffields as $key => $proffield) {
+        $profilefieldname = 'profile_field_'.$proffield->shortname;
+        $PRF_FIELDS[] = $profilefieldname;
+        // Re-index $proffields with key as shortname. This will be
+        // used while checking if profile data is key and needs to be converted (eg. menu profile field)
+        $proffields[$profilefieldname] = $proffield;
+        unset($proffields[$key]);
+    }
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (empty($iid)) {
     $mform1 = new admin_uploaduser_form1();
@@ -227,10 +244,17 @@ if ($formdata = $mform2->is_cancelled()) {
                     $user->$key['text']   = $value;
                     $user->$key['format'] = FORMAT_MOODLE;
                 } else {
+<<<<<<< HEAD
                     $user->$key = $value;
                 }
             } else {
                 $user->$key = $value;
+=======
+                    $user->$key = trim($value);
+                }
+            } else {
+                $user->$key = trim($value);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             if (in_array($key, $upt->columns)) {
@@ -331,6 +355,19 @@ if ($formdata = $mform2->is_cancelled()) {
             if (isset($formdata->$field)) {
                 // process templates
                 $user->$field = uu_process_template($formdata->$field, $user);
+<<<<<<< HEAD
+=======
+
+                // Form contains key and later code expects value.
+                // Convert key to value for required profile fields.
+                require_once($CFG->dirroot.'/user/profile/field/'.$proffields[$field]->datatype.'/field.class.php');
+                $profilefieldclass = 'profile_field_'.$proffields[$field]->datatype;
+                $profilefield = new $profilefieldclass($proffields[$field]->id);
+                if (method_exists($profilefield, 'convert_external_data')) {
+                    $user->$field = $profilefield->edit_save_data_preprocess($user->$field, null);
+                }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $formdefaults[$field] = true;
             }
         }
@@ -735,7 +772,11 @@ if ($formdata = $mform2->is_cancelled()) {
             $usersnew++;
 
             // make sure user context exists
+<<<<<<< HEAD
             get_context_instance(CONTEXT_USER, $user->id);
+=======
+            context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             events_trigger('user_created', $user);
 
@@ -809,7 +850,11 @@ if ($formdata = $mform2->is_cancelled()) {
                 $ccache[$shortname]->groups = null;
             }
             $courseid      = $ccache[$shortname]->id;
+<<<<<<< HEAD
             $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+            $coursecontext = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!isset($manualcache[$courseid])) {
                 $manualcache[$courseid] = false;
                 if ($manual) {
@@ -856,6 +901,10 @@ if ($formdata = $mform2->is_cancelled()) {
                 if ($rid) {
                     // find duration
                     $timeend   = 0;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     if (!empty($user->{'enrolperiod'.$i})) {
                         $duration = (int)$user->{'enrolperiod'.$i} * 60*60*24; // convert days to seconds
                         if ($duration > 0) { // sanity check
@@ -987,7 +1036,11 @@ while ($linenum <= $previewrows and $fields = $cir->next()) {
     $rowcols = array();
     $rowcols['line'] = $linenum;
     foreach($fields as $key => $field) {
+<<<<<<< HEAD
         $rowcols[$filecolumns[$key]] = s($field);
+=======
+        $rowcols[$filecolumns[$key]] = s(trim($field));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     $rowcols['status'] = array();
 
@@ -1013,7 +1066,11 @@ while ($linenum <= $previewrows and $fields = $cir->next()) {
     }
 
     if (isset($rowcols['city'])) {
+<<<<<<< HEAD
         $rowcols['city'] = trim($rowcols['city']);
+=======
+        $rowcols['city'] = $rowcols['city'];
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (empty($rowcols['city'])) {
             $rowcols['status'][] = get_string('fieldrequired', 'error', 'city');
         }

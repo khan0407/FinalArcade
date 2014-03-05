@@ -42,7 +42,11 @@ class backup_course_task extends backup_task {
     public function __construct($name, $courseid, $plan = null) {
 
         $this->courseid   = $courseid;
+<<<<<<< HEAD
         $this->contextid  = get_context_instance(CONTEXT_COURSE, $this->courseid)->id;
+=======
+        $this->contextid  = context_course::instance($this->courseid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         parent::__construct($name, $plan);
     }
@@ -129,6 +133,7 @@ class backup_course_task extends backup_task {
     /**
      * Code the transformations to perform in the course in
      * order to get transportable (encoded) links
+<<<<<<< HEAD
      */
     static public function encode_content_links($content) {
         global $CFG;
@@ -139,10 +144,42 @@ class backup_course_task extends backup_task {
         // because they don't become transformed (section number) in backup/restore
         $search = '/(' . $base . '\/course\/view.php\?id\=)([0-9]+)/';
         $content= preg_replace($search, '$@COURSEVIEWBYID*$2@$', $content);
+=======
+     * @param string $content content in which to encode links.
+     * @return string content with links encoded.
+     */
+    static public function encode_content_links($content) {
+
+        // Link to the course main page (it also covers "&topic=xx" and "&week=xx"
+        // because they don't become transformed (section number) in backup/restore.
+        $content = self::encode_links_helper($content, 'COURSEVIEWBYID',       '/course/view.php?id=');
+
+        // A few other key course links.
+        $content = self::encode_links_helper($content, 'GRADEINDEXBYID',       '/grade/index.php?id=');
+        $content = self::encode_links_helper($content, 'GRADEREPORTINDEXBYID', '/grade/report/index.php?id=');
+        $content = self::encode_links_helper($content, 'USERINDEXVIEWBYID',    '/user/index.php?id=');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $content;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Helper method, used by encode_content_links.
+     * @param string $content content in which to encode links.
+     * @param unknown_type $name the name of this type of encoded link.
+     * @param unknown_type $path the path that identifies this type of link, up
+     *      to the ?paramname= bit.
+     * @return string content with one type of link encoded.
+     */
+    static private function encode_links_helper($content, $name, $path) {
+        global $CFG;
+        $base = preg_quote($CFG->wwwroot . $path, '/');
+        return preg_replace('/(' . $base . ')([0-9]+)/', '$@' . $name . '*$2@$', $content);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Protected API starts here
 
     /**

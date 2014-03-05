@@ -36,7 +36,11 @@ class block_blog_tags_edit_form extends block_edit_form {
 
         $mform->addElement('text', 'config_title', get_string('blocktitle', 'blog'));
         $mform->setDefault('config_title', get_string('blogtags', 'blog'));
+<<<<<<< HEAD
         $mform->setType('config_title', PARAM_MULTILANG);
+=======
+        $mform->setType('config_title', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $numberoftags = array();
         for($i = 1; $i <= 50; $i++) {

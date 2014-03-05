@@ -75,6 +75,10 @@ if ($allowedit and !$chapters) {
 }
 // Check chapterid and read chapter data
 if ($chapterid == '0') { // Go to first chapter if no given.
+<<<<<<< HEAD
+=======
+    add_to_log($course->id, 'book', 'view', 'view.php?id='.$cm->id, $book->id, $cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     foreach ($chapters as $ch) {
         if ($edit) {
             $chapterid = $ch->id;
@@ -109,7 +113,11 @@ unset($chapterid);
 
 // Security checks END.
 
+<<<<<<< HEAD
 add_to_log($course->id, 'book', 'view', 'view.php?id='.$cm->id.'&amp;chapterid='.$chapter->id, $book->id, $cm->id);
+=======
+add_to_log($course->id, 'book', 'view chapter', 'view.php?id='.$cm->id.'&amp;chapterid='.$chapter->id, $chapter->id, $cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Read standard strings.
 $strbooks = get_string('modulenameplural', 'mod_book');
@@ -141,6 +149,7 @@ foreach ($chapters as $ch) {
     $last = $ch->id;
 }
 
+<<<<<<< HEAD
 $chnavigation = '';
 if ($previd) {
     $chnavigation .= '<a title="'.get_string('navprev', 'book').'" href="view.php?id='.$cm->id.
@@ -163,6 +172,27 @@ if ($nextid) {
     }
     $chnavigation .= '<a title="'.get_string('navexit', 'book').'" href="'.$returnurl.'"><img src="'.$OUTPUT->pix_url('nav_exit', 'mod_book').
             '" class="bigicon" alt="'.get_string('navexit', 'book').'" /></a>';
+=======
+$navprevicon = right_to_left() ? 'nav_next' : 'nav_prev';
+$navnexticon = right_to_left() ? 'nav_prev' : 'nav_next';
+$navprevdisicon = right_to_left() ? 'nav_next_dis' : 'nav_prev_dis';
+
+$chnavigation = '';
+if ($previd) {
+    $chnavigation .= '<a title="'.get_string('navprev', 'book').'" href="view.php?id='.$cm->id.
+            '&amp;chapterid='.$previd.'"><img src="'.$OUTPUT->pix_url($navprevicon, 'mod_book').'" class="icon" alt="'.get_string('navprev', 'book').'"/></a>';
+} else {
+    $chnavigation .= '<img src="'.$OUTPUT->pix_url($navprevdisicon, 'mod_book').'" class="icon" alt="" />';
+}
+if ($nextid) {
+    $chnavigation .= '<a title="'.get_string('navnext', 'book').'" href="view.php?id='.$cm->id.
+            '&amp;chapterid='.$nextid.'"><img src="'.$OUTPUT->pix_url($navnexticon, 'mod_book').'" class="icon" alt="'.get_string('navnext', 'book').'" /></a>';
+} else {
+    $sec = $DB->get_field('course_sections', 'section', array('id' => $cm->section));
+    $returnurl = course_get_url($course, $sec);
+    $chnavigation .= '<a title="'.get_string('navexit', 'book').'" href="'.$returnurl.'"><img src="'.$OUTPUT->pix_url('nav_exit', 'mod_book').
+            '" class="icon" alt="'.get_string('navexit', 'book').'" /></a>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // we are cheating a bit here, viewing the last page means user has viewed the whole book
     $completion = new completion_info($course);
@@ -193,7 +223,11 @@ if (!$book->customtitles) {
     }
 }
 $chaptertext = file_rewrite_pluginfile_urls($chapter->content, 'pluginfile.php', $context->id, 'mod_book', 'chapter', $chapter->id);
+<<<<<<< HEAD
 echo format_text($chaptertext, $chapter->contentformat, array('noclean'=>true, 'context'=>$context));
+=======
+echo format_text($chaptertext, $chapter->contentformat, array('noclean'=>true, 'overflowdiv'=>true, 'context'=>$context));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 echo $OUTPUT->box_end();
 

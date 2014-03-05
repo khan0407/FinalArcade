@@ -35,9 +35,13 @@ if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('invalidcourseid');
 }
 
+<<<<<<< HEAD
 if (!$context = get_context_instance(CONTEXT_COURSE, $course->id)) {
         print_error('badcontext');
 }
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login($course);
 $PAGE->set_pagelayout('incourse');
@@ -63,20 +67,30 @@ if (! $feedbacks = get_all_instances_in_course("feedback", $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// Print the list of instances (your module will probably extend this)
 
 $timenow = time();
 $strname  = get_string("name");
+<<<<<<< HEAD
 $strsectionname = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strresponses = get_string('responses', 'feedback');
 
 $table = new html_table();
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (has_capability('mod/feedback:viewreports', $context)) {
         $table->head  = array ($strsectionname, $strname, $strresponses);
         $table->align = array ("center", "left", 'center');
@@ -107,7 +121,11 @@ foreach ($feedbacks as $feedback) {
     $link = '<a '.$dimmedclass.' href="'.$viewurl->out().'">'.$feedback->name.'</a>';
 
     if ($usesections) {
+<<<<<<< HEAD
         $tabledata = array (get_section_name($course, $sections[$feedback->section]), $link);
+=======
+        $tabledata = array (get_section_name($course, $feedback->section), $link);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $tabledata = array ($link);
     }

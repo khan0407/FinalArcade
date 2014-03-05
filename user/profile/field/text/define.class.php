@@ -5,7 +5,11 @@ class profile_define_text extends profile_define_base {
     function define_form_specific($form) {
         /// Default data
         $form->addElement('text', 'defaultdata', get_string('profiledefaultdata', 'admin'), 'size="50"');
+<<<<<<< HEAD
         $form->setType('defaultdata', PARAM_MULTILANG);
+=======
+        $form->setType('defaultdata', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         /// Param 1 for text type is the size of the field
         $form->addElement('text', 'param1', get_string('profilefieldsize', 'admin'), 'size="6"');

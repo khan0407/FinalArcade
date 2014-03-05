@@ -29,6 +29,13 @@ class block_html extends block_base {
         $this->title = get_string('pluginname', 'block_html');
     }
 
+<<<<<<< HEAD
+=======
+    function has_config() {
+        return true;
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function applicable_formats() {
         return array('all' => true);
     }
@@ -104,7 +111,11 @@ class block_html extends block_base {
     function content_is_trusted() {
         global $SCRIPT;
 
+<<<<<<< HEAD
         if (!$context = get_context_instance_by_id($this->instance->parentcontextid)) {
+=======
+        if (!$context = context::instance_by_id($this->instance->parentcontextid, IGNORE_MISSING)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return false;
         }
         //find out if this block is on the profile page
@@ -131,4 +142,26 @@ class block_html extends block_base {
     public function instance_can_be_docked() {
         return (!empty($this->config->title) && parent::instance_can_be_docked());
     }
+<<<<<<< HEAD
+=======
+
+    /*
+     * Add custom html attributes to aid with theming and styling
+     *
+     * @return array
+     */
+    function html_attributes() {
+        global $CFG;
+
+        $attributes = parent::html_attributes();
+
+        if (!empty($CFG->block_html_allowcssclasses)) {
+            if (!empty($this->config->classes)) {
+                $attributes['class'] .= ' '.$this->config->classes;
+            }
+        }
+
+        return $attributes;
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

@@ -49,6 +49,9 @@ $PAGE->set_heading($title);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
+<<<<<<< HEAD
 echo $OUTPUT->box($controller->get_formatted_description(), 'gradingform_guide-description');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 echo $controller->render_preview($PAGE);
 echo $OUTPUT->footer();

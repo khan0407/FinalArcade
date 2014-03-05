@@ -35,7 +35,11 @@ $course = $DB->get_record('course', array('id' => $lti->course));
 
 require_login($course);
 
+<<<<<<< HEAD
 require_capability('mod/lti:requesttooladd', get_context_instance(CONTEXT_COURSE, $lti->course));
+=======
+require_capability('mod/lti:requesttooladd', context_course::instance($lti->course));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $baseurl = lti_get_domain_from_url($lti->toolurl);
 

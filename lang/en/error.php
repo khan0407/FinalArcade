@@ -46,6 +46,12 @@ $string['cannotcallscript'] = 'You cannot call this script in that way';
 $string['cannotcallusgetselecteduser'] = 'You cannot call user_selector::get_selected_user if multi select is true.';
 $string['cannotcreatebackupdir'] = 'Could not create backupdata folder.  The site administrator needs to fix the file permissions';
 $string['cannotcreatecategory'] = 'The category was not inserted';
+<<<<<<< HEAD
+=======
+$string['cannotcreatedboninstall'] = '<p>Cannot create the database.</p>
+<p>The specified database does not exist and the given user does not have permission to create the database.</p>
+<p>The site administrator should verify database configuration.</p>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotcreategroup'] = 'Error creating group';
 $string['cannotcreatelangbase'] = 'Error: Could not create base lang directory';
 $string['cannotcreatelangdir'] = 'Cannot create lang directory';
@@ -65,6 +71,10 @@ $string['cannotdeletefile'] = 'Cannot delete this file';
 $string['cannotdeleterole'] = 'It cannot be deleted, because {$a}';
 $string['cannotdeleterolewithid'] = 'Could not delete role with ID {$a}';
 $string['cannotdeletethisrole'] = 'You cannot delete this role because it is used by the system, or because it is the last role with administrator capabilities.';
+<<<<<<< HEAD
+=======
+$string['cannotdisableformat'] = 'You can not disable the default format';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotdownloadcomponents'] = 'Cannot download components';
 $string['cannotdownloadlanguageupdatelist'] = 'Cannot download list of language updates from download.moodle.org';
 $string['cannotdownloadzipfile'] = 'Cannot download ZIP file';
@@ -170,7 +180,11 @@ $string['courseformatnotfound'] = 'The course format \'{$a}\' doesn\'t exist or 
 $string['coursegroupunknown'] = 'Course corresponding to group {$a} not specified';
 $string['courseidnotfound'] = 'Course id doesn\'t exist';
 $string['coursemisconf'] = 'Course is misconfigured';
+<<<<<<< HEAD
 $string['courserequestdisabled'] = 'Sorry, but requesting courses has been disabled by the administrator';
+=======
+$string['courserequestdisabled'] = 'Sorry, but course requests have been disabled by the administrator.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['csvcolumnduplicates'] = 'Duplicate columns detected';
 $string['csvemptyfile'] = 'The CSV file is empty';
 $string['csvfewcolumns'] = 'Not enough columns, please verify the delimiter setting';
@@ -198,18 +212,30 @@ $string['ddlunknownerror'] = 'Unknown DDL library error';
 $string['ddlxmlfileerror'] = 'XML database file errors found';
 $string['destinationcmnotexit'] = 'The destination course module does not exist';
 $string['detectedbrokenplugin'] = 'Plugin "{$a}" is defective or outdated, can not continue, sorry.';
+<<<<<<< HEAD
+=======
+$string['dmlexceptiononinstall'] = '<p>A database error has occurred [{$a->errorcode}].<br />{$a->debuginfo}</p>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['dmlreadexception'] = 'Error reading from database';
 $string['dmltransactionexception'] = 'Database transaction error';
 $string['dmlwriteexception'] = 'Error writing to database';
 $string['downgradedcore'] = 'ERROR!!!  The code you are using is OLDER than the version that made these databases!';
 $string['downloadedfilecheckfailed'] = 'Downloaded file check failed';
 $string['duplicatefieldname'] = 'Duplicate field name "{$a}" detected';
+<<<<<<< HEAD
+=======
+$string['duplicatenosupport'] = '\'{$a->modname}\' activity could not be duplicated because the {$a->modtype} module does not support backup and restore.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['duplicateparaminsql'] = 'ERROR: duplicate parameter name in query';
 $string['duplicaterolename'] = 'There is already a role with this name!';
 $string['duplicateroleshortname'] = 'There is already a role with this short name!';
 $string['duplicateusername'] = 'Duplicate username - skipping record';
 $string['emailfail'] = 'Emailing failed';
+<<<<<<< HEAD
 $string['error'] = 'Error occured';
+=======
+$string['error'] = 'Error occurred';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['errorcleaningdirectory'] = 'Error cleaning directory "{$a}"';
 $string['errorcopyingfiles'] = 'Error copying files';
 $string['errorcreatingdirectory'] = 'Error creating directory "{$a}"';
@@ -347,6 +373,10 @@ $string['logfilenotavailable'] = 'Logs not available';
 $string['loginasnoenrol'] = 'You cannot use enrol or unenrol when in course "Login as" session';
 $string['loginasonecourse'] = 'You cannot enter this course.<br /> You have to terminate the "Login as" session before entering any other course.';
 $string['maxbytes'] = 'This file is bigger than the maximum size';
+<<<<<<< HEAD
+=======
+$string['maxareabytes'] = 'Not enough available space to store this file';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['messagingdisable'] = 'Messaging is disabled on this site';
 $string['mimetexisnotexist'] = 'Your system is not configured to run mimeTeX. You need to download the appropriate executable for you PHP_OS platform from <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, or obtain the C source from <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>, compile it and put the executable into your moodle/filter/tex/ directory.';
 $string['mimetexnotexecutable'] = 'Custom mimetex is not executable!';

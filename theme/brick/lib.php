@@ -49,12 +49,24 @@ function brick_set_headingcolor($css, $headingcolor) {
     return $css;
 }
 
+<<<<<<< HEAD
 function brick_set_logo($css, $logo) {
  global $OUTPUT;
  $tag = '[[setting:logo]]';
  $replacement = $logo;
  if (is_null($replacement)) {
  $replacement = $OUTPUT->pix_url('logo', 'theme');
+=======
+function brick_set_logo($css, $logo, $theme = null) {
+ global $OUTPUT;
+ if ($theme === null) {
+     $theme = $OUTPUT;
+ }
+ $tag = '[[setting:logo]]';
+ $replacement = $logo;
+ if (is_null($replacement)) {
+ $replacement = $theme->pix_url('logo', 'theme');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  }
  $css = str_replace($tag, $replacement, $css);
  return $css;
@@ -112,7 +124,11 @@ function brick_process_css($css, $theme) {
     } else {
         $logo = null;
     }
+<<<<<<< HEAD
     $css = brick_set_logo($css, $logo);
+=======
+    $css = brick_set_logo($css, $logo, $theme);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     
     
     

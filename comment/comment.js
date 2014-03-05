@@ -59,11 +59,14 @@ M.core_comment = {
                     }, this);
                 }
                 scope.toggle_textarea(false);
+<<<<<<< HEAD
                 CommentHelper.confirmoverlay = new Y.Overlay({
 bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-'+this.client_id+'">'+M.str.moodle.yes+'</a> <a href="#" id="canceldelete-'+this.client_id+'">'+M.str.moodle.no+'</a></div>',
                                         visible: false
                                         });
                 CommentHelper.confirmoverlay.render(document.body);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             },
             post: function() {
                 var ta = Y.one('#dlg-content-'+this.client_id);
@@ -95,7 +98,11 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                                     color: { to: '#06e' },
                                     backgroundColor: { to: '#FFE390' }
                                 };
+<<<<<<< HEAD
                                 var anim = new YAHOO.util.ColorAnim(ids[i], attributes);
+=======
+                                var anim = new Y.YUI2.util.ColorAnim(ids[i], attributes);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                 anim.animate();
                             }
                             scope.register_pagination();
@@ -106,7 +113,11 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                     var attributes = {
                         backgroundColor: { from: '#FFE390', to:'#FFFFFF' }
                     };
+<<<<<<< HEAD
                     var anim = new YAHOO.util.ColorAnim('dlg-content-'+cid, attributes);
+=======
+                    var anim = new Y.YUI2.util.ColorAnim('dlg-content-'+cid, attributes);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     anim.animate();
                 }
             },
@@ -238,7 +249,10 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
             dodelete: function(id) { // note: delete is a reserved word in javascript, chrome and safary do not like it at all here!
                 var scope = this;
                 var params = {'commentid': id};
+<<<<<<< HEAD
                 scope.cancel_delete();
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 function remove_dom(type, anim, cmt) {
                     cmt.remove();
                 }
@@ -254,7 +268,11 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                         };
                         var cmt = Y.one('#'+htmlid);
                         cmt.setStyle('overflow', 'hidden');
+<<<<<<< HEAD
                         var anim = new YAHOO.util.Anim(htmlid, attributes, 1, YAHOO.util.Easing.easeOut);
+=======
+                        var anim = new Y.YUI2.util.Anim(htmlid, attributes, 1, Y.YUI2.util.Easing.easeOut);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         anim.onComplete.subscribe(remove_dom, cmt, this);
                         anim.animate();
                     }
@@ -294,6 +312,7 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                         if (commentid[1]) {
                             Y.Event.purgeElement('#'+theid, false, 'click');
                         }
+<<<<<<< HEAD
                         node.on('click', function(e, node) {
                             e.preventDefault();
                             var width = CommentHelper.confirmoverlay.bodyNode.getStyle('width');
@@ -325,6 +344,25 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
             cancel_delete: function() {
                 CommentHelper.confirmoverlay.set('visible', false);
             },
+=======
+                        node.on('click', function(e) {
+                            e.preventDefault();
+                            if (commentid[1]) {
+                                scope.dodelete(commentid[1]);
+                            }
+                        });
+                        // Also handle space/enter key.
+                        node.on('key', function(e) {
+                            e.preventDefault();
+                            if (commentid[1]) {
+                                scope.dodelete(commentid[1]);
+                            }
+                        }, '13,32');
+                        // 13 and 32 are the keycodes for space and enter.
+                    }
+                );
+            },
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             register_pagination: function() {
                 var scope = this;
                 // page buttons
@@ -374,7 +412,11 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                 if (ta) {
                     //toggle_textarea.apply(ta, [false]);
                     //// reset textarea size
+<<<<<<< HEAD
                     ta.on('click', function() {
+=======
+                    ta.on('focus', function() {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         this.toggle_textarea(true);
                     }, this);
                     //ta.onkeypress = function() {

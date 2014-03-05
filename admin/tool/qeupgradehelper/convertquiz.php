@@ -33,7 +33,11 @@ $quizid = required_param('quizid', PARAM_INT);
 $confirmed = optional_param('confirmed', false, PARAM_BOOL);
 
 require_login();
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 tool_qeupgradehelper_require_upgraded();
 
 admin_externalpage_setup('qeupgradehelper', '', array(),

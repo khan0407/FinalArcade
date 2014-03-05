@@ -86,28 +86,42 @@ class testable_core_string_manager extends core_string_manager {
      *
      * @param string $otherroot full path to the location of installed upstream language packs
      * @param string $localroot full path to the location of locally customized language packs, defaults to $otherroot
+<<<<<<< HEAD
      * @param string $cacheroot full path to the location of on-disk cache
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param bool $usecache use application permanent cache
      * @param array $translist explicit list of visible translations
      * @param string $menucache the location of a file that caches the list of available translations
      * @return testable_core_string_manager
      */
+<<<<<<< HEAD
     public static function instance($otherroot, $localroot = null, $cacheroot = null, $usecache = false,
                                     array $translist = array(), $menucache = null) {
+=======
+    public static function instance($otherroot, $localroot = null, $usecache = false, array $translist = array(), $menucache = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $CFG;
 
         if (is_null($localroot)) {
             $localroot = $otherroot;
         }
 
+<<<<<<< HEAD
         if (is_null($cacheroot)) {
             $cacheroot = $CFG->cachedir.'/lang';
         }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (is_null($menucache)) {
             $menucache = $CFG->cachedir.'/languages';
         }
 
+<<<<<<< HEAD
         return new testable_core_string_manager($otherroot, $localroot, $cacheroot, $usecache, $translist, $menucache);
+=======
+        return new testable_core_string_manager($otherroot, $localroot, $usecache, $translist, $menucache);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }

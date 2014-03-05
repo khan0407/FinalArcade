@@ -1372,6 +1372,7 @@ class grade_item extends grade_object {
 
             if ($grade_category->aggregatesubcats) {
                 // return all children excluding category items
+<<<<<<< HEAD
                 $params[] = '%/' . $grade_category->id . '/%';
                 $sql = "SELECT gi.id
                           FROM {grade_items} gi
@@ -1384,6 +1385,22 @@ class grade_item extends grade_object {
             } else {
                 $params[] = $grade_category->id;
                 $params[] = $grade_category->id;
+=======
+                $params[] = $this->courseid;
+                $params[] = '%/' . $grade_category->id . '/%';
+                $sql = "SELECT gi.id
+                          FROM {grade_items} gi
+                          JOIN {grade_categories} gc ON gi.categoryid = gc.id
+                         WHERE $gtypes
+                               $outcomes_sql
+                               AND gi.courseid = ?
+                               AND gc.path LIKE ?";
+            } else {
+                $params[] = $grade_category->id;
+                $params[] = $this->courseid;
+                $params[] = $grade_category->id;
+                $params[] = $this->courseid;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if (empty($CFG->grade_includescalesinaggregation)) {
                     $params[] = GRADE_TYPE_VALUE;
                 } else {
@@ -1394,6 +1411,10 @@ class grade_item extends grade_object {
                           FROM {grade_items} gi
                          WHERE $gtypes
                                AND gi.categoryid = ?
+<<<<<<< HEAD
+=======
+                               AND gi.courseid = ?
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                $outcomes_sql
                         UNION
 
@@ -1401,6 +1422,10 @@ class grade_item extends grade_object {
                           FROM {grade_items} gi, {grade_categories} gc
                          WHERE (gi.itemtype = 'category' OR gi.itemtype = 'course') AND gi.iteminstance=gc.id
                                AND gc.parent = ?
+<<<<<<< HEAD
+=======
+                               AND gi.courseid = ?
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                AND $gtypes
                                $outcomes_sql";
             }
@@ -2097,6 +2122,10 @@ class grade_item extends grade_object {
         if (get_plugin_directory($this->itemtype, $this->itemmodule)) {
             return !plugin_supports($this->itemtype, $this->itemmodule, FEATURE_CONTROLS_GRADE_VISIBILITY, false);
         }
+<<<<<<< HEAD
         return true;
+=======
+        return parent::can_control_visibility();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }

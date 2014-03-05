@@ -9,12 +9,23 @@ require_once($CFG->libdir . '/csvlib.class.php');
 class mod_data_export_form extends moodleform {
     var $_datafields = array();
     var $_cm;
+<<<<<<< HEAD
 
      // @param string $url: the url to post to
      // @param array $datafields: objects in this database
     function mod_data_export_form($url, $datafields, $cm) {
         $this->_datafields = $datafields;
         $this->_cm = $cm;
+=======
+    var $_data;
+
+     // @param string $url: the url to post to
+     // @param array $datafields: objects in this database
+    function mod_data_export_form($url, $datafields, $cm, $data) {
+        $this->_datafields = $datafields;
+        $this->_cm = $cm;
+        $this->_data = $data;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::moodleform($url);
     }
 
@@ -56,6 +67,17 @@ class mod_data_export_form extends moodleform {
             }
         }
         $this->add_checkbox_controller(1, null, null, 1);
+<<<<<<< HEAD
+=======
+        $context = context_module::instance($this->_cm->id);
+        if (has_capability('mod/data:exportuserinfo', $context)) {
+            $mform->addElement('checkbox', 'exportuser', get_string('includeuserdetails', 'data'));
+        }
+        $mform->addElement('checkbox', 'exporttime', get_string('includetime', 'data'));
+        if ($this->_data->approval) {
+            $mform->addElement('checkbox', 'exportapproval', get_string('includeapproval', 'data'));
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->add_action_buttons(true, get_string('exportentries', 'data'));
     }
 

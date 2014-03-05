@@ -317,7 +317,11 @@ abstract class question_definition {
      * @return string the equivalent plain text.
      */
     public function html_to_text($text, $format) {
+<<<<<<< HEAD
         return html_to_text(format_text($text, $format, array('noclean' => true)), 0, false);
+=======
+        return question_utils::to_plain_text($text, $format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /** @return the result of applying {@link format_text()} to the question text. */
@@ -966,4 +970,8 @@ class question_first_matching_answer_grading_strategy implements question_gradin
         }
         return null;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

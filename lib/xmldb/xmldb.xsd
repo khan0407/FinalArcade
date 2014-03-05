@@ -85,6 +85,10 @@
       <xs:attribute name="NAME"     type="xs:NMTOKEN" use="required" />
       <xs:attribute name="UNIQUE"   type="trueFalse"  use="required" />
       <xs:attribute name="FIELDS"   type="fieldsList" use="required" />
+<<<<<<< HEAD
+=======
+      <xs:attribute name="HINTS"    type="xs:string"  use="optional" />
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
       <xs:attribute name="COMMENT"  type="xs:string"  use="optional" />
       <xs:attribute name="PREVIOUS" type="xs:NMTOKEN" use="optional" />
       <xs:attribute name="NEXT"     type="xs:NMTOKEN" use="optional" />

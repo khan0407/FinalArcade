@@ -61,8 +61,15 @@ $string['regradealldrydo'] = 'Regrade attempts marked as needing regrading ({$a}
 $string['regradealldrydogroup'] = 'Regrade attempts ({$a->countregradeneeded}) marked as needing regrading in group \'{$a->groupname}\'';
 $string['regradealldrygroup'] = 'Dry run a full regrade for group \'{$a->groupname}\'';
 $string['regradeallgroup'] = 'Full regrade for group \'{$a->groupname}\'';
+<<<<<<< HEAD
 $string['regradeheader'] = 'Regrading';
 $string['regradeselected'] = 'Regrade selected attempts';
+=======
+$string['regradecomplete'] = 'Regrade completed successfully';
+$string['regradeheader'] = 'Regrading';
+$string['regradeselected'] = 'Regrade selected attempts';
+$string['regradingattemptxofy'] = 'Regrading attempt ({$a->done}/{$a->count})';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['show'] = 'Show / download';
 $string['showattempts'] = 'Only show / download attempts';
 $string['showdetailedmarks'] = 'Marks for each question';

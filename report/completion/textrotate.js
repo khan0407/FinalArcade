@@ -26,10 +26,13 @@ function textrotate_make_svg(el)
   text.setAttribute('text-anchor','end');
   text.setAttribute('transform','rotate(90)');
 
+<<<<<<< HEAD
   if (el.className.indexOf('completion-rplheader') != -1) {
       text.setAttribute('fill','#238E23');
   }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   text.appendChild(document.createTextNode(string));
 
   // Is there an icon near the text?
@@ -52,8 +55,23 @@ function textrotate_make_svg(el)
   el.parentNode.removeChild(el);
 }
 
+<<<<<<< HEAD
 function textrotate_init() {
   var elements=YAHOO.util.Dom.getElementsByClassName('completion-criterianame', 'span');
+=======
+function browser_supports_svg() {
+    return document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
+}
+
+function textrotate_init() {
+    if (!browser_supports_svg()) {
+        // Feature detect, else bail.
+        return;
+    }
+
+YUI().use('yui2-dom', function(Y) {
+  var elements= Y.YUI2.util.Dom.getElementsByClassName('completion-criterianame', 'span');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   for(var i=0;i<elements.length;i++)
   {
     var el=elements[i];
@@ -62,7 +80,12 @@ function textrotate_init() {
 
     textrotate_make_svg(el);
   }
+<<<<<<< HEAD
 }
 
 YAHOO.util.Event.onDOMReady(textrotate_init);
 
+=======
+});
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

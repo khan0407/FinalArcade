@@ -48,9 +48,13 @@ if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
+<<<<<<< HEAD
 if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
         print_error('badcontext');
 }
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($course->id == SITEID) {
     require_login($course, true);

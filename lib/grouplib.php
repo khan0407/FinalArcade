@@ -455,7 +455,11 @@ function groups_print_course_menu($course, $urlroot, $return=false) {
         }
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $aag = has_capability('moodle/site:accessallgroups', $context);
 
     if ($groupmode == VISIBLEGROUPS or $aag) {
@@ -548,7 +552,11 @@ function groups_print_activity_menu($cm, $urlroot, $return=false, $hideallpartic
         }
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $aag = has_capability('moodle/site:accessallgroups', $context);
 
     if ($groupmode == VISIBLEGROUPS or $aag) {
@@ -617,7 +625,11 @@ function groups_get_course_group($course, $update=false, $allowedgroups=null) {
         return false;
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (has_capability('moodle/site:accessallgroups', $context)) {
         $groupmode = 'aag';
     }
@@ -669,7 +681,11 @@ function groups_get_activity_group($cm, $update=false, $allowedgroups=null) {
         return false;
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (has_capability('moodle/site:accessallgroups', $context)) {
         $groupmode = 'aag';
     }
@@ -725,7 +741,11 @@ function groups_get_activity_allowed_groups($cm,$userid=0) {
 
     // If visible groups mode, or user has the accessallgroups capability,
     // then they can access all groups for the activity...
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($groupmode == VISIBLEGROUPS or has_capability('moodle/site:accessallgroups', $context)) {
         return groups_get_all_groups($cm->course, 0, $cm->groupingid);
     } else {
@@ -756,7 +776,11 @@ function groups_course_module_visible($cm, $userid=null) {
     if (empty($cm->groupmembersonly)) {
         return true;
     }
+<<<<<<< HEAD
     if (has_capability('moodle/site:accessallgroups', get_context_instance(CONTEXT_MODULE, $cm->id), $userid) or groups_has_membership($cm, $userid)) {
+=======
+    if (has_capability('moodle/site:accessallgroups', context_module::instance($cm->id), $userid) or groups_has_membership($cm, $userid)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return true;
     }
     return false;

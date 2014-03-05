@@ -27,4 +27,8 @@ M.core_backup.watch_cancel_buttons = function(config) {
     });
 }
 
+<<<<<<< HEAD
 }, '@VERSION@', {'requires':['base','node','node-event-simulate','moodle-enrol-notification']});
+=======
+}, '@VERSION@', {'requires':['base','node','node-event-simulate','moodle-core-notification']});
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -17,15 +17,26 @@
 /**
  * Self enrolment plugin version specification.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage self
+=======
+ * @package    enrol_self
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
 $plugin->version   = 2012061700;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012061700;        // Requires this Moodle version
 $plugin->component = 'enrol_self';      // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 180;
+=======
+$plugin->version   = 2012112901;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2012112900;        // Requires this Moodle version
+$plugin->component = 'enrol_self';      // Full name of the plugin (used for diagnostics)
+$plugin->cron      = 600;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -36,7 +36,11 @@ if (!isloggedin()) {
 }
 
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Everybody is enrolled on the frontpage
 if ($course->id == SITEID) {
@@ -84,6 +88,7 @@ $PAGE->navbar->add(get_string('enrolmentoptions','enrol'));
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('enrolmentoptions','enrol'));
 
+<<<<<<< HEAD
 echo $OUTPUT->box_start('generalbox info');
 
 $summary = file_rewrite_pluginfile_urls($course->summary, 'pluginfile.php', $context->id, 'course', 'summary', null);
@@ -111,6 +116,10 @@ if (!empty($CFG->coursecontact)) {
 
 echo $OUTPUT->box_end();
 
+=======
+$courserenderer = $PAGE->get_renderer('core', 'course');
+echo $courserenderer->course_info_box($course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 //TODO: find if future enrolments present and display some info
 

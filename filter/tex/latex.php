@@ -108,7 +108,11 @@
             fclose( $fh );
 
             // run latex on document
+<<<<<<< HEAD
             $command = "{$CFG->filter_tex_pathlatex} --interaction=nonstopmode $tex";
+=======
+            $command = "{$CFG->filter_tex_pathlatex} --interaction=nonstopmode --halt-on-error $tex";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             chdir( $this->temp_dir );
             if ($this->execute($command, $log)) { // It allways False on Windows
 //                return false;

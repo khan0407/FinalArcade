@@ -61,7 +61,11 @@ class block_admin_bookmarks extends block_base {
      * @return array
      */
     function applicable_formats() {
+<<<<<<< HEAD
         if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if (has_capability('moodle/site:config', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return array('all' => true);
         } else {
             return array('site' => true);
@@ -126,6 +130,18 @@ class block_admin_bookmarks extends block_base {
 
         return $this->content;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns the role that best describes the admin bookmarks block.
+     *
+     * @return string
+     */
+    public function get_aria_role() {
+        return 'navigation';
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 

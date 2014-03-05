@@ -57,6 +57,12 @@ body {margin:auto 0px;
     padding: 20px 20px 20px 0;
     min-height: 100%;
 }
+<<<<<<< HEAD
+=======
+#page-content #course-header {
+    padding-right: 20px;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .pagelayout-report #page-content #region-main .region-content {
     overflow: auto;
     padding-bottom: 0;

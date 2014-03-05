@@ -26,6 +26,10 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
+<<<<<<< HEAD
+=======
+    /* Add, edit or remove manual enrol instance. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'enrol/manual:config' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -34,6 +38,10 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    /* Enrol anybody. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'enrol/manual:enrol' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -43,6 +51,10 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    /* Manage enrolments of users. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'enrol/manual:manage' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -52,6 +64,10 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    /* Unenrol anybody (including self) - watch out for data loss. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'enrol/manual:unenrol' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -61,6 +77,10 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    /* Unenrol self - watch out for data loss. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'enrol/manual:unenrolself' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -69,4 +89,7 @@ $capabilities = array(
     ),
 
 );
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

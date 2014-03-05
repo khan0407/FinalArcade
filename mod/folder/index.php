@@ -37,7 +37,10 @@ add_to_log($course->id, 'folder', 'view all', "index.php?id=$course->id", '');
 
 $strfolder       = get_string('modulename', 'folder');
 $strfolders      = get_string('modulenameplural', 'folder');
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname         = get_string('name');
 $strintro        = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
@@ -54,14 +57,21 @@ if (!$folders = get_all_instances_in_course('folder', $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strintro);
     $table->align = array ('center', 'left', 'left');
 } else {
@@ -77,7 +87,11 @@ foreach ($folders as $folder) {
         $printsection = '';
         if ($folder->section !== $currentsection) {
             if ($folder->section) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$folder->section]);
+=======
+                $printsection = get_section_name($course, $folder->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';

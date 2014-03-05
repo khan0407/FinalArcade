@@ -29,7 +29,11 @@ class profile_field_checkbox extends profile_field_base {
             $checkbox->setChecked(true);
         }
         $mform->setType($this->inputname, PARAM_BOOL);
+<<<<<<< HEAD
         if ($this->is_required() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if ($this->is_required() and !has_capability('moodle/user:update', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $mform->addRule($this->inputname, get_string('required'), 'nonzero', null, 'client');
         }
     }

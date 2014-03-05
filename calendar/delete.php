@@ -55,7 +55,11 @@ if ($event->eventtype !== 'user' && $event->eventtype !== 'site') {
 $course = $DB->get_record('course', array('id'=>$courseid));
 require_login($course);
 if (!$course) {
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM)); //TODO: wrong
+=======
+    $PAGE->set_context(context_system::instance()); //TODO: wrong
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 // Check the user has the required capabilities to edit an event

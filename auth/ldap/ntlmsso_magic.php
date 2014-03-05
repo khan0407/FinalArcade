@@ -11,7 +11,11 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 //HTTPS is required in this page when $CFG->loginhttps enabled
 $PAGE->https_required();
 
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $authsequence = get_enabled_auth_plugins(true); // auths, in sequence
 if (!in_array('ldap', $authsequence, true)) {

@@ -1108,7 +1108,11 @@ class environment_results {
      */
     var $part;
     /**
+<<<<<<< HEAD
      * @var bool
+=======
+     * @var bool true means the test passed and all is OK. false means it failed.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     var $status;
     /**
@@ -1165,11 +1169,19 @@ class environment_results {
     /**
      * Set the status
      *
+<<<<<<< HEAD
      * @param boolean $status the status (true/false)
      */
     function setStatus($status) {
         $this->status=$status;
         if ($status) {
+=======
+     * @param bool $testpassed true means the test passed and all is OK. false means it failed.
+     */
+    function setStatus($testpassed) {
+        $this->status = $testpassed;
+        if ($testpassed) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->setErrorCode(NO_ERROR);
         }
     }
@@ -1259,7 +1271,11 @@ class environment_results {
     /**
      * Get the status
      *
+<<<<<<< HEAD
      * @return boolean result
+=======
+     * @return bool true means the test passed and all is OK. false means it failed.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     function getStatus() {
         return $this->status;

@@ -119,7 +119,11 @@ function blog_rss_add_http_header($context, $title, $filtertype, $filterselect=0
 function blog_rss_get_params($filters) {
     $thingid = $rsscontext = $filtertype = null;
 
+<<<<<<< HEAD
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (!$filters) {
         $thingid = SITEID;
@@ -128,14 +132,22 @@ function blog_rss_get_params($filters) {
     } else if (array_key_exists('course', $filters)) {
         $thingid = $filters['course'];
 
+<<<<<<< HEAD
         $coursecontext = get_context_instance(CONTEXT_COURSE, $thingid);
+=======
+        $coursecontext = context_course::instance($thingid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $rsscontext = $coursecontext;
 
         $filtertype = 'course';
     } else if (array_key_exists('user', $filters)) {
         $thingid = $filters['user'];
 
+<<<<<<< HEAD
         $usercontext = get_context_instance(CONTEXT_USER, $thingid);
+=======
+        $usercontext = context_user::instance($thingid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $rsscontext = $usercontext;
 
         $filtertype = 'user';
@@ -158,7 +170,11 @@ function blog_rss_get_params($filters) {
 function blog_rss_get_feed($context, $args) {
     global $CFG, $SITE, $DB;
 
+<<<<<<< HEAD
     if (empty($CFG->bloglevel)) {
+=======
+    if (empty($CFG->enableblogs)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         debugging('Blogging disabled on this site, RSS feeds are not available');
         return null;
     }
@@ -175,7 +191,11 @@ function blog_rss_get_feed($context, $args) {
         }
     }
 
+<<<<<<< HEAD
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (!has_capability('moodle/blog:view', $sitecontext)) {
         return null;
     }
@@ -254,10 +274,17 @@ function blog_rss_get_feed($context, $args) {
             break;
         case 'course':
             $info = $DB->get_field('course', 'fullname', array('id'=>$id));
+<<<<<<< HEAD
             $info = format_string($info, true, array('context' => get_context_instance(CONTEXT_COURSE, $id)));
             break;
         case 'site':
             $info = format_string($SITE->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+=======
+            $info = format_string($info, true, array('context' => context_course::instance($id)));
+            break;
+        case 'site':
+            $info = format_string($SITE->fullname, true, array('context' => context_course::instance(SITEID)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             break;
         case 'group':
             $group = groups_get_group($id);
@@ -330,3 +357,20 @@ function blog_rss_save_file($type, $id, $tagid=0, $contents='') {
     return $status;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * Delete the supplied user's cached blog post RSS feed.
+ * Only user blogs are available by RSS.
+ * This doesn't call rss_delete_file() as blog RSS caching uses it's own file structure.
+ *
+ * @param int $userid
+ */
+function blog_rss_delete_file($userid) {
+    $filename = blog_rss_file_name('user', $userid);
+    if (file_exists($filename)) {
+        unlink($filename);
+    }
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

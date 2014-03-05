@@ -38,6 +38,13 @@ class block_completionstatus extends block_base {
         $this->title = get_string('pluginname', 'block_completionstatus');
     }
 
+<<<<<<< HEAD
+=======
+    function applicable_formats() {
+        return array('all' => true, 'mod' => false, 'tag' => false, 'my' => false);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     public function get_content() {
         global $USER;
 
@@ -47,12 +54,19 @@ class block_completionstatus extends block_base {
         }
 
         $course  = $this->page->course;
+<<<<<<< HEAD
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Create empty content
         $this->content = new stdClass();
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Can edit settings?
         $can_edit = has_capability('moodle/course:update', $context);
 
@@ -158,7 +172,11 @@ class block_completionstatus extends block_base {
             if (!empty($prerequisites)) {
 
                 $phtml  = '<tr><td>';
+<<<<<<< HEAD
                 $phtml .= get_string('prerequisitescompleted', 'completion');
+=======
+                $phtml .= get_string('dependenciescompleted', 'completion');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $phtml .= '</td><td style="text-align: right">';
                 $a = new stdClass();
                 $a->first = $prerequisites_complete;
@@ -224,6 +242,11 @@ class block_completionstatus extends block_base {
             $report = new moodle_url('/report/completion/index.php', array('course' => $course->id));
             $this->content->footer .= '<br /><a href="'.$report->out().'">'.get_string('viewcoursereport', 'completion').'</a>';
         }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $this->content;
     }
 }

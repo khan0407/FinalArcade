@@ -87,7 +87,11 @@ class block_edit_form extends moodleform {
 
         $regionoptions = $this->page->theme->get_all_block_regions();
 
+<<<<<<< HEAD
         $parentcontext = get_context_instance_by_id($this->block->instance->parentcontextid);
+=======
+        $parentcontext = context::instance_by_id($this->block->instance->parentcontextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->addElement('hidden', 'bui_parentcontextid', $parentcontext->id);
 
         $mform->addElement('static', 'bui_homecontext', get_string('createdat', 'block'), print_context_name($parentcontext));
@@ -265,7 +269,11 @@ class block_edit_form extends moodleform {
             $defaults->bui_subpagepattern = '%@NULL@%';
         }
 
+<<<<<<< HEAD
         $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($defaults->parentcontextid == $systemcontext->id) {
             $defaults->bui_contexts = BUI_CONTEXTS_ENTIRE_SITE; // System-wide and sticky
         } else {

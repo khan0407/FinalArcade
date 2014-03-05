@@ -49,11 +49,19 @@ if (!empty($USER->newadminuser)) {
 }
 
 if ($course->id == SITEID) {
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_SYSTEM);   // SYSTEM context
 } else {
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);   // Course context
 }
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $coursecontext = context_system::instance();   // SYSTEM context
+} else {
+    $coursecontext = context_course::instance($course->id);   // Course context
+}
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($id == -1) {
     // creating new user
@@ -68,7 +76,11 @@ if ($id == -1) {
     // editing existing user
     require_capability('moodle/user:update', $systemcontext);
     $user = $DB->get_record('user', array('id'=>$id), '*', MUST_EXIST);
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_USER, $user->id));
+=======
+    $PAGE->set_context(context_user::instance($user->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($user->id == $USER->id) {
         if ($course->id != SITEID && $node = $PAGE->navigation->find($course->id, navigation_node::TYPE_COURSE)) {
             $node->make_active();
@@ -112,7 +124,11 @@ if (!empty($CFG->usetags)) {
 }
 
 if ($user->id !== -1) {
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $user->id);
+=======
+    $usercontext = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $editoroptions = array(
         'maxfiles'   => EDITOR_UNLIMITED_FILES,
         'maxbytes'   => $CFG->maxbytes,
@@ -203,7 +219,11 @@ if ($usernew = $userform->get_data()) {
         $usercreated = false;
     }
 
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $usernew->id);
+=======
+    $usercontext = context_user::instance($usernew->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //update preferences
     useredit_update_user_preference($usernew);

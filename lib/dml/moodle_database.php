@@ -118,6 +118,12 @@ abstract class moodle_database {
     /** @var bool Flag used to force rollback of all current transactions. */
     private $force_rollback = false;
 
+<<<<<<< HEAD
+=======
+    /** @var string MD5 of settings used for connection. Used by MUC as an identifier. */
+    private $settingshash;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * @var int internal temporary variable used to fix params. Its used by {@link _fix_sql_params_dollar_callback()}.
      */
@@ -289,6 +295,23 @@ abstract class moodle_database {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns a hash for the settings used during connection.
+     *
+     * If not already requested it is generated and stored in a private property.
+     *
+     * @return string
+     */
+    protected function get_settings_hash() {
+        if (empty($this->settingshash)) {
+            $this->settingshash = md5($this->dbhost . $this->dbuser . $this->dbname . $this->prefix);
+        }
+        return $this->settingshash;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Attempt to create the database
      * @param string $dbhost The database host.
      * @param string $dbuser The database user to connect as.
@@ -324,11 +347,21 @@ abstract class moodle_database {
             }
             $this->force_transaction_rollback();
         }
+<<<<<<< HEAD
         if ($this->used_for_db_sessions) {
             // this is needed because we need to save session to db before closing it
             session_get_instance()->write_close();
             $this->used_for_db_sessions = false;
         }
+=======
+        // Always terminate sessions here to make it consistent,
+        // this is needed because we need to save session to db before closing it.
+        if (function_exists('session_get_instance')) {
+            session_get_instance()->write_close();
+        }
+        $this->used_for_db_sessions = false;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($this->temptables) {
             $this->temptables->dispose();
             $this->temptables = null;
@@ -909,6 +942,12 @@ abstract class moodle_database {
     public function reset_caches() {
         $this->columns = array();
         $this->tables  = null;
+<<<<<<< HEAD
+=======
+        // Purge MUC as well
+        $identifiers = array('dbfamily' => $this->get_dbfamily(), 'settings' => $this->get_settings_hash());
+        cache_helper::purge_by_definition('core', 'databasemeta', $identifiers);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1601,11 +1640,19 @@ abstract class moodle_database {
      * @throws dml_exception A DML specific exception is thrown for any errors.
      */
     public function count_records_sql($sql, array $params=null) {
+<<<<<<< HEAD
         if ($count = $this->get_field_sql($sql, $params)) {
             return $count;
         } else {
             return 0;
         }
+=======
+        $count = $this->get_field_sql($sql, $params);
+        if ($count === false or !is_number($count) or $count < 0) {
+            throw new coding_exception("count_records_sql() expects the first field to contain non-negative number from COUNT(), '$count' found instead.");
+        }
+        return (int)$count;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -2062,6 +2109,18 @@ abstract class moodle_database {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Analyze the data in temporary tables to force statistics collection after bulk data loads.
+     *
+     * @return void
+     */
+    public function update_temp_table_stats() {
+        $this->temptables->update_stats();
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Checks and returns true if transactions are supported.
      *
      * It is not responsible to run productions servers

@@ -259,7 +259,11 @@ $assignurl = new moodle_url($PAGE->url, array('roleid'=>$roleid));
     foreach ($assignableroles as $roleid => $notused) {
         $roleusers = '';
         if (0 < $assigncounts[$roleid] && $assigncounts[$roleid] <= MAX_USERS_TO_LIST_PER_ROLE) {
+<<<<<<< HEAD
             $roleusers = get_role_users($roleid, $context, false, 'u.id, u.lastname, u.firstname');
+=======
+            $roleusers = get_role_users($roleid, $context, false, 'u.id, u.firstname, u.lastname');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!empty($roleusers)) {
                 $strroleusers = array();
                 foreach ($roleusers as $user) {

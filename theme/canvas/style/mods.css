@@ -33,6 +33,10 @@
     text-align: left;
     border-right: 1px solid #ddd;
 }
+<<<<<<< HEAD
+=======
+.path-mod-forum.dir-rtl .forumheaderlist th {text-align: right;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .forumnodiscuss,
 .path-mod-forum .forumheaderlist .replies {

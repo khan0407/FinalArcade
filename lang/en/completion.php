@@ -51,7 +51,11 @@ $string['completiondisabled'] = 'Disabled, not shown in activity settings';
 $string['completionexpected'] = 'Expect completed on';
 $string['completionexpected_help']='This setting specifies the date when the activity is expected to be completed. The date is not shown to students and is only displayed in the activity completion report.';
 $string['completionicons'] = 'Completion tick boxes';
+<<<<<<< HEAD
 $string['completionicons_help'] = 'A tick next an activity name may be used to indicate when the activity is complete.
+=======
+$string['completionicons_help'] = 'A tick next to an activity name may be used to indicate when the activity is complete.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 If a box with a dotted border is shown, a tick will appear automatically when you have completed the activity according to conditions set by the teacher.
 
@@ -70,7 +74,10 @@ $string['completionview'] = 'Require view';
 $string['completionview_desc'] = 'Student must view this activity to complete it';
 $string['configenablecompletion'] = 'When enabled, this lets you turn on completion tracking (progress) features at course level.';
 $string['csvdownload'] = 'Download in spreadsheet format (UTF-8 .csv)';
+<<<<<<< HEAD
 $string['deletecoursecompletiondata'] = 'Delete course completion data';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['deletecompletiondata'] = 'Delete completion data';
 $string['enablecompletion'] = 'Enable completion tracking';
 $string['err_noactivities'] = 'Completion information is not enabled for any activity, so none can be displayed. You can enable completion information by editing the settings for an activity.';
@@ -89,12 +96,19 @@ $string['yourprogress'] = 'Your progress';
 $string['achievinggrade']='Achieving grade';
 $string['activities']='Activities';
 $string['activitiescompleted']='Activities completed';
+<<<<<<< HEAD
 $string['addcourseprerequisite']='Add course prerequisite';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['afterspecifieddate']='After specified date';
 $string['aggregationmethod']='Aggregation method';
 $string['all']='All';
 $string['any']='Any';
 $string['approval']='Approval';
+<<<<<<< HEAD
+=======
+$string['completiondependencies']='Completion dependencies';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['completionenabled']='Enabled, control via completion and activity settings';
 $string['completionmenuitem']='Completion';
 $string['completiononunenrolment']='Completion on unenrolment';
@@ -107,7 +121,10 @@ $string['coursealreadycompleted']='You have already completed this course';
 $string['coursecomplete']='Course complete';
 $string['coursecompleted']='Course completed';
 $string['coursegrade']='Course grade';
+<<<<<<< HEAD
 $string['courseprerequisites']='Course prerequisites';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['coursesavailable']='Courses available';
 $string['coursesavailableexplaination']='<i>Course completion criteria must be set for a course to appear in this list</i>';
 $string['criteria']='Criteria';
@@ -116,6 +133,11 @@ $string['criteriagroup']='Criteria group';
 $string['criteriarequiredall']='All criteria below are required';
 $string['criteriarequiredany']='Any criteria below are required';
 $string['days']='Days';
+<<<<<<< HEAD
+=======
+$string['dependencies']='Dependencies';
+$string['dependenciescompleted']='Dependencies completed';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['editcoursecompletionsettings']='Edit course completion settings';
 $string['enrolmentduration']='Days left';
 $string['err_nocourses']='Course completion is not enabled for any other courses, so none can be displayed. You can enable course completion in the course settings.';
@@ -143,8 +165,11 @@ $string['notyetstarted']='Not yet started';
 $string['overallcriteriaaggregation']='Overall criteria type aggregation';
 $string['pending']='Pending';
 $string['periodpostenrolment']='Period post enrolment';
+<<<<<<< HEAD
 $string['prerequisites']='Prerequisites';
 $string['prerequisitescompleted']='Prerequisites completed';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['recognitionofpriorlearning']='Recognition of prior learning';
 $string['remainingenroledfortime']='Remaining enrolled for a specified period of time';
 $string['remainingenroleduntildate']='Remaining enrolled until a specified date';

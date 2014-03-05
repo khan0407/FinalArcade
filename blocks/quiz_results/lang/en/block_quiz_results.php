@@ -46,6 +46,10 @@ $string['error_emptyquizid'] = 'There is an error right now with this block: you
 $string['error_emptyquizrecord'] = 'There is an error right now with this block: the selected quiz does not seem to exist in the database.';
 $string['error_nogroupsexist'] = 'There is an error right now with this block: it is set to display grades in group mode, but the course has no defined groups.';
 $string['pluginname'] = 'Quiz results';
+<<<<<<< HEAD
+=======
+$string['quiz_results:addinstance'] = 'Add a new quiz results block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['worstgrade'] = 'The lowest grade:';
 $string['worstgrades'] = 'The {$a} lowest grades:';
 $string['worstgroupgrade'] = 'The group with the lowest average:';

@@ -89,11 +89,18 @@ $(document).ready(function() {
 
 
     //course page only js
+<<<<<<< HEAD
     $('div.path-course-view, .path-course-view div.generalpage').live('pagebeforecreate', function(event, ui) {
         //course listing
         $('.section li img').addClass("ui-li-icon");
         $('.course-content ul.section').attr("data-role", "listview").attr("data-inset", "true").attr("data-theme", mythemeb);
         $('.sitetopic ul.section').attr("data-role", "listview").attr("data-inset", "true").attr("data-theme", mythemeb);
+=======
+    $('div.path-site, div.path-course-view, .path-course-view div.generalpage').live('pagebeforecreate', function(event, ui) {
+        //course listing
+        $('.section li img.activityicon').addClass("ui-li-icon");
+        $('.course-content ul.section, .sitetopic ul.section').attr("data-role", "listview").attr("data-inset", "true").attr("data-theme", mythemeb);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $('.topics div.left.side').addClass("ui-bar-" + mytheme);
         $('.section.hidden div.headingwrap').attr("data-theme", mythemeb);
         //$('.topics #section-0 div.left.side').removeClass("ui-li ui-li-divider ui-btn ui-bar-a");
@@ -108,6 +115,15 @@ $(document).ready(function() {
             this.form.submit();
             return false;
         });
+<<<<<<< HEAD
+=======
+
+        // Force the class ui-li-desc on non-detected elements.
+        $('ul.section div.availabilityinfo, ul.section div.contentafterlink').addClass('ui-li-desc');
+
+        // Force some classes on dimmed elements.
+        $('ul.section div.dimmed_text > span').addClass('instancename');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     });
 
     //forum listing only stuff
@@ -127,6 +143,7 @@ $(document).ready(function() {
 
     //forum discussion page only stuff
     $('div#page-mod-forum-discussPAGE, #page-mod-forum-discuss div.generalpage, div.forumtype-single, .forumtype-single div.generalpage, div#page-mod-forum-postPAGE').live('pagebeforecreate',function(event, ui){
+<<<<<<< HEAD
         // Handle the '#' in the URLs.
         $('.options div.commands a').each(function(index) {
             var url = $(this).attr("href");
@@ -139,6 +156,8 @@ $(document).ready(function() {
             }
         });
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         //actual forum posting
         $('.forumpost div.row.header').addClass("ui-li ui-li-divider ui-btn ui-bar-" + mytheme);
         $('.options div.commands').attr("data-role", "controlgroup").attr("data-type", "horizontal");

@@ -89,6 +89,19 @@ $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
 $hasmyblocks = $PAGE->blocks->region_has_content('myblocks', $OUTPUT);
 
+<<<<<<< HEAD
+=======
+$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
+if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
+    $courseheader = $OUTPUT->course_header();
+    $coursecontentheader = $OUTPUT->course_content_header();
+    if (empty($PAGE->layout_options['nocoursefooter'])) {
+        $coursecontentfooter = $OUTPUT->course_content_footer();
+        $coursefooter = $OUTPUT->course_footer();
+    }
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $bodyclasses = array();
 $bodyclasses[] = (string)$hasithumb;
 $bodyclasses[] = (string)$showsitetopic;
@@ -129,6 +142,12 @@ echo $OUTPUT->doctype() ?>
             <?php } else if (!isloggedin()) {
                 echo $OUTPUT->login_info();
             } ?>
+<<<<<<< HEAD
+=======
+            <?php if (!empty($courseheader)) { ?>
+            <div data-role="course-header"><?php echo $courseheader; ?></div>
+            <?php } ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             <!-- start navbar -->
             <div data-role="navbar">
                 <ul>
@@ -172,7 +191,13 @@ echo $OUTPUT->doctype() ?>
                     <?php if ($hasshowmobileintro && $mypagetype == 'site-index') { ?>
                         <?php echo $PAGE->theme->settings->showmobileintro; ?>
                     <?php } ?>
+<<<<<<< HEAD
                     <?php echo $OUTPUT->main_content(); ?>
+=======
+                    <?php echo $coursecontentheader; ?>
+                    <?php echo $OUTPUT->main_content(); ?>
+                    <?php echo $coursecontentfooter; ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 <?php } ?>
                 </div>
             </div>
@@ -236,6 +261,13 @@ echo $OUTPUT->doctype() ?>
         <!-- end main content -->
 
         <!-- start footer -->
+<<<<<<< HEAD
+=======
+        <?php if (!empty($coursefooter)) { ?>
+        <div data-role="course-footer"><?php echo $coursefooter; ?></div>
+        <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <div id="page-footer">
             <div data-role="footer" class="mobilefooter" <?php echo $datatheme;?>>
                 <div data-role="navbar" class="jnav" >

@@ -75,8 +75,11 @@ table.minicalendar {
   border-radius: 10px;
 }
 
+<<<<<<< HEAD
 .block_course_summary,
 .block_course_summary .content,
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 #page-report-outline-user .section {
   -moz-border-radius:10px;
   -webkit-border-radius: 10px;
@@ -87,6 +90,7 @@ table.minicalendar {
 .generalboxcontent,
 .informationbox,
 .informationboxcontent {
+<<<<<<< HEAD
   -moz-border-radius-topleft: 3px;
   -moz-border-radius-topright: 3px;
   -moz-border-radius-bottomleft: 15px;
@@ -99,6 +103,11 @@ table.minicalendar {
   border-top-right-radius: 3px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+=======
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 .editing .block_course_summary .content {
@@ -158,6 +167,19 @@ table.minicalendar {
   -webkit-border-bottom-left-radius: 15px;
   border-bottom-left-radius: 15px;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl.path-calendar .eventlist .event .side,
+.dir-rtl .glossarypost .side,
+.dir-rtl#page-mod-journal-view .feedbackbox .side {
+  -moz-border-radius-bottomleft:0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+  -moz-border-radius-bottomright:15px;
+  -webkit-border-bottom-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .path-calendar .eventlist .event .description,
 .encyclopedia .entrylowersection,
@@ -166,6 +188,19 @@ table.minicalendar {
   -webkit-border-bottom-right-radius: 15px;
   border-bottom-right-radius: 15px;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl.path-calendar .eventlist .event .description,
+.dir-rtl .encyclopedia .entrylowersection,
+.dir-rtl#page-mod-journal-view .feedbackbox .entrycontent {
+  -moz-border-radius-bottomright:0;
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft:15px;
+  -webkit-border-bottom-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .path-calendar .maincalendar,
 .path-calendar .sidecalendar,

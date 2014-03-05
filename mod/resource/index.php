@@ -54,9 +54,12 @@ if (!$resources = get_all_instances_in_course('resource', $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
@@ -77,7 +80,11 @@ foreach ($resources as $resource) {
         $printsection = '';
         if ($resource->section !== $currentsection) {
             if ($resource->section) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$resource->section]);
+=======
+                $printsection = get_section_name($course, $resource->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';

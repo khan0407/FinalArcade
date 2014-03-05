@@ -23,4 +23,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['calendar_month:addinstance'] = 'Add a new calendar block';
+$string['calendar_month:myaddinstance'] = 'Add a new calendar block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['pluginname'] = 'Calendar';

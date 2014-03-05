@@ -146,8 +146,11 @@ if ($csv && $grandtotal && count($activities)>0) { // Only show CSV if there are
         $line="\n";
     }
 } else {
+<<<<<<< HEAD
     // Use SVG to draw sideways text if supported
     $svgcleverness = can_use_rotated_text();
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Navigation and header
     $strreports = get_string("reports");
@@ -156,11 +159,16 @@ if ($csv && $grandtotal && count($activities)>0) { // Only show CSV if there are
     $PAGE->set_title($strcompletion);
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
+<<<<<<< HEAD
 
     if ($svgcleverness) {
         $PAGE->requires->yui2_lib('event');
         $PAGE->requires->js('/report/progress/textrotate.js');
     }
+=======
+    $PAGE->requires->js('/report/progress/textrotate.js');
+    $PAGE->requires->js_function_call('textrotate_init', null, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Handle groups (if enabled)
     groups_print_course_menu($course,$CFG->wwwroot.'/report/progress/?course='.$course->id);
@@ -326,12 +334,22 @@ foreach($activities as $activity) {
     if ($csv) {
         print $sep.csv_quote(strip_tags($activity->name)).$sep.csv_quote($datetext);
     } else {
+<<<<<<< HEAD
         print '<th scope="col" class="'.$activity->datepassedclass.'">'.
             '<a href="'.$CFG->wwwroot.'/mod/'.$activity->modname.
             '/view.php?id='.$activity->id.'">'.
             '<img src="'.$OUTPUT->pix_url('icon', $activity->modname).'" alt="'.
             get_string('modulename',$activity->modname).'" /> <span class="completion-activityname">'.
             format_string($activity->name).'</span></a>';
+=======
+        $formattedactivityname = format_string($activity->name, true, array('context' => $context));
+        print '<th scope="col" class="'.$activity->datepassedclass.'">'.
+            '<a href="'.$CFG->wwwroot.'/mod/'.$activity->modname.
+            '/view.php?id='.$activity->id.'" title="' . $formattedactivityname . '">'.
+            '<img src="'.$OUTPUT->pix_url('icon', $activity->modname).'" alt="'.
+            get_string('modulename',$activity->modname).'" /> <span class="completion-activityname">'.
+            $formattedactivityname.'</span></a>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($activity->completionexpected) {
             print '<div class="completion-expected"><span>'.$datetext.'</span></div>';
         }

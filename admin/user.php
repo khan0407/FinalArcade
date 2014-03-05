@@ -19,7 +19,11 @@
 
     admin_externalpage_setup('editusers');
 
+<<<<<<< HEAD
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $site = get_site();
 
     if (!has_capability('moodle/user:update', $sitecontext) and !has_capability('moodle/user:delete', $sitecontext)) {
@@ -167,11 +171,19 @@
         } else {
             $columndir = $dir == "ASC" ? "DESC":"ASC";
             if ($column == "lastaccess") {
+<<<<<<< HEAD
                 $columnicon = $dir == "ASC" ? "up":"down";
             } else {
                 $columnicon = $dir == "ASC" ? "down":"up";
             }
             $columnicon = " <img src=\"" . $OUTPUT->pix_url('t/' . $columnicon) . "\" alt=\"\" />";
+=======
+                $columnicon = ($dir == "ASC") ? "sort_desc" : "sort_asc";
+            } else {
+                $columnicon = ($dir == "ASC") ? "sort_asc" : "sort_desc";
+            }
+            $columnicon = "<img class='iconsort' src=\"" . $OUTPUT->pix_url('t/' . $columnicon) . "\" alt=\"\" />";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         }
         $$column = "<a href=\"user.php?sort=$column&amp;dir=$columndir\">".$string[$column]."</a>$columnicon";
@@ -376,7 +388,13 @@
         echo $OUTPUT->heading('<a href="'.$securewwwroot.'/user/editadvanced.php?id=-1">'.get_string('addnewuser').'</a>');
     }
     if (!empty($table)) {
+<<<<<<< HEAD
         echo html_writer::table($table);
+=======
+        echo html_writer::start_tag('div', array('class'=>'no-overflow'));
+        echo html_writer::table($table);
+        echo html_writer::end_tag('div');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo $OUTPUT->paging_bar($usercount, $page, $perpage, $baseurl);
         if (has_capability('moodle/user:create', $sitecontext)) {
             echo $OUTPUT->heading('<a href="'.$securewwwroot.'/user/editadvanced.php?id=-1">'.get_string('addnewuser').'</a>');

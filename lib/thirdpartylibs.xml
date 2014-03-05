@@ -4,7 +4,11 @@
     <location>adodb</location>
     <name>AdoDB</name>
     <license>GPL/BSD</license>
+<<<<<<< HEAD
     <version>5.16</version>
+=======
+    <version>5.17</version>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <licenseversion>2.1+</licenseversion>
   </library>
   <library>
@@ -32,7 +36,11 @@
     <location>editor/tinymce/tiny_mce</location>
     <name>TinyMCE</name>
     <license>LGPL</license>
+<<<<<<< HEAD
     <version>3.5.1.1</version>
+=======
+    <version>3.5.7</version>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <licenseversion>2.1+</licenseversion>
   </library>
   <library>
@@ -165,7 +173,11 @@
     <location>phpmailer</location>
     <name>PHPMailer</name>
     <license>LGPL</license>
+<<<<<<< HEAD
     <version>5.1</version>
+=======
+    <version>5.2.1</version>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <licenseversion>2.1</licenseversion>
   </library>
   <library>
@@ -176,6 +188,7 @@
     <licenseversion></licenseversion>
   </library>
   <library>
+<<<<<<< HEAD
     <location>simpletestlib</location>
     <name>Simpletest</name>
     <license>LGPL</license>
@@ -194,19 +207,30 @@
     <name>TCPDF</name>
     <license>LGPL</license>
     <version>5.9.156</version>
+=======
+    <location>tcpdf</location>
+    <name>TCPDF</name>
+    <license>LGPL</license>
+    <version>5.9.181</version>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <licenseversion>3</licenseversion>
   </library>
   <library>
     <location>typo3</location>
     <name>Typo3</name>
     <license>GPL</license>
+<<<<<<< HEAD
     <version>4.6.8</version>
+=======
+    <version>4.7.4</version>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <licenseversion>2.0+</licenseversion>
   </library>
   <library>
     <location>yui</location>
     <name>YUI</name>
     <license>BSD</license>
+<<<<<<< HEAD
     <version>3.5.1</version>
     <licenseversion></licenseversion>
   </library>
@@ -215,6 +239,9 @@
     <name>YUI PHPloader</name>
     <license>BSD</license>
     <version>1.0.0b2</version>
+=======
+    <version>3.7.3</version>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <licenseversion></licenseversion>
   </library>
   <library>

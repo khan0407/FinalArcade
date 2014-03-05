@@ -46,7 +46,11 @@ if (! $course = $DB->get_record("course", array("id"=>$assignment->course))) {
 
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 if (has_capability('mod/assignment:grade', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+=======
+if (has_capability('mod/assignment:grade', context_module::instance($cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($userid) {
         redirect('submissions.php?id='.$cm->id.'&userid='.$userid.'&mode=single&filter=0&offset=0');
     } else {

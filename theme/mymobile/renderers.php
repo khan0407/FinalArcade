@@ -42,7 +42,11 @@ class theme_mymobile_renderer extends plugin_renderer_base {
      */
     public function settings_tree(settings_navigation $navigation) {
         $content = $this->navigation_node($navigation, array('class' => 'settings'));
+<<<<<<< HEAD
         if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if (has_capability('moodle/site:config', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // TODO: Work out whether something is missing from here.
         }
         return $content;
@@ -301,7 +305,11 @@ class theme_mymobile_core_renderer extends core_renderer {
      *
      * @return string
      */
+<<<<<<< HEAD
     public function login_info() {
+=======
+    public function login_info($withlinks = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $USER, $CFG, $DB, $SESSION;
 
         if (during_initial_install()) {
@@ -324,7 +332,11 @@ class theme_mymobile_core_renderer extends core_renderer {
             // $course->id is not defined during installation
             return '';
         } else if (isloggedin()) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+            $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $fullname = fullname($USER, true);
 
             // Since Moodle 2.0 this link always goes to the public profile page (not the course profile page)
@@ -362,7 +374,11 @@ class theme_mymobile_core_renderer extends core_renderer {
                         } else {
                             $loggedinas .= get_string('failedloginattemptsall', '', $count);
                         }
+<<<<<<< HEAD
                         if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+                        if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $loggedinas .= ' (<a href="'.$CFG->wwwroot.'/course/report/log/index.php?chooselog=1&amp;id=1&amp;modid=site_errors">'.get_string('logs').'</a>)';
                         }
                         $loggedinas .= '</div>';
@@ -403,7 +419,11 @@ class theme_mymobile_core_renderer extends core_renderer {
             // $course->id is not defined during installation
             return '';
         } else if (isloggedin()) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+            $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $fullname = fullname($USER, true);
             // Since Moodle 2.0 this link always goes to the public profile page (not the course profile page)
@@ -419,7 +439,11 @@ class theme_mymobile_core_renderer extends core_renderer {
             } else if (is_role_switched($course->id)) { // Has switched roles
                 $rolename = '';
                 if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
+<<<<<<< HEAD
                     $rolename = ': '.format_string($role->name);
+=======
+                    $rolename = ': '.role_get_name($role, $context);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
                 $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename." (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\">".get_string('switchrolereturn').'</a>)';
             } else {
@@ -445,7 +469,11 @@ class theme_mymobile_core_renderer extends core_renderer {
                         } else {
                             $loggedinas .= get_string('failedloginattemptsall', '', $count);
                         }
+<<<<<<< HEAD
                         if (has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+                        if (has_capability('report/log:view', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $loggedinas .= ' (<a href="'.$CFG->wwwroot.'/course/report/log/index.php?chooselog=1&amp;id=1&amp;modid=site_errors">'.get_string('logs').'</a>)';
                         }
                         $loggedinas .= '</div>';

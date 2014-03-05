@@ -29,16 +29,28 @@ require_once($CFG->libdir.'/adminlib.php');
 
 // Check permissions.
 require_login();
+<<<<<<< HEAD
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/role:manage', $systemcontext);
 
 // Get URL parameters.
 $capability = optional_param('capability', '', PARAM_CAPABILITY);
+<<<<<<< HEAD
 $roleids = optional_param_array('roles', array('0'), PARAM_INTEGER);
 
 // Clean the passed in list of role ids. If 'All' selected as an option, or
 // if none were selected, do all roles.
 $allroles = get_all_roles();
+=======
+$roleids = optional_param_array('roles', array('0'), PARAM_INT);
+
+// Clean the passed in list of role ids. If 'All' selected as an option, or
+// if none were selected, do all roles.
+$allroles = role_fix_names(get_all_roles());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $cleanedroleids = array();
 foreach ($roleids as $roleid) {
     if ($roleid == 0) {
@@ -73,7 +85,11 @@ foreach ($allcapabilities as $cap) {
 // Prepare the list of roles to choose from
 $rolechoices = array('0' => get_string('all'));
 foreach ($allroles as $role) {
+<<<<<<< HEAD
     $rolechoices[$role->id] = $role->name;
+=======
+    $rolechoices[$role->id] = $role->localname;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 if (count($cleanedroleids) == count($allroles)) {
     // Select 'All', rather than each role individually.
@@ -139,9 +155,21 @@ if ($capability) {
     // Put the contexts into a tree structure.
     foreach ($contexts as $conid => $con) {
         $context = context::instance_by_id($conid);
+<<<<<<< HEAD
         $parentcontextid = get_parent_contextid($context);
         if ($parentcontextid) {
             $contexts[$parentcontextid]->children[] = $conid;
+=======
+        try {
+            $parentcontext = $context->get_parent_context();
+            if ($parentcontext) { // Will be false if $context is the system context.
+                $contexts[$parentcontext->id]->children[] = $conid;
+            }
+        } catch (dml_missing_record_exception $e) {
+            // Ignore corrupt context tree structure here. Don't let it break
+            // showing the rest of the report.
+            continue;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -162,7 +190,11 @@ if ($capability) {
     if (count($cleanedroleids) != count($allroles)) {
         $rolenames = array();
         foreach ($cleanedroleids as $roleid) {
+<<<<<<< HEAD
             $rolenames[] = $allroles[$roleid]->name;
+=======
+            $rolenames[] = $allroles[$roleid]->localname;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         echo '<p>', get_string('forroles', 'tool_capability', implode(', ', $rolenames)), '</p>';
     }
@@ -207,7 +239,11 @@ function print_report_tree($contextid, $contexts, $allroles) {
         foreach ($allroles as $role) {
             if (isset($contexts[$contextid]->rolecapabilities[$role->id])) {
                 $permission = $contexts[$contextid]->rolecapabilities[$role->id];
+<<<<<<< HEAD
                 echo '<tr class="r' . ($rowcounter % 2) . '"><th class="cell">', $role->name,
+=======
+                echo '<tr class="r' . ($rowcounter % 2) . '"><th class="cell">', $role->localname,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         '</th><td class="cell">' . $strpermissions[$permission] . '</td></tr>';
                 $rowcounter++;
             }

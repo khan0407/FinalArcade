@@ -161,11 +161,19 @@
             $class   = '';
         } else if ($module->visible) {
             $visible = "<a href=\"modules.php?hide=$module->name&amp;sesskey=".sesskey()."\" title=\"$strhide\">".
+<<<<<<< HEAD
                        "<img src=\"" . $OUTPUT->pix_url('i/hide') . "\" class=\"icon\" alt=\"$strhide\" /></a>";
             $class   = '';
         } else {
             $visible = "<a href=\"modules.php?show=$module->name&amp;sesskey=".sesskey()."\" title=\"$strshow\">".
                        "<img src=\"" . $OUTPUT->pix_url('i/show') . "\" class=\"icon\" alt=\"$strshow\" /></a>";
+=======
+                       "<img src=\"" . $OUTPUT->pix_url('t/hide') . "\" class=\"iconsmall\" alt=\"$strhide\" /></a>";
+            $class   = '';
+        } else {
+            $visible = "<a href=\"modules.php?show=$module->name&amp;sesskey=".sesskey()."\" title=\"$strshow\">".
+                       "<img src=\"" . $OUTPUT->pix_url('t/show') . "\" class=\"iconsmall\" alt=\"$strshow\" /></a>";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $class =   ' class="dimmed_text"';
         }
         if ($module->name == "forum") {

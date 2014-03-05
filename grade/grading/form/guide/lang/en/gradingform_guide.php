@@ -43,6 +43,10 @@ $string['criteriondelete'] = 'Delete criterion';
 $string['criterionempty'] = 'Click to edit criterion';
 $string['criterionmovedown'] = 'Move down';
 $string['criterionmoveup'] = 'Move up';
+<<<<<<< HEAD
+=======
+$string['criterionname'] = 'Criterion name';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['definemarkingguide'] = 'Define marking guide';
 $string['description'] = 'Description';
 $string['descriptionmarkers'] = 'Description for Markers';
@@ -76,7 +80,10 @@ $string['save'] = 'Save';
 $string['saveguide'] = 'Save marking guide and make it ready';
 $string['saveguidedraft'] = 'Save as draft';
 $string['score'] = 'score';
+<<<<<<< HEAD
 $string['showdescriptionstudent'] = 'Display description to those being graded';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['showmarkerdesc'] = 'Show marker criterion descriptions';
 $string['showmarkspercriterionstudents'] = 'Show marks per criterion to students';
 $string['showstudentdesc'] = 'Show student criterion descriptions';

@@ -171,8 +171,13 @@ function note_print($note, $detail = NOTES_SHOW_FULL) {
         debugging("User $note->usermodified not found");
         return;
     }
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $note->courseid);
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context_course::instance($note->courseid);
+    $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $authoring = new stdClass();
     $authoring->name = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$author->id.'&amp;course='.$note->courseid.'">'.fullname($author).'</a>';

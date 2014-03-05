@@ -116,4 +116,8 @@ echo $OUTPUT->doctype() ?>
 
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

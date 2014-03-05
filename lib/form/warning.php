@@ -63,6 +63,7 @@ class MoodleQuickForm_warning extends HTML_QuickForm_static{
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @param array $helpbuttonargs array of arguments to make a help button
@@ -76,6 +77,8 @@ class MoodleQuickForm_warning extends HTML_QuickForm_static{
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns HTML for this form element.
      *
      * @return string

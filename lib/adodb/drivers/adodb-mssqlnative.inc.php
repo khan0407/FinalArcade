@@ -1,6 +1,10 @@
 <?php
 /* 
+<<<<<<< HEAD
 V5.16 26 Mar 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+=======
+V5.17 17 May 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -130,6 +134,10 @@ class ADODB_mssqlnative extends ADOConnection {
 	var $uniqueOrderBy = true;
 	var $_bindInputArray = true;
 	var $_dropSeqSQL = "drop table %s";
+<<<<<<< HEAD
+=======
+	var $connectionInfo = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	
 	function ADODB_mssqlnative() 
 	{		
@@ -378,7 +386,14 @@ class ADODB_mssqlnative extends ADOConnection {
 	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
 		if (!function_exists('sqlsrv_connect')) return null;
+<<<<<<< HEAD
         $connectionInfo = array("Database"=>$argDatabasename,'UID'=>$argUsername,'PWD'=>$argPassword);
+=======
+		$connectionInfo = $this->connectionInfo;
+		$connectionInfo["Database"]=$argDatabasename;
+		$connectionInfo["UID"]=$argUsername;
+		$connectionInfo["PWD"]=$argPassword;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($this->debug) error_log("<hr>connecting... hostname: $argHostname params: ".var_export($connectionInfo,true));
         //if ($this->debug) error_log("<hr>_connectionID before: ".serialize($this->_connectionID));
         if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) { 

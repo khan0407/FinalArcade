@@ -170,4 +170,19 @@ class assign_submission_comments extends assign_submission_plugin {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * If blind marking is enabled then disable this plugin (it shows names)
+     *
+     * @return bool
+     */
+    public function is_enabled() {
+        if ($this->assignment->has_instance() && $this->assignment->is_blind_marking()) {
+            return false;
+        }
+        return parent::is_enabled();
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

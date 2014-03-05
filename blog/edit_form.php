@@ -98,9 +98,15 @@ class blog_edit_form extends moodleform {
                     $a = new stdClass();
                     $a->modtype = get_string('modulename', $mod->modname);
                     $a->modname = $mod->name;
+<<<<<<< HEAD
                     $context = get_context_instance(CONTEXT_MODULE, $modid);
                 } else {
                     $context = get_context_instance_by_id($entry->modassoc);
+=======
+                    $context = context_module::instance($modid);
+                } else {
+                    $context = context::instance_by_id($entry->modassoc);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $cm = $DB->get_record('course_modules', array('id' => $context->instanceid));
                     $a = new stdClass();
                     $a->modtype = $DB->get_field('modules', 'name', array('id' => $cm->module));
@@ -118,7 +124,11 @@ class blog_edit_form extends moodleform {
 
         $this->add_action_buttons();
         $mform->addElement('hidden', 'action');
+<<<<<<< HEAD
         $mform->setType('action', PARAM_ACTION);
+=======
+        $mform->setType('action', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->setDefault('action', '');
 
         $mform->addElement('hidden', 'entryid');
@@ -158,8 +168,13 @@ class blog_edit_form extends moodleform {
             $modcontextid = $data['modassoc'];
             $modcontext = context::instance_by_id($modcontextid, IGNORE_MISSING);
 
+<<<<<<< HEAD
             $canassociatemodule = has_capability('moodle/blog:associatecourse', $modcontext);
             if ($modcontext->contextlevel == CONTEXT_MODULE && $canassociatemodule) {
+=======
+            $canassociatemodule = has_capability('moodle/blog:associatemodule', $modcontext);
+            if ($canassociatemodule) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // get context of the mod's course
                 $coursecontext = $modcontext->get_course_context(true);
 

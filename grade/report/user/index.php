@@ -39,7 +39,11 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 require_login($course);
 $PAGE->set_pagelayout('report');
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('gradereport/user:view', $context);
 
 if (empty($userid)) {
@@ -60,7 +64,11 @@ if (has_capability('moodle/grade:viewall', $context)) {
     //ok - can view own grades
     $access = true;
 
+<<<<<<< HEAD
 } else if (has_capability('moodle/grade:viewall', get_context_instance(CONTEXT_USER, $userid)) and $course->showgrades) {
+=======
+} else if (has_capability('moodle/grade:viewall', context_user::instance($userid)) and $course->showgrades) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // ok - can view grades of this user- parent most probably
     $access = true;
 }

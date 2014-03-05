@@ -112,6 +112,16 @@ class restore_root_task extends restore_task {
         $users->get_ui()->set_changeable($changeable);
         $this->add_setting($users);
 
+<<<<<<< HEAD
+=======
+        $rootenrolmanual = new restore_users_setting('enrol_migratetomanual', base_setting::IS_BOOLEAN, false);
+        $rootenrolmanual->set_ui(new backup_setting_ui_checkbox($rootenrolmanual, get_string('rootenrolmanual', 'backup')));
+        $rootenrolmanual->get_ui()->set_changeable(enrol_is_enabled('manual'));
+        $rootenrolmanual->get_ui()->set_changeable($changeable);
+        $this->add_setting($rootenrolmanual);
+        $users->add_dependency($rootenrolmanual);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Define role_assignments (dependent of users)
         $defaultvalue = false;                      // Safer default
         $changeable = false;

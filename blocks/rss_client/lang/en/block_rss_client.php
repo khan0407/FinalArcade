@@ -62,10 +62,18 @@ $string['numentries'] = 'Entries per feed';
 $string['pickfeed'] = 'Pick a news feed';
 $string['pluginname'] = 'Remote RSS feeds';
 $string['remotenewsfeed'] = 'Remote news feed';
+<<<<<<< HEAD
+=======
+$string['rss_client:addinstance'] = 'Add a new remote RSS feeds block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['rss_client:createprivatefeeds'] = 'Create private RSS feeds';
 $string['rss_client:createsharedfeeds'] = 'Create shared RSS feeds';
 $string['rss_client:manageanyfeeds'] = 'Manage any RSS feeds';
 $string['rss_client:manageownfeeds'] = 'Manage own RSS feeds';
+<<<<<<< HEAD
+=======
+$string['rss_client:myaddinstance'] = 'Add a new RSS feeds block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['seeallfeeds'] = 'See all feeds';
 $string['sharedfeed'] = 'Shared feed';
 $string['shownumentrieslabel'] = 'Max number entries to show per block.';

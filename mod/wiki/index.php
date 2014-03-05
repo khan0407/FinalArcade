@@ -43,7 +43,11 @@ if (!$course = $DB->get_record('course', array('id' => $id))) {
 
 require_login($course, true);
 $PAGE->set_pagelayout('incourse');
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 add_to_log($course->id, 'wiki', 'view', "index.php?id=".$id, "");
 
@@ -64,18 +68,28 @@ if (!$wikis = get_all_instances_in_course("wiki", $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// Print the list of instances (your module will probably extend this)
 
 $timenow = time();
+<<<<<<< HEAD
 $strsectionname = get_string('sectionname', 'format_' . $course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname = get_string("name");
 $table = new html_table();
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_' . $course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head = array($strsectionname, $strname);
 } else {
     $table->head = array($strname);
@@ -89,7 +103,11 @@ foreach ($wikis as $wiki) {
     $link = html_writer::link(new moodle_url('/mod/wiki/view.php', array('id' => $wiki->coursemodule)), $wiki->name, $linkcss);
 
     if ($usesections) {
+<<<<<<< HEAD
         $table->data[] = array(get_section_name($course, $sections[$wiki->section]), $link);
+=======
+        $table->data[] = array(get_section_name($course, $wiki->section), $link);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $table->data[] = array($link);
     }

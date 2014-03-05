@@ -216,7 +216,11 @@ if (empty($reportsbyname) && empty($rulesbyname)) {
     $ADMIN->add('modsettings', $quizsettings);
 } else {
     $ADMIN->add('modsettings', new admin_category('modsettingsquizcat',
+<<<<<<< HEAD
             get_string('modulename', 'quiz'), !$module->visible));
+=======
+            get_string('modulename', 'quiz'), $module->is_enabled() === false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $ADMIN->add('modsettingsquizcat', $quizsettings);
 
     // Add settings pages for the quiz report subplugins.
@@ -224,7 +228,11 @@ if (empty($reportsbyname) && empty($rulesbyname)) {
         $reportname = $report;
 
         $settings = new admin_settingpage('modsettingsquizcat'.$reportname,
+<<<<<<< HEAD
                 $strreportname, 'moodle/site:config', !$module->visible);
+=======
+                $strreportname, 'moodle/site:config', $module->is_enabled() === false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($ADMIN->fulltree) {
             include($CFG->dirroot . "/mod/quiz/report/$reportname/settings.php");
         }
@@ -236,7 +244,11 @@ if (empty($reportsbyname) && empty($rulesbyname)) {
     // Add settings pages for the quiz access rule subplugins.
     foreach ($rulesbyname as $strrulename => $rule) {
         $settings = new admin_settingpage('modsettingsquizcat' . $rule,
+<<<<<<< HEAD
                 $strrulename, 'moodle/site:config', !$module->visible);
+=======
+                $strrulename, 'moodle/site:config', $module->is_enabled() === false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($ADMIN->fulltree) {
             include($CFG->dirroot . "/mod/quiz/accessrule/$rule/settings.php");
         }

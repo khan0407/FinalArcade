@@ -53,7 +53,11 @@
         user_accesstime_log();
     }
 
+<<<<<<< HEAD
     $hassiteconfig = has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+    $hassiteconfig = has_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// If the site is currently under maintenance, then print a message
     if (!empty($CFG->maintenance_enabled) and !$hassiteconfig) {
@@ -100,6 +104,7 @@
     echo $OUTPUT->header();
 
 /// Print Section or custom info
+<<<<<<< HEAD
     get_all_mods($SITE->id, $mods, $modnames, $modnamesplural, $modnamesused);
     if (!empty($CFG->customfrontpageinclude)) {
         include($CFG->customfrontpageinclude);
@@ -120,6 +125,27 @@
         }
 
         if (!empty($section->sequence) or !empty($section->summary) or $editing) {
+=======
+    $siteformatoptions = course_get_format($SITE)->get_format_options();
+    $modinfo = get_fast_modinfo($SITE);
+    $modnames = get_module_types_names();
+    $modnamesplural = get_module_types_names(true);
+    $modnamesused = $modinfo->get_used_module_names();
+    $mods = $modinfo->get_cms();
+
+    if (!empty($CFG->customfrontpageinclude)) {
+        include($CFG->customfrontpageinclude);
+
+    } else if ($siteformatoptions['numsections'] > 0) {
+        if ($editing) {
+            // make sure section with number 1 exists
+            course_create_sections_if_missing($SITE, 1);
+            // re-request modinfo in case section was created
+            $modinfo = get_fast_modinfo($SITE);
+        }
+        $section = $modinfo->get_section_info(1);
+        if (($section && (!empty($modinfo->sections[1]) or !empty($section->summary))) or $editing) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo $OUTPUT->box_start('generalbox sitetopic');
 
             /// If currently moving a file then show the current clipboard
@@ -130,7 +156,11 @@
                 echo '</font></p>';
             }
 
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, SITEID);
+=======
+            $context = context_course::instance(SITEID);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $summarytext = file_rewrite_pluginfile_urls($section->summary, 'pluginfile.php', $context->id, 'course', 'section', $section->id);
             $summaryformatoptions = new stdClass();
             $summaryformatoptions->noclean = true;
@@ -178,7 +208,11 @@
 
                     // fetch news forum context for proper filtering to happen
                     $newsforumcm = get_coursemodule_from_instance('forum', $newsforum->id, $SITE->id, false, MUST_EXIST);
+<<<<<<< HEAD
                     $newsforumcontext = get_context_instance(CONTEXT_MODULE, $newsforumcm->id, MUST_EXIST);
+=======
+                    $newsforumcontext = context_module::instance($newsforumcm->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                     $forumname = format_string($newsforum->name, true, array('context' => $newsforumcontext));
                     echo html_writer::tag('a', get_string('skipa', 'access', textlib::strtolower(strip_tags($forumname))), array('href'=>'#skipsitenews', 'class'=>'skip-block'));

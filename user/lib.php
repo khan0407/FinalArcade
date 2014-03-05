@@ -70,7 +70,11 @@ function user_create_user($user) {
     $newuser = $DB->get_record('user', array('id' => $newuserid));
 
     // create USER context for this user
+<<<<<<< HEAD
     get_context_instance(CONTEXT_USER, $newuserid);
+=======
+    context_user::instance($newuserid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // update user password if necessary
     if (isset($userpassword)) {
@@ -166,6 +170,25 @@ function user_get_users_by_id($userids) {
     return $DB->get_records_list('user', 'id', $userids);
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * Returns the list of default 'displayable' fields
+ *
+ * Contains database field names but also names used to generate information, such as enrolledcourses
+ *
+ * @return array of user fields
+ */
+function user_get_default_fields() {
+    return array( 'id', 'username', 'fullname', 'firstname', 'lastname', 'email',
+        'address', 'phone1', 'phone2', 'icq', 'skype', 'yahoo', 'aim', 'msn', 'department',
+        'institution', 'interests', 'firstaccess', 'lastaccess', 'auth', 'confirmed',
+        'idnumber', 'lang', 'theme', 'timezone', 'mailformat', 'description', 'descriptionformat',
+        'city', 'url', 'country', 'profileimageurlsmall', 'profileimageurl', 'customfields',
+        'groups', 'roles', 'preferences', 'enrolledcourses'
+    );
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /**
  *
@@ -186,6 +209,7 @@ function user_get_user_details($user, $course = null, array $userfields = array(
     require_once($CFG->dirroot . "/user/profile/lib.php"); //custom field library
     require_once($CFG->dirroot . "/lib/filelib.php");      // file handling on description and friends
 
+<<<<<<< HEAD
     $defaultfields = array( 'id', 'username', 'fullname', 'firstname', 'lastname', 'email',
         'address', 'phone1', 'phone2', 'icq', 'skype', 'yahoo', 'aim', 'msn', 'department',
         'institution', 'interests', 'firstaccess', 'lastaccess', 'auth', 'confirmed',
@@ -193,6 +217,9 @@ function user_get_user_details($user, $course = null, array $userfields = array(
         'city', 'url', 'country', 'profileimageurlsmall', 'profileimageurl', 'customfields',
         'groups', 'roles', 'preferences', 'enrolledcourses'
     );
+=======
+    $defaultfields = user_get_default_fields();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (empty($userfields)) {
         $userfields = $defaultfields;
@@ -215,11 +242,19 @@ function user_get_user_details($user, $course = null, array $userfields = array(
     }
 
     if (!empty($course)) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
         $usercontext = get_context_instance(CONTEXT_USER, $user->id);
         $canviewdetailscap = (has_capability('moodle/user:viewdetails', $context) || has_capability('moodle/user:viewdetails', $usercontext));
     } else {
         $context = get_context_instance(CONTEXT_USER, $user->id);
+=======
+        $context = context_course::instance($course->id);
+        $usercontext = context_user::instance($user->id);
+        $canviewdetailscap = (has_capability('moodle/user:viewdetails', $context) || has_capability('moodle/user:viewdetails', $usercontext));
+    } else {
+        $context = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $usercontext = $context;
         $canviewdetailscap = has_capability('moodle/user:viewdetails', $usercontext);
     }
@@ -449,10 +484,17 @@ function user_get_user_details($user, $course = null, array $userfields = array(
         if ($mycourses = enrol_get_users_courses($user->id, true)) {
             foreach ($mycourses as $mycourse) {
                 if ($mycourse->category) {
+<<<<<<< HEAD
                     $coursecontext = get_context_instance(CONTEXT_COURSE, $mycourse->id);
                     $enrolledcourse = array();
                     $enrolledcourse['id'] = $mycourse->id;
                     $enrolledcourse['fullname'] = format_string($mycourse->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $mycourse->id)));
+=======
+                    $coursecontext = context_course::instance($mycourse->id);
+                    $enrolledcourse = array();
+                    $enrolledcourse['id'] = $mycourse->id;
+                    $enrolledcourse['fullname'] = format_string($mycourse->fullname, true, array('context' => $coursecontext));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $enrolledcourse['shortname'] = format_string($mycourse->shortname, true, array('context' => $coursecontext));
                     $enrolledcourses[] = $enrolledcourse;
                 }

@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +21,12 @@
 /**
  * Cohort related management functions, this file needs to be included manually.
  *
+<<<<<<< HEAD
  * @package    core
  * @subpackage cohort
+=======
+ * @package    core_cohort
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,9 +42,15 @@ $searchquery  = optional_param('search', '', PARAM_RAW);
 require_login();
 
 if ($contextid) {
+<<<<<<< HEAD
     $context = get_context_instance_by_id($contextid, MUST_EXIST);
 } else {
     $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context::instance_by_id($contextid, MUST_EXIST);
+} else {
+    $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 if ($context->contextlevel != CONTEXT_COURSECAT and $context->contextlevel != CONTEXT_SYSTEM) {
@@ -69,12 +82,32 @@ if ($category) {
 
 echo $OUTPUT->header();
 
+<<<<<<< HEAD
 echo $OUTPUT->heading(get_string('cohortsin', 'cohort', print_context_name($context)));
 
 // add search form
 $search  = html_writer::start_tag('form', array('id'=>'searchcohortquery', 'method'=>'get'));
 $search .= html_writer::start_tag('div');
 $search .= html_writer::label(get_string('searchcohort', 'cohort').':', 'cohort_search_q');
+=======
+$cohorts = cohort_get_cohorts($context->id, $page, 25, $searchquery);
+
+$count = '';
+if ($cohorts['allcohorts'] > 0) {
+    if ($searchquery === '') {
+        $count = ' ('.$cohorts['allcohorts'].')';
+    } else {
+        $count = ' ('.$cohorts['totalcohorts'].'/'.$cohorts['allcohorts'].')';
+    }
+}
+
+echo $OUTPUT->heading(get_string('cohortsin', 'cohort', $context->get_context_name()).$count);
+
+// Add search form.
+$search  = html_writer::start_tag('form', array('id'=>'searchcohortquery', 'method'=>'get'));
+$search .= html_writer::start_tag('div');
+$search .= html_writer::label(get_string('searchcohort', 'cohort'), 'cohort_search_q'); // No : in form labels!
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $search .= html_writer::empty_tag('input', array('id'=>'cohort_search_q', 'type'=>'text', 'name'=>'search', 'value'=>$searchquery));
 $search .= html_writer::empty_tag('input', array('type'=>'submit', 'value'=>get_string('search', 'cohort')));
 $search .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>'contextid', 'value'=>$contextid));
@@ -82,9 +115,14 @@ $search .= html_writer::end_tag('div');
 $search .= html_writer::end_tag('form');
 echo $search;
 
+<<<<<<< HEAD
 $cohorts = cohort_get_cohorts($context->id, $page, 25, $searchquery);
 
 // output pagination bar
+=======
+
+// Output pagination bar.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $params = array('page' => $page);
 if ($contextid) {
     $params['contextid'] = $contextid;
@@ -99,7 +137,11 @@ $data = array();
 foreach($cohorts['cohorts'] as $cohort) {
     $line = array();
     $line[] = format_string($cohort->name);
+<<<<<<< HEAD
     $line[] = s($cohort->idnumber); // plain text
+=======
+    $line[] = s($cohort->idnumber); // All idnumbers are plain text.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $line[] = format_text($cohort->description, $cohort->descriptionformat);
 
     $line[] = $DB->count_records('cohort_members', array('cohortid'=>$cohort->id));

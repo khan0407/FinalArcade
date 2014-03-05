@@ -49,7 +49,11 @@ $PAGE->set_url('/mod/forum/post.php', array(
 //these page_params will be passed as hidden variables later in the form.
 $page_params = array('reply'=>$reply, 'forum'=>$forum, 'edit'=>$edit);
 
+<<<<<<< HEAD
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (!isloggedin() or isguestuser()) {
 
@@ -80,7 +84,11 @@ if (!isloggedin() or isguestuser()) {
     if (!$cm = get_coursemodule_from_instance('forum', $forum->id, $course->id)) { // For the logs
         print_error('invalidcoursemodule');
     } else {
+<<<<<<< HEAD
         $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     $PAGE->set_cm($cm, $course, $forum);
@@ -107,7 +115,11 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
         print_error("invalidcoursemodule");
     }
 
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (! forum_user_can_post_discussion($forum, $groupid, -1, $cm)) {
         if (!isguestuser()) {
@@ -152,7 +164,12 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
         $post->groupid = groups_get_activity_group($cm);
     }
 
+<<<<<<< HEAD
     forum_set_return();
+=======
+    // Unsetting this will allow the correct return URL to be calculated later.
+    unset($SESSION->fromdiscussion);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 } else if (!empty($reply)) {      // User is writing a new reply
 
@@ -175,8 +192,13 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
     // Ensure lang, theme, etc. is set up properly. MDL-6926
     $PAGE->set_cm($cm, $course, $forum);
 
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
     $modcontext    = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+    $modcontext    = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (! forum_user_can_post($forum, $discussion, $USER, $cm, $course, $modcontext)) {
         if (!isguestuser()) {
@@ -227,6 +249,10 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
         $post->subject = $strre.' '.$post->subject;
     }
 
+<<<<<<< HEAD
+=======
+    // Unsetting this will allow the correct return URL to be calculated later.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     unset($SESSION->fromdiscussion);
 
 } else if (!empty($edit)) {  // User is editing their own post
@@ -252,7 +278,11 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
     if (!$cm = get_coursemodule_from_instance("forum", $forum->id, $course->id)) {
         print_error('invalidcoursemodule');
     } else {
+<<<<<<< HEAD
         $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     $PAGE->set_cm($cm, $course, $forum);
@@ -277,9 +307,15 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
 
     $post = trusttext_pre_edit($post, 'message', $modcontext);
 
+<<<<<<< HEAD
     unset($SESSION->fromdiscussion);
 
 
+=======
+    // Unsetting this will allow the correct return URL to be calculated later.
+    unset($SESSION->fromdiscussion);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }else if (!empty($delete)) {  // User is deleting a post
 
     if (! $post = forum_get_post_full($delete)) {
@@ -299,7 +335,11 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
     }
 
     require_login($course, false, $cm);
+<<<<<<< HEAD
     $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ( !(($post->userid == $USER->id && has_capability('mod/forum:deleteownpost', $modcontext))
                 || has_capability('mod/forum:deleteanypost', $modcontext)) ) {
@@ -416,7 +456,11 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
     if (!$cm = get_coursemodule_from_instance("forum", $forum->id, $forum->course)) { // For the logs
         print_error('invalidcoursemodule');
     } else {
+<<<<<<< HEAD
         $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     if (!has_capability('mod/forum:splitdiscussions', $modcontext)) {
         print_error('cannotsplit', 'forum');
@@ -484,7 +528,11 @@ if (!empty($forum)) {      // User is starting a new discussion in a forum
 
 if (!isset($coursecontext)) {
     // Has not yet been set by post.php.
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $forum->course);
+=======
+    $coursecontext = context_course::instance($forum->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -493,7 +541,11 @@ if (!isset($coursecontext)) {
 if (!$cm = get_coursemodule_from_instance('forum', $forum->id, $course->id)) { // For the logs
     print_error('invalidcoursemodule');
 }
+<<<<<<< HEAD
 $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_login($course, false, $cm);
 
 if (isguestuser()) {
@@ -507,7 +559,11 @@ if (!isset($forum->maxattachments)) {  // TODO - delete this once we add a field
 
 require_once('post_form.php');
 
+<<<<<<< HEAD
 $mform_post = new mod_forum_post_form('post.php', array('course'=>$course, 'cm'=>$cm, 'coursecontext'=>$coursecontext, 'modcontext'=>$modcontext, 'forum'=>$forum, 'post'=>$post));
+=======
+$mform_post = new mod_forum_post_form('post.php', array('course'=>$course, 'cm'=>$cm, 'coursecontext'=>$coursecontext, 'modcontext'=>$modcontext, 'forum'=>$forum, 'post'=>$post), 'post', '', array('id' => 'mformforum'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $draftitemid = file_get_submitted_draft_itemid('attachments');
 file_prepare_draft_area($draftitemid, $modcontext->id, 'mod_forum', 'attachment', empty($post->id)?null:$post->id, mod_forum_post_form::attachment_options($forum));
@@ -892,6 +948,14 @@ if (!empty($parent)) {
 } else {
     if (!empty($forum->intro)) {
         echo $OUTPUT->box(format_module_intro('forum', $forum, $cm->id), 'generalbox', 'intro');
+<<<<<<< HEAD
+=======
+
+        if (!empty($CFG->enableplagiarism)) {
+            require_once($CFG->libdir.'/plagiarismlib.php');
+            echo plagiarism_print_disclosure($cm->id);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 

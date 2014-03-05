@@ -27,7 +27,11 @@
 require(dirname(__FILE__) . '/../../../config.php');
 
 require_login();
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+$context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/site:config', $context);
 
 $PAGE->set_url('/lib/tests/other/todochecker.php');

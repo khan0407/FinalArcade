@@ -93,5 +93,9 @@ YUI.add('moodle-block_community-comments', function(Y) {
     }
 
 }, '@VERSION@', {
+<<<<<<< HEAD
     requires:['base', 'moodle-enrol-notification']
+=======
+    requires:['base', 'moodle-core-notification']
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 });

@@ -43,7 +43,11 @@ class data_field_file extends data_field_base {
 
                 if (!empty($content->content)) {
                     if ($file = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', $content->content)) {
+<<<<<<< HEAD
                         $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+                        $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         if (!$files = $fs->get_area_files($usercontext->id, 'user', 'draft', $itemid, 'id DESC', false)) {
                             return false;
                         }
@@ -86,7 +90,10 @@ class data_field_file extends data_field_base {
 
         $module = array('name'=>'data_filepicker', 'fullpath'=>'/mod/data/data.js', 'requires'=>array('core_filepicker'));
         $PAGE->requires->js_init_call('M.data_filepicker.init', array($fp->options), true, $module);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $html;
     }
 
@@ -167,7 +174,11 @@ class data_field_file extends data_field_base {
         // delete existing files
         $fs->delete_area_files($this->context->id, 'mod_data', 'content', $content->id);
 
+<<<<<<< HEAD
         $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $value, 'timecreated DESC');
 
         if (count($files)<2) {

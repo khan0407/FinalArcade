@@ -42,4 +42,8 @@ $string['petsanimals'] = 'Pets &amp; Animals';
 $string['pluginname'] = 'Youtube';
 $string['scienceandtech'] = 'Science &amp; Tech';
 $string['sports'] = 'Sports';
+<<<<<<< HEAD
+=======
+$string['tag_youtube:addinstance'] = 'Add a new youtube block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['travel'] = 'Travel &amp; Places';

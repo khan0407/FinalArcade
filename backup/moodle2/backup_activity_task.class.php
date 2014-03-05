@@ -64,7 +64,11 @@ abstract class backup_activity_task extends backup_task {
         $this->sectionid  = $coursemodule->section;
         $this->modulename = $coursemodule->modname;
         $this->activityid = $coursemodule->instance;
+<<<<<<< HEAD
         $this->contextid  = get_context_instance(CONTEXT_MODULE, $this->moduleid)->id;
+=======
+        $this->contextid  = context_module::instance($this->moduleid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         parent::__construct($name, $plan);
     }
@@ -258,7 +262,12 @@ abstract class backup_activity_task extends backup_task {
         // - section_included setting (if exists)
         $settingname = $settingprefix . 'included';
         $activity_included = new backup_activity_generic_setting($settingname, base_setting::IS_BOOLEAN, true);
+<<<<<<< HEAD
         $activity_included->get_ui()->set_icon(new pix_icon('icon', get_string('pluginname', $this->modulename), $this->modulename));
+=======
+        $activity_included->get_ui()->set_icon(new pix_icon('icon', get_string('pluginname', $this->modulename),
+            $this->modulename, array('class' => 'iconlarge icon-post')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->add_setting($activity_included);
         // Look for "activities" root setting
         $activities = $this->plan->get_setting('activities');

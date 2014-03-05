@@ -160,6 +160,16 @@ div.rightinfo {
     margin-top: 40px;
 }
 
+<<<<<<< HEAD
+=======
+#course-header {
+    width: 93%;
+    min-width: 910px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /** main content wraps **/
 
 #outercontainer {
@@ -237,6 +247,16 @@ div.jcontrolsright div.singlebutton, div.jcontrolsright div.forumsearch {
 
 /** foot wraps and inner divs **/
 
+<<<<<<< HEAD
+=======
+#course-footer {
+    width: 93%;
+    min-width: 910px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 #footer {
     width: 91%;
     height: 35px;
@@ -845,7 +865,11 @@ table#categoryquestions th a {
 }
 
 .generaltable .header,
+<<<<<<< HEAD
 .generaltable .header {
+=======
+.generaltable .header a {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     padding: 0;
 }
 
@@ -1033,7 +1057,11 @@ div.course-content div.left.side {
     color: #666;
 }
 
+<<<<<<< HEAD
 span.completionprogress {
+=======
+div.completionprogress {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     font-size: 11px;
     font-weight: 200;
 }

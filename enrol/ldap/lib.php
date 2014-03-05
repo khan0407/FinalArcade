@@ -184,9 +184,16 @@ class enrol_ldap_plugin extends enrol_plugin {
                     if ($this->get_config('autocreate')) { // Autocreate
                         error_log($this->errorlogtag.get_string('createcourseextid', 'enrol_ldap',
                                                                 array('courseextid'=>$course_ext_id)));
+<<<<<<< HEAD
                         if ($newcourseid = $this->create_course($enrol)) {
                             $course = $DB->get_record('course', array('id'=>$newcourseid));
                         }
+=======
+                        if (!$newcourseid = $this->create_course($enrol)) {
+                            continue;
+                        }
+                        $course = $DB->get_record('course', array('id'=>$newcourseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     } else {
                         error_log($this->errorlogtag.get_string('createnotcourseextid', 'enrol_ldap',
                                                                 array('courseextid'=>$course_ext_id)));
@@ -250,7 +257,11 @@ class enrol_ldap_plugin extends enrol_plugin {
             // Deal with unenrolments.
             $transaction = $DB->start_delegated_transaction();
             foreach ($enrolments[$role->id]['current'] as $course) {
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $course->courseid);
+=======
+                $context = context_course::instance($course->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $instance = $DB->get_record('enrol', array('id'=>$course->enrolid));
                 switch ($this->get_config('unenrolaction')) {
                     case ENROL_EXT_REMOVED_UNENROL:
@@ -304,6 +315,11 @@ class enrol_ldap_plugin extends enrol_plugin {
             return;
         }
 
+<<<<<<< HEAD
+=======
+        $ldap_pagedresults = ldap_paged_results_supported($this->get_config('ldap_version'));
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // we may need a lot of memory here
         @set_time_limit(0);
         raise_memory_limit(MEMORY_HUGE);
@@ -332,12 +348,17 @@ class enrol_ldap_plugin extends enrol_plugin {
             // Define the search pattern
             $ldap_search_pattern = $this->config->objectclass;
 
+<<<<<<< HEAD
+=======
+            $ldap_cookie = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach ($ldap_contexts as $ldap_context) {
                 $ldap_context = trim($ldap_context);
                 if (empty($ldap_context)) {
                     continue; // Next;
                 }
 
+<<<<<<< HEAD
                 if ($this->config->course_search_sub) {
                     // Use ldap_search to find first user from subtree
                     $ldap_result = @ldap_search($ldapconnection,
@@ -365,6 +386,52 @@ class enrol_ldap_plugin extends enrol_plugin {
                 }
                 // Free some mem
                 unset($records);
+=======
+                $flat_records = array();
+                do {
+                    if ($ldap_pagedresults) {
+                        ldap_control_paged_result($ldapconnection, $this->config->pagesize, true, $ldap_cookie);
+                    }
+
+                    if ($this->config->course_search_sub) {
+                        // Use ldap_search to find first user from subtree
+                        $ldap_result = @ldap_search($ldapconnection,
+                                                    $ldap_context,
+                                                    $ldap_search_pattern,
+                                                    $ldap_fields_wanted);
+                    } else {
+                        // Search only in this context
+                        $ldap_result = @ldap_list($ldapconnection,
+                                                  $ldap_context,
+                                                  $ldap_search_pattern,
+                                                  $ldap_fields_wanted);
+                    }
+                    if (!$ldap_result) {
+                        continue; // Next
+                    }
+
+                    if ($ldap_pagedresults) {
+                        ldap_control_paged_result_response($ldapconnection, $ldap_result, $ldap_cookie);
+                    }
+
+                    // Check and push results
+                    $records = ldap_get_entries($ldapconnection, $ldap_result);
+
+                    // LDAP libraries return an odd array, really. fix it:
+                    for ($c = 0; $c < $records['count']; $c++) {
+                        array_push($flat_records, $records[$c]);
+                    }
+                    // Free some mem
+                    unset($records);
+                } while ($ldap_pagedresults && !empty($ldap_cookie));
+
+                // If LDAP paged results were used, the current connection must be completely
+                // closed and a new one created, to work without paged results from here on.
+                if ($ldap_pagedresults) {
+                    $this->ldap_close(true);
+                    $ldapconnection = $this->ldap_connect();
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 if (count($flat_records)) {
                     $ignorehidden = $this->get_config('ignorehiddencourses');
@@ -380,9 +447,16 @@ class enrol_ldap_plugin extends enrol_plugin {
                             if ($this->get_config('autocreate')) { // Autocreate
                                 error_log($this->errorlogtag.get_string('createcourseextid', 'enrol_ldap',
                                                                         array('courseextid'=>$idnumber)));
+<<<<<<< HEAD
                                 if ($newcourseid = $this->create_course($course)) {
                                     $course_obj = $DB->get_record('course', array('id'=>$newcourseid));
                                 }
+=======
+                                if (!$newcourseid = $this->create_course($course)) {
+                                    continue;
+                                }
+                                $course_obj = $DB->get_record('course', array('id'=>$newcourseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             } else {
                                 error_log($this->errorlogtag.get_string('createnotcourseextid', 'enrol_ldap',
                                                                         array('courseextid'=>$idnumber)));
@@ -448,7 +522,11 @@ class enrol_ldap_plugin extends enrol_plugin {
                                  JOIN {enrol} e ON (e.id = ue.enrolid)
                                 WHERE u.deleted = 0 AND e.courseid = :courseid ";
                         $params = array('roleid'=>$role->id, 'courseid'=>$course_obj->id);
+<<<<<<< HEAD
                         $context = get_context_instance(CONTEXT_COURSE, $course_obj->id);
+=======
+                        $context = context_course::instance($course_obj->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         if (!empty($ldapmembers)) {
                             list($ldapml, $params2) = $DB->get_in_or_equal($ldapmembers, SQL_PARAMS_NAMED, 'm', false);
                             $sql .= "AND u.idnumber $ldapml";
@@ -633,7 +711,11 @@ class enrol_ldap_plugin extends enrol_plugin {
      * @param object role is a record from the mdl_role table.
      * @return array
      */
+<<<<<<< HEAD
     protected function find_ext_enrolments ($ldapconnection, $memberuid, $role) {
+=======
+    protected function find_ext_enrolments (&$ldapconnection, $memberuid, $role) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $CFG;
         require_once($CFG->libdir.'/ldaplib.php');
 
@@ -697,12 +779,17 @@ class enrol_ldap_plugin extends enrol_plugin {
 
         // Get all contexts and look for first matching user
         $ldap_contexts = explode(';', $ldap_contexts);
+<<<<<<< HEAD
+=======
+        $ldap_pagedresults = ldap_paged_results_supported($this->get_config('ldap_version'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($ldap_contexts as $context) {
             $context = trim($context);
             if (empty($context)) {
                 continue;
             }
 
+<<<<<<< HEAD
             if ($this->get_config('course_search_sub')) {
                 // Use ldap_search to find first user from subtree
                 $ldap_result = @ldap_search($ldapconnection,
@@ -732,6 +819,56 @@ class enrol_ldap_plugin extends enrol_plugin {
                 array_push($flat_records, $records[$c]);
             }
             unset($records);
+=======
+            $ldap_cookie = '';
+            $flat_records = array();
+            do {
+                if ($ldap_pagedresults) {
+                    ldap_control_paged_result($ldapconnection, $this->config->pagesize, true, $ldap_cookie);
+                }
+
+                if ($this->get_config('course_search_sub')) {
+                    // Use ldap_search to find first user from subtree
+                    $ldap_result = @ldap_search($ldapconnection,
+                                                $context,
+                                                $ldap_search_pattern,
+                                                $ldap_fields_wanted);
+                } else {
+                    // Search only in this context
+                    $ldap_result = @ldap_list($ldapconnection,
+                                              $context,
+                                              $ldap_search_pattern,
+                                              $ldap_fields_wanted);
+                }
+
+                if (!$ldap_result) {
+                    continue;
+                }
+
+                if ($ldap_pagedresults) {
+                    ldap_control_paged_result_response($ldapconnection, $ldap_result, $ldap_cookie);
+                }
+
+                // Check and push results. ldap_get_entries() already
+                // lowercases the attribute index, so there's no need to
+                // use array_change_key_case() later.
+                $records = ldap_get_entries($ldapconnection, $ldap_result);
+
+                // LDAP libraries return an odd array, really. Fix it.
+                for ($c = 0; $c < $records['count']; $c++) {
+                    array_push($flat_records, $records[$c]);
+                }
+                // Free some mem
+                unset($records);
+            } while ($ldap_pagedresults && !empty($ldap_cookie));
+
+            // If LDAP paged results were used, the current connection must be completely
+            // closed and a new one created, to work without paged results from here on.
+            if ($ldap_pagedresults) {
+                $this->ldap_close(true);
+                $ldapconnection = $this->ldap_connect();
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if (count($flat_records)) {
                 $courses = array_merge($courses, $flat_records);
@@ -788,7 +925,11 @@ class enrol_ldap_plugin extends enrol_plugin {
      *                        groups.
      */
     protected function ldap_find_user_groups_recursively($ldapconnection, $memberdn, &$membergroups) {
+<<<<<<< HEAD
         $result = @ldap_read ($ldapconnection, $memberdn, '(objectClass=*)', array($this->get_config('group_memberofattribute')));
+=======
+        $result = @ldap_read($ldapconnection, $memberdn, '(objectClass=*)', array($this->get_config('group_memberofattribute')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!$result) {
             return;
         }
@@ -887,6 +1028,10 @@ class enrol_ldap_plugin extends enrol_plugin {
         $template = false;
         if ($this->get_config('template')) {
             if ($template = $DB->get_record('course', array('shortname'=>$this->get_config('template')))) {
+<<<<<<< HEAD
+=======
+                $template = fullclone(course_get_format($template)->get_course());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 unset($template->id); // So we are clear to reinsert the record
                 unset($template->fullname);
                 unset($template->shortname);
@@ -899,8 +1044,11 @@ class enrol_ldap_plugin extends enrol_plugin {
             $template->summary        = '';
             $template->summaryformat  = FORMAT_HTML;
             $template->format         = $courseconfig->format;
+<<<<<<< HEAD
             $template->numsections    = $courseconfig->numsections;
             $template->hiddensections = $courseconfig->hiddensections;
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $template->newsitems      = $courseconfig->newsitems;
             $template->showgrades     = $courseconfig->showgrades;
             $template->showreports    = $courseconfig->showreports;
@@ -909,7 +1057,11 @@ class enrol_ldap_plugin extends enrol_plugin {
             $template->groupmodeforce = $courseconfig->groupmodeforce;
             $template->visible        = $courseconfig->visible;
             $template->lang           = $courseconfig->lang;
+<<<<<<< HEAD
             $template->groupmodeforce = $courseconfig->groupmodeforce;
+=======
+            $template->enablecompletion = $courseconfig->enablecompletion;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $course = $template;
 
@@ -938,6 +1090,15 @@ class enrol_ldap_plugin extends enrol_plugin {
             $course->summary = $course_ext[$this->get_config('course_summary')][0];
         }
 
+<<<<<<< HEAD
+=======
+        // Check if the shortname already exists if it does - skip course creation.
+        if ($DB->record_exists('course', array('shortname' => $course->shortname))) {
+            error_log($this->errorlogtag . get_string('duplicateshortname', 'enrol_ldap', $course));
+            return false;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $newcourse = create_course($course);
         return $newcourse->id;
     }

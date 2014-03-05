@@ -24,11 +24,19 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/licenselib.php');
 
 require_login();
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
 
 $returnurl = "$CFG->wwwroot/$CFG->admin/settings.php?section=managelicenses";
 
 $action = optional_param('action', '', PARAM_ACTION);
+=======
+require_capability('moodle/site:config', context_system::instance());
+
+$returnurl = "$CFG->wwwroot/$CFG->admin/settings.php?section=managelicenses";
+
+$action = optional_param('action', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $license = optional_param('license', '', PARAM_SAFEDIR);
 
 ////////////////////////////////////////////////////////////////////////////////

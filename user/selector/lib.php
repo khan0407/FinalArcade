@@ -98,7 +98,11 @@ abstract class user_selector_base {
         if (isset($options['accesscontext'])) {
             $this->accesscontext = $options['accesscontext'];
         } else {
+<<<<<<< HEAD
             $this->accesscontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $this->accesscontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         if (isset($options['extrafields'])) {
@@ -149,7 +153,11 @@ abstract class user_selector_base {
 
     /**
      * @return array of user objects. The users that were selected. This is a more sophisticated version
+<<<<<<< HEAD
      * of optional_param($this->name, array(), PARAM_INTEGER) that validates the
+=======
+     * of optional_param($this->name, array(), PARAM_INT) that validates the
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * returned list of ids against the rules for this user selector.
      */
     public function get_selected_users() {
@@ -368,8 +376,13 @@ abstract class user_selector_base {
     protected function load_selected_users() {
         // See if we got anything.
         if ($this->multiselect) {
+<<<<<<< HEAD
             $userids = optional_param_array($this->name, array(), PARAM_INTEGER);
         } else if ($userid = optional_param($this->name, 0, PARAM_INTEGER)) {
+=======
+            $userids = optional_param_array($this->name, array(), PARAM_INT);
+        } else if ($userid = optional_param($this->name, 0, PARAM_INT)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $userids = array($userid);
         }
         // If there are no users there is nobody to load
@@ -578,6 +591,15 @@ abstract class user_selector_base {
                 unset($this->selected[$user->id]);
                 $output .= '    <option' . $attributes . ' value="' . $user->id . '">' .
                         $this->output_user($user) . "</option>\n";
+<<<<<<< HEAD
+=======
+                if (!empty($user->infobelow)) {
+                    // 'Poor man's indent' here is because CSS styles do not work
+                    // in select options, except in Firefox.
+                    $output .= '    <option disabled="disabled" class="userselector-infobelow">' .
+                            '&nbsp;&nbsp;&nbsp;&nbsp;' . s($user->infobelow) . '</option>';
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         } else {
             $output = '  <optgroup label="' . htmlspecialchars($groupname) . '">' . "\n";
@@ -676,7 +698,11 @@ abstract class groups_user_selector_base extends user_selector_base {
      */
     public function __construct($name, $options) {
         global $CFG;
+<<<<<<< HEAD
         $options['accesscontext'] = get_context_instance(CONTEXT_COURSE, $options['courseid']);
+=======
+        $options['accesscontext'] = context_course::instance($options['courseid']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::__construct($name, $options);
         $this->groupid = $options['groupid'];
         $this->courseid = $options['courseid'];
@@ -712,6 +738,13 @@ abstract class groups_user_selector_base extends user_selector_base {
             foreach ($groupedusers[$groupname] as &$user) {
                 unset($user->roles);
                 $user->fullname = fullname($user);
+<<<<<<< HEAD
+=======
+                if (!empty($user->component)) {
+                    $user->infobelow = get_string('addedby', 'group',
+                        get_string('pluginname', $user->component));
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
         return $groupedusers;
@@ -725,9 +758,19 @@ abstract class groups_user_selector_base extends user_selector_base {
 class group_members_selector extends groups_user_selector_base {
     public function find_users($search) {
         list($wherecondition, $params) = $this->search_sql($search, 'u');
+<<<<<<< HEAD
         $roles = groups_get_members_by_role($this->groupid, $this->courseid,
                 $this->required_fields_sql('u'), 'u.lastname, u.firstname',
                 $wherecondition, $params);
+=======
+
+        list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
+
+        $roles = groups_get_members_by_role($this->groupid, $this->courseid,
+                $this->required_fields_sql('u') . ', gm.component',
+                $sort, $wherecondition, array_merge($params, $sortparams));
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $this->convert_array_format($roles, $search);
     }
 }
@@ -809,7 +852,11 @@ class group_non_members_selector extends groups_user_selector_base {
         global $DB;
 
         // Get list of allowed roles.
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $this->courseid);
+=======
+        $context = context_course::instance($this->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($validroleids = groups_get_possible_roles($context)) {
             list($roleids, $roleparams) = $DB->get_in_or_equal($validroleids, SQL_PARAMS_NAMED, 'r');
         } else {
@@ -822,7 +869,11 @@ class group_non_members_selector extends groups_user_selector_base {
 
         // Build the SQL
         list($enrolsql, $enrolparams) = get_enrolled_sql($context);
+<<<<<<< HEAD
         $fields = "SELECT r.id AS roleid, r.shortname AS roleshortname, r.name AS rolename, u.id AS userid,
+=======
+        $fields = "SELECT r.id AS roleid, u.id AS userid,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                           " . $this->required_fields_sql('u') . ",
                           (SELECT count(igm.groupid)
                              FROM {groups_members} igm
@@ -836,7 +887,13 @@ class group_non_members_selector extends groups_user_selector_base {
                   WHERE u.deleted = 0
                         AND gm.id IS NULL
                         AND $searchcondition";
+<<<<<<< HEAD
         $orderby = "ORDER BY u.lastname, u.firstname";
+=======
+
+        list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
+        $orderby = ' ORDER BY ' . $sort;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $params = array_merge($searchparams, $roleparams, $enrolparams);
         $params['courseid'] = $this->courseid;
@@ -849,7 +906,11 @@ class group_non_members_selector extends groups_user_selector_base {
             }
         }
 
+<<<<<<< HEAD
         $rs = $DB->get_recordset_sql("$fields $sql $orderby", $params);
+=======
+        $rs = $DB->get_recordset_sql("$fields $sql $orderby", array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $roles =  groups_calculate_role_people($rs, $context);
 
         //don't hold onto user IDs if we're doing validation

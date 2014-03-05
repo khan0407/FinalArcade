@@ -9,7 +9,11 @@ $adminediting = optional_param('adminedit', -1, PARAM_BOOL);
 
 /// no guest autologin
 require_login(0, false);
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_url('/admin/settings.php', array('section' => $section));
 $PAGE->set_pagetype('admin-setting-' . $section);
 $PAGE->set_pagelayout('admin');

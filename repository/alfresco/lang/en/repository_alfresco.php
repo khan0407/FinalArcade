@@ -32,4 +32,8 @@ $string['password'] = 'Password';
 $string['pluginname_help'] = 'A plug-in for Alfresco CMS';
 $string['pluginname'] = 'Alfresco repository';
 $string['soapmustbeenabled'] = 'SOAP extension must be enabled for alfresco plugin';
+<<<<<<< HEAD
+=======
+$string['space'] = 'Space';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['username'] = 'User name';

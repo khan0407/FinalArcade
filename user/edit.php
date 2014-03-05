@@ -97,12 +97,21 @@ if ($editurl = $userauth->edit_profile_url()) {
 }
 
 if ($course->id == SITEID) {
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_SYSTEM);   // SYSTEM context
 } else {
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);   // Course context
 }
 $systemcontext   = get_context_instance(CONTEXT_SYSTEM);
 $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+=======
+    $coursecontext = context_system::instance();   // SYSTEM context
+} else {
+    $coursecontext = context_course::instance($course->id);   // Course context
+}
+$systemcontext   = context_system::instance();
+$personalcontext = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // check access control
 if ($user->id == $USER->id) {
@@ -244,7 +253,11 @@ if ($usernew = $userform->get_data()) {
 
         $a = new stdClass();
         $a->url = $CFG->wwwroot . '/user/emailupdate.php?key=' . $usernew->preference_newemailkey . '&id=' . $user->id;
+<<<<<<< HEAD
         $a->site = format_string($SITE->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+=======
+        $a->site = format_string($SITE->fullname, true, array('context' => context_course::instance(SITEID)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $a->fullname = fullname($user, true);
 
         $emailupdatemessage = get_string('emailupdatemessage', 'auth', $a);

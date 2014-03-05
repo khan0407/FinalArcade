@@ -23,7 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 require_once(dirname(dirname(__FILE__)) . '/config.php');
+=======
+defined('MOODLE_INTERNAL') || die();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->libdir . '/formslib.php');
 
@@ -255,6 +259,10 @@ class repository_type {
             }
             //run plugin_init function
             if (!repository::static_function($this->_typename, 'plugin_init')) {
+<<<<<<< HEAD
+=======
+                $this->update_visibility(false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if (!$silent) {
                     throw new repository_exception('cannotinitplugin', 'repository');
                 }
@@ -504,7 +512,11 @@ abstract class repository {
         if (is_object($context)) {
             $this->context = $context;
         } else {
+<<<<<<< HEAD
             $this->context = get_context_instance_by_id($context);
+=======
+            $this->context = context::instance_by_id($context);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $this->instance = $DB->get_record('repository_instances', array('id'=>$this->id));
         $this->readonly = $readonly;
@@ -707,7 +719,11 @@ abstract class repository {
     public static function draftfile_exists($itemid, $filepath, $filename) {
         global $USER;
         $fs = get_file_storage();
+<<<<<<< HEAD
         $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($fs->get_file($usercontext->id, 'user', 'draft', $itemid, $filepath, $filename)) {
             return true;
         } else {
@@ -766,9 +782,17 @@ abstract class repository {
      *      attributes of the new file
      * @param int $maxbytes maximum allowed size of file, -1 if unlimited. If size of file exceeds
      *      the limit, the file_exception is thrown.
+<<<<<<< HEAD
      * @return array The information about the created file
      */
     public function copy_to_area($source, $filerecord, $maxbytes = -1) {
+=======
+     * @param int $areamaxbytes the maximum size of the area. A file_exception is thrown if the
+     *      new file will reach the limit.
+     * @return array The information about the created file
+     */
+    public function copy_to_area($source, $filerecord, $maxbytes = -1, $areamaxbytes = FILE_AREA_MAX_BYTES_UNLIMITED) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $USER;
         $fs = get_file_storage();
 
@@ -792,6 +816,13 @@ abstract class repository {
         if ($maxbytes != -1 && $stored_file->get_filesize() > $maxbytes) {
             throw new file_exception('maxbytes');
         }
+<<<<<<< HEAD
+=======
+        // Validate the size of the draft area.
+        if (file_is_draft_area_limit_reached($draftitemid, $areamaxbytes, $stored_file->get_filesize())) {
+            throw new file_exception('maxareabytes');
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (repository::draftfile_exists($draftitemid, $new_filepath, $new_filename)) {
             // create new file
@@ -1068,7 +1099,11 @@ abstract class repository {
      *
      * @static
      * @param string $plugin repository plugin name
+<<<<<<< HEAD
      * @param string $function funciton name
+=======
+     * @param string $function function name
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @return mixed
      */
     public static function static_function($plugin, $function) {
@@ -1081,6 +1116,7 @@ abstract class repository {
             return false;
         }
 
+<<<<<<< HEAD
         $pname = null;
         if (is_object($plugin) || is_array($plugin)) {
             $plugin = (object)$plugin;
@@ -1089,6 +1125,8 @@ abstract class repository {
             $pname = $plugin;
         }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $args = func_get_args();
         if (count($args) <= 2) {
             $args = array();
@@ -1245,7 +1283,11 @@ abstract class repository {
             $fileinfo = null;
             $params = file_storage::unpack_reference($reference, true);
             if (is_array($params)) {
+<<<<<<< HEAD
                 $context = get_context_instance_by_id($params['contextid']);
+=======
+                $context = context::instance_by_id($params['contextid'], IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if ($context) {
                     $browser = get_file_browser();
                     $fileinfo = $browser->get_file_info($context, $params['component'], $params['filearea'], $params['itemid'], $params['filepath'], $params['filename']);
@@ -1791,7 +1833,11 @@ abstract class repository {
         $filepath   = clean_param($params['filepath'], PARAM_PATH);
         $filearea   = clean_param($params['filearea'], PARAM_AREA);
         $component  = clean_param($params['component'], PARAM_COMPONENT);
+<<<<<<< HEAD
         $context    = get_context_instance_by_id($contextid);
+=======
+        $context    = context::instance_by_id($contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $file_info  = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
         if (!empty($file_info)) {
             $filesize = $file_info->get_filesize();
@@ -1947,6 +1993,34 @@ abstract class repository {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Delete all the instances associated to a context.
+     *
+     * This method is intended to be a callback when deleting
+     * a course or a user to delete all the instances associated
+     * to their context. The usual way to delete a single instance
+     * is to use {@link self::delete()}.
+     *
+     * @param int $contextid context ID.
+     * @param boolean $downloadcontents true to convert references to hard copies.
+     * @return void
+     */
+    final public static function delete_all_for_context($contextid, $downloadcontents = true) {
+        global $DB;
+        $repoids = $DB->get_fieldset_select('repository_instances', 'id', 'contextid = :contextid', array('contextid' => $contextid));
+        if ($downloadcontents) {
+            foreach ($repoids as $repoid) {
+                $repo = repository::get_repository_by_id($repoid, $contextid);
+                $repo->convert_references_to_local();
+            }
+        }
+        $DB->delete_records_list('repository_instances', 'id', $repoids);
+        $DB->delete_records_list('repository_instance_config', 'instanceid', $repoids);
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Hide/Show a repository
      *
      * @param string $hide
@@ -2275,7 +2349,11 @@ abstract class repository {
 
     /**
      * For oauth like external authentication, when external repository direct user back to moodle,
+<<<<<<< HEAD
      * this funciton will be called to set up token and token_secret
+=======
+     * this function will be called to set up token and token_secret
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     public function callback() {
     }
@@ -2407,11 +2485,20 @@ abstract class repository {
     public static function overwrite_existing_draftfile($itemid, $filepath, $filename, $newfilepath, $newfilename) {
         global $USER;
         $fs = get_file_storage();
+<<<<<<< HEAD
         $user_context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $user_context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($file = $fs->get_file($user_context->id, 'user', 'draft', $itemid, $filepath, $filename)) {
             if ($tempfile = $fs->get_file($user_context->id, 'user', 'draft', $itemid, $newfilepath, $newfilename)) {
                 // Remember original file source field.
                 $source = @unserialize($file->get_source());
+<<<<<<< HEAD
+=======
+                // Remember the original sortorder.
+                $sortorder = $file->get_sortorder();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if ($tempfile->is_external_file()) {
                     // New file is a reference. Check that existing file does not have any other files referencing to it
                     if (isset($source->original) && $fs->search_references_count($source->original)) {
@@ -2430,6 +2517,10 @@ abstract class repository {
                     $newfilesource->original = $source->original;
                     $newfile->set_source(serialize($newfilesource));
                 }
+<<<<<<< HEAD
+=======
+                $newfile->set_sortorder($sortorder);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // remove temp file
                 $tempfile->delete();
                 return true;
@@ -2545,7 +2636,11 @@ abstract class repository {
     public static function delete_tempfile_from_draft($draftitemid, $filepath, $filename) {
         global $USER;
         $fs = get_file_storage();
+<<<<<<< HEAD
         $user_context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $user_context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($file = $fs->get_file($user_context->id, 'user', 'draft', $draftitemid, $filepath, $filename)) {
             $file->delete();
             return true;
@@ -2723,7 +2818,11 @@ final class repository_instance_form extends moodleform {
         $mform->addElement('hidden', 'edit',  ($this->instance) ? $this->instance->id : 0);
         $mform->setType('edit', PARAM_INT);
         $mform->addElement('hidden', 'new',   $this->plugin);
+<<<<<<< HEAD
         $mform->setType('new', PARAM_FORMAT);
+=======
+        $mform->setType('new', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->addElement('hidden', 'plugin', $this->plugin);
         $mform->setType('plugin', PARAM_PLUGIN);
         $mform->addElement('hidden', 'typeid', $this->typeid);
@@ -2976,13 +3075,21 @@ function initialise_filepicker($args) {
         $disable_types = $args->disable_types;
     }
 
+<<<<<<< HEAD
     $user_context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $user_context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     list($context, $course, $cm) = get_context_info_array($context->id);
     $contexts = array($user_context, get_system_context());
     if (!empty($course)) {
         // adding course context
+<<<<<<< HEAD
         $contexts[] = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $contexts[] = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     $externallink = (int)get_config(null, 'repositoryallowexternallinks');
     $repositories = repository::get_instances(array(

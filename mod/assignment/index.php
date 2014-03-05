@@ -18,7 +18,10 @@ add_to_log($course->id, "assignment", "view all", "index.php?id=$course->id", ""
 $strassignments = get_string("modulenameplural", "assignment");
 $strassignment = get_string("modulename", "assignment");
 $strassignmenttype = get_string("assignmenttype", "assignment");
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname = get_string("name");
 $strduedate = get_string("duedate", "assignment");
 $strsubmitted = get_string("submitted", "assignment");
@@ -37,15 +40,22 @@ if (!$cms = get_coursemodules_in_course('assignment', $course->id, 'cm.idnumber,
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $timenow = time();
 
 $table = new html_table();
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strassignmenttype, $strduedate, $strsubmitted, $strgrade);
 } else {
     $table->head  = array ($strname, $strassignmenttype, $strduedate, $strsubmitted, $strgrade);
@@ -74,7 +84,11 @@ foreach ($modinfo->instances['assignment'] as $cm) {
     if ($usesections) {
         if ($cm->sectionnum !== $currentsection) {
             if ($cm->sectionnum) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$cm->sectionnum]);
+=======
+                $printsection = get_section_name($course, $cm->sectionnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== "") {
                 $table->data[] = 'hr';

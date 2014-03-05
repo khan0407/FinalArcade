@@ -177,9 +177,16 @@ class block_navigation extends block_base {
             $trimlength = (int)$this->config->trimlength;
         }
 
+<<<<<<< HEAD
         // Initialise (only actually happens if it hasn't already been done yet
         $this->page->navigation->initialise();
         $navigation = clone($this->page->navigation);
+=======
+        // Get the navigation object or don't display the block if none provided.
+        if (!$navigation = $this->get_navigation()) {
+            return null;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $expansionlimit = null;
         if (!empty($this->config->expansionlimit)) {
             $expansionlimit = $this->config->expansionlimit;
@@ -204,7 +211,11 @@ class block_navigation extends block_base {
         $options['linkcategories'] = (!empty($this->config->linkcategories) && $this->config->linkcategories == 'yes');
 
         // Grab the items to display
+<<<<<<< HEAD
         $renderer = $this->page->get_renderer('block_navigation');
+=======
+        $renderer = $this->page->get_renderer($this->blockname);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->content = new stdClass();
         $this->content->text = $renderer->navigation_tree($navigation, $expansionlimit, $options);
 
@@ -215,6 +226,20 @@ class block_navigation extends block_base {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns the navigation
+     *
+     * @return navigation_node The navigation object to display
+     */
+    protected function get_navigation() {
+        // Initialise (only actually happens if it hasn't already been done yet)
+        $this->page->navigation->initialise();
+        return clone($this->page->navigation);
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns the attributes to set for this block
      *
      * This function returns an array of HTML attributes for this block including
@@ -313,4 +338,16 @@ class block_navigation extends block_base {
         $string = $start.'...'.$end;
         return $string;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns the role that best describes the navigation block... 'navigation'
+     *
+     * @return string 'navigation'
+     */
+    public function get_aria_role() {
+        return 'navigation';
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

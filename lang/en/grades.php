@@ -150,6 +150,10 @@ $string['displayweighted'] = 'Display weighted grades';
 $string['dropdown'] = 'Dropdown menu';
 $string['droplow'] = 'Drop the lowest';
 $string['droplow_help'] = 'This setting enables a specified number of the lowest grades to be excluded from the aggregation.';
+<<<<<<< HEAD
+=======
+$string['droplowestvalue'] = 'Set drop lowest grade value';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['dropped'] = 'Dropped';
 $string['dropxlowest'] = 'Drop X lowest';
 $string['dropxlowestwarning'] = 'Note: If you use drop x lowest the grading assumes that all items in the category have the same point value. If point values differ results will be unpredictable';
@@ -195,11 +199,20 @@ $string['exportsettings'] = 'Export settings';
 $string['exportonlyactive'] = 'Require active enrolment';
 $string['exportonlyactive_help'] = 'Only include students in the export whose enrolment has not been suspended';
 $string['exportto'] = 'Export to';
+<<<<<<< HEAD
+=======
+$string['extracreditvalue'] = 'Extra credit value for {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['extracreditwarning'] = 'Note: Setting all items for a category to extra credit will effectively remove them from the grade calculation. Since there will be no point total';
 $string['feedback'] = 'Feedback';
 $string['feedback_help'] = 'This box enables any comments about the grade to be added.';
 $string['feedbackadd'] = 'Add feedback';
 $string['feedbackedit'] = 'Edit feedback';
+<<<<<<< HEAD
+=======
+$string['feedbackforgradeitems'] = 'Feedback for {$a}';
+$string['feedbacks'] = 'Feedbacks';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['feedbacksaved'] = 'Feedback saved';
 $string['feedbackview'] = 'View feedback';
 $string['finalgrade'] = 'Final grade';
@@ -236,10 +249,20 @@ $string['gradedisplaytype_help'] = 'This setting determines how grades are displ
 * Letter - Letters or words are used to represent a range of grades';
 $string['gradedon'] = 'Graded: {$a}';
 $string['gradeexport'] = 'Grade export';
+<<<<<<< HEAD
+=======
+$string['gradeexportcustomprofilefields'] = 'Grade export custom profile fields';
+$string['gradeexportcustomprofilefields_desc'] = 'Include these custom profile fields in the grade export, separated by commas.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['gradeexportdecimalpoints'] = 'Grade export decimal points';
 $string['gradeexportdecimalpoints_desc'] = 'The number of decimal points to display for export. This can be overridden during export.';
 $string['gradeexportdisplaytype'] = 'Grade export display type';
 $string['gradeexportdisplaytype_desc'] = 'Grades can be shown as real grades, as percentages (in reference to the minimum and maximum grades) or as letters (A, B, C etc..) during export. This can be overridden during export.';
+<<<<<<< HEAD
+=======
+$string['gradeexportuserprofilefields'] = 'Grade export user profile fields';
+$string['gradeexportuserprofilefields_desc'] = 'Include these user profile fields in the grade export, separated by commas.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['gradeforstudent'] = '{$a->student}<br />{$a->item}{$a->feedback}';
 $string['gradehelp'] = 'Grade help';
 $string['gradehistorylifetime'] = 'Grade history lifetime';
@@ -329,6 +352,10 @@ $string['chooseaction'] = 'Choose an action ...';
 $string['choosecategory'] = 'Select category';
 $string['identifier'] = 'Identify user by';
 $string['idnumbers'] = 'ID numbers';
+<<<<<<< HEAD
+=======
+$string['ignore'] = 'Ignore';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['import'] = 'Import';
 $string['importcsv'] = 'Import CSV';
 $string['importcustom'] = 'Import as custom outcomes (only this course)';
@@ -404,6 +431,10 @@ $string['morethanmax'] = 'The grade entered for {$a->itemname} for {$a->username
 $string['moveselectedto'] = 'Move selected items to';
 $string['movingelement'] = 'Moving {$a}';
 $string['multfactor'] = 'Multiplicator';
+<<<<<<< HEAD
+=======
+$string['multfactorvalue'] = 'Multiplicator value for {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['multfactor_help'] = 'The multiplicator is the factor by which all grades for this grade item will be multiplied, with a maximum value of the maximum grade. For example, if the multiplicator is 2 and the maximum grade is 100, then all grades less than 50 are multiplied by 2, and all grades 50 and above are changed to 100.';
 $string['mypreferences'] = 'My preferences';
 $string['myreportpreferences'] = 'My report preferences';
@@ -439,6 +470,10 @@ $string['numberofgrades'] = 'Number of grades';
 $string['onascaleof'] = 'on a scale of {$a->grademin} to {$a->grademax}';
 $string['operations'] = 'Operations';
 $string['options'] = 'Options';
+<<<<<<< HEAD
+=======
+$string['others'] = 'Others';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['outcome'] = 'Outcome';
 $string['outcome_help'] = 'This setting determines the outcome which this grade item will represent in the gradebook.';
 $string['outcomeassigntocourse'] = 'Assign another outcome to this course';
@@ -481,6 +516,10 @@ $string['percentdescending'] = 'Sort by percent descending';
 $string['percentshort'] = '%';
 $string['plusfactor'] = 'Offset';
 $string['plusfactor_help'] = 'The offset is a number that is added to every grade for this grade item, after the multiplicator is applied.';
+<<<<<<< HEAD
+=======
+$string['plusfactorvalue'] = 'Offset value for {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['points'] = 'points';
 $string['pointsascending'] = 'Sort by points ascending';
 $string['pointsdescending'] = 'Sort by points descending';
@@ -527,6 +566,10 @@ $string['savepreferences'] = 'Save preferences';
 $string['scaleconfirmdelete'] = 'Are you sure you wish to delete the scale "{$a}"?';
 $string['scaledpct'] = 'Scaled %';
 $string['seeallcoursegrades'] = 'See all course grades';
+<<<<<<< HEAD
+=======
+$string['select'] = 'Select {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['selectalloroneuser'] = 'Select all or one user';
 $string['selectauser'] = 'Select a user';
 $string['selectdestination'] = 'Select destination of {$a}';
@@ -643,6 +686,10 @@ $string['usenoscale'] = 'Use no scale';
 $string['usepercent'] = 'Use percent';
 $string['user'] = 'User';
 $string['usergrade'] = 'User {$a->fullname} ({$a->useridnumber}) on item {$a->gradeidnumber}';
+<<<<<<< HEAD
+=======
+$string['userid'] = 'User ID';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['userpreferences'] = 'User preferences';
 $string['userenrolmentsuspended'] = 'User enrolment suspended';
 $string['useweighted'] = 'Use weighted';

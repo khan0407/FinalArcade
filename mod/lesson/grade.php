@@ -39,7 +39,11 @@ require_login($course, false, $cm);
 
 $PAGE->set_url('/mod/lesson/grade.php', array('id'=>$cm->id));
 
+<<<<<<< HEAD
 if (has_capability('mod/lesson:edit', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+=======
+if (has_capability('mod/lesson:edit', context_module::instance($cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     redirect('report.php?id='.$cm->id);
 } else {
     redirect('view.php?id='.$cm->id);

@@ -29,6 +29,11 @@ require_once('PHPUnit/Autoload.php');
 require_once('PHPUnit/Extensions/Database/Autoload.php');
 
 require_once(__DIR__.'/classes/util.php');
+<<<<<<< HEAD
+=======
+require_once(__DIR__.'/classes/message_sink.php');
+require_once(__DIR__.'/classes/phpmailer_sink.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_once(__DIR__.'/classes/basic_testcase.php');
 require_once(__DIR__.'/classes/database_driver_testcase.php');
 require_once(__DIR__.'/classes/arraydataset.php');

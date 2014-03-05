@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +21,12 @@
 /**
  * This file contains form for bulk changing user enrolments.
  *
+<<<<<<< HEAD
  * @package    core
  * @subpackage enrol
+=======
+ * @package    enrol_manual
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2011 Sam Hemelryk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +36,11 @@ defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->dirroot/enrol/bulkchange_forms.php");
 
 /**
+<<<<<<< HEAD
  * The form to collect required information when bulk editing users enrolments
+=======
+ * The form to collect required information when bulk editing users enrolments.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * @copyright 2011 Sam Hemelryk
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

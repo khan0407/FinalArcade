@@ -35,8 +35,17 @@
  * @param theme_config $theme The theme that the CSS belongs to.
  * @param string $csspath The path to store the CSS at.
  * @param array $cssfiles The CSS files to store.
+<<<<<<< HEAD
  */
 function css_store_css(theme_config $theme, $csspath, array $cssfiles) {
+=======
+ * @param bool $chunk If set to true these files will be chunked to ensure
+ *      that no one file contains more than 4095 selectors.
+ * @param string $chunkurl If the CSS is be chunked then we need to know the URL
+ *      to use for the chunked files.
+ */
+function css_store_css(theme_config $theme, $csspath, array $cssfiles, $chunk = false, $chunkurl = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     global $CFG;
 
     // Check if both the CSS optimiser is enabled and the theme supports it.
@@ -72,6 +81,16 @@ function css_store_css(theme_config $theme, $csspath, array $cssfiles) {
         $css = $theme->post_process(css_minify_css($cssfiles));
     }
 
+<<<<<<< HEAD
+=======
+    if ($chunk) {
+        // Chunk the CSS if requried.
+        $css = css_chunk_by_selector_count($css, $chunkurl);
+    } else {
+        $css = array($css);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     clearstatcache();
     if (!file_exists(dirname($csspath))) {
         @mkdir(dirname($csspath), $CFG->directorypermissions, true);
@@ -80,6 +99,7 @@ function css_store_css(theme_config $theme, $csspath, array $cssfiles) {
     // Prevent serving of incomplete file from concurrent request,
     // the rename() should be more atomic than fwrite().
     ignore_user_abort(true);
+<<<<<<< HEAD
     if ($fp = fopen($csspath.'.tmp', 'xb')) {
         fwrite($fp, $css);
         fclose($fp);
@@ -87,6 +107,28 @@ function css_store_css(theme_config $theme, $csspath, array $cssfiles) {
         @chmod($csspath, $CFG->filepermissions);
         @unlink($csspath.'.tmp'); // just in case anything fails
     }
+=======
+
+    $files = count($css);
+    $count = 0;
+    foreach ($css as $content) {
+        if ($files > 1 && ($count+1) !== $files) {
+            // If there is more than one file and this is not the last file.
+            $filename = preg_replace('#\.css$#', '.'.$count.'.css', $csspath);
+            $count++;
+        } else {
+            $filename = $csspath;
+        }
+        if ($fp = fopen($filename.'.tmp', 'xb')) {
+            fwrite($fp, $content);
+            fclose($fp);
+            rename($filename.'.tmp', $filename);
+            @chmod($filename, $CFG->filepermissions);
+            @unlink($filename.'.tmp'); // just in case anything fails
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ignore_user_abort(false);
     if (connection_aborted()) {
         die;
@@ -94,6 +136,89 @@ function css_store_css(theme_config $theme, $csspath, array $cssfiles) {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * Takes CSS and chunks it if the number of selectors within it exceeds $maxselectors.
+ *
+ * @param string $css The CSS to chunk.
+ * @param string $importurl The URL to use for import statements.
+ * @param int $maxselectors The number of selectors to limit a chunk to.
+ * @param int $buffer The buffer size to use when chunking. You shouldn't need to reduce this
+ *      unless you are lowering the maximum selectors.
+ * @return array An array of CSS chunks.
+ */
+function css_chunk_by_selector_count($css, $importurl, $maxselectors = 4095, $buffer = 50) {
+    // Check if we need to chunk this CSS file.
+    $count = substr_count($css, ',') + substr_count($css, '{');
+    if ($count < $maxselectors) {
+        // The number of selectors is less then the max - we're fine.
+        return array($css);
+    }
+
+    // Chunk time ?!
+    // Split the CSS by array, making sure to save the delimiter in the process.
+    $parts = preg_split('#([,\}])#', $css, null, PREG_SPLIT_DELIM_CAPTURE + PREG_SPLIT_NO_EMPTY);
+    // We need to chunk the array. Each delimiter is stored separately so we multiple by 2.
+    // We also subtract 100 to give us a small buffer just in case.
+    $parts = array_chunk($parts, $maxselectors * 2 - $buffer * 2);
+    $css = array();
+    $partcount = count($parts);
+    foreach ($parts as $key => $chunk) {
+        if (end($chunk) === ',') {
+            // Damn last element was a comma.
+            // Pretty much the only way to deal with this is to take the styles from the end of the
+            // comma separated chain of selectors and apply it to the last selector we have here in place
+            // of the comma.
+            // Unit tests are essential for making sure this works.
+            $styles = false;
+            $i = $key;
+            while ($styles === false && $i < ($partcount - 1)) {
+                $i++;
+                $nextpart = $parts[$i];
+                foreach ($nextpart as $style) {
+                    if (strpos($style, '{') !== false) {
+                        $styles = preg_replace('#^[^\{]+#', '', $style);
+                        break;
+                    }
+                }
+            }
+            if ($styles === false) {
+                $styles = '/** Error chunking CSS **/';
+            } else {
+                $styles .= '}';
+            }
+            array_pop($chunk);
+            array_push($chunk, $styles);
+        }
+        $css[] = join('', $chunk);
+    }
+    // The array $css now contains CSS split into perfect sized chunks.
+    // Import statements can only appear at the very top of a CSS file.
+    // Imported sheets are applied in the the order they are imported and
+    // are followed by the contents of the CSS.
+    // This is terrible for performance.
+    // It means we must put the import statements at the top of the last chunk
+    // to ensure that things are always applied in the correct order.
+    // This way the chunked files are included in the order they were chunked
+    // followed by the contents of the final chunk in the actual sheet.
+    $importcss = '';
+    $slashargs = strpos($importurl, '.php?') === false;
+    $parts = count($css);
+    for ($i = 0; $i < $parts - 1; $i++) {
+        if ($slashargs) {
+            $importcss .= "@import url({$importurl}/chunk{$i});\n";
+        } else {
+            $importcss .= "@import url({$importurl}&chunk={$i});\n";
+        }
+    }
+    $importcss .= end($css);
+    $css[key($css)] = $importcss;
+
+    return $css;
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Sends IE specific CSS
  *
  * In writing the CSS parser I have a theory that we could optimise the CSS
@@ -241,6 +366,14 @@ function css_minify_css($files) {
         return '';
     }
 
+<<<<<<< HEAD
+=======
+    // We do not really want any 304 here!
+    // There does not seem to be any better way to prevent them here.
+    unset($_SERVER['HTTP_IF_NONE_MATCH']);
+    unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     set_include_path($CFG->libdir . '/minify/lib' . PATH_SEPARATOR . get_include_path());
     require_once('Minify.php');
 
@@ -251,6 +384,11 @@ function css_minify_css($files) {
     Minify::setCache(null, false);
 
     $options = array(
+<<<<<<< HEAD
+=======
+        // JSMin is not GNU GPL compatible, use the plus version instead.
+        'minifiers' => array(Minify::TYPE_JS => array('JSMinPlus', 'minify')),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         'bubbleCssImports' => false,
         // Don't gzip content we just want text for storage
         'encodeOutput' => false,
@@ -267,7 +405,11 @@ function css_minify_css($files) {
     $error = 'unknown';
     try {
         $result = Minify::serve('Files', $options);
+<<<<<<< HEAD
         if ($result['success']) {
+=======
+        if ($result['success'] and $result['statusCode'] == 200) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return $result['content'];
         }
     } catch (Exception $e) {

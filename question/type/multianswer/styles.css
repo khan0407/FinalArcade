@@ -1,10 +1,23 @@
 .que.multianswer .feedbackspan {
     display: block;
+<<<<<<< HEAD
+=======
+    max-width: 70%;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     background: #fff3bf;
     padding: 0.5em;
     margin-top: 1em;
     box-shadow: 0.5em 0.5em 1em #000000;
 }
+<<<<<<< HEAD
+=======
+body.ie6 .que.multianswer .feedbackspan,
+body.ie7 .que.multianswer .feedbackspan,
+body.ie8 .que.multianswer .feedbackspan,
+body.ie9 .que.multianswer .feedbackspan {
+    width: 70%;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .que.multianswer .answer .specificfeedback {
     display: inline;
     padding: 0 0.7em;

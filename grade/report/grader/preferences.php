@@ -40,8 +40,13 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 
 require_login($course);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$context = context_course::instance($course->id);
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('gradereport/grader:view', $context);
 
 require('preferences_form.php');

@@ -262,7 +262,11 @@ abstract class restore_structure_step extends restore_step {
 
         // Re-enforce 'moodle/restore:rolldates' capability for the user in the course, just in case
         } else if (!has_capability('moodle/restore:rolldates',
+<<<<<<< HEAD
                                    get_context_instance(CONTEXT_COURSE, $this->get_courseid()),
+=======
+                                   context_course::instance($this->get_courseid()),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                    $this->task->get_userid())) {
             $cache[$this->get_restoreid()] = 0;
 
@@ -278,6 +282,10 @@ abstract class restore_structure_step extends restore_step {
     /**
      * As far as restore structure steps are implementing restore_plugin stuff, they need to
      * have the parent task available for wrapping purposes (get course/context....)
+<<<<<<< HEAD
+=======
+     * @return restore_task|null
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     public function get_task() {
         return $this->task;

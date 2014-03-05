@@ -27,7 +27,11 @@ M.qtype_multianswer = M.qtype_multianswer || {};
 
 
 M.qtype_multianswer.init = function (Y, questiondiv) {
+<<<<<<< HEAD
     Y.one(questiondiv).all('span.subquestion').each(function(subqspan, i) {
+=======
+    Y.one(questiondiv).all('span.subquestion').each(function(subqspan) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         var feedbackspan = subqspan.one('.feedbackspan');
         if (!feedbackspan) {
             return;
@@ -39,7 +43,13 @@ M.qtype_multianswer.init = function (Y, questiondiv) {
             align: {
                 node: subqspan,
                 points: [Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]
+<<<<<<< HEAD
             }
+=======
+            },
+            constrain: subqspan.ancestor('div.que'),
+            preventOverlap: true
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         });
         overlay.render();
 

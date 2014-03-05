@@ -114,7 +114,11 @@ class comment_manager {
      */
     private function setup_plugin($comment) {
         global $DB;
+<<<<<<< HEAD
         $this->context = get_context_instance_by_id($comment->contextid);
+=======
+        $this->context = context::instance_by_id($comment->contextid, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!$this->context) {
             return false;
         }

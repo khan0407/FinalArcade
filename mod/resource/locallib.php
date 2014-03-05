@@ -66,7 +66,11 @@ function resource_display_embed($resource, $cm, $course, $file) {
 
     $clicktoopen = resource_get_clicktoopen($file, $resource->revision);
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $path = '/'.$context->id.'/mod_resource/content/'.$resource->revision.$file->get_filepath().$file->get_filename();
     $fullurl = file_encode_url($CFG->wwwroot.'/pluginfile.php', $path, false);
     $moodleurl = new moodle_url('/pluginfile.php' . $path);
@@ -132,7 +136,11 @@ function resource_display_frame($resource, $cm, $course, $file) {
 
     } else {
         $config = get_config('resource');
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $path = '/'.$context->id.'/mod_resource/content/'.$resource->revision.$file->get_filepath().$file->get_filename();
         $fileurl = file_encode_url($CFG->wwwroot.'/pluginfile.php', $path, false);
         $navurl = "$CFG->wwwroot/mod/resource/view.php?id=$cm->id&amp;frameset=top";
@@ -408,7 +416,11 @@ function resource_print_filenotfound($resource, $cm, $course) {
 }
 
 /**
+<<<<<<< HEAD
  * Decide the best diaply format.
+=======
+ * Decide the best display format.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @param object $resource
  * @return int display type constant
  */
@@ -428,7 +440,11 @@ function resource_get_final_display_type($resource) {
     if (file_mimetype_in_typegroup($mimetype, 'archive')) {
         return RESOURCELIB_DISPLAY_DOWNLOAD;
     }
+<<<<<<< HEAD
     if (file_mimetype_in_typegroup($mimetype, array('web_image', '.pdf', '.htm', 'web_video', 'web_audio'))) {
+=======
+    if (file_mimetype_in_typegroup($mimetype, array('web_image', '.htm', 'web_video', 'web_audio'))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return RESOURCELIB_DISPLAY_EMBED;
     }
 
@@ -460,7 +476,11 @@ function resource_set_mainfile($data) {
     $cmid = $data->coursemodule;
     $draftitemid = $data->files;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($draftitemid) {
         file_save_draft_area_files($draftitemid, $context->id, 'mod_resource', 'content', 0, array('subdirs'=>true));
     }

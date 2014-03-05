@@ -140,6 +140,12 @@ class mod_forum_mod_form extends moodleform_mod {
         $mform->addHelpButton('warnafter', 'warnafter', 'forum');
         $mform->disabledIf('warnafter', 'blockperiod', 'eq', 0);
 
+<<<<<<< HEAD
+=======
+        $coursecontext = context_course::instance($COURSE->id);
+        plagiarism_get_form_elements_module($mform, $coursecontext, 'mod_forum');
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 //-------------------------------------------------------------------------------
 
         $this->standard_grading_coursemodule_elements();

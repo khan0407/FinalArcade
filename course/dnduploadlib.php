@@ -624,18 +624,30 @@ class dndupload_ajax_processor {
         $visible = get_fast_modinfo($this->course)->get_section_info($this->section)->visible;
 
         $DB->set_field('course_modules', 'instance', $instanceid, array('id' => $this->cm->id));
+<<<<<<< HEAD
 
         $sectionid = add_mod_to_section($this->cm);
         $DB->set_field('course_modules', 'section', $sectionid, array('id' => $this->cm->id));
+=======
+        // Rebuild the course cache after update action
+        rebuild_course_cache($this->course->id, true);
+        $this->course->modinfo = null; // Otherwise we will just get the old version back again.
+
+        $sectionid = course_add_cm_to_section($this->course, $this->cm->id, $this->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         set_coursemodule_visible($this->cm->id, $visible);
         if (!$visible) {
             $DB->set_field('course_modules', 'visibleold', 1, array('id' => $this->cm->id));
         }
 
+<<<<<<< HEAD
         // Rebuild the course cache and retrieve the final info about this module.
         rebuild_course_cache($this->course->id, true);
         $this->course->modinfo = null; // Otherwise we will just get the old version back again.
+=======
+        // retrieve the final info about this module.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $info = get_fast_modinfo($this->course);
         if (!isset($info->cms[$this->cm->id])) {
             // The course module has not been properly created in the course - undo everything.

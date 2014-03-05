@@ -31,7 +31,11 @@ require_once("$CFG->dirroot/enrol/meta/locallib.php");
 $id = required_param('id', PARAM_INT); // course id
 
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_url('/enrol/meta/addinstance.php', array('id'=>$course->id));
 $PAGE->set_pagelayout('admin');

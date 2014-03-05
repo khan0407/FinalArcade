@@ -203,9 +203,15 @@ class qtype_multichoice extends question_type {
             $responses = array();
 
             foreach ($questiondata->options->answers as $aid => $answer) {
+<<<<<<< HEAD
                 $responses[$aid] = new question_possible_response(html_to_text(format_text(
                         $answer->answer, $answer->answerformat, array('noclean' => true)),
                         0, false), $answer->fraction);
+=======
+                $responses[$aid] = new question_possible_response(
+                        question_utils::to_plain_text($answer->answer, $answer->answerformat),
+                        $answer->fraction);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             $responses[null] = question_possible_response::no_response();
@@ -214,10 +220,16 @@ class qtype_multichoice extends question_type {
             $parts = array();
 
             foreach ($questiondata->options->answers as $aid => $answer) {
+<<<<<<< HEAD
                 $parts[$aid] = array($aid =>
                         new question_possible_response(html_to_text(format_text(
                         $answer->answer, $answer->answerformat, array('noclean' => true)),
                         0, false), $answer->fraction));
+=======
+                $parts[$aid] = array($aid => new question_possible_response(
+                        question_utils::to_plain_text($answer->answer, $answer->answerformat),
+                        $answer->fraction));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             return $parts;

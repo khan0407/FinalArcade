@@ -26,6 +26,10 @@
 
 $string['log:view'] = 'View course logs';
 $string['log:viewtoday'] = 'View today\'s logs';
+<<<<<<< HEAD
+=======
+$string['page'] = 'Page {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['logsformat'] = 'Logs format';
 $string['page-report-log-x'] = 'Any log report';
 $string['page-report-log-index'] = 'Course log report';

@@ -324,7 +324,11 @@ function tag_get_tags($record_type, $record_id, $type=null, $userid=0) {
         $params['userid'] = $userid;
     }
 
+<<<<<<< HEAD
     $sql = "SELECT tg.id, tg.tagtype, tg.name, tg.rawname, tg.flag, ti.ordering
+=======
+    $sql = "SELECT ti.id AS taginstanceid, tg.id, tg.tagtype, tg.name, tg.rawname, tg.flag, ti.ordering
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
               FROM {tag_instance} ti
               JOIN {tag} tg ON tg.id = ti.tagid
               WHERE ti.itemtype = :recordtype AND ti.itemid = :recordid $u $sql_type
@@ -601,7 +605,11 @@ function tag_delete($tagids) {
     }
 
     $success = true;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     foreach ($tagids as $tagid) {
         if (is_null($tagid)) { // can happen if tag doesn't exists
             continue;

@@ -105,7 +105,11 @@ class qtype_numerical extends question_type {
             $units = array();
         }
         foreach ($units as $key => $unit) {
+<<<<<<< HEAD
             $units[$key]->multiplier = clean_param($unit->multiplier, PARAM_NUMBER);
+=======
+            $units[$key]->multiplier = clean_param($unit->multiplier, PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $question->options->units = $units;
         return true;

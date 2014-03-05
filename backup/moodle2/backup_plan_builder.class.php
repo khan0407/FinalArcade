@@ -39,6 +39,10 @@ require_once($CFG->dirroot . '/backup/moodle2/backup_plugin.class.php');
 require_once($CFG->dirroot . '/backup/moodle2/backup_qtype_plugin.class.php');
 require_once($CFG->dirroot . '/backup/moodle2/backup_gradingform_plugin.class.php');
 require_once($CFG->dirroot . '/backup/moodle2/backup_format_plugin.class.php');
+<<<<<<< HEAD
+=======
+require_once($CFG->dirroot . '/backup/moodle2/backup_local_plugin.class.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_once($CFG->dirroot . '/backup/moodle2/backup_theme_plugin.class.php');
 require_once($CFG->dirroot . '/backup/moodle2/backup_report_plugin.class.php');
 require_once($CFG->dirroot . '/backup/moodle2/backup_coursereport_plugin.class.php');

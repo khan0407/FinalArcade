@@ -23,9 +23,13 @@ YUI.add('moodle-course-modchooser', function(Y) {
         initializer : function(config) {
             var dialogue = Y.one('.chooserdialoguebody');
             var header = Y.one('.choosertitle');
+<<<<<<< HEAD
             var params = {
                 width: '540px'
             };
+=======
+            var params = {};
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             this.setup_chooser_dialogue(dialogue, header, params);
 
             // Initialize existing sections and register for dynamically created sections

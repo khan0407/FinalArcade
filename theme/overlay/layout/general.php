@@ -13,6 +13,19 @@ $showsidepost = ($hassidepost && !$PAGE->blocks->region_completely_docked('side-
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
+<<<<<<< HEAD
+=======
+$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
+if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
+    $courseheader = $OUTPUT->course_header();
+    $coursecontentheader = $OUTPUT->course_content_header();
+    if (empty($PAGE->layout_options['nocoursefooter'])) {
+        $coursecontentfooter = $OUTPUT->course_content_footer();
+        $coursefooter = $OUTPUT->course_footer();
+    }
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $bodyclasses = array();
 if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'side-pre-only';
@@ -80,6 +93,13 @@ echo $OUTPUT->doctype() ?>
 
                     	    </div>
 
+<<<<<<< HEAD
+=======
+                            <?php if (!empty($courseheader)) { ?>
+                            <div id="course-header"><?php echo $courseheader; ?></div>
+                            <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     	     <?php if ($hasnavbar) { ?>
             <div class="navbar">
             	<div class="wrapper clearfix">
@@ -92,8 +112,14 @@ echo $OUTPUT->doctype() ?>
                     	    <div class="region-content">
 
 
+<<<<<<< HEAD
 
                         	    <?php echo $OUTPUT->main_content() ?>
+=======
+                                <?php echo $coursecontentheader; ?>
+                        	    <?php echo $OUTPUT->main_content() ?>
+                                <?php echo $coursecontentfooter; ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	                        </div>
     	                </div>
         	        </div>
@@ -122,10 +148,20 @@ echo $OUTPUT->doctype() ?>
 </div>
 <!-- END OF CONTENT -->
 
+<<<<<<< HEAD
 
 </div>
 <!-- START OF FOOTER -->
 
+=======
+<?php if (!empty($coursefooter)) { ?>
+<div id="course-footer" class="wrapper"><?php echo $coursefooter; ?></div>
+<?php } ?>
+
+</div>
+<!-- START OF FOOTER -->
+    <?php if ($hasfooter) { ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <div id="page-footer" class="wrapper2">
         <p class="helplink">
         <?php echo page_doc_link(get_string('moodledocslink')) ?>
@@ -139,9 +175,17 @@ echo $OUTPUT->doctype() ?>
         echo $OUTPUT->standard_footer_html();
         ?>
     </div>
+<<<<<<< HEAD
 
+=======
+    <?php } ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 <!-- END OF FOOTER -->
 
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

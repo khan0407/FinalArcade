@@ -53,7 +53,11 @@ if ($courseid != -1) {
 }
 $url = new moodle_url('/calendar/set.php', array('return'=>base64_encode($return->out(false)), 'course' => $courseid, 'var'=>$var, 'sesskey'=>sesskey()));
 $PAGE->set_url($url);
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 switch($var) {
     case 'showgroups':

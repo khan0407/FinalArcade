@@ -10,6 +10,7 @@ $chattheme_cfg->event_message = <<<TEMPLATE
 </div>
 TEMPLATE;
 $chattheme_cfg->user_message_left = <<<TEMPLATE
+<<<<<<< HEAD
 <table class='chat-message'___tablealign___><tr>
 <td class="picture" valign="middle" width="32px">
 ___avatar___
@@ -70,4 +71,28 @@ ___avatar___
     <span class="user">___sender___</span>
 </td>
 </tr>
+=======
+<div class='chat-message ___mymessageclass___'>
+    <div class="left">
+        <span class="picture">___avatar___</span>
+        <span class="text triangle-border left">___message___</span>
+    </div>
+    <div class="chat-message-meta left">
+        <span class="time">___time___</span>
+        <span class="user">___sender___</span>
+    </div>
+</div>
+TEMPLATE;
+$chattheme_cfg->user_message_right = <<<TEMPLATE
+<div class='chat-message ___mymessageclass___'>
+    <div class="right">
+        <span class="text triangle-border right">___message___</span>
+        <span class="picture">___avatar___</span>
+    </div>
+    <div class="chat-message-meta right">
+        <span class="time">___time___</span>
+        <span class="user">___sender___</span>
+    </div>
+</div>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 TEMPLATE;

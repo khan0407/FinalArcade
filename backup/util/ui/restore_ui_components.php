@@ -187,7 +187,12 @@ abstract class restore_search_base implements renderable {
             $resultset = $DB->get_records_sql($sql, $params, $offs, $blocksz);
             foreach ($resultset as $result) {
                 context_instance_preload($result);
+<<<<<<< HEAD
                 $context = get_context_instance($contextlevel, $result->id);
+=======
+                $classname = context_helper::get_class_for_level($contextlevel);
+                $context = $classname::instance($result->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if (count($requiredcaps) > 0) {
                     if (!has_all_capabilities($requiredcaps, $context, $userid)) {
                         continue;

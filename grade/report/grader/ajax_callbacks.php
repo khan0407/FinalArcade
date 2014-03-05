@@ -33,13 +33,21 @@ $userid = optional_param('userid', false, PARAM_INT);
 $itemid = optional_param('itemid', false, PARAM_INT);
 $type = optional_param('type', false, PARAM_ALPHA);
 $action = optional_param('action', false, PARAM_ALPHA);
+<<<<<<< HEAD
 $newvalue = optional_param('newvalue', false, PARAM_MULTILANG);
+=======
+$newvalue = optional_param('newvalue', false, PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// basic access checks
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_login($course);
 
 switch ($action) {

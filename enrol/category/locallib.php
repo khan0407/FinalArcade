@@ -45,8 +45,13 @@ class enrol_category_handler {
             return true;
         }
 
+<<<<<<< HEAD
         // Only category level roles are interesting.
         $parentcontext = get_context_instance_by_id($ra->contextid);
+=======
+        //only category level roles are interesting
+        $parentcontext = context::instance_by_id($ra->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($parentcontext->contextlevel != CONTEXT_COURSECAT) {
             return true;
         }
@@ -102,8 +107,13 @@ class enrol_category_handler {
             return true;
         }
 
+<<<<<<< HEAD
         // Only category level roles are interesting.
         $parentcontext = get_context_instance_by_id($ra->contextid);
+=======
+        // only category level roles are interesting
+        $parentcontext = context::instance_by_id($ra->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($parentcontext->contextlevel != CONTEXT_COURSECAT) {
             return true;
         }
@@ -213,6 +223,10 @@ function enrol_category_sync_course($course) {
     $sql = "SELECT ra.userid, ra.estart
               FROM (SELECT xra.userid, MIN(xra.timemodified) AS estart
                       FROM {role_assignments} xra
+<<<<<<< HEAD
+=======
+                      JOIN {user} xu ON (xu.id = xra.userid AND xu.deleted = 0)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                      WHERE xra.roleid $roleids AND xra.contextid $contextids
                   GROUP BY xra.userid
                    ) ra
@@ -286,10 +300,14 @@ function enrol_category_sync_full($verbose = false) {
         }
         return 0;
     }
+<<<<<<< HEAD
     $rolenames = array();
     foreach($roles as $role) {
         $rolenames[$role->id] = $role->shortname;
     }
+=======
+    $rolenames = role_fix_names($roles, null, ROLENAME_SHORT, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($verbose) {
         mtrace('Synchronising category enrolments for roles: '.implode(', ', $rolenames).'...');
     }

@@ -46,7 +46,11 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 require_login($course);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_capability('gradereport/grader:view', $context);
 require_capability('moodle/grade:viewall', $context);
@@ -140,7 +144,10 @@ $report->load_final_grades();
 
 echo $report->group_selector;
 echo '<div class="clearer"></div>';
+<<<<<<< HEAD
 // echo $report->get_toggles_html();
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 //show warnings if any
 foreach($warnings as $warning) {
@@ -157,7 +164,11 @@ $reporthtml = $report->get_grade_table();
 
 // print submit button
 if ($USER->gradeediting[$course->id] && ($report->get_pref('showquickfeedback') || $report->get_pref('quickgrading'))) {
+<<<<<<< HEAD
     echo '<form action="index.php" method="post">';
+=======
+    echo '<form action="index.php" enctype="application/x-www-form-urlencoded" method="post">'; // Enforce compatibility with our max_input_vars hack.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo '<div>';
     echo '<input type="hidden" value="'.s($courseid).'" name="id" />';
     echo '<input type="hidden" value="'.sesskey().'" name="sesskey" />';

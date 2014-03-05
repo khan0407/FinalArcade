@@ -36,7 +36,11 @@ class scorm_interactions_report extends scorm_default_report {
     function display($scorm, $cm, $course, $download) {
         global $CFG, $DB, $OUTPUT, $PAGE;
 
+<<<<<<< HEAD
         $contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $contextmodule = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $action = optional_param('action', '', PARAM_ALPHA);
         $attemptids = optional_param_array('attemptid', array(), PARAM_RAW);
         $attemptsmode = optional_param('attemptsmode', SCORM_REPORT_ATTEMPTS_ALL_STUDENTS, PARAM_INT);
@@ -85,7 +89,11 @@ class scorm_interactions_report extends scorm_default_report {
                 groups_print_activity_menu($cm, new moodle_url($PAGE->url, $displayoptions));
             }
         }
+<<<<<<< HEAD
         $formattextoptions = array('context' => get_context_instance(CONTEXT_COURSE, $course->id));
+=======
+        $formattextoptions = array('context' => context_course::instance($course->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // We only want to show the checkbox to delete attempts
         // if the user has permissions and if the report mode is showing attempts.
@@ -330,6 +338,7 @@ class scorm_interactions_report extends scorm_default_report {
                 }
                 $rownum = 1;
             } else if ($download == 'CSV') {
+<<<<<<< HEAD
                 $filename .= ".txt";
                 header("Content-Type: application/download\n");
                 header("Content-Disposition: attachment; filename=\"$filename\"");
@@ -337,6 +346,11 @@ class scorm_interactions_report extends scorm_default_report {
                 header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
                 header("Pragma: public");
                 echo implode("\t", $headers)." \n";
+=======
+                $csvexport = new csv_export_writer("tab");
+                $csvexport->set_filename($filename, ".txt");
+                $csvexport->add_data($headers);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             if (!$download) {
@@ -471,6 +485,7 @@ class scorm_interactions_report extends scorm_default_report {
                                 if ($trackdata->score_raw != '') {
                                     $score = $trackdata->score_raw;
                                     // add max score if it exists
+<<<<<<< HEAD
                                     if ($scorm->version == 'SCORM_1.3') {
                                         $maxkey = 'cmi.score.max';
                                     } else {
@@ -478,6 +493,10 @@ class scorm_interactions_report extends scorm_default_report {
                                     }
                                     if (isset($trackdata->$maxkey)) {
                                         $score .= '/'.$trackdata->$maxkey;
+=======
+                                    if (isset($trackdata->score_max)) {
+                                        $score .= '/'.$trackdata->score_max;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                     }
                                 // else print out status
                                 } else {
@@ -554,8 +573,12 @@ class scorm_interactions_report extends scorm_default_report {
                         }
                         $rownum++;
                     } else if ($download == 'CSV') {
+<<<<<<< HEAD
                         $text = implode("\t", $row);
                         echo $text." \n";
+=======
+                        $csvexport->add_data($row);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 }
                 if (!$download) {
@@ -614,6 +637,10 @@ class scorm_interactions_report extends scorm_default_report {
                 $workbook->close();
                 exit;
             } else if ($download == 'CSV') {
+<<<<<<< HEAD
+=======
+                $csvexport->download_file();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 exit;
             }
         } else {

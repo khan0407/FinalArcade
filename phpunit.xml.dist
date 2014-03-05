@@ -40,6 +40,12 @@
             <directory suffix="_test.php">lib/filestorage/tests</directory>
             <directory suffix="_test.php">files/tests</directory>
         </testsuite>
+<<<<<<< HEAD
+=======
+        <testsuite name="core_cohort">
+            <directory suffix="_test.php">cohort/tests</directory>
+        </testsuite>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <testsuite name="core_grade">
             <directory suffix="_test.php">lib/grade/tests</directory>
             <directory suffix="_test.php">grade/tests</directory>
@@ -65,6 +71,30 @@
             <directory suffix="_test.php">question/type/tests</directory>
             <directory suffix="_test.php">question/engine/upgrade/tests</directory>
         </testsuite>
+<<<<<<< HEAD
+=======
+        <testsuite name="core_cache">
+            <directory suffix="_test.php">cache/tests</directory>
+        </testsuite>
+        <testsuite name="core_calendar">
+            <directory suffix="_test.php">calendar/tests</directory>
+        </testsuite>
+        <testsuite name="core_enrol">
+            <directory suffix="_test.php">enrol/tests</directory>
+        </testsuite>
+        <testsuite name="core_group">
+            <directory suffix="_test.php">group/tests</directory>
+        </testsuite>
+        <testsuite name="core_external">
+            <directory suffix="_test.php">lib/external/tests</directory>
+        </testsuite>
+        <testsuite name="core_message">
+            <directory suffix="_test.php">message/tests</directory>
+        </testsuite>
+        <testsuite name="core_notes">
+            <directory suffix="_test.php">notes/tests</directory>
+        </testsuite>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <testsuite name="core_rating">
             <directory suffix="_test.php">rating/tests</directory>
         </testsuite>

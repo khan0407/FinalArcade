@@ -5,7 +5,11 @@ if ($show_instructions) {
     $columns = 'onecolumn';
 }
 
+<<<<<<< HEAD
 if (empty($CFG->xmlstrictheaders) and !empty($CFG->loginpasswordautocomplete)) {
+=======
+if (!empty($CFG->loginpasswordautocomplete)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $autocomplete = 'autocomplete="off"';
 } else {
     $autocomplete = '';
@@ -111,7 +115,11 @@ if (empty($CFG->xmlstrictheaders) and !empty($CFG->loginpasswordautocomplete)) {
         <h6><?php print_string('potentialidps', 'auth'); ?></h6>
         <div class="potentialidplist">
 <?php foreach ($potentialidps as $idp) {
+<<<<<<< HEAD
     echo  '<div class="potentialidp"><a href="' . $idp['url']->out() . '" title="' . $idp['name'] . '">' . $OUTPUT->render($idp['icon'], $idp['name']) . '&nbsp;' . $idp['name'] . '</a></div>';
+=======
+    echo  '<div class="potentialidp"><a href="' . $idp['url']->out() . '" title="' . $idp['name'] . '">' . $OUTPUT->render($idp['icon'], $idp['name']) . $idp['name'] . '</a></div>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 } ?>
         </div>
     </div>

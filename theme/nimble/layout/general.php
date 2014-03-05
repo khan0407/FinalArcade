@@ -10,6 +10,19 @@ $showsidepost = ($hassidepost && !$PAGE->blocks->region_completely_docked('side-
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
+<<<<<<< HEAD
+=======
+$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
+if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
+    $courseheader = $OUTPUT->course_header();
+    $coursecontentheader = $OUTPUT->course_content_header();
+    if (empty($PAGE->layout_options['nocoursefooter'])) {
+        $coursecontentfooter = $OUTPUT->course_content_footer();
+        $coursefooter = $OUTPUT->course_footer();
+    }
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $bodyclasses = array();
   if ($showsidepost) {
     $bodyclasses[] = 'side-post-only';
@@ -94,6 +107,13 @@ echo $OUTPUT->doctype() ?>
 							    	    <h1 class="headermain"><?php echo $PAGE->heading ?></h1>
 							    	</div>
 
+<<<<<<< HEAD
+=======
+                                    <?php if (!empty($courseheader)) { ?>
+                                        <div id="course-header"><?php echo $courseheader; ?></div>
+                                    <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 						    	    <?php if ($hasnavbar) { ?>
 						        	    <div class="navbar">
 						            		<div class="wrapper clearfix">
@@ -106,8 +126,14 @@ echo $OUTPUT->doctype() ?>
 								    	    </div>
 							    	    </div>
 						        	<?php } ?>
+<<<<<<< HEAD
 
             	            	    <?php echo $OUTPUT->main_content() ?>
+=======
+                                    <?php echo $coursecontentheader; ?>
+            	            	    <?php echo $OUTPUT->main_content() ?>
+                                    <?php echo $coursecontentfooter; ?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	                	        </div>
     	                	</div>
 	    	            </div>
@@ -141,6 +167,13 @@ echo $OUTPUT->doctype() ?>
 	<?php } ?>
 
 <!-- START OF FOOTER -->
+<<<<<<< HEAD
+=======
+        <?php if (!empty($coursefooter)) { ?>
+            <div id="course-footer" class="shrinkwrapper"><?php echo $coursefooter; ?></div>
+        <?php } ?>
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     	<?php if ($hasfooter) { ?>
 		    <div id="page-footer" class="wrapper">

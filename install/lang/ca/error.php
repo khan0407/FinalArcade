@@ -30,6 +30,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
+=======
+$string['cannotcreatedboninstall'] = '<p>No és pot crear la base de dades.</p> <p>La base de dades especificada no existeix i l\'usuari que heu proporcionat no té permís per a crear-la.</p>
+<p>L\'administrador del lloc hauria de verificar la configuració de la base de dades.</p>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotcreatelangdir'] = 'No s\'ha pogut crear el directori d\'idiomes.';
 $string['cannotcreatetempdir'] = 'No s\'ha pogut crear el directori temporal';
 $string['cannotdownloadcomponents'] = 'No s\'han pogut baixar components';
@@ -39,6 +44,10 @@ $string['cannotsavemd5file'] = 'No s\'ha pogut desar el fitxer md5';
 $string['cannotsavezipfile'] = 'No s\'ha pogut desar el fitxer zip';
 $string['cannotunzipfile'] = 'No s\'ha pogut descomprimir el fitxer';
 $string['componentisuptodate'] = 'El component està al dia';
+<<<<<<< HEAD
+=======
+$string['dmlexceptiononinstall'] = '<p>S\'ha produït un error de la base de dades [{$a->errorcode}].<br />{$a->debuginfo}</p>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['downloadedfilecheckfailed'] = 'Ha fallat la comprovació del fitxer baixat';
 $string['invalidmd5'] = 'L\'md5 no és vàlid. Torneu-ho a provar';
 $string['missingrequiredfield'] = 'Falta algun camp necessari';

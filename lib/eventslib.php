@@ -363,6 +363,11 @@ function events_process_queued_handler($qhandler) {
     $qh->status       = $qhandler->status + 1;
     $DB->update_record('events_queue_handlers', $qh);
 
+<<<<<<< HEAD
+=======
+    debugging($errormessage);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return false;
 }
 
@@ -615,4 +620,8 @@ function events_pending_count($eventname) {
              WHERE h.eventname = ?";
 
     return $DB->count_records_sql($sql, array($eventname));
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

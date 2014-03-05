@@ -16,7 +16,11 @@ class delete_category_form extends moodleform {
 
         $mform    =& $this->_form;
         $category = $this->_customdata;
+<<<<<<< HEAD
         $categorycontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
+=======
+        $categorycontext = context_coursecat::instance($category->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->_category = $category;
 
     /// Check permissions, to see if it OK to give the option to delete
@@ -30,7 +34,11 @@ class delete_category_form extends moodleform {
             $checkcat = array_pop($tocheck);
             $childcategoryids[] = $checkcat->id;
             $tocheck = $tocheck + get_child_categories($checkcat->id);
+<<<<<<< HEAD
             $chcontext = get_context_instance(CONTEXT_COURSECAT, $checkcat->id);
+=======
+            $chcontext = context_coursecat::instance($checkcat->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if ($candeletecontent && !has_capability('moodle/category:manage', $chcontext)) {
                 $candeletecontent = false;
             }

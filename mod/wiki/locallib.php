@@ -213,7 +213,11 @@ function wiki_save_section($wikipage, $sectiontitle, $sectioncontent, $userid) {
 
     $wiki = wiki_get_wiki_from_pageid($wikipage->id);
     $cm = get_coursemodule_from_instance('wiki', $wiki->id);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (has_capability('mod/wiki:editpage', $context)) {
         $version = wiki_get_current_version($wikipage->id);
@@ -238,7 +242,11 @@ function wiki_save_page($wikipage, $newcontent, $userid) {
 
     $wiki = wiki_get_wiki_from_pageid($wikipage->id);
     $cm = get_coursemodule_from_instance('wiki', $wiki->id);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (has_capability('mod/wiki:editpage', $context)) {
         $version = wiki_get_current_version($wikipage->id);
@@ -324,7 +332,11 @@ function wiki_create_page($swid, $title, $format, $userid) {
     global $DB;
     $subwiki = wiki_get_subwiki($swid);
     $cm = get_coursemodule_from_instance('wiki', $subwiki->wikiid);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('mod/wiki:editpage', $context);
     // if page exists
     if ($page = wiki_get_page_by_title($swid, $title)) {
@@ -577,7 +589,11 @@ function wiki_parse_content($markup, $pagecontent, $options = array()) {
 
     $subwiki = wiki_get_subwiki($options['swid']);
     $cm = get_coursemodule_from_instance("wiki", $subwiki->wikiid);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $parser_options = array(
         'link_callback' => '/mod/wiki/locallib.php:wiki_parser_link',
@@ -726,7 +742,11 @@ function wiki_user_can_view($subwiki) {
 
     $wiki = wiki_get_wiki($subwiki->wikiid);
     $cm = get_coursemodule_from_instance('wiki', $wiki->id);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Working depending on activity groupmode
     switch (groups_get_activity_groupmode($cm)) {
@@ -818,7 +838,11 @@ function wiki_user_can_edit($subwiki) {
 
     $wiki = wiki_get_wiki($subwiki->wikiid);
     $cm = get_coursemodule_from_instance('wiki', $wiki->id);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Working depending on activity groupmode
     switch (groups_get_activity_groupmode($cm)) {
@@ -1165,7 +1189,11 @@ function wiki_get_comment($commentid){
 function wiki_get_comments($contextid, $pageid) {
     global $DB;
 
+<<<<<<< HEAD
     return $DB->get_records('comments', array('contextid' => $contextid, 'itemid' => $pageid, 'commentarea' => 'wiki_page'));
+=======
+    return $DB->get_records('comments', array('contextid' => $contextid, 'itemid' => $pageid, 'commentarea' => 'wiki_page'), 'timecreated ASC');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -1232,7 +1260,11 @@ function wiki_delete_comments_wiki() {
     global $PAGE, $DB;
 
     $cm = $PAGE->cm;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $table = 'comments';
     $select = 'contextid = ?';
@@ -1345,7 +1377,11 @@ function wiki_print_edit_form_default_fields($format, $pageid, $version = -1, $u
     echo $OUTPUT->container_end();
 
     $cm = $PAGE->cm;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     echo $OUTPUT->container_start('mdl-align wiki-form-center wiki-upload-table');
     wiki_print_upload_table($context, 'wiki_upload', $pageid, $deleteuploads);

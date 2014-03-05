@@ -1282,7 +1282,11 @@ class sqlsrv_native_moodle_database extends moodle_database {
     }
 
     public function sql_order_by_text($fieldname, $numchars = 32) {
+<<<<<<< HEAD
         return ' CONVERT(varchar, '.$fieldname.', '.$numchars.')';
+=======
+        return " CONVERT(varchar({$numchars}), {$fieldname})";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1363,6 +1367,13 @@ class sqlsrv_native_moodle_database extends moodle_database {
         if (!$this->session_lock_supported()) {
             return;
         }
+<<<<<<< HEAD
+=======
+        if (!$this->used_for_db_sessions) {
+            return;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::release_session_lock($rowid);
 
         $fullname = $this->dbname.'-'.$this->prefix.'-session-'.$rowid;

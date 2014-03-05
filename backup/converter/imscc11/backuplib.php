@@ -76,7 +76,11 @@ class imscc11_store_backup_file extends backup_execution_step {
         $id        = $dinfo[0]->id;                    // Id of activity/section/course (depends of type)
         $courseid  = $dinfo[0]->courseid;              // Id of the course
 
+<<<<<<< HEAD
         $ctxid     = get_context_instance(CONTEXT_USER, $userid)->id;
+=======
+        $ctxid     = context_user::instance($userid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $component = 'user';
         $filearea  = 'backup';
         $itemid    = 0;
@@ -139,7 +143,11 @@ class imscc11_backup_convert extends backup_execution_step {
 
         require_once($CFG->dirroot . '/backup/cc/cc_includes.php');
 
+<<<<<<< HEAD
         $tempdir = $CFG->dataroot . '/temp/backup/' . uniqid('', true);
+=======
+        $tempdir = $CFG->tempdir . '/backup/' . uniqid('', true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (mkdir($tempdir, 0777, true)) {
 

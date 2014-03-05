@@ -167,13 +167,24 @@ if (!empty($error)) {
 <?php
 
 // eventually display other enrolments of our users (manual, self etc.) in the remote course
+<<<<<<< HEAD
+=======
+list($sort, $params) = users_order_by_sql('u');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $sql = "SELECT e.id,e.enroltype AS plugin, u.firstname, u.lastname, u.email, u.id AS userid,
                e.enroltime AS timemodified, e.rolename
           FROM {mnetservice_enrol_enrolments} e
           JOIN {user} u ON u.id = e.userid
+<<<<<<< HEAD
          WHERE e.hostid = ? AND e.remotecourseid = ? AND e.enroltype != 'mnet'
       ORDER BY u.lastname, u.firstname";
 $params = array($host->id, $course->remoteid);
+=======
+         WHERE e.hostid = :hostid AND e.remotecourseid = :remotecourseid AND e.enroltype != 'mnet'
+      ORDER BY $sort";
+$params['hostid'] = $host->id;
+$params['remotecourseid'] = $course->remoteid;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($enrolments = $DB->get_records_sql($sql, $params)) {
     echo $OUTPUT->heading(get_string('otherenrolledusers', 'mnetservice_enrol'), 3);

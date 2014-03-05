@@ -68,7 +68,11 @@ if ($l) {  // Two ways to specify the module
 $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
 require_login($course, false, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/lti:grade', $context);
 
 $url = new moodle_url('/mod/lti/grade.php', array('id' => $cm->id));
@@ -80,14 +84,21 @@ $PAGE->set_url($url);
 $module = array(
     'name'      => 'mod_lti_submissions',
     'fullpath'  => '/mod/lti/submissions.js',
+<<<<<<< HEAD
     'requires'  => array('base'),
+=======
+    'requires'  => array('base', 'yui2-datatable'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'strings'   => array(),
 );
 
 $PAGE->requires->js_init_call('M.mod_lti.submissions.init', array(), true, $module);
 
+<<<<<<< HEAD
 $PAGE->requires->yui2_lib('datatable');
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $submissionquery = '
     SELECT s.id, u.firstname, u.lastname, u.id AS userid, s.datesubmitted, s.gradepercent
     FROM {lti_submission} s
@@ -155,7 +166,11 @@ foreach ($submissions as $submission) {
 
 $table = str_replace('<!--table body-->', $rows, $html);
 
+<<<<<<< HEAD
 $title = 'Submissions for ' . $lti->name;
+=======
+$title = get_string('submissionsfor', 'lti', $lti->name);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_title(format_string($title , true));
 $PAGE->set_heading($course->fullname);

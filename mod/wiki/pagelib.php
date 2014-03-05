@@ -97,7 +97,11 @@ abstract class page_wiki {
     function __construct($wiki, $subwiki, $cm) {
         global $PAGE, $CFG;
         $this->subwiki = $subwiki;
+<<<<<<< HEAD
         $this->modcontext = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+=======
+        $this->modcontext = context_module::instance($PAGE->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // initialise wiki renderer
         $this->wikioutput = $PAGE->get_renderer('mod_wiki');
@@ -382,7 +386,10 @@ class page_wiki_edit extends page_wiki {
         parent::__construct($wiki, $subwiki, $cm);
         self::$attachmentoptions = array('subdirs' => false, 'maxfiles' => - 1, 'maxbytes' => $CFG->maxbytes, 'accepted_types' => '*');
         $PAGE->requires->js_init_call('M.mod_wiki.renew_lock', null, true);
+<<<<<<< HEAD
         $PAGE->requires->yui2_lib('connection');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function print_pagetitle() {
@@ -631,7 +638,11 @@ class page_wiki_comments extends page_wiki {
 
             $user = wiki_get_user_info($comment->userid);
 
+<<<<<<< HEAD
             $fullname = fullname($user, has_capability('moodle/site:viewfullnames', get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+            $fullname = fullname($user, has_capability('moodle/site:viewfullnames', context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $by = new stdclass();
             $by->name = '<a href="' . $CFG->wwwroot . '/user/view.php?id=' . $user->id . '&amp;course=' . $course->id . '">' . $fullname . '</a>';
             $by->date = userdate($comment->timecreated);
@@ -678,7 +689,13 @@ class page_wiki_comments extends page_wiki {
             }
 
             if ($actionicons) {
+<<<<<<< HEAD
                 $cell6 = new html_table_cell($OUTPUT->action_icon($urledit, new pix_icon('t/edit', get_string('edit'))) . $OUTPUT->action_icon($urldelet, new pix_icon('t/delete', get_string('delete'))));
+=======
+                $cell6 = new html_table_cell($OUTPUT->action_icon($urledit, new pix_icon('t/edit', get_string('edit'),
+                        '', array('class' => 'iconsmall'))) . $OUTPUT->action_icon($urldelet, new pix_icon('t/delete',
+                        get_string('delete'), '', array('class' => 'iconsmall'))));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $row3 = new html_table_row();
                 $row3->cells[] = $cell5;
                 $row3->cells[] = $cell6;
@@ -1990,7 +2007,11 @@ class page_wiki_save extends page_wiki_edit {
     function print_content() {
         global $PAGE;
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+=======
+        $context = context_module::instance($PAGE->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         require_capability('mod/wiki:editpage', $context, NULL, true, 'noeditpermission', 'wiki');
 
         $this->print_save();
@@ -2205,8 +2226,19 @@ class page_wiki_prettyview extends page_wiki {
 
         $content = wiki_parse_content($version->contentformat, $version->content, array('printable' => true, 'swid' => $this->subwiki->id, 'pageid' => $this->page->id, 'pretty_print' => true));
 
+<<<<<<< HEAD
         echo '<div id="wiki_printable_content">';
         echo format_text($content['parsed_text'], FORMAT_HTML);
+=======
+        $html = $content['parsed_text'];
+        $id = $this->subwiki->wikiid;
+        if ($cm = get_coursemodule_from_instance("wiki", $id)) {
+            $context = context_module::instance($cm->id);
+            $html = file_rewrite_pluginfile_urls($html, 'pluginfile.php', $context->id, 'mod_wiki', 'attachments', $this->subwiki->id);
+        }
+        echo '<div id="wiki_printable_content">';
+        echo format_text($html, FORMAT_HTML);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
     }
 }

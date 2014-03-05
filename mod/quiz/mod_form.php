@@ -116,7 +116,11 @@ class mod_quiz_mod_form extends moodleform_mod {
 
         $mform->removeElement('grade');
         $mform->addElement('hidden', 'grade', $quizconfig->maximumgrade);
+<<<<<<< HEAD
         $mform->setType('grade', PARAM_NUMBER);
+=======
+        $mform->setType('grade', PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Number of attempts.
         $attemptoptions = array('0' => get_string('unlimited'));
@@ -166,9 +170,22 @@ class mod_quiz_mod_form extends moodleform_mod {
             $pagegroup[] = $mform->createElement('checkbox', 'repaginatenow', '',
                     get_string('repaginatenow', 'quiz'), array('id' => 'id_repaginatenow'));
             $mform->disabledIf('repaginatenow', 'shufflequestions', 'eq', 1);
+<<<<<<< HEAD
             $PAGE->requires->yui2_lib('event');
             $PAGE->requires->js('/mod/quiz/edit.js');
             $PAGE->requires->js_init_call('quiz_settings_init');
+=======
+
+            $PAGE->requires->js('/question/qengine.js');
+            $module = array(
+                'name'      => 'mod_quiz_edit',
+                'fullpath'  => '/mod/quiz/edit.js',
+                'requires'  => array('yui2-dom', 'yui2-event', 'yui2-container'),
+                'strings'   => array(),
+                'async'     => false,
+            );
+            $PAGE->requires->js_init_call('quiz_settings_init', null, false, $module);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $mform->addGroup($pagegroup, 'questionsperpagegrp',
@@ -417,10 +434,19 @@ class mod_quiz_mod_form extends moodleform_mod {
             }
         }
 
+<<<<<<< HEAD
         $mform->disabledIf('correctness' . $whenname, 'attempt' . $whenname);
         $mform->disabledIf('specificfeedback' . $whenname, 'attempt' . $whenname);
         $mform->disabledIf('generalfeedback' . $whenname, 'attempt' . $whenname);
         $mform->disabledIf('rightanswer' . $whenname, 'attempt' . $whenname);
+=======
+        if ($whenname != 'during') {
+            $mform->disabledIf('correctness' . $whenname, 'attempt' . $whenname);
+            $mform->disabledIf('specificfeedback' . $whenname, 'attempt' . $whenname);
+            $mform->disabledIf('generalfeedback' . $whenname, 'attempt' . $whenname);
+            $mform->disabledIf('rightanswer' . $whenname, 'attempt' . $whenname);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function preprocessing_review_settings(&$toform, $whenname, $when) {

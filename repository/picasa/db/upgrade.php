@@ -20,6 +20,10 @@
  */
 function xmldb_repository_picasa_upgrade($oldversion) {
     global $CFG, $DB;
+<<<<<<< HEAD
+=======
+    require_once(__DIR__.'/upgradelib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $dbman = $DB->get_manager();
 
@@ -46,6 +50,7 @@ function xmldb_repository_picasa_upgrade($oldversion) {
     // Put any upgrade step following this
 
 
+<<<<<<< HEAD
     return true;
 }
 
@@ -73,4 +78,11 @@ function repository_picasa_admin_upgrade_notification() {
         $message->notification      = 1;
         message_send($message);
     }
+=======
+    // Moodle v2.4.0 release upgrade line
+    // Put any upgrade step following this
+
+
+    return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

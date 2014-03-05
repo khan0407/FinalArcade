@@ -58,9 +58,15 @@ if ($version == 'moodle' && count($parts) >= 3) {
 } else if (count($parts) == 1 && ($version == $CFG->yui3version || $version == $CFG->yui2version)) {
     list($image) = $parts;
     if ($version == $CFG->yui3version) {
+<<<<<<< HEAD
         $imagepath = "$CFG->dirroot/lib/yui/$CFG->yui3version/build/assets/skins/sam/$image";
     } else  {
         $imagepath = "$CFG->dirroot/lib/yui/$CFG->yui2version/build/assets/skins/sam/$image";
+=======
+        $imagepath = "$CFG->dirroot/lib/yuilib/$CFG->yui3version/build/assets/skins/sam/$image";
+    } else  {
+        $imagepath = "$CFG->dirroot/lib/yuilib/2in3/$CFG->yui2version/build/assets/skins/sam/$image";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 } else {
     yui_image_not_found();
@@ -90,7 +96,11 @@ if (strpos($path, '/-1/') === false and (!empty($_SERVER['HTTP_IF_NONE_MATCH']) 
     header('HTTP/1.1 304 Not Modified');
     header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($imagepath)) .' GMT');
     header('Expires: '. gmdate('D, d M Y H:i:s', time() + $lifetime) .' GMT');
+<<<<<<< HEAD
     header('Cache-Control: public, max-age='.$lifetime);
+=======
+    header('Cache-Control: public, max-age='.$lifetime.', no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     header('Content-Type: '.$mimetype);
     header('Etag: "'.$etag.'"');
     die;
@@ -109,7 +119,11 @@ function yui_image_cached($imagepath, $imagename, $mimetype, $etag) {
     header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($imagepath)) .' GMT');
     header('Expires: '. gmdate('D, d M Y H:i:s', time() + $lifetime) .' GMT');
     header('Pragma: ');
+<<<<<<< HEAD
     header('Cache-Control: public, max-age=315360000');
+=======
+    header('Cache-Control: public, max-age=315360000, no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     header('Accept-Ranges: none');
     header('Content-Type: '.$mimetype);
     header('Content-Length: '.filesize($imagepath));

@@ -51,7 +51,11 @@ if (isguestuser()) {
 }
 $instance = new assignment_uploadsingle($cm->id, $assignment, $cm, $course);
 
+<<<<<<< HEAD
 $fullname = format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+$fullname = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_url($url);
 $PAGE->set_context($context);

@@ -55,7 +55,11 @@ class mod_wiki_renderer extends plugin_renderer_base {
     public function search_result($records, $subwiki) {
         global $CFG, $PAGE;
         $table = new html_table();
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+=======
+        $context = context_module::instance($PAGE->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $strsearchresults = get_string('searchresult', 'wiki');
         $totalcount = count($records);
         $html = $this->output->heading("$strsearchresults $totalcount");
@@ -243,7 +247,11 @@ class mod_wiki_renderer extends plugin_renderer_base {
         global $CFG;
         $tabs = array();
         $baseurl = $CFG->wwwroot . '/mod/wiki/';
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $this->page->cm->id);
+=======
+        $context = context_module::instance($this->page->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $pageid = null;
         if (!empty($page)) {
@@ -315,7 +323,11 @@ class mod_wiki_renderer extends plugin_renderer_base {
         }
 
         $cm = get_coursemodule_from_instance('wiki', $wiki->id);
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // @TODO: A plenty of duplicated code below this lines.
         // Create private functions.
         switch (groups_get_activity_groupmode($cm)) {

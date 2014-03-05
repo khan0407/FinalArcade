@@ -149,6 +149,15 @@ class workshop {
     /** @var bool automatically switch to the assessment phase after the submissions deadline */
     public $phaseswitchassessment;
 
+<<<<<<< HEAD
+=======
+    /** @var string conclusion text to be displayed at the end of the activity */
+    public $conclusion;
+
+    /** @var int format of the conclusion text */
+    public $conclusionformat;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * @var workshop_strategy grading strategy instance
      * Do not use directly, get the instance using {@link workshop::grading_strategy_instance()}
@@ -181,11 +190,18 @@ class workshop {
         $this->cm           = $cm;
         $this->course       = $course;
         if (is_null($context)) {
+<<<<<<< HEAD
             $this->context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
         } else {
             $this->context = $context;
         }
         $this->evaluation   = 'best';   // todo make this configurable although we have no alternatives yet
+=======
+            $this->context = context_module::instance($this->cm->id);
+        } else {
+            $this->context = $context;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +300,22 @@ class workshop {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns the list of available grading evaluation methods
+     *
+     * @return array of (string)name => (string)localized title
+     */
+    public static function available_evaluators_list() {
+        $evals = array();
+        foreach (get_plugin_list_with_file('workshopeval', 'lib.php', false) as $eval => $evalpath) {
+            $evals[$eval] = get_string('pluginname', 'workshopeval_' . $eval);
+        }
+        return $evals;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Return an array of possible values of assessment dimension weight
      *
      * @return array of integers 0, 1, 2, ..., 16
@@ -400,11 +432,20 @@ class workshop {
             return array();
         }
 
+<<<<<<< HEAD
         $sql = "SELECT *
                   FROM ($sql) tmp
               ORDER BY tmp.lastname ASC, tmp.firstname ASC, tmp.id ASC";
 
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
+=======
+        list($sort, $sortparams) = users_order_by_sql('tmp');
+        $sql = "SELECT *
+                  FROM ($sql) tmp
+              ORDER BY $sort";
+
+        return $DB->get_records_sql($sql, array_merge($params, $sortparams), $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -450,11 +491,20 @@ class workshop {
             return array();
         }
 
+<<<<<<< HEAD
         $sql = "SELECT *
                   FROM ($sql) tmp
               ORDER BY tmp.lastname ASC, tmp.firstname ASC, tmp.id ASC";
 
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
+=======
+        list($sort, $sortparams) = users_order_by_sql('tmp');
+        $sql = "SELECT *
+                  FROM ($sql) tmp
+              ORDER BY $sort";
+
+        return $DB->get_records_sql($sql, array_merge($params, $sortparams), $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -502,11 +552,20 @@ class workshop {
             return array();
         }
 
+<<<<<<< HEAD
         $sql = "SELECT *
                   FROM ($sql) tmp
               ORDER BY tmp.lastname ASC, tmp.firstname ASC, tmp.id ASC";
 
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
+=======
+        list($sort, $sortparams) = users_order_by_sql('tmp');
+        $sql = "SELECT *
+                  FROM ($sql) tmp
+              ORDER BY $sort";
+
+        return $DB->get_records_sql($sql, array_merge($params, $sortparams), $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -702,9 +761,16 @@ class workshop {
             // $authorid is empty
             return array();
         }
+<<<<<<< HEAD
         $sql .= " ORDER BY u.lastname, u.firstname";
 
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
+=======
+        list($sort, $sortparams) = users_order_by_sql('u');
+        $sql .= " ORDER BY $sort";
+
+        return $DB->get_records_sql($sql, array_merge($params, $sortparams), $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1036,6 +1102,10 @@ class workshop {
         $reviewerfields = user_picture::fields('reviewer', null, 'revieweridx', 'reviewer');
         $authorfields   = user_picture::fields('author', null, 'authorid', 'author');
         $overbyfields   = user_picture::fields('overby', null, 'gradinggradeoverbyx', 'overby');
+<<<<<<< HEAD
+=======
+        list($sort, $params) = users_order_by_sql('reviewer');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $sql = "SELECT a.id, a.submissionid, a.reviewerid, a.timecreated, a.timemodified,
                        a.grade, a.gradinggrade, a.gradinggradeover, a.gradinggradeoverby,
                        $reviewerfields, $authorfields, $overbyfields,
@@ -1046,8 +1116,13 @@ class workshop {
             INNER JOIN {user} author ON (s.authorid = author.id)
              LEFT JOIN {user} overby ON (a.gradinggradeoverby = overby.id)
                  WHERE s.workshopid = :workshopid AND s.example = 0
+<<<<<<< HEAD
               ORDER BY reviewer.lastname, reviewer.firstname";
         $params = array('workshopid' => $this->id);
+=======
+              ORDER BY $sort";
+        $params['workshopid'] = $this->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $DB->get_records_sql($sql, $params);
     }
@@ -1112,14 +1187,24 @@ class workshop {
 
         $reviewerfields = user_picture::fields('reviewer', null, 'revieweridx', 'reviewer');
         $overbyfields   = user_picture::fields('overby', null, 'gradinggradeoverbyx', 'overby');
+<<<<<<< HEAD
+=======
+        list($sort, $params) = users_order_by_sql('reviewer');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $sql = "SELECT a.*, s.title, $reviewerfields, $overbyfields
                   FROM {workshop_assessments} a
             INNER JOIN {user} reviewer ON (a.reviewerid = reviewer.id)
             INNER JOIN {workshop_submissions} s ON (a.submissionid = s.id)
              LEFT JOIN {user} overby ON (a.gradinggradeoverby = overby.id)
                  WHERE s.example = 0 AND s.id = :submissionid AND s.workshopid = :workshopid
+<<<<<<< HEAD
               ORDER BY reviewer.lastname, reviewer.firstname, reviewer.id";
         $params = array('submissionid' => $submissionid, 'workshopid' => $this->id);
+=======
+              ORDER BY $sort";
+        $params['submissionid'] = $submissionid;
+        $params['workshopid']   = $this->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $DB->get_records_sql($sql, $params);
     }
@@ -1229,6 +1314,31 @@ class workshop {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Sets the current evaluation method to the given plugin.
+     *
+     * @param string $method the name of the workshopeval subplugin
+     * @return bool true if successfully set
+     * @throws coding_exception if attempting to set a non-installed evaluation method
+     */
+    public function set_grading_evaluation_method($method) {
+        global $DB;
+
+        $evaluationlib = dirname(__FILE__) . '/eval/' . $method . '/lib.php';
+
+        if (is_readable($evaluationlib)) {
+            $this->evaluationinstance = null;
+            $this->evaluation = $method;
+            $DB->set_field('workshop', 'evaluation', $method, array('id' => $this->id));
+            return true;
+        }
+
+        throw new coding_exception('Attempt to set a non-existing evaluation method.');
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns instance of grading evaluation class
      *
      * @return stdclass Instance of a grading evaluation
@@ -1237,16 +1347,39 @@ class workshop {
         global $CFG;    // because we require other libs here
 
         if (is_null($this->evaluationinstance)) {
+<<<<<<< HEAD
+=======
+            if (empty($this->evaluation)) {
+                $this->evaluation = 'best';
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $evaluationlib = dirname(__FILE__) . '/eval/' . $this->evaluation . '/lib.php';
             if (is_readable($evaluationlib)) {
                 require_once($evaluationlib);
             } else {
+<<<<<<< HEAD
                 throw new coding_exception('the grading evaluation subplugin must contain library ' . $evaluationlib);
             }
             $classname = 'workshop_' . $this->evaluation . '_evaluation';
             $this->evaluationinstance = new $classname($this);
             if (!in_array('workshop_evaluation', class_implements($this->evaluationinstance))) {
                 throw new coding_exception($classname . ' does not implement workshop_evaluation interface');
+=======
+                // Fall back in case the subplugin is not available.
+                $this->evaluation = 'best';
+                $evaluationlib = dirname(__FILE__) . '/eval/' . $this->evaluation . '/lib.php';
+                if (is_readable($evaluationlib)) {
+                    require_once($evaluationlib);
+                } else {
+                    // Fall back in case the subplugin is not available any more.
+                    throw new coding_exception('Missing default grading evaluation library ' . $evaluationlib);
+                }
+            }
+            $classname = 'workshop_' . $this->evaluation . '_evaluation';
+            $this->evaluationinstance = new $classname($this);
+            if (!in_array('workshop_evaluation', class_parents($this->evaluationinstance))) {
+                throw new coding_exception($classname . ' does not extend workshop_evaluation class');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
         return $this->evaluationinstance;
@@ -1501,8 +1634,16 @@ class workshop {
     public function assessing_allowed($userid) {
 
         if ($this->phase != self::PHASE_ASSESSMENT) {
+<<<<<<< HEAD
             // assessing is not allowed but in the assessment phase
             return false;
+=======
+            // assessing is allowed in the assessment phase only, unless the user is a teacher
+            // providing additional assessment during the evaluation phase
+            if ($this->phase != self::PHASE_EVALUATION or !has_capability('mod/workshop:overridegrades', $this->context, $userid)) {
+                return false;
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $now = time();
@@ -1708,6 +1849,10 @@ class workshop {
         $reviewers = array();
         if ($submissions) {
             list($submissionids, $params) = $DB->get_in_or_equal(array_keys($submissions), SQL_PARAMS_NAMED);
+<<<<<<< HEAD
+=======
+            list($sort, $sortparams) = users_order_by_sql('r');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $sql = "SELECT a.id AS assessmentid, a.submissionid, a.grade, a.gradinggrade, a.gradinggradeover, a.weight,
                            r.id AS reviewerid, r.lastname, r.firstname, r.picture, r.imagealt, r.email,
                            s.id AS submissionid, s.authorid
@@ -1715,8 +1860,13 @@ class workshop {
                       JOIN {user} r ON (a.reviewerid = r.id)
                       JOIN {workshop_submissions} s ON (a.submissionid = s.id AND s.example = 0)
                      WHERE a.submissionid $submissionids
+<<<<<<< HEAD
                   ORDER BY a.weight DESC, r.lastname, r.firstname";
             $reviewers = $DB->get_records_sql($sql, $params);
+=======
+                  ORDER BY a.weight DESC, $sort";
+            $reviewers = $DB->get_records_sql($sql, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach ($reviewers as $reviewer) {
                 if (!isset($userinfo[$reviewer->reviewerid])) {
                     $userinfo[$reviewer->reviewerid]            = new stdclass();
@@ -1734,6 +1884,10 @@ class workshop {
         $reviewees = array();
         if ($participants) {
             list($participantids, $params) = $DB->get_in_or_equal(array_keys($participants), SQL_PARAMS_NAMED);
+<<<<<<< HEAD
+=======
+            list($sort, $sortparams) = users_order_by_sql('e');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $params['workshopid'] = $this->id;
             $sql = "SELECT a.id AS assessmentid, a.submissionid, a.grade, a.gradinggrade, a.gradinggradeover, a.reviewerid, a.weight,
                            s.id AS submissionid,
@@ -1743,8 +1897,13 @@ class workshop {
                       JOIN {workshop_submissions} s ON (a.submissionid = s.id AND s.example = 0)
                       JOIN {user} e ON (s.authorid = e.id)
                      WHERE u.id $participantids AND s.workshopid = :workshopid
+<<<<<<< HEAD
                   ORDER BY a.weight DESC, e.lastname, e.firstname";
             $reviewees = $DB->get_records_sql($sql, $params);
+=======
+                  ORDER BY a.weight DESC, $sort";
+            $reviewees = $DB->get_records_sql($sql, array_merge($params, $sortparams));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach ($reviewees as $reviewee) {
                 if (!isset($userinfo[$reviewee->authorid])) {
                     $userinfo[$reviewee->authorid]            = new stdclass();
@@ -2146,6 +2305,62 @@ class workshop {
                 'post', '', null, $editable);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Returns the information about the user's grades as they are stored in the gradebook
+     *
+     * The submission grade is returned for users with the capability mod/workshop:submit and the
+     * assessment grade is returned for users with the capability mod/workshop:peerassess. Unless the
+     * user has the capability to view hidden grades, grades must be visible to be returned. Null
+     * grades are not returned. If none grade is to be returned, this method returns false.
+     *
+     * @param int $userid the user's id
+     * @return workshop_final_grades|false
+     */
+    public function get_gradebook_grades($userid) {
+        global $CFG;
+        require_once($CFG->libdir.'/gradelib.php');
+
+        if (empty($userid)) {
+            throw new coding_exception('User id expected, empty value given.');
+        }
+
+        // Read data via the Gradebook API
+        $gradebook = grade_get_grades($this->course->id, 'mod', 'workshop', $this->id, $userid);
+
+        $grades = new workshop_final_grades();
+
+        if (has_capability('mod/workshop:submit', $this->context, $userid)) {
+            if (!empty($gradebook->items[0]->grades)) {
+                $submissiongrade = reset($gradebook->items[0]->grades);
+                if (!is_null($submissiongrade->grade)) {
+                    if (!$submissiongrade->hidden or has_capability('moodle/grade:viewhidden', $this->context, $userid)) {
+                        $grades->submissiongrade = $submissiongrade;
+                    }
+                }
+            }
+        }
+
+        if ($this->usepeerassessment and has_capability('mod/workshop:peerassess', $this->context, $userid)) {
+            if (!empty($gradebook->items[1]->grades)) {
+                $assessmentgrade = reset($gradebook->items[1]->grades);
+                if (!is_null($assessmentgrade->grade)) {
+                    if (!$assessmentgrade->hidden or has_capability('moodle/grade:viewhidden', $this->context, $userid)) {
+                        $grades->assessmentgrade = $assessmentgrade;
+                    }
+                }
+            }
+        }
+
+        if (!is_null($grades->submissiongrade) or !is_null($grades->assessmentgrade)) {
+            return $grades;
+        }
+
+        return false;
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ////////////////////////////////////////////////////////////////////////////////
     // Internal methods (implementation details)                                  //
     ////////////////////////////////////////////////////////////////////////////////
@@ -2752,6 +2967,22 @@ class workshop_user_plan implements renderable {
             $task->completed = 'info';
             $phase->tasks['evaluateinfo'] = $task;
         }
+<<<<<<< HEAD
+=======
+
+        if (has_capability('moodle/course:manageactivities', $workshop->context, $userid)) {
+            $task = new stdclass();
+            $task->title = get_string('taskconclusion', 'workshop');
+            $task->link = $workshop->updatemod_url();
+            if (trim($workshop->conclusion)) {
+                $task->completed = true;
+            } elseif ($workshop->phase >= workshop::PHASE_EVALUATION) {
+                $task->completed = false;
+            }
+            $phase->tasks['conclusion'] = $task;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->phases[workshop::PHASE_EVALUATION] = $phase;
 
         //---------------------------------------------------------
@@ -3404,3 +3635,19 @@ class workshop_feedback_reviewer extends workshop_feedback implements renderable
         $this->format   = $assessment->feedbackreviewerformat;
     }
 }
+<<<<<<< HEAD
+=======
+
+
+/**
+ * Holds the final grades for the activity as are stored in the gradebook
+ */
+class workshop_final_grades implements renderable {
+
+    /** @var object the info from the gradebook about the grade for submission */
+    public $submissiongrade = null;
+
+    /** @var object the infor from the gradebook about the grade for assessment */
+    public $assessmentgrade = null;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

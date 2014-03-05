@@ -49,7 +49,11 @@ function online_assignment_cleanup($output=false) {
     /// cycle through each course
     foreach ($courses as $course) {
         context_instance_preload($course);
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (empty($course->fullname)) {
             $fullname = get_string('course').': '.$course->id;
@@ -59,11 +63,26 @@ function online_assignment_cleanup($output=false) {
         if ($output) echo $OUTPUT->heading($fullname);
 
         /// retrieve a list of sections beyond what is currently being shown
+<<<<<<< HEAD
+=======
+        $courseformatoptions = course_get_format($course)->get_format_options();
+        if (!isset($courseformatoptions['numsections'])) {
+            // Course format does not use numsections
+            if ($output) {
+                echo 'No extra sections<br />';
+            }
+            continue;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $sql = "SELECT *
                   FROM {course_sections}
                  WHERE course=? AND section>?
               ORDER BY section ASC";
+<<<<<<< HEAD
         $params = array($course->id, $course->numsections);
+=======
+        $params = array($course->id, $courseformatoptions['numsections']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!($xsections = $DB->get_records_sql($sql, $params))) {
             if ($output) echo 'No extra sections<br />';
             continue;
@@ -94,7 +113,11 @@ function online_assignment_cleanup($output=false) {
                         /// the journal update erroneously stored it in course_sections->section
                         $newsection = $xsection->section;
                         /// double check the new section
+<<<<<<< HEAD
                         if ($newsection > $course->numsections) {
+=======
+                        if ($newsection > $courseformatoptions['numsections']) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             /// get the record for section 0 for this course
                             if (!($zerosection = $DB->get_record('course_sections', array('course'=>$course->id, 'section'=>'0')))) {
                                 continue;

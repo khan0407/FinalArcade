@@ -223,7 +223,11 @@ class grading_manager {
         global $DB;
 
         $this->areacache = $DB->get_record('grading_areas', array('id' => $areaid), '*', MUST_EXIST);
+<<<<<<< HEAD
         $this->context = get_context_instance_by_id($this->areacache->contextid, MUST_EXIST);
+=======
+        $this->context = context::instance_by_id($this->areacache->contextid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->component = $this->areacache->component;
         $this->area = $this->areacache->areaname;
     }

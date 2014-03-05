@@ -67,14 +67,22 @@ class repository_coursefiles extends repository {
             if (is_array($params)) {
                 $filepath  = is_null($params['filepath']) ? NULL : clean_param($params['filepath'], PARAM_PATH);;
                 $filename  = is_null($params['filename']) ? NULL : clean_param($params['filename'], PARAM_FILE);
+<<<<<<< HEAD
                 $context = get_context_instance_by_id(clean_param($params['contextid'], PARAM_INT));
+=======
+                $context = context::instance_by_id(clean_param($params['contextid'], PARAM_INT));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         } else {
             $filename = null;
             $filepath = null;
             list($context, $course, $cm) = get_context_info_array($this->context->id);
             $courseid = is_object($course) ? $course->id : SITEID;
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+            $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         if ($fileinfo = $browser->get_file_info($context, $component, $filearea, $itemid, $filepath, $filename)) {
@@ -158,7 +166,11 @@ class repository_coursefiles extends repository {
         $filepath = clean_param($params['filepath'], PARAM_PATH);;
         $filearea = clean_param($params['filearea'], PARAM_AREA);
         $component = clean_param($params['component'], PARAM_COMPONENT);
+<<<<<<< HEAD
         $context = get_context_instance_by_id($contextid);
+=======
+        $context = context::instance_by_id($contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $file_info = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
         return $file_info->get_url();
@@ -180,10 +192,22 @@ class repository_coursefiles extends repository {
         return parent::is_visible();
     }
 
+<<<<<<< HEAD
     public function get_name() {
         list($context, $course, $cm) = get_context_info_array($this->context->id);
         if (!empty($course)) {
             return get_string('courselegacyfiles') . format_string($course->shortname, true, array('context' => get_course_context($context)));
+=======
+    /**
+     * Return the repository name.
+     *
+     * @return string
+     */
+    public function get_name() {
+        $context = $this->context->get_course_context(false);
+        if ($context) {
+            return get_string('courselegacyfilesofcourse', 'moodle', $context->get_context_name(false, true));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             return get_string('courselegacyfiles');
         }

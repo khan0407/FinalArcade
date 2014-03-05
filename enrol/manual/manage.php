@@ -17,8 +17,12 @@
 /**
  * Manual user enrolment UI.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage manual
+=======
+ * @package    enrol_manual
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,7 +37,11 @@ $extendbase   = optional_param('extendbase', 3, PARAM_INT);
 
 $instance = $DB->get_record('enrol', array('id'=>$enrolid, 'enrol'=>'manual'), '*', MUST_EXIST);
 $course = $DB->get_record('course', array('id'=>$instance->courseid), '*', MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login($course);
 require_capability('enrol/manual:enrol', $context);
@@ -47,7 +55,11 @@ $roles = get_assignable_roles($context);
 $roles = array('0'=>get_string('none')) + $roles;
 
 if (!isset($roles[$roleid])) {
+<<<<<<< HEAD
     // weird - security always first!
+=======
+    // Weird - security always first!
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $roleid = 0;
 }
 
@@ -88,14 +100,22 @@ $timeformat = get_string('strftimedatefullshort');
 $today = time();
 $today = make_timestamp(date('Y', $today), date('m', $today), date('d', $today), 0, 0, 0);
 
+<<<<<<< HEAD
 // enrolment start
+=======
+// Enrolment start.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $basemenu = array();
 if ($course->startdate > 0) {
     $basemenu[2] = get_string('coursestart') . ' (' . userdate($course->startdate, $timeformat) . ')';
 }
 $basemenu[3] = get_string('today') . ' (' . userdate($today, $timeformat) . ')' ;
 
+<<<<<<< HEAD
 // process add and removes
+=======
+// Process add and removes.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
     if (!empty($userstoassign)) {
@@ -126,7 +146,11 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     }
 }
 
+<<<<<<< HEAD
 // Process incoming role unassignments
+=======
+// Process incoming role unassignments.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstounassign = $currentuserselector->get_selected_users();
     if (!empty($userstounassign)) {

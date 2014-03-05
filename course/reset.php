@@ -39,7 +39,11 @@ if (!$course = $DB->get_record('course', array('id'=>$id))) {
 $PAGE->set_url('/course/reset.php', array('id'=>$id));
 
 require_login($course);
+<<<<<<< HEAD
 require_capability('moodle/course:reset', get_context_instance(CONTEXT_COURSE, $course->id));
+=======
+require_capability('moodle/course:reset', context_course::instance($course->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $strreset       = get_string('reset');
 $strresetcourse = get_string('resetcourse');

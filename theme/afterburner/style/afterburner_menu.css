@@ -175,11 +175,19 @@ ul.dropdown ul a.open:hover {
 ul.dropdown ul li:hover > span,
 ul.dropdown ul li:hover > span a {
     background-color:#fff;
+<<<<<<< HEAD
     background-image:url([[pix:theme|menu/ab-arrowover]]);
     color: #036;
 }
 ul.dropdown li.clickable-with-children:hover > a {
     background-image:url([[pix:theme|menu/ab-arrowover]]);
+=======
+    background-image:url([[pix:theme|menu/nav-arrowover-right]]);
+    color: #036;
+}
+ul.dropdown li.clickable-with-children:hover > a {
+    background-image:url([[pix:theme|menu/nav-arrowover-right]]);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 ul.dropdown *.open,
 ul.dropdown li:hover > span,
@@ -191,6 +199,10 @@ ul.dropdown ul ul *.open,
 ul.dropdown ul ul li:hover > span,
 ul.dropdown ul ul li:hover > span a {
     background-color:#fff;
+<<<<<<< HEAD
     background-image:url([[pix:theme|menu/ab-arrowover]]);
+=======
+    background-image:url([[pix:theme|menu/nav-arrowover-right]]);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     color:#036;
 }

@@ -53,7 +53,11 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/mod/lti/edit_form.php');
 require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
+<<<<<<< HEAD
 $action       = optional_param('action', null, PARAM_ACTION);
+=======
+$action       = optional_param('action', null, PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $id           = optional_param('id', null, PARAM_INT);
 $tab          = optional_param('tab', '', PARAM_ALPHAEXT);
 

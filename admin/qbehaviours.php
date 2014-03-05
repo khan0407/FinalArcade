@@ -33,7 +33,11 @@ require_once($CFG->libdir . '/tablelib.php');
 
 // Check permissions.
 require_login();
+<<<<<<< HEAD
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/question:config', $systemcontext);
 
 admin_externalpage_setup('manageqbehaviours');
@@ -258,7 +262,11 @@ foreach ($sortedbehaviours as $behaviour => $behaviourname) {
             $rowclass = 'dimmed_text';
         }
     } else {
+<<<<<<< HEAD
         $icons = $OUTPUT->spacer() . ' ';
+=======
+        $icons = $OUTPUT->spacer(array('class' => 'iconsmall'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // Move icons.
@@ -284,10 +292,17 @@ echo $OUTPUT->footer();
 
 function question_behaviour_enable_disable_icons($behaviour, $enabled) {
     if ($enabled) {
+<<<<<<< HEAD
         return question_behaviour_icon_html('disable', $behaviour, 'i/hide',
                 get_string('enabled', 'question'), get_string('disable'));
     } else {
         return question_behaviour_icon_html('enable', $behaviour, 'i/show',
+=======
+        return question_behaviour_icon_html('disable', $behaviour, 't/hide',
+                get_string('enabled', 'question'), get_string('disable'));
+    } else {
+        return question_behaviour_icon_html('enable', $behaviour, 't/show',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 get_string('disabled', 'question'), get_string('enable'));
     }
 }
@@ -296,7 +311,12 @@ function question_behaviour_icon_html($action, $behaviour, $icon, $alt, $tip) {
     global $OUTPUT;
     return $OUTPUT->action_icon(new moodle_url('/admin/qbehaviours.php',
             array($action => $behaviour, 'sesskey' => sesskey())),
+<<<<<<< HEAD
             new pix_icon($icon, $alt, 'moodle', array('title' => '')),
             null, array('title' => $tip)) . ' ';
+=======
+            new pix_icon($icon, $alt, 'moodle', array('title' => '', 'class' => 'iconsmall')),
+            null, array('title' => $tip));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 

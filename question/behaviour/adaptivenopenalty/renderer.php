@@ -38,10 +38,18 @@ require_once(dirname(__FILE__) . '/../adaptive/renderer.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qbehaviour_adaptivenopenalty_renderer extends qbehaviour_adaptive_renderer {
+<<<<<<< HEAD
     protected function penalty_info(question_attempt $qa, $mark,
                                     question_display_options $options) {
         return '';
     }
+=======
+    protected function grading_details(qbehaviour_adaptive_mark_details $details, question_display_options $options) {
+        $mark = $details->get_formatted_marks($options->markdp);
+        return get_string('gradingdetails', 'qbehaviour_adaptive', $mark);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     protected function disregarded_info() {
         return '';
     }

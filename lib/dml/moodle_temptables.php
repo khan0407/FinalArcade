@@ -22,6 +22,10 @@
  *
  *   - databases not retrieving temp tables from information schema tables (mysql)
  *   - databases using a different name schema for temp tables (like mssql).
+<<<<<<< HEAD
+=======
+ *   - databases that don't collect planner stats for temp tables (like PgSQL).
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * Basically it works as a simple store of created temporary tables, providing
  * some simple getters/setters methods. Each database can extend it for its own
@@ -31,9 +35,12 @@
  * and the sql_generator, so both are able to use its facilities, with the final goal
  * of doing temporary tables support 100% cross-db and transparent within the DB API.
  *
+<<<<<<< HEAD
  * Only drivers needing it will use this store. Neither moodle_database (abstract) or
  * databases like postgres need this, because they don't lack any temp functionality.
  *
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @package    core_dml
  * @copyright  2009 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -120,6 +127,20 @@ class moodle_temptables {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Analyze the data in temporary tables to force statistics collection after bulk data loads.
+     * The database class detects all temporary tables and will automatically analyze all created tables
+     *
+     * @return void
+     */
+    public function update_stats() {
+        // By default most databases do automatic on temporary tables, PgSQL does not.
+        // As a result, update_stats call immediately return for non-interesting database types.
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Dispose the temptables stuff, checking for wrong situations, informing and recovering from them
      */
     public function dispose() {

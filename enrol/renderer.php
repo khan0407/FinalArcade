@@ -235,7 +235,11 @@ class core_enrol_renderer extends plugin_renderer_base {
 
         $groupoutput = '';
         foreach($groups as $groupid=>$name) {
+<<<<<<< HEAD
             if ($canmanagegroups) {
+=======
+            if ($canmanagegroups and groups_remove_member_allowed($groupid, $userid)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $icon = html_writer::empty_tag('img', array('alt'=>get_string('removefromgroup', 'group', $name), 'src'=>$iconenrolremove));
                 $url = new moodle_url($pageurl, array('action'=>'removemember', 'group'=>$groupid, 'user'=>$userid));
                 $groupoutput .= html_writer::tag('div', $name . html_writer::link($url, $icon), array('class'=>'group', 'rel'=>$groupid));
@@ -449,7 +453,11 @@ class course_enrolment_table extends html_table implements renderable {
 
         // Collect the bulk operations for the currently filtered plugin if there is one.
         $plugin = $manager->get_filtered_enrolment_plugin();
+<<<<<<< HEAD
         if ($plugin) {
+=======
+        if ($plugin and enrol_is_enabled($plugin->get_name())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->bulkoperations = $plugin->get_bulk_operations($manager);
         }
     }
@@ -512,7 +520,11 @@ class course_enrolment_table extends html_table implements renderable {
                     } else {
                         $link = html_writer::link(new moodle_url($url, array(self::SORTVAR=>$n)), $fields[$name][$n]);
                         if ($this->sort == $n) {
+<<<<<<< HEAD
                             $link .= ' '.html_writer::link(new moodle_url($url, array(self::SORTVAR=>$n, self::SORTDIRECTIONVAR=>$this->get_field_sort_direction($n))), $this->get_direction_icon($output, $n));
+=======
+                            $link .= html_writer::link(new moodle_url($url, array(self::SORTVAR=>$n, self::SORTDIRECTIONVAR=>$this->get_field_sort_direction($n))), $this->get_direction_icon($output, $n));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         }
                         $bits[] = html_writer::tag('span', $link, array('class'=>'subheading_'.$n));
 
@@ -525,7 +537,11 @@ class course_enrolment_table extends html_table implements renderable {
                 } else {
                     $newlabel  = html_writer::link(new moodle_url($url, array(self::SORTVAR=>$name)), $fields[$name]);
                     if ($this->sort == $name) {
+<<<<<<< HEAD
                         $newlabel .= ' '.html_writer::link(new moodle_url($url, array(self::SORTVAR=>$name, self::SORTDIRECTIONVAR=>$this->get_field_sort_direction($name))), $this->get_direction_icon($output, $name));
+=======
+                        $newlabel .= html_writer::link(new moodle_url($url, array(self::SORTVAR=>$name, self::SORTDIRECTIONVAR=>$this->get_field_sort_direction($name))), $this->get_direction_icon($output, $name));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 }
             }
@@ -633,9 +649,17 @@ class course_enrolment_table extends html_table implements renderable {
             $direction = $this->sortdirection;
         }
         if ($direction === 'ASC') {
+<<<<<<< HEAD
             return html_writer::empty_tag('img', array('alt'=>'', 'src'=>$output->pix_url('t/down')));
         } else {
             return html_writer::empty_tag('img', array('alt'=>'', 'src'=>$output->pix_url('t/up')));
+=======
+            return html_writer::empty_tag('img', array('alt' => '', 'class' => 'iconsort',
+                'src' => $output->pix_url('t/sort_asc')));
+        } else {
+            return html_writer::empty_tag('img', array('alt' => '', 'class' => 'iconsort',
+                'src' => $output->pix_url('t/sort_desc')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 

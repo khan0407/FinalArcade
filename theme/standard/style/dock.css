@@ -9,8 +9,13 @@
 
 /** For the panel the docked blocks are shown in */
 #dockeditempanel .dockeditempanel_content {border-color:#AAA;}
+<<<<<<< HEAD
 #dockeditempanel .dockeditempanel_hd {border-bottom-color:#AAA;padding:3px 5px;background-image:url([[pix:theme|hgradient]]);}
 #dockeditempanel .dockeditempanel_hd h2 {font-size:80%;color:#999;}
+=======
+#dockeditempanel .dockeditempanel_hd {border-bottom-color:#AAA;padding:4px;background-image:url([[pix:theme|hgradient]]);}
+#dockeditempanel .dockeditempanel_hd h2 {font-size:95%;color:#999;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /* block expansion code */
 .block_js_expansion .block_tree {overflow-x:scroll;}
@@ -25,4 +30,8 @@
 .ie6 #dock li p {background-color:inherit;}
 .ie6 #dock .bd.oversized_content .content, .ie7 #dock .bd.oversized_content .content {padding-bottom:0px;}
 .ie6 .block_js_expansion.mouseover .content, .ie7 .block_js_expansion.mouseover .content{ padding-bottom:2px;}
+<<<<<<< HEAD
 .ie6 #dock .bd.oversized_content {width:100%;}
+=======
+.ie6 #dock .bd.oversized_content {width:100%;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

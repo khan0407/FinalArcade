@@ -713,7 +713,11 @@ class moodle_url {
     public static function make_draftfile_url($draftid, $pathname, $filename, $forcedownload = false) {
         global $CFG, $USER;
         $urlbase = "$CFG->httpswwwroot/draftfile.php";
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return self::make_file_url($urlbase, "/$context->id/user/draft/$draftid".$pathname.$filename, $forcedownload);
     }
@@ -1078,11 +1082,19 @@ function format_text($text, $format = FORMAT_MOODLE, $options = NULL, $courseid_
         if (is_object($options['context'])) {
             $context = $options['context'];
         } else {
+<<<<<<< HEAD
             $context = get_context_instance_by_id($options['context']);
         }
     } else if ($courseid_do_not_use) {
         // legacy courseid
         $context = get_context_instance(CONTEXT_COURSE, $courseid_do_not_use);
+=======
+            $context = context::instance_by_id($options['context']);
+        }
+    } else if ($courseid_do_not_use) {
+        // legacy courseid
+        $context = context_course::instance($courseid_do_not_use);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         // fallback to $PAGE->context this may be problematic in CLI and other non-standard pages :-(
         $context = $PAGE->context;
@@ -1233,6 +1245,7 @@ function format_text($text, $format = FORMAT_MOODLE, $options = NULL, $courseid_
 /**
  * Resets all data related to filters, called during upgrade or when filter settings change.
  *
+<<<<<<< HEAD
  * @global object
  * @global object
  * @return void
@@ -1241,6 +1254,18 @@ function reset_text_filters_cache() {
     global $CFG, $DB;
 
     $DB->delete_records('cache_text');
+=======
+ * @param bool $phpunitreset true means called from our PHPUnit integration test reset
+ * @return void
+ */
+function reset_text_filters_cache($phpunitreset = false) {
+    global $CFG, $DB;
+
+    if (!$phpunitreset) {
+        $DB->delete_records('cache_text');
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $purifdir = $CFG->cachedir.'/htmlpurifier';
     remove_dir($purifdir, true);
 }
@@ -1278,7 +1303,11 @@ function format_string($string, $striplinks = true, $options = NULL) {
 
     if (is_numeric($options)) {
         // legacy courseid usage
+<<<<<<< HEAD
         $options  = array('context'=>get_context_instance(CONTEXT_COURSE, $options));
+=======
+        $options  = array('context'=>context_course::instance($options));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $options = (array)$options; // detach object, we can not modify it
     }
@@ -1287,7 +1316,11 @@ function format_string($string, $striplinks = true, $options = NULL) {
         // fallback to $PAGE->context this may be problematic in CLI and other non-standard pages :-(
         $options['context'] = $PAGE->context;
     } else if (is_numeric($options['context'])) {
+<<<<<<< HEAD
         $options['context'] = get_context_instance_by_id($options['context']);
+=======
+        $options['context'] = context::instance_by_id($options['context']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     if (!$options['context']) {
@@ -1418,7 +1451,11 @@ function format_text_email($text, $format) {
 function format_module_intro($module, $activity, $cmid, $filter=true) {
     global $CFG;
     require_once("$CFG->libdir/filelib.php");
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $options = array('noclean'=>true, 'para'=>false, 'filter'=>$filter, 'context'=>$context, 'overflowdiv'=>true);
     $intro = file_rewrite_pluginfile_urls($activity->intro, 'pluginfile.php', $context->id, 'mod_'.$module, 'intro', null);
     return trim(format_text($intro, $activity->introformat, $options, null));
@@ -1582,8 +1619,26 @@ function is_purify_html_necessary($text) {
 function purify_html($text, $options = array()) {
     global $CFG;
 
+<<<<<<< HEAD
     $type = !empty($options['allowid']) ? 'allowid' : 'normal';
     static $purifiers = array();
+=======
+    static $purifiers = array();
+    static $caches = array();
+
+    $type = !empty($options['allowid']) ? 'allowid' : 'normal';
+
+    if (!array_key_exists($type, $caches)) {
+        $caches[$type] = cache::make('core', 'htmlpurifier', array('type' => $type));
+    }
+    $cache = $caches[$type];
+
+    $filteredtext = $cache->get($text);
+    if ($filteredtext !== false) {
+        return $filteredtext;
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (empty($purifiers[$type])) {
 
         // make sure the serializer dir exists, it should be fine if it disappears later during cache reset
@@ -1631,6 +1686,7 @@ function purify_html($text, $options = array()) {
 
     $multilang = (strpos($text, 'class="multilang"') !== false);
 
+<<<<<<< HEAD
     if ($multilang) {
         $text = preg_replace('/<span(\s+lang="([a-zA-Z0-9_-]+)"|\s+class="multilang"){2}\s*>/', '<span xxxlang="${2}">', $text);
     }
@@ -1640,6 +1696,19 @@ function purify_html($text, $options = array()) {
     }
 
     return $text;
+=======
+    $filteredtext = $text;
+    if ($multilang) {
+        $filteredtext = preg_replace('/<span(\s+lang="([a-zA-Z0-9_-]+)"|\s+class="multilang"){2}\s*>/', '<span xxxlang="${2}">', $filteredtext);
+    }
+    $filteredtext = $purifier->purify($filteredtext);
+    if ($multilang) {
+        $filteredtext = preg_replace('/<span xxxlang="([a-zA-Z0-9_-]+)">/', '<span lang="${1}" class="multilang">', $filteredtext);
+    }
+    $cache->set($text, $filteredtext);
+
+    return $filteredtext;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -1844,7 +1913,30 @@ function get_html_lang($dir = false) {
 
 /**
  * Send the HTTP headers that Moodle requires.
+<<<<<<< HEAD
  * @param $cacheable Can this page be cached on back?
+=======
+ *
+ * There is a backwards compatibility hack for legacy code
+ * that needs to add custom IE compatibility directive.
+ *
+ * Example:
+ * <code>
+ * if (!isset($CFG->additionalhtmlhead)) {
+ *     $CFG->additionalhtmlhead = '';
+ * }
+ * $CFG->additionalhtmlhead .= '<meta http-equiv="X-UA-Compatible" content="IE=8" />';
+ * header('X-UA-Compatible: IE=8');
+ * echo $OUTPUT->header();
+ * </code>
+ *
+ * Please note the $CFG->additionalhtmlhead alone might not work,
+ * you should send the IE compatibility header() too.
+ *
+ * @param string $contenttype
+ * @param bool $cacheable Can this page be cached on back?
+ * @return void, sends HTTP headers
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 function send_headers($contenttype, $cacheable = true) {
     global $CFG;
@@ -1853,6 +1945,7 @@ function send_headers($contenttype, $cacheable = true) {
     @header('Content-Script-Type: text/javascript');
     @header('Content-Style-Type: text/css');
 
+<<<<<<< HEAD
     if ($cacheable) {
         // Allow caching on "back" (but not on normal clicks)
         @header('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
@@ -1862,6 +1955,21 @@ function send_headers($contenttype, $cacheable = true) {
         // Do everything we can to always prevent clients and proxies caching
         @header('Cache-Control: no-store, no-cache, must-revalidate');
         @header('Cache-Control: post-check=0, pre-check=0', false);
+=======
+    if (empty($CFG->additionalhtmlhead) or stripos($CFG->additionalhtmlhead, 'X-UA-Compatible') === false) {
+        @header('X-UA-Compatible: IE=edge');
+    }
+
+    if ($cacheable) {
+        // Allow caching on "back" (but not on normal clicks).
+        @header('Cache-Control: private, pre-check=0, post-check=0, max-age=0, no-transform');
+        @header('Pragma: no-cache');
+        @header('Expires: ');
+    } else {
+        // Do everything we can to always prevent clients and proxies caching.
+        @header('Cache-Control: no-store, no-cache, must-revalidate');
+        @header('Cache-Control: post-check=0, pre-check=0, no-transform', false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         @header('Pragma: no-cache');
         @header('Expires: Mon, 20 Aug 1969 09:23:00 GMT');
         @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -2082,7 +2190,11 @@ function print_group_picture($group, $courseid, $large=false, $return=false, $li
         }
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+    $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // If there is no picture, do nothing
     if (!$group->picture) {
@@ -2138,7 +2250,11 @@ function print_recent_activity_note($time, $user, $text, $link, $return=false, $
     $output = '';
 
     if (is_null($viewfullnames)) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $viewfullnames = has_capability('moodle/site:viewfullnames', $context);
     }
 
@@ -2191,7 +2307,12 @@ function navmenulist($course, $sections, $modinfo, $strsection, $strjumpto, $wid
     $menu = array();
     $doneheading = false;
 
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $courseformatoptions = course_get_format($course)->get_format_options();
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $menu[] = '<ul class="navmenulist"><li class="jumpto section"><span>'.$strjumpto.'</span><ul>';
     foreach ($modinfo->cms as $mod) {
@@ -2200,7 +2321,12 @@ function navmenulist($course, $sections, $modinfo, $strsection, $strjumpto, $wid
             continue;
         }
 
+<<<<<<< HEAD
         if ($mod->sectionnum > $course->numsections) {   /// Don't show excess hidden sections
+=======
+        // For course formats using 'numsections' do not show extra sections
+        if (isset($courseformatoptions['numsections']) && $mod->sectionnum > $courseformatoptions['numsections']) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             break;
         }
 
@@ -2211,8 +2337,14 @@ function navmenulist($course, $sections, $modinfo, $strsection, $strjumpto, $wid
         if ($mod->sectionnum >= 0 and $section != $mod->sectionnum) {
             $thissection = $sections[$mod->sectionnum];
 
+<<<<<<< HEAD
             if ($thissection->visible or !$course->hiddensections or
                       has_capability('moodle/course:viewhiddensections', $coursecontext)) {
+=======
+            if ($thissection->visible or
+                    (isset($courseformatoptions['hiddensections']) and !$courseformatoptions['hiddensections']) or
+                    has_capability('moodle/course:viewhiddensections', $coursecontext)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $thissection->summary = strip_tags(format_string($thissection->summary,true));
                 if (!$doneheading) {
                     $menu[] = '</ul></li>';
@@ -2557,13 +2689,22 @@ function obfuscate_text($plaintext) {
  * @param string $email The email address to display
  * @param string $label The text to displayed as hyperlink to $email
  * @param boolean $dimmed If true then use css class 'dimmed' for hyperlink
+<<<<<<< HEAD
  * @return string The obfuscated mailto link
  */
 function obfuscate_mailto($email, $label='', $dimmed=false) {
+=======
+ * @param string $subject The subject of the email in the mailto link
+ * @param string $body The content of the email in the mailto link
+ * @return string The obfuscated mailto link
+ */
+function obfuscate_mailto($email, $label='', $dimmed=false, $subject = '', $body = '') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (empty($label)) {
         $label = $email;
     }
+<<<<<<< HEAD
     if ($dimmed) {
         $title = get_string('emaildisable');
         $dimmed = ' class="dimmed"';
@@ -2574,6 +2715,31 @@ function obfuscate_mailto($email, $label='', $dimmed=false) {
     return sprintf("<a href=\"%s:%s\" $dimmed title=\"$title\">%s</a>",
                     obfuscate_text('mailto'), obfuscate_email($email),
                     obfuscate_text($label));
+=======
+
+    $label = obfuscate_text($label);
+    $email = obfuscate_email($email);
+    $mailto = obfuscate_text('mailto');
+    $url = new moodle_url("mailto:$email");
+    $attrs = array();
+
+    if (!empty($subject)) {
+        $url->param('subject', format_string($subject));
+    }
+    if (!empty($body)) {
+        $url->param('body', format_string($body));
+    }
+
+    // Use the obfuscated mailto
+    $url = preg_replace('/^mailto/', $mailto, $url->out());
+
+    if ($dimmed) {
+        $attrs['title'] = get_string('emaildisable');
+        $attrs['class'] = 'dimmed';
+    }
+
+    return html_writer::link($url, $label, $attrs);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -2820,7 +2986,11 @@ function convert_tabrows_to_tree($tabrows, $selected, $inactive, $activated) {
  * @return bool
  */
 function debugging($message = '', $level = DEBUG_NORMAL, $backtrace = null) {
+<<<<<<< HEAD
     global $CFG, $USER, $UNITTEST;
+=======
+    global $CFG, $USER;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $forcedebug = false;
     if (!empty($CFG->debugusers) && $USER) {
@@ -2842,6 +3012,7 @@ function debugging($message = '', $level = DEBUG_NORMAL, $backtrace = null) {
         }
         $from = format_backtrace($backtrace, CLI_SCRIPT);
         if (PHPUNIT_TEST) {
+<<<<<<< HEAD
             echo 'Debugging: ' . $message . "\n" . $from;
 
         } else if (!empty($UNITTEST->running)) {
@@ -2853,6 +3024,15 @@ function debugging($message = '', $level = DEBUG_NORMAL, $backtrace = null) {
             echo '<div class="notifytiny">' . $message . $from . '</div>';
 
         } else if (NO_DEBUG_DISPLAY) {
+=======
+            if (phpunit_util::debugging_triggered($message, $level, $from)) {
+                // We are inside test, the debug message was logged.
+                return true;
+            }
+        }
+
+        if (NO_DEBUG_DISPLAY) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // script does not want any errors or debugging in output,
             // we send the info to error log instead
             error_log('Debugging: ' . $message . $from);
@@ -2988,11 +3168,20 @@ class progress_bar {
         if (CLI_SCRIPT) {
             return; // temporary solution for cli scripts
         }
+<<<<<<< HEAD
         $htmlcode = <<<EOT
         <div style="text-align:center;width:{$this->width}px;clear:both;padding:0;margin:0 auto;">
             <h2 id="status_{$this->html_id}" style="text-align: center;margin:0 auto"></h2>
             <p id="time_{$this->html_id}"></p>
             <div id="bar_{$this->html_id}" style="border-style:solid;border-width:1px;width:500px;height:50px;">
+=======
+        $widthplusborder = $this->width + 2;
+        $htmlcode = <<<EOT
+        <div style="text-align:center;width:{$widthplusborder}px;clear:both;padding:0;margin:0 auto;">
+            <h2 id="status_{$this->html_id}" style="text-align: center;margin:0 auto"></h2>
+            <p id="time_{$this->html_id}"></p>
+            <div id="bar_{$this->html_id}" style="border-style:solid;border-width:1px;width:{$this->width}px;height:50px;">
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 <div id="progress_{$this->html_id}"
                 style="text-align:center;background:#FFCC66;width:4px;border:1px
                 solid gray;height:38px; padding-top:10px;">&nbsp;<span id="pt_{$this->html_id}"></span>

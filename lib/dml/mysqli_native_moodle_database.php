@@ -315,15 +315,30 @@ class mysqli_native_moodle_database extends moodle_database {
     public function diagnose() {
         $sloppymyisamfound = false;
         $prefix = str_replace('_', '\\_', $this->prefix);
+<<<<<<< HEAD
         $sql = "SHOW TABLE STATUS WHERE Name LIKE BINARY '$prefix%'";
+=======
+        $sql = "SELECT COUNT('x')
+                  FROM INFORMATION_SCHEMA.TABLES
+                 WHERE table_schema = DATABASE()
+                       AND table_name LIKE BINARY '$prefix%'
+                       AND Engine = 'MyISAM'";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->query_start($sql, null, SQL_QUERY_AUX);
         $result = $this->mysqli->query($sql);
         $this->query_end($result);
         if ($result) {
+<<<<<<< HEAD
             while ($arr = $result->fetch_assoc()) {
                 if ($arr['Engine'] === 'MyISAM') {
                     $sloppymyisamfound = true;
                     break;
+=======
+            if ($arr = $result->fetch_assoc()) {
+                $count = reset($arr);
+                if ($count) {
+                    $sloppymyisamfound = true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
             $result->close();
@@ -511,11 +526,24 @@ class mysqli_native_moodle_database extends moodle_database {
      * @return array array of database_column_info objects indexed with column names
      */
     public function get_columns($table, $usecache=true) {
+<<<<<<< HEAD
         if ($usecache and isset($this->columns[$table])) {
             return $this->columns[$table];
         }
 
         $this->columns[$table] = array();
+=======
+
+        if ($usecache) {
+            $properties = array('dbfamily' => $this->get_dbfamily(), 'settings' => $this->get_settings_hash());
+            $cache = cache::make('core', 'databasemeta', $properties);
+            if ($data = $cache->get($table)) {
+                return $data;
+            }
+        }
+
+        $structure = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $sql = "SELECT column_name, data_type, character_maximum_length, numeric_precision,
                        numeric_scale, is_nullable, column_type, column_default, column_key, extra
@@ -535,7 +563,11 @@ class mysqli_native_moodle_database extends moodle_database {
             // standard table exists
             while ($rawcolumn = $result->fetch_assoc()) {
                 $info = (object)$this->get_column_info((object)$rawcolumn);
+<<<<<<< HEAD
                 $this->columns[$table][$info->name] = new database_column_info($info);
+=======
+                $structure[$info->name] = new database_column_info($info);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $result->close();
 
@@ -566,7 +598,31 @@ class mysqli_native_moodle_database extends moodle_database {
 
                 } else if (preg_match('/([a-z]*int[a-z]*)\((\d+)\)/i', $rawcolumn->column_type, $matches)) {
                     $rawcolumn->data_type = $matches[1];
+<<<<<<< HEAD
                     $rawcolumn->character_maximum_length = $matches[2];
+=======
+                    $rawcolumn->numeric_precision = $matches[2];
+                    $rawcolumn->max_length = $rawcolumn->numeric_precision;
+
+                    $type = strtoupper($matches[1]);
+                    if ($type === 'BIGINT') {
+                        $maxlength = 18;
+                    } else if ($type === 'INT' or $type === 'INTEGER') {
+                        $maxlength = 9;
+                    } else if ($type === 'MEDIUMINT') {
+                        $maxlength = 6;
+                    } else if ($type === 'SMALLINT') {
+                        $maxlength = 4;
+                    } else if ($type === 'TINYINT') {
+                        $maxlength = 2;
+                    } else {
+                        // This should not happen.
+                        $maxlength = 0;
+                    }
+                    if ($maxlength < $rawcolumn->max_length) {
+                        $rawcolumn->max_length = $maxlength;
+                    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 } else if (preg_match('/(decimal)\((\d+),(\d+)\)/i', $rawcolumn->column_type, $matches)) {
                     $rawcolumn->data_type = $matches[1];
@@ -590,12 +646,24 @@ class mysqli_native_moodle_database extends moodle_database {
                 }
 
                 $info = $this->get_column_info($rawcolumn);
+<<<<<<< HEAD
                 $this->columns[$table][$info->name] = new database_column_info($info);
+=======
+                $structure[$info->name] = new database_column_info($info);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $result->close();
         }
 
+<<<<<<< HEAD
         return $this->columns[$table];
+=======
+        if ($usecache) {
+            $result = $cache->set($table, $structure);
+        }
+
+        return $structure;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -627,7 +695,34 @@ class mysqli_native_moodle_database extends moodle_database {
                 $info->meta_type = 'R';
                 $info->unique    = true;
             }
+<<<<<<< HEAD
             $info->max_length    = $rawcolumn->numeric_precision;
+=======
+            // Return number of decimals, not bytes here.
+            $info->max_length    = $rawcolumn->numeric_precision;
+            if (preg_match('/([a-z]*int[a-z]*)\((\d+)\)/i', $rawcolumn->column_type, $matches)) {
+                $type = strtoupper($matches[1]);
+                if ($type === 'BIGINT') {
+                    $maxlength = 18;
+                } else if ($type === 'INT' or $type === 'INTEGER') {
+                    $maxlength = 9;
+                } else if ($type === 'MEDIUMINT') {
+                    $maxlength = 6;
+                } else if ($type === 'SMALLINT') {
+                    $maxlength = 4;
+                } else if ($type === 'TINYINT') {
+                    $maxlength = 2;
+                } else {
+                    // This should not happen.
+                    $maxlength = 0;
+                }
+                // It is possible that display precision is different from storage type length,
+                // always use the smaller value to make sure our data fits.
+                if ($maxlength < $info->max_length) {
+                    $info->max_length = $maxlength;
+                }
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $info->unsigned      = (stripos($rawcolumn->column_type, 'unsigned') !== false);
             $info->auto_increment= (strpos($rawcolumn->extra, 'auto_increment') !== false);
 
@@ -672,6 +767,10 @@ class mysqli_native_moodle_database extends moodle_database {
             case 'SMALLINT':
             case 'MEDIUMINT':
             case 'INT':
+<<<<<<< HEAD
+=======
+            case 'INTEGER':
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             case 'BIGINT':
                 $type = 'I';
                 break;
@@ -1394,6 +1493,13 @@ class mysqli_native_moodle_database extends moodle_database {
     }
 
     public function release_session_lock($rowid) {
+<<<<<<< HEAD
+=======
+        if (!$this->used_for_db_sessions) {
+            return;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::release_session_lock($rowid);
         $fullname = $this->dbname.'-'.$this->prefix.'-session-'.$rowid;
         $sql = "SELECT RELEASE_LOCK('$fullname')";

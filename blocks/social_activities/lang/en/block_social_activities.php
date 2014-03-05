@@ -24,3 +24,7 @@
  */
 
 $string['pluginname'] = 'Social activities';
+<<<<<<< HEAD
+=======
+$string['social_activities:addinstance'] = 'Add a new social activities block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

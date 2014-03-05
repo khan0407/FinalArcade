@@ -95,11 +95,19 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
     $table->head = array(get_string('devicetype', 'admin'), get_string('currenttheme', 'admin'), get_string('info'));
 
     $devices = get_device_type_list();
+<<<<<<< HEAD
     foreach ($devices as $device) {
 
         $headingthemename = ''; // To output the picked theme name when needed
         $themename = get_selected_theme_for_device_type($device);
         if (!$themename && $device == 'default') {
+=======
+    foreach ($devices as $thedevice) {
+
+        $headingthemename = ''; // To output the picked theme name when needed
+        $themename = get_selected_theme_for_device_type($thedevice);
+        if (!$themename && $thedevice == 'default') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $themename = theme_config::DEFAULT_THEME;
         }
 
@@ -110,7 +118,11 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
             $themename = clean_param($themename, PARAM_THEME);
             if (empty($themename)) {
                 // Likely the theme has been deleted
+<<<<<<< HEAD
                 unset_config(get_device_cfg_var_name($device));
+=======
+                unset_config(get_device_cfg_var_name($thedevice));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             } else {
                 $strthemename = get_string('pluginname', 'theme_'.$themename);
                 // link to the screenshot, now mandatory - the image path is hardcoded because we need image from other themes, not the current one
@@ -121,19 +133,33 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
                 $headingthemename = $OUTPUT->heading($strthemename, 3);
             }
             // If not default device then show option to unset theme.
+<<<<<<< HEAD
             if ($device != 'default') {
                 $unsetthemestr = get_string('unsettheme', 'admin');
                 $unsetthemeurl = new moodle_url('/theme/index.php', array('device' => $device, 'sesskey' => sesskey(), 'unsettheme' => true));
+=======
+            if ($thedevice != 'default') {
+                $unsetthemestr = get_string('unsettheme', 'admin');
+                $unsetthemeurl = new moodle_url('/theme/index.php', array('device' => $thedevice, 'sesskey' => sesskey(), 'unsettheme' => true));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $unsetthemebutton = new single_button($unsetthemeurl, $unsetthemestr, 'get');
                 $unsetthemebutton = $OUTPUT->render($unsetthemebutton);
             }
         }
 
+<<<<<<< HEAD
         $deviceurl = new moodle_url('/theme/index.php', array('device' => $device, 'sesskey' => sesskey()));
         $select = new single_button($deviceurl, $strthemeselect, 'get');
 
         $table->data[] = array(
             $OUTPUT->heading(ucfirst($device), 3),
+=======
+        $deviceurl = new moodle_url('/theme/index.php', array('device' => $thedevice, 'sesskey' => sesskey()));
+        $select = new single_button($deviceurl, $strthemeselect, 'get');
+
+        $table->data[] = array(
+            $OUTPUT->heading(ucfirst($thedevice), 3),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $screenshotcell,
             $headingthemename . $OUTPUT->render($select) . $unsetthemebutton
         );
@@ -215,7 +241,15 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
 echo $OUTPUT->header('themeselector');
 echo $OUTPUT->heading($heading);
 
+<<<<<<< HEAD
 echo $OUTPUT->single_button(new moodle_url('index.php', array('sesskey' => sesskey(), 'reset' => 1, 'device' => $device)), get_string('themeresetcaches', 'admin'));
+=======
+$params = array('sesskey' => sesskey(), 'reset' => 1);
+if (!empty($device)) {
+    $params['device'] = $device;
+}
+echo $OUTPUT->single_button(new moodle_url('index.php', $params), get_string('themeresetcaches', 'admin'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 echo html_writer::table($table);
 

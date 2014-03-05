@@ -30,8 +30,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
 $string['clitypevalue'] = 'tipo reikšmė';
 $string['clitypevaluedefault'] = 'tipo reikšmė, paspauskite „Enter“, jei norite naudoti numatytąją reikšmę ({$a})';
 $string['cliunknowoption'] = 'Neatpažintos parinktys: {$a} naudokite --žinyno parinktį.';
+=======
+$string['clianswerno'] = 'n';
+$string['cliansweryes'] = 't';
+$string['cliincorrectvalueerror'] = 'Klaida, klaidinga "{$a->option}" reikšmė "{$a->value}"';
+$string['cliincorrectvalueretry'] = 'Klaidinga reikšmė, bandykite dar kartą';
+$string['clitypevalue'] = 'tipo reikšmė';
+$string['clitypevaluedefault'] = 'tipo reikšmė, paspauskite „Enter“, jei norite naudoti numatytąją reikšmę ({$a})';
+$string['cliunknowoption'] = 'Neatpažintos parinktys: {$a} naudokite --žinyno parinktį.';
+$string['cliyesnoprompt'] = 'įveskite t (taip) arba n (ne)';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['environmentrequireinstall'] = 'turi būti įdiegta ir įjungta';
 $string['environmentrequireversion'] = 'būtina naudoti versiją {$a->needed}, o jūs naudojate {$a->current}';

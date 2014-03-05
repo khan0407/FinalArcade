@@ -176,7 +176,11 @@ class qtype_match_question extends question_graded_automatically_with_countback 
     public function get_expected_data() {
         $vars = array();
         foreach ($this->stemorder as $key => $notused) {
+<<<<<<< HEAD
             $vars[$this->field($key)] = PARAM_INTEGER;
+=======
+            $vars[$this->field($key)] = PARAM_INT;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return $vars;
     }

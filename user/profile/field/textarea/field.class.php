@@ -3,9 +3,12 @@
 class profile_field_textarea extends profile_field_base {
 
     function edit_field_add($mform) {
+<<<<<<< HEAD
         $cols = $this->field->param1;
         $rows = $this->field->param2;
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         /// Create the form field
         $mform->addElement('editor', $this->inputname, format_string($this->field->name), null, null);
         $mform->setType($this->inputname, PARAM_RAW); // we MUST clean this before display!

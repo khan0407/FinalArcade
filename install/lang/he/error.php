@@ -33,13 +33,21 @@ defined('MOODLE_INTERNAL') || die();
 $string['cannotcreatelangdir'] = 'לא ניתן ליצור סיפריית שפה.';
 $string['cannotcreatetempdir'] = 'לא ניתן ליצור סיפרייה זמנית.';
 $string['cannotdownloadcomponents'] = 'לא ניתן להוריד רכיבים.';
+<<<<<<< HEAD
 $string['cannotdownloadzipfile'] = 'לא ניתן להוריד קובץ 7Zip';
+=======
+$string['cannotdownloadzipfile'] = 'לא ניתן להוריד קובץ ZIP.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotfindcomponent'] = 'הרכיב לא נמצא.';
 $string['cannotsavemd5file'] = 'לא ניתן לשמור קובץ md5.';
 $string['cannotsavezipfile'] = 'לא ניתן לשמור קובץ ZIP.';
 $string['cannotunzipfile'] = 'לא ניתן לפתוח את קובץ ה-ZIP.';
 $string['componentisuptodate'] = 'הרכיב מעודכן.';
+<<<<<<< HEAD
 $string['downloadedfilecheckfailed'] = 'הקובץ אשר ירד נמצא שגוי';
+=======
+$string['downloadedfilecheckfailed'] = 'נכשלה בדיקת הקובץ המורד.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['invalidmd5'] = 'md5 לא חוקי';
 $string['missingrequiredfield'] = 'חסר שדה נדרש כלשהו';
 $string['remotedownloaderror'] = 'הורדת הרכיב לשרת שלך כשלה, אנא וודא את הגדרות ה-proxy שלך. תוספת PHP cURL מומלצת מאוד להתקנה.

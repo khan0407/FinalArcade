@@ -40,7 +40,11 @@
     $texexp = optional_param('tex', '', PARAM_RAW);
 
     require_login();
+<<<<<<< HEAD
     require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM), $USER->id); /// Required cap to run this. MDL-18552
+=======
+    require_capability('moodle/site:config', context_system::instance(), $USER->id); /// Required cap to run this. MDL-18552
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $output = '';
 
@@ -244,7 +248,11 @@
         chdir($latex->temp_dir);
 
         // step 1: latex command
+<<<<<<< HEAD
         $cmd = "$CFG->filter_tex_pathlatex --interaction=nonstopmode $tex";
+=======
+        $cmd = "$CFG->filter_tex_pathlatex --interaction=nonstopmode --halt-on-error $tex";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $output .= execute($cmd);
 
         // step 2: dvips command

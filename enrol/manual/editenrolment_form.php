@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +21,12 @@
 /**
  * Contains the form used to edit manual enrolments for a user.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage manual
+=======
+ * @package    enrol_manual
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2011 Sam Hemelryk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -46,9 +53,17 @@ class enrol_manual_user_enrolment_form extends moodleform {
             $mform->addElement('select', 'status', get_string('participationstatus', 'enrol'), $options);
         }
 
+<<<<<<< HEAD
         $mform->addElement('date_selector', 'timestart', get_string('enroltimestart', 'enrol'), array('optional' => true));
 
         $mform->addElement('date_selector', 'timeend', get_string('enroltimeend', 'enrol'), array('optional' => true));
+=======
+        $mform->addElement('date_time_selector', 'timestart', get_string('enroltimestart', 'enrol'), array('optional' => true));
+
+        $mform->addElement('date_time_selector', 'timeend', get_string('enroltimeend', 'enrol'), array('optional' => true));
+
+        $mform->addElement('static', 'timecreated', get_string('enroltimecreated', 'enrol'), userdate($ue->timecreated));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $mform->addElement('hidden', 'ue');
         $mform->setType('ue', PARAM_INT);
@@ -78,4 +93,8 @@ class enrol_manual_user_enrolment_form extends moodleform {
 
         return $errors;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

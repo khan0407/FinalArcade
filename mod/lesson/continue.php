@@ -37,7 +37,11 @@ $lesson = new lesson($DB->get_record('lesson', array('id' => $cm->instance), '*'
 require_login($course, false, $cm);
 require_sesskey();
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $canmanage = has_capability('mod/lesson:manage', $context);
 $lessonoutput = $PAGE->get_renderer('mod_lesson');
 
@@ -173,7 +177,11 @@ $PAGE->set_subpage($page->id);
 
 /// Print the header, heading and tabs
 lesson_add_fake_blocks($PAGE, $cm, $lesson, $timer);
+<<<<<<< HEAD
 echo $lessonoutput->header($lesson, $cm, 'view', true, $page->id);
+=======
+echo $lessonoutput->header($lesson, $cm, 'view', true, $page->id, get_string('continue', 'lesson'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($lesson->displayleft) {
     echo '<a name="maincontent" id="maincontent" title="'.get_string('anchortitle', 'lesson').'"></a>';

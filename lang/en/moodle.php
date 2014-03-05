@@ -43,6 +43,10 @@ $string['activitysince'] = 'Activity since {$a}';
 $string['activityweighted'] = 'Activity per user';
 $string['add'] = 'Add';
 $string['addactivity'] = 'Add an activity...';
+<<<<<<< HEAD
+=======
+$string['addactivitytosection'] = 'Add an activity to section \'{$a}\'';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['addadmin'] = 'Add admin';
 $string['addblock'] = 'Add a block';
 $string['addcomment'] = 'Add a comment...';
@@ -67,9 +71,16 @@ $string['addnousersrecip'] = 'Add users who haven\'t accessed this {$a} to recip
 $string['addpagehere'] = 'Add page here';
 $string['addresource'] = 'Add a resource...';
 $string['addresourceoractivity'] = 'Add an activity or resource';
+<<<<<<< HEAD
 $string['address'] = 'Address';
 $string['addstudent'] = 'Add student';
 $string['addsubcategory'] = 'Add a sub-category';
+=======
+$string['addresourcetosection'] = 'Add a resource to section \'{$a}\'';
+$string['address'] = 'Address';
+$string['addstudent'] = 'Add student';
+$string['addsubcategory'] = 'Add a subcategory';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['addteacher'] = 'Add teacher';
 $string['admin'] = 'Admin';
 $string['adminhelpaddnewuser'] = 'To manually create a new user account';
@@ -183,6 +194,10 @@ $string['backuploglaststatus'] = 'Last execution log';
 $string['backupmissinguserinfoperms'] = 'Note: This backup contains no user data. Exercise and Workshop activities will not be included in the backup, since these modules are not compatible with this type of backup.';
 $string['backupnext'] = 'Next backup';
 $string['backupnonisowarning'] = 'Warning: this backup is from a non-Unicode version of Moodle (pre 1.6).  If this backup contains any non-ISO-8859-1 texts then they may be CORRUPTED if you try to restore them to this Unicode version of Moodle.  See the <a href="http://docs.moodle.org/en/Backup_FAQ">Backup FAQ</a> for more information about how to recover this backup correctly.';
+<<<<<<< HEAD
+=======
+$string['backupnotyetrun'] = 'Automated backup pending';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['backuporiginalname'] = 'Backup name';
 $string['backuproleassignments'] = 'Backup role assignments for these roles';
 $string['backupsavetohelp'] = 'Full path to the directory where you want to save the backup files<br />(leave blank to save in its course default dir)';
@@ -295,7 +310,11 @@ $string['coursecompletions'] = 'Course completions';
 $string['coursecreators'] = 'Course creator';
 $string['coursecreatorsdescription'] = 'Course creators can create new courses.';
 $string['coursedisplay'] = 'Course layout';
+<<<<<<< HEAD
 $string['coursedisplay_help'] = 'This setting determines whether the whole course is displayed on one page or split over several pages. The setting has no affect on certain course formats, such as SCORM format.';
+=======
+$string['coursedisplay_help'] = 'This setting determines whether the whole course is displayed on one page or split over several pages.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['coursedisplay_single'] = 'Show all sections on one page';
 $string['coursedisplay_multi'] = 'Show one section per page';
 $string['coursedeleted'] = 'Deleted course {$a}';
@@ -306,6 +325,11 @@ $string['coursefileswarning'] = 'Course files are deprecated';
 $string['coursefileswarning_help'] = 'Course files are deprecated since Moodle 2.0, please use external repositories instead as much as possible.';
 $string['courseformatdata'] = 'Course format data';
 $string['courseformats'] = 'Course formats';
+<<<<<<< HEAD
+=======
+$string['courseformatoptions'] = 'Formatting options for {$a}';
+$string['courseformatudpate'] = 'Update format';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['coursegrades'] = 'Course grades';
 $string['coursehelpcategory'] = 'Position the course on the course listing and may make it easier for students to find it.';
 $string['coursehelpforce'] = 'Force the course group mode to every activity in the course.';
@@ -324,6 +348,10 @@ $string['courselegacyfiles_help'] = 'The course files area provides some backwar
 
 If you use this area to store course files, you can expose yourself to a number of privacy and security issues, as well as experiencing missing files in backups, course imports and any time content is shared or re-used.  It is therefore recommended that you do not use this area unless you really know what you are doing.';
 $string['courselegacyfiles_link'] = 'coursefiles2';
+<<<<<<< HEAD
+=======
+$string['courselegacyfilesofcourse'] = 'Legacy course files: {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['courseoverview'] = 'Course overview';
 $string['courseoverviewgraph'] = 'Course overview graph';
 $string['courseprofiles'] = 'Course profiles';
@@ -343,7 +371,11 @@ $string['courserequestdetails'] = 'Details of the course you are requesting';
 $string['courserequestfailed'] = 'For some reason, your course request could not be saved';
 $string['courserequestintro'] = 'Use this form to request a course to be created for you.<br />Try and fill in as much information as you can to allow<br />the administrators to understand your reasons for wanting this course.';
 $string['courserequestreason'] = 'Reasons for wanting this course';
+<<<<<<< HEAD
 $string['courserequestsuccess'] = 'Successfully saved your course request. Expect an email within a few days with the outcome';
+=======
+$string['courserequestsuccess'] = 'Your course request has been saved successfully. You will be sent an email to inform you whether your request was approved.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['courserequestsupport'] = 'Supporting information to help the administrator evaluate this request';
 $string['courserestore'] = 'Course restore';
 $string['courses'] = 'Courses';
@@ -386,6 +418,10 @@ $string['creatinguserroles'] = 'Creating user level role assignments and overrid
 $string['creatingusers'] = 'Creating users';
 $string['creatingxmlfile'] = 'Creating XML file';
 $string['currency'] = 'Currency';
+<<<<<<< HEAD
+=======
+$string['currentcourse'] = 'Current course';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['currentcourseadding'] = 'Current course, adding data to it';
 $string['currentcoursedeleting'] = 'Current course, deleting it first';
 $string['currentlanguage'] = 'Current language';
@@ -490,7 +526,10 @@ $string['duplicate'] = 'Duplicate';
 $string['duplicateconfirm'] = 'Are you sure you want to duplicate {$a->modtype} \'{$a->modname}\' ?';
 $string['duplicatecontcourse'] = 'Return to the course';
 $string['duplicatecontedit'] = 'Edit the new copy';
+<<<<<<< HEAD
 $string['duplicatenosupport'] = '\'{$a->modname}\' activity could not be duplicated because the {$a->modtype} module does not support backup and restore.';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['duplicatesuccess'] = '{$a->modtype} \'{$a->modname}\' has been duplicated successfully';
 $string['duplicatinga'] = 'Duplicating: {$a}';
 $string['edhelpaspellpath'] = 'To use spell-checking within the editor, you MUST have <strong>aspell 0.50</strong> or later installed on your server, and you must specify the correct path to access the aspell binary.  On Unix/Linux systems, this path is usually <strong>/usr/bin/aspell</strong>, but it might be something else.';
@@ -659,6 +698,7 @@ $string['existingcreators'] = 'Existing course creators';
 $string['existingstudents'] = 'Enrolled students';
 $string['existingteachers'] = 'Existing teachers';
 $string['expandall'] = 'Expand all';
+<<<<<<< HEAD
 $string['expirynotify'] = 'Enrolment expiry notification';
 $string['expirynotifyemail'] = 'The following students in this course are expiring after exactly {$a->threshold} days:
 
@@ -679,6 +719,8 @@ This is a notification that your enrolment in the course {$a->course} will expir
 Please contact {$a->teacherstr} for any further enquiries.';
 $string['expirythreshold'] = 'Threshold';
 $string['expirythreshold_help'] = 'If an enrolment duration has been specified, then this setting determines the number of days notice given before students are unenrolled from the course.';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['explanation'] = 'Explanation';
 $string['extendenrol'] = 'Extend enrolment (individual)';
 $string['extendperiod'] = 'Extended period';
@@ -1005,6 +1047,11 @@ $string['markedthistopic'] = 'This topic is highlighted as the current topic';
 $string['markthistopic'] = 'Highlight this topic as the current topic';
 $string['matchingsearchandrole'] = 'Matching \'{$a->search}\' and {$a->role}';
 $string['maxsizeandattachments'] = 'Maximum size for new files: {$a->size}, maximum attachments: {$a->attachments}';
+<<<<<<< HEAD
+=======
+$string['maxsizeandattachmentsandareasize'] = 'Maximum size for new files: {$a->size}, maximum attachments: {$a->attachments}, overall limit: {$a->areasize}';
+$string['maxsizeandareasize'] = 'Maximum size for new files: {$a->size}, overall limit: {$a->areasize}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['maxfilesreached'] = 'You are allowed to attach a maximum of {$a} file(s) to this item';
 $string['maximumgrade'] = 'Maximum grade';
 $string['maximumgradex'] = 'Maximum grade: {$a}';
@@ -1170,7 +1217,11 @@ line at the top of your web browser window.
 Cheers from the \'{$a->sitename}\' administrator,
 {$a->signoff}';
 $string['newusers'] = 'New users';
+<<<<<<< HEAD
 $string['newwindow'] = 'new window';
+=======
+$string['newwindow'] = 'New window';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['next'] = 'Next';
 $string['nextsection'] = 'Next section';
 $string['no'] = 'No';
@@ -1259,6 +1310,10 @@ $string['options'] = 'options';
 $string['order'] = 'Order';
 $string['originalpath'] = 'Original path';
 $string['orphanedactivities'] = 'Orphaned activities';
+<<<<<<< HEAD
+=======
+$string['orphanedactivitiesinsectionno'] = 'Orphaned activities (section {$a})';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['other'] = 'Other';
 $string['outline'] = 'Outline';
 $string['outlinereport'] = 'Outline report';
@@ -1468,10 +1523,13 @@ $string['scalestandard_help'] = 'A standard scale is available site-wide, for al
 $string['scalestandard_link'] = 'grade/scale';
 $string['scalestip'] = 'To create custom scales, use the \'Scales...\' link in your course administration menu.';
 $string['scalestip2'] = 'To create custom scales, click the Grades link in the course administration menu, then choose Edit, Scales.';
+<<<<<<< HEAD
 $string['screenreaderno'] = 'No';
 $string['screenreaderuse'] = 'Screen reader';
 $string['screenreaderyes'] = 'Yes';
 $string['screenreaderuse_help'] = 'If set to yes, a more accessible interface is provided in various places such as chat.';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['screenshot'] = 'Screenshot';
 $string['search'] = 'Search'; // TODO MDL-34652 rename to searchforums and move to mod_forum
 $string['search_help'] = 'For basic searching of one or more words anywhere in the text, just type them separated by spaces. All words longer than two characters are used.
@@ -1510,7 +1568,11 @@ $string['selectaregion'] = 'Select a region';
 $string['selctauser'] = 'Select a user';
 $string['selectall'] = 'Select all';
 $string['selectamodule'] = 'Please select an activity module';
+<<<<<<< HEAD
 $string['selectanoptions'] = 'Select an options';
+=======
+$string['selectanoptions'] = 'Select an option';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['selectdefault'] = 'Select default';
 $string['selectedfile'] = 'Selected file';
 $string['selectednowmove'] = '{$a} files selected for moving. Now go into the destination folder and press \'Move files to here\'';
@@ -1518,7 +1580,11 @@ $string['selectfiles'] = 'Select files';
 $string['selectmoduletoviewhelp'] = 'Select an activity or resource to view its help.
 
 Double-click on an activity or resource name to quickly add it.';
+<<<<<<< HEAD
 $string['selectnos'] = 'Select all \'no\'';
+=======
+$string['selectnos'] = 'Select all \'No\'';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['selectperiod'] = 'Select period';
 $string['senddetails'] = 'Send my details via email';
 $string['separate'] = 'Separate';
@@ -1648,7 +1714,11 @@ $string['stringsnotset'] = 'The following strings are not defined in {$a}';
 $string['studentnotallowed'] = 'Sorry, but you can not enter this course as \'{$a}\'';
 $string['students'] = 'Students';
 $string['studentsandteachers'] = 'Students and teachers';
+<<<<<<< HEAD
 $string['subcategories'] = 'Sub-categories';
+=======
+$string['subcategories'] = 'Subcategories';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['submit'] = 'Submit';
 $string['success'] = 'Success';
 $string['summary'] = 'Summary';
@@ -1812,6 +1882,10 @@ $string['warning'] = 'Warning';
 $string['warningdeleteresource'] = 'Warning: {$a} is referred in a resource. Would you like to update the resource?';
 $string['webpage'] = 'Web page';
 $string['week'] = 'Week';
+<<<<<<< HEAD
+=======
+$string['weeks'] = 'weeks';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['weekhide'] = 'Hide this week from {$a}';
 $string['weeklyoutline'] = 'Weekly outline';
 $string['weekshow'] = 'Show this week to {$a}';
@@ -1825,6 +1899,10 @@ $string['whattocallzip'] = 'What do you want to call the zip file?';
 $string['whattodo'] = 'What to do';
 $string['windowclosing'] = 'This window should close automatically. If not, please close it now.';
 $string['withchosenfiles'] = 'With chosen files';
+<<<<<<< HEAD
+=======
+$string['withdisablednote'] = '{$a} (disabled)';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['withoutuserdata'] = 'without user data';
 $string['withselectedusers'] = 'With selected users...';
 $string['withselectedusers_help'] = '* Send message - For sending a message to one or more participants

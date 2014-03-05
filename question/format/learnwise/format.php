@@ -137,7 +137,11 @@ class qformat_learnwise extends qformat_default {
         }
 
         $question = $this->defaultquestion();
+<<<<<<< HEAD
         $question->qtype = MULTICHOICE;
+=======
+        $question->qtype = 'multichoice';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $question->name = $this->create_default_question_name($questiontext, get_string('questionname', 'question'));
         $this->add_blank_combined_feedback($question);
 

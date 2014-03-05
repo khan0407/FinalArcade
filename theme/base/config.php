@@ -119,19 +119,31 @@ $THEME->layouts = array(
     'popup' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nologininfo'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nologininfo'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // No blocks and minimal footer - used for legacy frame layouts only!
     'frametop' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nocoursefooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // Embeded pages, like iframe/object embeded in moodleform - it needs as much space as possible
     'embedded' => array(
         'file' => 'embedded.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // Used during upgrade and install, and for the 'This site is undergoing maintenance' message.
     // This must not have any blocks, and it is good idea if it does not have links to
@@ -139,26 +151,50 @@ $THEME->layouts = array(
     'maintenance' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+=======
+        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // Should display the content and basic headers only.
     'print' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true),
+=======
+        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // The pagelayout used when a redirection is occuring.
     'redirect' => array(
         'file' => 'embedded.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
     ),
     // The pagelayout used for reports
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+    ),
+    // The pagelayout used for reports.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'report' => array(
         'file' => 'report.php',
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
     ),
+<<<<<<< HEAD
+=======
+    // The pagelayout used for safebrowser and securewindow.
+    'secure' => array(
+        'file' => 'general.php',
+        'regions' => array('side-pre', 'side-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nologinlinks'=>true, 'nocourseheaderfooter'=>true),
+    ),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 );
 
 // We don't want the base theme to be shown on the theme selection screen, by setting

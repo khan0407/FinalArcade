@@ -46,7 +46,11 @@ function useredit_update_picture(stdClass $usernew, moodleform $userform, $filem
     global $CFG, $DB;
     require_once("$CFG->libdir/gdlib.php");
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_USER, $usernew->id, MUST_EXIST);
+=======
+    $context = context_user::instance($usernew->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $user = $DB->get_record('user', array('id'=>$usernew->id), 'id, picture', MUST_EXIST);
 
     $newpicture = $user->picture;
@@ -216,6 +220,7 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
         $mform->setType('htmleditor', PARAM_INT);
     }
 
+<<<<<<< HEAD
     $choices = array();
     $choices['0'] = get_string('screenreaderno');
     $choices['1'] = get_string('screenreaderyes');
@@ -225,6 +230,10 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
 
     $mform->addElement('text', 'city', get_string('city'), 'maxlength="120" size="21"');
     $mform->setType('city', PARAM_MULTILANG);
+=======
+    $mform->addElement('text', 'city', get_string('city'), 'maxlength="120" size="21"');
+    $mform->setType('city', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $mform->addRule('city', $strrequired, 'required', null, 'client');
     if (!empty($CFG->defaultcity)) {
         $mform->setDefault('city', $CFG->defaultcity);
@@ -282,7 +291,11 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
         $mform->addHelpButton('imagefile', 'newpicture');
 
         $mform->addElement('text', 'imagealt', get_string('imagealt'), 'maxlength="100" size="30"');
+<<<<<<< HEAD
         $mform->setType('imagealt', PARAM_MULTILANG);
+=======
+        $mform->setType('imagealt', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     }
 
@@ -317,10 +330,17 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
     $mform->setType('idnumber', PARAM_NOTAGS);
 
     $mform->addElement('text', 'institution', get_string('institution'), 'maxlength="40" size="25"');
+<<<<<<< HEAD
     $mform->setType('institution', PARAM_MULTILANG);
 
     $mform->addElement('text', 'department', get_string('department'), 'maxlength="30" size="25"');
     $mform->setType('department', PARAM_MULTILANG);
+=======
+    $mform->setType('institution', PARAM_TEXT);
+
+    $mform->addElement('text', 'department', get_string('department'), 'maxlength="30" size="25"');
+    $mform->setType('department', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $mform->addElement('text', 'phone1', get_string('phone'), 'maxlength="20" size="25"');
     $mform->setType('phone1', PARAM_NOTAGS);
@@ -329,7 +349,11 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
     $mform->setType('phone2', PARAM_NOTAGS);
 
     $mform->addElement('text', 'address', get_string('address'), 'maxlength="70" size="25"');
+<<<<<<< HEAD
     $mform->setType('address', PARAM_MULTILANG);
+=======
+    $mform->setType('address', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 
 }

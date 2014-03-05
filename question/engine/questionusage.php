@@ -709,7 +709,11 @@ class question_usage_by_activity {
         }
 
         $quba = new question_usage_by_activity($record->component,
+<<<<<<< HEAD
             get_context_instance_by_id($record->contextid));
+=======
+            context::instance_by_id($record->contextid, IGNORE_MISSING));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $quba->set_id_from_database($record->qubaid);
         $quba->set_preferred_behaviour($record->preferredbehaviour);
 

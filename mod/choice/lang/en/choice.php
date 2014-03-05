@@ -75,8 +75,13 @@ $string['noresultsviewable'] = 'The results are not currently viewable.';
 $string['notanswered'] = 'Not answered yet';
 $string['notenrolledchoose'] = 'Sorry, only enrolled users are allowed to make choices.';
 $string['notopenyet'] = 'Sorry, this activity is not available until {$a}';
+<<<<<<< HEAD
 $string['numberofuser'] = 'The number of user';
 $string['numberofuserinpercentage'] = 'The number of user in percentage';
+=======
+$string['numberofuser'] = 'Number of participants';
+$string['numberofuserinpercentage'] = 'Percentage of participants';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['option'] = 'Option';
 $string['page-mod-choice-x'] = 'Any choice module page';
 $string['pluginadministration'] = 'Choice administration';

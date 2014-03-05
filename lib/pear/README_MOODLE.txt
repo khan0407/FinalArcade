@@ -47,4 +47,8 @@ Full of our custom hacks, no way to upgrade to latest upstream.
 Most probably we will stop using this library in the future.
 
 MDL-20876 - replaced split() with explode() or preg_split() where appropriate
+<<<<<<< HEAD
 
+=======
+MDL-40267 - Moodle textlib strlen functions used for range rule rule to be utf8 safe.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -43,7 +43,10 @@ class send_form extends moodleform {
 
         $mform =& $this->_form;
 
+<<<<<<< HEAD
         //$editoroptions = array('maxfiles'=>0, 'maxbytes'=>0, 'trusttext'=>false);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $editoroptions = array();
 
         //width handled by css so cols is empty. Still present so the page validates.
@@ -52,6 +55,7 @@ class send_form extends moodleform {
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
+<<<<<<< HEAD
         //$mform->addElement('html', '<div class="message-send-box">');
             $mform->addElement('textarea', 'message', get_string('message', 'message'), $displayoptions, $editoroptions);
             //$mform->addElement('editor', 'message_editor', get_string('message', 'message'), null, $editoroptions);
@@ -99,6 +103,12 @@ class send_form extends moodleform {
         //$this->_form->_elements[$this->_form->_elementIndex['message']]->setValue(array('text'=>''));
     //}
 
+=======
+        $mform->addElement('textarea', 'message', get_string('message', 'message'), $displayoptions, $editoroptions);
+
+        $this->add_action_buttons(false, get_string('sendmessage', 'message'));
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 ?>

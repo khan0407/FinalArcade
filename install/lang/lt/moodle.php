@@ -31,6 +31,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['language'] = 'Kalba';
+<<<<<<< HEAD
 $string['next'] = 'Pirmyn';
+=======
+$string['next'] = 'Toliau';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['previous'] = 'Ankstesnis';
 $string['reload'] = 'Įkelti iš naujo';

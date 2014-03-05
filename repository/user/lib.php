@@ -74,7 +74,11 @@ class repository_user extends repository {
         $filearea = 'private';
         $component = 'user';
         $itemid  = 0;
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         try {
             $browser = get_file_browser();

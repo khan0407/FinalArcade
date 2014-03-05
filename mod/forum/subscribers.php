@@ -47,7 +47,11 @@ if (! $cm = get_coursemodule_from_instance('forum', $forum->id, $course->id)) {
 
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (!has_capability('mod/forum:viewsubscribers', $context)) {
     print_error('nopermissiontosubscribe', 'forum');
 }

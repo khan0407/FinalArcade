@@ -35,12 +35,20 @@ $PAGE->https_required();
 
 $PAGE->set_url('/login/change_password.php', array('id'=>$id));
 
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($return) {
     // this redirect prevents security warning because https can not POST to http pages
     if (empty($SESSION->wantsurl)
+<<<<<<< HEAD
             or stripos(str_replace('https://', 'http://', $SESSION->wantsurl), str_replace('https://', 'http://', $CFG->wwwroot.'/login/change_password.php') === 0)) {
+=======
+            or stripos(str_replace('https://', 'http://', $SESSION->wantsurl), str_replace('https://', 'http://', $CFG->wwwroot.'/login/change_password.php')) === 0) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $returnto = "$CFG->wwwroot/user/view.php?id=$USER->id&course=$id";
     } else {
         $returnto = $SESSION->wantsurl;
@@ -52,7 +60,11 @@ if ($return) {
 
 $strparticipants = get_string('participants');
 
+<<<<<<< HEAD
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('invalidcourseid');

@@ -35,10 +35,17 @@ $group = $DB->get_record('groups', array('id'=>$groupid), '*', MUST_EXIST);
 $course = $DB->get_record('course', array('id'=>$group->courseid), '*', MUST_EXIST);
 
 $PAGE->set_url('/group/members.php', array('group'=>$groupid));
+<<<<<<< HEAD
 $PAGE->set_pagelayout('standard');
 
 require_login($course);
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$PAGE->set_pagelayout('admin');
+
+require_login($course);
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/course:managegroups', $context);
 
 $returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id.'&group='.$group->id;
@@ -67,6 +74,13 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoremove = $groupmembersselector->get_selected_users();
     if (!empty($userstoremove)) {
         foreach ($userstoremove as $user) {
+<<<<<<< HEAD
+=======
+            if (!groups_remove_member_allowed($groupid, $user->id)) {
+                print_error('errorremovenotpermitted', 'group', $returnurl,
+                        $user->fullname);
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!groups_remove_member($groupid, $user->id)) {
                 print_error('erroraddremoveuser', 'group', $returnurl);
             }
@@ -84,7 +98,10 @@ $strusergroupmembership = get_string('usergroupmembership', 'group');
 
 $groupname = format_string($group->name);
 
+<<<<<<< HEAD
 $PAGE->requires->yui2_lib('connection');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->requires->js('/group/clientlib.js');
 $PAGE->navbar->add($strparticipants, new moodle_url('/user/index.php', array('id'=>$course->id)));
 $PAGE->navbar->add($strgroups, new moodle_url('/group/index.php', array('id'=>$course->id)));
@@ -96,6 +113,7 @@ $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('adduserstogroup', 'group').": $groupname", 3);
 
+<<<<<<< HEAD
 /// Print group info -  TODO: remove tables for layout here
 $groupinfotable = new html_table();
 $groupinfotable->attributes['class'] = 'groupinfobox';
@@ -115,6 +133,42 @@ $options->overflowdiv = true;
 $contentcell->text = format_text($group->description, $group->descriptionformat, $options);
 $groupinfotable->data[] = new html_table_row(array($picturecell, $contentcell));
 echo html_writer::table($groupinfotable);
+=======
+// Store the rows we want to display in the group info.
+$groupinforow = array();
+
+// Check if there is a picture to display.
+if (!empty($group->picture)) {
+    $picturecell = new html_table_cell();
+    $picturecell->attributes['class'] = 'left side picture';
+    $picturecell->text = print_group_picture($group, $course->id, true, true, false);
+    $groupinforow[] = $picturecell;
+}
+
+// Check if there is a description to display.
+$group->description = file_rewrite_pluginfile_urls($group->description, 'pluginfile.php', $context->id, 'group', 'description', $group->id);
+if (!empty($group->description)) {
+    if (!isset($group->descriptionformat)) {
+        $group->descriptionformat = FORMAT_MOODLE;
+    }
+
+    $options = new stdClass;
+    $options->overflowdiv = true;
+
+    $contentcell = new html_table_cell();
+    $contentcell->attributes['class'] = 'content';
+    $contentcell->text = format_text($group->description, $group->descriptionformat, $options);
+    $groupinforow[] = $contentcell;
+}
+
+// Check if we have something to show.
+if (!empty($groupinforow)) {
+    $groupinfotable = new html_table();
+    $groupinfotable->attributes['class'] = 'groupinfobox';
+    $groupinfotable->data[] = new html_table_row($groupinforow);
+    echo html_writer::table($groupinfotable);
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// Print the editing form
 ?>

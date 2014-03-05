@@ -17,8 +17,12 @@
 /**
  * Strings for component 'qformat_webct', language 'en', branch 'MOODLE_20_STABLE'
  *
+<<<<<<< HEAD
  * @package    qformat
  * @subpackage webct
+=======
+ * @package    qformat_webct
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Helen Foster
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,6 +35,10 @@ $string['pluginname'] = 'WebCT format';
 $string['pluginname_help'] = 'WebCT format enables multiple-choice and short answer questions saved in WebCT\'s text-based format to be imported.';
 $string['pluginname_link'] = 'qformat/webct';
 $string['questionnametoolong'] = 'Question name too long at line {$a} (255 char. max). It has been truncated.';
+<<<<<<< HEAD
 $string['unknowntype'] = 'Unknown type';
+=======
+$string['unknowntype'] = 'Unknown question type after line {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['warningsdetected'] = '{$a} warning(s) detected';
 $string['wronggrade'] = 'Wrong grade (after line {$a}) :';

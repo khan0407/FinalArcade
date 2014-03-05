@@ -38,11 +38,20 @@ $lesson = new lesson($DB->get_record('lesson', array('id' => $cm->instance), '*'
 
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/lesson:manage', $context);
 
 $ufields = user_picture::fields('u'); // These fields are enough
 $params = array("lessonid" => $lesson->id);
+<<<<<<< HEAD
+=======
+list($sort, $sortparams) = users_order_by_sql('u');
+$params = array_merge($params, $sortparams);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // TODO: Improve this. Fetching all students always is crazy!
 if (!empty($cm->groupingid)) {
     $params["groupingid"] = $cm->groupingid;
@@ -53,14 +62,22 @@ if (!empty($cm->groupingid)) {
                     INNER JOIN {groupings_groups} gg ON gm.groupid = gg.groupid
                 WHERE a.lessonid = :lessonid AND
                       gg.groupingid = :groupingid
+<<<<<<< HEAD
                 ORDER BY u.lastname";
+=======
+                ORDER BY $sort";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 } else {
     $sql = "SELECT DISTINCT $ufields
             FROM {user} u,
                  {lesson_attempts} a
             WHERE a.lessonid = :lessonid and
                   u.id = a.userid
+<<<<<<< HEAD
             ORDER BY u.lastname";
+=======
+            ORDER BY $sort";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 if (! $students = $DB->get_records_sql($sql, $params)) {
@@ -95,7 +112,11 @@ if (! $times = $DB->get_records('lesson_timer', array('lessonid' => $lesson->id)
 }
 
 if ($nothingtodisplay) {
+<<<<<<< HEAD
     echo $lessonoutput->header($lesson, $cm, $action);
+=======
+    echo $lessonoutput->header($lesson, $cm, $action, false, null, get_string('nolessonattempts', 'lesson'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo $OUTPUT->notification(get_string('nolessonattempts', 'lesson'));
     echo $OUTPUT->footer();
     exit();
@@ -161,9 +182,15 @@ if ($action === 'delete') {
     /**************************************************************************
     this action is for default view and overview view
     **************************************************************************/
+<<<<<<< HEAD
     echo $lessonoutput->header($lesson, $cm, $action);
 
     $course_context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    echo $lessonoutput->header($lesson, $cm, $action, false, null, get_string('overview', 'lesson'));
+
+    $course_context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (has_capability('gradereport/grader:view', $course_context) && has_capability('moodle/grade:viewall', $course_context)) {
         $seeallgradeslink = new moodle_url('/grade/report/grader/index.php', array('id'=>$course->id));
         $seeallgradeslink = html_writer::link($seeallgradeslink, get_string('seeallcoursegrades', 'grades'));
@@ -387,9 +414,15 @@ if ($action === 'delete') {
     4.  Print out the object which contains all the try info
 
 **************************************************************************/
+<<<<<<< HEAD
     echo $lessonoutput->header($lesson, $cm, $action);
 
     $course_context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    echo $lessonoutput->header($lesson, $cm, $action, false, null, get_string('detailedstats', 'lesson'));
+
+    $course_context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (has_capability('gradereport/grader:view', $course_context) && has_capability('moodle/grade:viewall', $course_context)) {
         $seeallgradeslink = new moodle_url('/grade/report/grader/index.php', array('id'=>$course->id));
         $seeallgradeslink = html_writer::link($seeallgradeslink, get_string('seeallcoursegrades', 'grades'));
@@ -451,7 +484,11 @@ if ($action === 'delete') {
         $page = $lessonpages[$pageid];
         $answerpage = new stdClass;
         $data ='';
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $answerdata = new stdClass;
         // Set some defaults for the answer data.
         $answerdata->score = NULL;
@@ -472,7 +509,11 @@ if ($action === 'delete') {
         if (empty($userid)) {
             // there is no userid, so set these vars and display stats.
             $answerpage->grayout = 0;
+<<<<<<< HEAD
             $useranswer = NULL;    
+=======
+            $useranswer = NULL;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } elseif ($useranswers = $DB->get_records("lesson_attempts",array("lessonid"=>$lesson->id, "userid"=>$userid, "retry"=>$try,"pageid"=>$page->id), "timeseen")) {
             // get the user's answer for this page
             // need to find the right one
@@ -589,7 +630,13 @@ if ($action === 'delete') {
         } else {
             $table->data[] = array(get_string('didnotanswerquestion', 'lesson'), " ");
         }
+<<<<<<< HEAD
         echo html_writer::table($table);
+=======
+        echo html_writer::start_tag('div', array('class' => 'no-overflow'));
+        echo html_writer::table($table);
+        echo html_writer::end_tag('div');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 } else {
     print_error('unknowaction');

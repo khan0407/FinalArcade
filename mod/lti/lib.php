@@ -50,6 +50,18 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
+<<<<<<< HEAD
+=======
+ * Returns all other caps used in module.
+ *
+ * @return array
+ */
+function lti_get_extra_capabilities() {
+    return array('moodle/site:accessallgroups');
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * List of features supported in URL module
  * @param string $feature FEATURE_xx constant for requested feature
  * @return mixed True if module supports feature, false if not, null if doesn't know
@@ -169,7 +181,11 @@ function lti_delete_instance($id) {
  * For this module we just need to support external urls as
  * activity icons
  *
+<<<<<<< HEAD
  * @param cm_info $coursemodule
+=======
+ * @param stdClass $coursemodule
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @return cached_cm_info info
  */
 function lti_get_coursemodule_info($coursemodule) {
@@ -177,7 +193,11 @@ function lti_get_coursemodule_info($coursemodule) {
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
     if (!$lti = $DB->get_record('lti', array('id' => $coursemodule->instance),
+<<<<<<< HEAD
             'icon, secureicon, intro, introformat, name')) {
+=======
+            'icon, secureicon, intro, introformat, name, toolurl, launchcontainer')) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return null;
     }
 
@@ -196,6 +216,22 @@ function lti_get_coursemodule_info($coursemodule) {
         $info->content = format_module_intro('lti', $lti, $coursemodule->id, false);
     }
 
+<<<<<<< HEAD
+=======
+    // Does the link open in a new window?
+    $tool = lti_get_tool_by_url_match($lti->toolurl);
+    if ($tool) {
+        $toolconfig = lti_get_type_config($tool->id);
+    } else {
+        $toolconfig = array();
+    }
+    $launchcontainer = lti_get_launch_container($lti, $toolconfig);
+    if ($launchcontainer == LTI_LAUNCH_CONTAINER_WINDOW) {
+        $launchurl = new moodle_url('/mod/lti/launch.php', array('id' => $coursemodule->id));
+        $info->onclick = "window.open('" . $launchurl->out(false) . "', 'lti'); return false;";
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $info->name = $lti->name;
 
     return $info;
@@ -395,7 +431,11 @@ function lti_grade_item_delete($basiclti) {
 function lti_extend_settings_navigation($settings, $parentnode) {
     global $PAGE;
 
+<<<<<<< HEAD
     if (has_capability('mod/lti:grade', get_context_instance(CONTEXT_MODULE, $PAGE->cm->id))) {
+=======
+    if (has_capability('mod/lti:grade', context_module::instance($PAGE->cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $keys = $parentnode->get_children_key_list();
 
         $node = navigation_node::create('Submissions',

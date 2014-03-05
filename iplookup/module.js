@@ -16,14 +16,19 @@
 /**
  * Iplookup utility functions
  *
+<<<<<<< HEAD
  * @package    core
  * @subpackage iplookup
+=======
+ * @package    core_iplookup
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 M.core_iplookup = {};
 
+<<<<<<< HEAD
 M.core_iplookup.init = function(Y, latitude, longitude) {
     if (GBrowserIsCompatible()) {
         var map = new GMap2(document.getElementById("map"));
@@ -42,6 +47,8 @@ M.core_iplookup.init = function(Y, latitude, longitude) {
     }
 };
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 M.core_iplookup.init3 = function(Y, latitude, longitude, ip) {
     var ipLatlng = new google.maps.LatLng(latitude, longitude);
 

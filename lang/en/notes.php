@@ -37,7 +37,10 @@ $string['deletenotes'] = 'Delete all notes';
 $string['editnote'] = 'Edit note';
 $string['enablenotes'] = 'Enable notes';
 $string['groupaddnewnote'] = 'Add a common note';
+<<<<<<< HEAD
 $string['invalidcourseid'] = 'Invalid course id: {$a}';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['invalidid'] = 'Invalid note ID specified';
 $string['invaliduserid'] = 'Invalid user id: {$a}';
 $string['nocontent'] = 'Note content can not be empty';

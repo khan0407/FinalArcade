@@ -42,11 +42,19 @@ class restore_create_and_clean_temp_stuff extends restore_execution_step {
         }
         // Create the old-course-ctxid to new-course-ctxid mapping, we need that available since the beginning
         $itemid = $this->task->get_old_contextid();
+<<<<<<< HEAD
         $newitemid = get_context_instance(CONTEXT_COURSE, $this->get_courseid())->id;
         restore_dbops::set_backup_ids_record($this->get_restoreid(), 'context', $itemid, $newitemid);
         // Create the old-system-ctxid to new-system-ctxid mapping, we need that available since the beginning
         $itemid = $this->task->get_old_system_contextid();
         $newitemid = get_context_instance(CONTEXT_SYSTEM)->id;
+=======
+        $newitemid = context_course::instance($this->get_courseid())->id;
+        restore_dbops::set_backup_ids_record($this->get_restoreid(), 'context', $itemid, $newitemid);
+        // Create the old-system-ctxid to new-system-ctxid mapping, we need that available since the beginning
+        $itemid = $this->task->get_old_system_contextid();
+        $newitemid = context_system::instance()->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         restore_dbops::set_backup_ids_record($this->get_restoreid(), 'context', $itemid, $newitemid);
         // Create the old-course-id to new-course-id mapping, we need that available since the beginning
         $itemid = $this->task->get_old_courseid();
@@ -282,7 +290,11 @@ class restore_gradebook_structure_step extends restore_structure_step {
         $data = (object)$data;
         $oldid = $data->id;
 
+<<<<<<< HEAD
         $data->contextid = get_context_instance(CONTEXT_COURSE, $this->get_courseid())->id;
+=======
+        $data->contextid = context_course::instance($this->get_courseid())->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $gradeletter = (array)$data;
         unset($gradeletter['id']);
@@ -734,9 +746,12 @@ class restore_groups_structure_step extends restore_structure_step {
         $paths = array(); // Add paths here
 
         $paths[] = new restore_path_element('group', '/groups/group');
+<<<<<<< HEAD
         if ($this->get_setting_value('users')) {
             $paths[] = new restore_path_element('member', '/groups/group/group_members/group_member');
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $paths[] = new restore_path_element('grouping', '/groups/groupings/grouping');
         $paths[] = new restore_path_element('grouping_group', '/groups/groupings/grouping/grouping_groups/grouping_group');
 
@@ -788,6 +803,7 @@ class restore_groups_structure_step extends restore_structure_step {
         $this->set_mapping('group', $oldid, $newitemid, $restorefiles);
     }
 
+<<<<<<< HEAD
     public function process_member($data) {
         global $DB;
 
@@ -804,6 +820,8 @@ class restore_groups_structure_step extends restore_structure_step {
         }
     }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     public function process_grouping($data) {
         global $DB;
 
@@ -867,6 +885,89 @@ class restore_groups_structure_step extends restore_structure_step {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * Structure step that will create all the needed group memberships
+ * by loading them from the groups.xml file performing the required matches.
+ */
+class restore_groups_members_structure_step extends restore_structure_step {
+
+    protected $plugins = null;
+
+    protected function define_structure() {
+
+        $paths = array(); // Add paths here
+
+        if ($this->get_setting_value('users')) {
+            $paths[] = new restore_path_element('group', '/groups/group');
+            $paths[] = new restore_path_element('member', '/groups/group/group_members/group_member');
+        }
+
+        return $paths;
+    }
+
+    public function process_group($data) {
+        $data = (object)$data; // handy
+
+        // HACK ALERT!
+        // Not much to do here, this groups mapping should be already done from restore_groups_structure_step.
+        // Let's fake internal state to make $this->get_new_parentid('group') work.
+
+        $this->set_mapping('group', $data->id, $this->get_mappingid('group', $data->id));
+    }
+
+    public function process_member($data) {
+        global $DB, $CFG;
+        require_once("$CFG->dirroot/group/lib.php");
+
+        // NOTE: Always use groups_add_member() because it triggers events and verifies if user is enrolled.
+
+        $data = (object)$data; // handy
+
+        // get parent group->id
+        $data->groupid = $this->get_new_parentid('group');
+
+        // map user newitemid and insert if not member already
+        if ($data->userid = $this->get_mappingid('user', $data->userid)) {
+            if (!$DB->record_exists('groups_members', array('groupid' => $data->groupid, 'userid' => $data->userid))) {
+                // Check the component, if any, exists.
+                if (empty($data->component)) {
+                    groups_add_member($data->groupid, $data->userid);
+
+                } else if ((strpos($data->component, 'enrol_') === 0)) {
+                    // Deal with enrolment groups - ignore the component and just find out the instance via new id,
+                    // it is possible that enrolment was restored using different plugin type.
+                    if (!isset($this->plugins)) {
+                        $this->plugins = enrol_get_plugins(true);
+                    }
+                    if ($enrolid = $this->get_mappingid('enrol', $data->itemid)) {
+                        if ($instance = $DB->get_record('enrol', array('id'=>$enrolid))) {
+                            if (isset($this->plugins[$instance->enrol])) {
+                                $this->plugins[$instance->enrol]->restore_group_member($instance, $data->groupid, $data->userid);
+                            }
+                        }
+                    }
+
+                } else {
+                    $dir = get_component_directory($data->component);
+                    if ($dir and is_dir($dir)) {
+                        if (component_callback($data->component, 'restore_group_member', array($this, $data), true)) {
+                            return;
+                        }
+                    }
+                    // Bad luck, plugin could not restore the data, let's add normal membership.
+                    groups_add_member($data->groupid, $data->userid);
+                    $message = "Restore of '$data->component/$data->itemid' group membership is not supported, using standard group membership instead.";
+                    debugging($message);
+                    $this->log($message, backup::LOG_WARNING);
+                }
+            }
+        }
+    }
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Structure step that will create all the needed scales
  * by loading them from the scales.xml
  */
@@ -906,7 +1007,11 @@ class restore_scales_structure_step extends restore_structure_step {
             $data->courseid = $data->courseid ? $this->get_courseid() : 0;
             // If global scale (course=0), check the user has perms to create it
             // falling to course scale if not
+<<<<<<< HEAD
             $systemctx = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $systemctx = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if ($data->courseid == 0 && !has_capability('moodle/course:managescales', $systemctx , $this->task->get_userid())) {
                 $data->courseid = $this->get_courseid();
             }
@@ -968,7 +1073,11 @@ class restore_outcomes_structure_step extends restore_structure_step {
             $data->courseid = $data->courseid ? $this->get_courseid() : null;
             // If global outcome (course=null), check the user has perms to create it
             // falling to course outcome if not
+<<<<<<< HEAD
             $systemctx = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $systemctx = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (is_null($data->courseid) && !has_capability('moodle/grade:manageoutcomes', $systemctx , $this->task->get_userid())) {
                 $data->courseid = $this->get_courseid();
             }
@@ -1048,11 +1157,23 @@ class restore_section_structure_step extends restore_structure_step {
         $paths[] = $section;
         if ($CFG->enableavailability) {
             $paths[] = new restore_path_element('availability', '/section/availability');
+<<<<<<< HEAD
         }
+=======
+            $paths[] = new restore_path_element('availability_field', '/section/availability_field');
+        }
+        $paths[] = new restore_path_element('course_format_options', '/section/course_format_options');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Apply for 'format' plugins optional paths at section level
         $this->add_plugin_structure('format', $section);
 
+<<<<<<< HEAD
+=======
+        // Apply for 'local' plugins optional paths at section level
+        $this->add_plugin_structure('local', $section);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $paths;
     }
 
@@ -1151,6 +1272,51 @@ class restore_section_structure_step extends restore_structure_step {
         $this->set_mapping('course_sections_availability', $newid, $newid);
     }
 
+<<<<<<< HEAD
+=======
+    public function process_availability_field($data) {
+        global $DB;
+        $data = (object)$data;
+        // Mark it is as passed by default
+        $passed = true;
+        $customfieldid = null;
+
+        // If a customfield has been used in order to pass we must be able to match an existing
+        // customfield by name (data->customfield) and type (data->customfieldtype)
+        if (is_null($data->customfield) xor is_null($data->customfieldtype)) {
+            // xor is sort of uncommon. If either customfield is null or customfieldtype is null BUT not both.
+            // If one is null but the other isn't something clearly went wrong and we'll skip this condition.
+            $passed = false;
+        } else if (!is_null($data->customfield)) {
+            $params = array('shortname' => $data->customfield, 'datatype' => $data->customfieldtype);
+            $customfieldid = $DB->get_field('user_info_field', 'id', $params);
+            $passed = ($customfieldid !== false);
+        }
+
+        if ($passed) {
+            // Create the object to insert into the database
+            $availfield = new stdClass();
+            $availfield->coursesectionid = $this->task->get_sectionid();
+            $availfield->userfield = $data->userfield;
+            $availfield->customfieldid = $customfieldid;
+            $availfield->operator = $data->operator;
+            $availfield->value = $data->value;
+            $DB->insert_record('course_sections_avail_fields', $availfield);
+        }
+    }
+
+    public function process_course_format_options($data) {
+        global $DB;
+        $data = (object)$data;
+        $oldid = $data->id;
+        unset($data->id);
+        $data->sectionid = $this->task->get_sectionid();
+        $data->courseid = $this->get_courseid();
+        $newid = $DB->insert_record('course_format_options', $data);
+        $this->set_mapping('course_format_options', $oldid, $newid);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     protected function after_execute() {
         // Add section related files, with 'course_section' itemid to match
         $this->add_related_files('course', 'section', 'course_section');
@@ -1240,6 +1406,12 @@ class restore_course_structure_step extends restore_structure_step {
         // Apply for plagiarism plugins optional paths at course level
         $this->add_plugin_structure('plagiarism', $course);
 
+<<<<<<< HEAD
+=======
+        // Apply for local plugins optional paths at course level
+        $this->add_plugin_structure('local', $course);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return array($course, $category, $tag, $allowed_module);
     }
 
@@ -1266,7 +1438,11 @@ class restore_course_structure_step extends restore_structure_step {
         $data->fullname = $fullname;
         $data->shortname= $shortname;
 
+<<<<<<< HEAD
         $context = get_context_instance_by_id($this->task->get_contextid());
+=======
+        $context = context::instance_by_id($this->task->get_contextid());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('moodle/course:changeidnumber', $context, $this->task->get_userid())) {
             $data->idnumber = '';
         } else {
@@ -1305,6 +1481,11 @@ class restore_course_structure_step extends restore_structure_step {
         // Course record ready, update it
         $DB->update_record('course', $data);
 
+<<<<<<< HEAD
+=======
+        course_get_format($data)->update_course_format_options($data);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Role name aliases
         restore_dbops::set_course_role_names($this->get_restoreid(), $this->get_courseid());
     }
@@ -1402,6 +1583,7 @@ class restore_course_legacy_files_step extends restore_execution_step {
 
 /*
  * Structure step that will read the roles.xml file (at course/activity/block levels)
+<<<<<<< HEAD
  * containig all the role_assignments and overrides for that context. If corresponding to
  * one mapped role, they will be applied to target context. Will observe the role_assignments
  * setting to decide if ras are restored.
@@ -1409,6 +1591,16 @@ class restore_course_legacy_files_step extends restore_execution_step {
  * is handled by one enrolment plugin, hence it will createt the ras later
  */
 class restore_ras_and_caps_structure_step extends restore_structure_step {
+=======
+ * containing all the role_assignments and overrides for that context. If corresponding to
+ * one mapped role, they will be applied to target context. Will observe the role_assignments
+ * setting to decide if ras are restored.
+ *
+ * Note: this needs to be executed after all users are enrolled.
+ */
+class restore_ras_and_caps_structure_step extends restore_structure_step {
+    protected $plugins = null;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     protected function define_structure() {
 
@@ -1457,6 +1649,7 @@ class restore_ras_and_caps_structure_step extends restore_structure_step {
             role_assign($newroleid, $newuserid, $contextid);
 
         } else if ((strpos($data->component, 'enrol_') === 0)) {
+<<<<<<< HEAD
             // Deal with enrolment roles
             if ($enrolid = $this->get_mappingid('enrol', $data->itemid)) {
                 if ($component = $DB->get_field('enrol', 'component', array('id'=>$enrolid))) {
@@ -1469,6 +1662,36 @@ class restore_ras_and_caps_structure_step extends restore_structure_step {
                     }
                 }
             }
+=======
+            // Deal with enrolment roles - ignore the component and just find out the instance via new id,
+            // it is possible that enrolment was restored using different plugin type.
+            if (!isset($this->plugins)) {
+                $this->plugins = enrol_get_plugins(true);
+            }
+            if ($enrolid = $this->get_mappingid('enrol', $data->itemid)) {
+                if ($instance = $DB->get_record('enrol', array('id'=>$enrolid))) {
+                    if (isset($this->plugins[$instance->enrol])) {
+                        $this->plugins[$instance->enrol]->restore_role_assignment($instance, $newroleid, $newuserid, $contextid);
+                    }
+                }
+            }
+
+        } else {
+            $data->roleid    = $newroleid;
+            $data->userid    = $newuserid;
+            $data->contextid = $contextid;
+            $dir = get_component_directory($data->component);
+            if ($dir and is_dir($dir)) {
+                if (component_callback($data->component, 'restore_role_assignment', array($this, $data), true)) {
+                    return;
+                }
+            }
+            // Bad luck, plugin could not restore the data, let's add normal membership.
+            role_assign($data->roleid, $data->userid, $data->contextid);
+            $message = "Restore of '$data->component/$data->itemid' role assignments is not supported, using manual role assignments instead.";
+            debugging($message);
+            $this->log($message, backup::LOG_WARNING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -1487,10 +1710,42 @@ class restore_ras_and_caps_structure_step extends restore_structure_step {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * If no instances yet add default enrol methods the same way as when creating new course in UI.
+ */
+class restore_default_enrolments_step extends restore_execution_step {
+    public function define_execution() {
+        global $DB;
+
+        $course = $DB->get_record('course', array('id'=>$this->get_courseid()), '*', MUST_EXIST);
+
+        if ($DB->record_exists('enrol', array('courseid'=>$this->get_courseid(), 'enrol'=>'manual'))) {
+            // Something already added instances, do not add default instances.
+            $plugins = enrol_get_plugins(true);
+            foreach ($plugins as $plugin) {
+                $plugin->restore_sync_course($course);
+            }
+
+        } else {
+            // Looks like a newly created course.
+            enrol_course_updated(true, $course, null);
+        }
+    }
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * This structure steps restores the enrol plugins and their underlying
  * enrolments, performing all the mappings and/or movements required
  */
 class restore_enrolments_structure_step extends restore_structure_step {
+<<<<<<< HEAD
+=======
+    protected $enrolsynced = false;
+    protected $plugins = null;
+    protected $originalstatus = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * Conditionally decide if this step should be executed.
@@ -1537,6 +1792,7 @@ class restore_enrolments_structure_step extends restore_structure_step {
         global $DB;
 
         $data = (object)$data;
+<<<<<<< HEAD
         $oldid = $data->id; // We'll need this later
 
         $restoretype = plugin_supports('enrol', $data->enrol, ENROL_RESTORE_TYPE, null);
@@ -1544,10 +1800,19 @@ class restore_enrolments_structure_step extends restore_structure_step {
         if ($restoretype !== ENROL_RESTORE_EXACT and $restoretype !== ENROL_RESTORE_NOUSERS) {
             // TODO: add complex restore support via custom class
             debugging("Skipping '{$data->enrol}' enrolment plugin. Will be implemented before 2.0 release", DEBUG_DEVELOPER);
+=======
+        $oldid = $data->id; // We'll need this later.
+        unset($data->id);
+
+        $this->originalstatus[$oldid] = $data->status;
+
+        if (!$courserec = $DB->get_record('course', array('id' => $this->get_courseid()))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->set_mapping('enrol', $oldid, 0);
             return;
         }
 
+<<<<<<< HEAD
         // Perform various checks to decide what to do with the enrol plugin
         if (!array_key_exists($data->enrol, enrol_get_plugins(false))) {
             // TODO: decide if we want to switch to manual enrol - we need UI for this
@@ -1592,16 +1857,82 @@ class restore_enrolments_structure_step extends restore_structure_step {
 
     /**
      * Create user enrolments
+=======
+        if (!isset($this->plugins)) {
+            $this->plugins = enrol_get_plugins(true);
+        }
+
+        if (!$this->enrolsynced) {
+            // Make sure that all plugin may create instances and enrolments automatically
+            // before the first instance restore - this is suitable especially for plugins
+            // that synchronise data automatically using course->idnumber or by course categories.
+            foreach ($this->plugins as $plugin) {
+                $plugin->restore_sync_course($courserec);
+            }
+            $this->enrolsynced = true;
+        }
+
+        // Map standard fields - plugin has to process custom fields manually.
+        $data->roleid   = $this->get_mappingid('role', $data->roleid);
+        $data->courseid = $courserec->id;
+
+        if ($this->get_setting_value('enrol_migratetomanual')) {
+            unset($data->sortorder); // Remove useless sortorder from <2.4 backups.
+            if (!enrol_is_enabled('manual')) {
+                $this->set_mapping('enrol', $oldid, 0);
+                return;
+            }
+            if ($instances = $DB->get_records('enrol', array('courseid'=>$data->courseid, 'enrol'=>'manual'), 'id')) {
+                $instance = reset($instances);
+                $this->set_mapping('enrol', $oldid, $instance->id);
+            } else {
+                if ($data->enrol === 'manual') {
+                    $instanceid = $this->plugins['manual']->add_instance($courserec, (array)$data);
+                } else {
+                    $instanceid = $this->plugins['manual']->add_default_instance($courserec);
+                }
+                $this->set_mapping('enrol', $oldid, $instanceid);
+            }
+
+        } else {
+            if (!enrol_is_enabled($data->enrol) or !isset($this->plugins[$data->enrol])) {
+                $this->set_mapping('enrol', $oldid, 0);
+                $message = "Enrol plugin '$data->enrol' data can not be restored because it is not enabled, use migration to manual enrolments";
+                debugging($message);
+                $this->log($message, backup::LOG_WARNING);
+                return;
+            }
+            if ($task = $this->get_task() and $task->get_target() == backup::TARGET_NEW_COURSE) {
+                // Let's keep the sortorder in old backups.
+            } else {
+                // Prevent problems with colliding sortorders in old backups,
+                // new 2.4 backups do not need sortorder because xml elements are ordered properly.
+                unset($data->sortorder);
+            }
+            // Note: plugin is responsible for setting up the mapping, it may also decide to migrate to different type.
+            $this->plugins[$data->enrol]->restore_instance($this, $data, $courserec, $oldid);
+        }
+    }
+
+    /**
+     * Create user enrolments.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * This has to be called after creation of enrolment instances
      * and before adding of role assignments.
      *
+<<<<<<< HEAD
+=======
+     * Roles are assigned in restore_ras_and_caps_structure_step::process_assignment() processing afterwards.
+     *
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param mixed $data
      * @return void
      */
     public function process_enrolment($data) {
         global $DB;
 
+<<<<<<< HEAD
         $data = (object)$data;
 
         // Process only if parent instance have been mapped
@@ -1613,6 +1944,27 @@ class restore_enrolments_structure_step extends restore_structure_step {
                     //TODO: do we need specify modifierid?
                     $enrol->enrol_user($instance, $userid, null, $data->timestart, $data->timeend, $data->status);
                     //note: roles are assigned in restore_ras_and_caps_structure_step::process_assignment() processing above
+=======
+        if (!isset($this->plugins)) {
+            $this->plugins = enrol_get_plugins(true);
+        }
+
+        $data = (object)$data;
+
+        // Process only if parent instance have been mapped.
+        if ($enrolid = $this->get_new_parentid('enrol')) {
+            $oldinstancestatus = ENROL_INSTANCE_ENABLED;
+            $oldenrolid = $this->get_old_parentid('enrol');
+            if (isset($this->originalstatus[$oldenrolid])) {
+                $oldinstancestatus = $this->originalstatus[$oldenrolid];
+            }
+            if ($instance = $DB->get_record('enrol', array('id'=>$enrolid))) {
+                // And only if user is a mapped one.
+                if ($userid = $this->get_mappingid('user', $data->userid)) {
+                    if (isset($this->plugins[$instance->enrol])) {
+                        $this->plugins[$instance->enrol]->restore_user_enrolment($this, $data, $instance, $userid, $oldinstancestatus);
+                    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
         }
@@ -1766,7 +2118,11 @@ class restore_calendarevents_structure_step extends restore_structure_step {
     }
 
     public function process_calendarevents($data) {
+<<<<<<< HEAD
         global $DB;
+=======
+        global $DB, $SITE;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $data = (object)$data;
         $oldid = $data->id;
@@ -1897,7 +2253,10 @@ class restore_course_completion_structure_step extends restore_structure_step {
 
         $paths = array();
         $paths[] = new restore_path_element('course_completion_criteria', '/course_completion/course_completion_criteria');
+<<<<<<< HEAD
         $paths[] = new restore_path_element('course_completion_notify', '/course_completion/course_completion_notify');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $paths[] = new restore_path_element('course_completion_aggr_methd', '/course_completion/course_completion_aggr_methd');
 
         if ($userinfo) {
@@ -2001,9 +2360,12 @@ class restore_course_completion_structure_step extends restore_structure_step {
             if (isset($data->unenroled)) {
                 $params['unenroled'] = $data->unenroled;
             }
+<<<<<<< HEAD
             if (isset($data->deleted)) {
                 $params['deleted'] = $data->deleted;
             }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $DB->insert_record('course_completion_crit_compl', $params);
         }
     }
@@ -2026,8 +2388,11 @@ class restore_course_completion_structure_step extends restore_structure_step {
             $params = array(
                 'userid' => $data->userid,
                 'course' => $data->course,
+<<<<<<< HEAD
                 'deleted' => $data->deleted,
                 'timenotified' => $this->apply_date_offset($data->timenotified),
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 'timeenrolled' => $this->apply_date_offset($data->timeenrolled),
                 'timestarted' => $this->apply_date_offset($data->timestarted),
                 'timecompleted' => $this->apply_date_offset($data->timecompleted),
@@ -2038,6 +2403,7 @@ class restore_course_completion_structure_step extends restore_structure_step {
     }
 
     /**
+<<<<<<< HEAD
      * Process course completion notification records.
      *
      * Note: As of Moodle 2.0 this table is not being used however it has been
@@ -2066,6 +2432,8 @@ class restore_course_completion_structure_step extends restore_structure_step {
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Process course completion aggregate methods
      *
      * @global moodle_database $DB
@@ -2241,17 +2609,35 @@ class restore_activity_grading_structure_step extends restore_structure_step {
         $paths = array();
         $userinfo = $this->get_setting_value('userinfo');
 
+<<<<<<< HEAD
         $paths[] = new restore_path_element('grading_area', '/areas/area');
+=======
+        $area = new restore_path_element('grading_area', '/areas/area');
+        $paths[] = $area;
+        // attach local plugin stucture to $area element
+        $this->add_plugin_structure('local', $area);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $definition = new restore_path_element('grading_definition', '/areas/area/definitions/definition');
         $paths[] = $definition;
         $this->add_plugin_structure('gradingform', $definition);
+<<<<<<< HEAD
+=======
+        // attach local plugin stucture to $definition element
+        $this->add_plugin_structure('local', $definition);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($userinfo) {
             $instance = new restore_path_element('grading_instance',
                 '/areas/area/definitions/definition/instances/instance');
             $paths[] = $instance;
             $this->add_plugin_structure('gradingform', $instance);
+<<<<<<< HEAD
+=======
+            // attach local plugin stucture to $intance element
+            $this->add_plugin_structure('local', $instance);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return $paths;
@@ -2552,7 +2938,11 @@ class restore_block_instance_structure_step extends restore_structure_step {
         // Save the mapping (with restorefiles support)
         $this->set_mapping('block_instance', $oldid, $newitemid, true);
         // Create the block context
+<<<<<<< HEAD
         $newcontextid = get_context_instance(CONTEXT_BLOCK, $newitemid)->id;
+=======
+        $newcontextid = context_block::instance($newitemid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Save the block contexts mapping and sent it to task
         $this->set_mapping('context', $oldcontextid, $newcontextid);
         $this->task->set_contextid($newcontextid);
@@ -2605,6 +2995,10 @@ class restore_module_structure_step extends restore_structure_step {
         $paths[] = $module;
         if ($CFG->enableavailability) {
             $paths[] = new restore_path_element('availability', '/module/availability_info/availability');
+<<<<<<< HEAD
+=======
+            $paths[] = new restore_path_element('availability_field', '/module/availability_info/availability_field');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         // Apply for 'format' plugins optional paths at module level
@@ -2613,6 +3007,12 @@ class restore_module_structure_step extends restore_structure_step {
         // Apply for 'plagiarism' plugins optional paths at module level
         $this->add_plugin_structure('plagiarism', $module);
 
+<<<<<<< HEAD
+=======
+        // Apply for 'local' plugins optional paths at module level
+        $this->add_plugin_structure('local', $module);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $paths;
     }
 
@@ -2686,7 +3086,11 @@ class restore_module_structure_step extends restore_structure_step {
         // set the new course_module id in the task
         $this->task->set_moduleid($newitemid);
         // we can now create the context safely
+<<<<<<< HEAD
         $ctxid = get_context_instance(CONTEXT_MODULE, $newitemid)->id;
+=======
+        $ctxid = context_module::instance($newitemid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // set the new context id in the task
         $this->task->set_contextid($ctxid);
         // update sequence field in course_section
@@ -2698,15 +3102,57 @@ class restore_module_structure_step extends restore_structure_step {
         $DB->set_field('course_sections', 'sequence', $sequence, array('id' => $data->section));
     }
 
+<<<<<<< HEAD
 
     protected function process_availability($data) {
         $data = (object)$data;
         // Simply going to store the whole availability record now, we'll process
         // all them later in the final task (once all actvivities have been restored)
+=======
+    protected function process_availability($data) {
+        $data = (object)$data;
+        // Simply going to store the whole availability record now, we'll process
+        // all them later in the final task (once all activities have been restored)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Let's call the low level one to be able to store the whole object
         $data->coursemoduleid = $this->task->get_moduleid(); // Let add the availability cmid
         restore_dbops::set_backup_ids_record($this->get_restoreid(), 'module_availability', $data->id, 0, null, $data);
     }
+<<<<<<< HEAD
+=======
+
+    protected function process_availability_field($data) {
+        global $DB;
+        $data = (object)$data;
+        // Mark it is as passed by default
+        $passed = true;
+        $customfieldid = null;
+
+        // If a customfield has been used in order to pass we must be able to match an existing
+        // customfield by name (data->customfield) and type (data->customfieldtype)
+        if (!empty($data->customfield) xor !empty($data->customfieldtype)) {
+            // xor is sort of uncommon. If either customfield is null or customfieldtype is null BUT not both.
+            // If one is null but the other isn't something clearly went wrong and we'll skip this condition.
+            $passed = false;
+        } else if (!empty($data->customfield)) {
+            $params = array('shortname' => $data->customfield, 'datatype' => $data->customfieldtype);
+            $customfieldid = $DB->get_field('user_info_field', 'id', $params);
+            $passed = ($customfieldid !== false);
+        }
+
+        if ($passed) {
+            // Create the object to insert into the database
+            $availfield = new stdClass();
+            $availfield->coursemoduleid = $this->task->get_moduleid(); // Lets add the availability cmid
+            $availfield->userfield = $data->userfield;
+            $availfield->customfieldid = $customfieldid;
+            $availfield->operator = $data->operator;
+            $availfield->value = $data->value;
+            // Insert into the database
+            $DB->insert_record('course_modules_avail_fields', $availfield);
+        }
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -2875,12 +3321,22 @@ class restore_create_categories_and_questions extends restore_structure_step {
         $hint = new restore_path_element('question_hint',
                 '/question_categories/question_category/questions/question/question_hints/question_hint');
 
+<<<<<<< HEAD
         $tag = new restore_path_element('tag',
             '/question_categories/question_category/questions/question/tags/tag');
+=======
+        $tag = new restore_path_element('tag','/question_categories/question_category/questions/question/tags/tag');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Apply for 'qtype' plugins optional paths at question level
         $this->add_plugin_structure('qtype', $question);
 
+<<<<<<< HEAD
+=======
+        // Apply for 'local' plugins optional paths at question level
+        $this->add_plugin_structure('local', $question);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return array($category, $question, $hint, $tag);
     }
 
@@ -3215,10 +3671,17 @@ class restore_create_question_files extends restore_execution_step {
  */
 class restore_process_file_aliases_queue extends restore_execution_step {
 
+<<<<<<< HEAD
     /** @var array internal cache for {@link choose_repository() */
     private $cachereposbyid = array();
 
     /** @var array internal cache for {@link choose_repository() */
+=======
+    /** @var array internal cache for {@link choose_repository()} */
+    private $cachereposbyid = array();
+
+    /** @var array internal cache for {@link choose_repository()} */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     private $cachereposbytype = array();
 
     /**
@@ -3536,16 +3999,44 @@ abstract class restore_questions_activity_structure_step extends restore_activit
     /**
      * Attach below $element (usually attempts) the needed restore_path_elements
      * to restore question_usages and all they contain.
+<<<<<<< HEAD
      */
     protected function add_question_usages($element, &$paths) {
+=======
+     *
+     * If you use the $nameprefix parameter, then you will need to implement some
+     * extra methods in your class, like
+     *
+     * protected function process_{nameprefix}question_attempt($data) {
+     *     $this->restore_question_usage_worker($data, '{nameprefix}');
+     * }
+     * protected function process_{nameprefix}question_attempt($data) {
+     *     $this->restore_question_attempt_worker($data, '{nameprefix}');
+     * }
+     * protected function process_{nameprefix}question_attempt_step($data) {
+     *     $this->restore_question_attempt_step_worker($data, '{nameprefix}');
+     * }
+     *
+     * @param restore_path_element $element the parent element that the usages are stored inside.
+     * @param array $paths the paths array that is being built.
+     * @param string $nameprefix should match the prefix passed to the corresponding
+     *      backup_questions_activity_structure_step::add_question_usages call.
+     */
+    protected function add_question_usages($element, &$paths, $nameprefix = '') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Check $element is restore_path_element
         if (! $element instanceof restore_path_element) {
             throw new restore_step_exception('element_must_be_restore_path_element', $element);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Check $paths is one array
         if (!is_array($paths)) {
             throw new restore_step_exception('paths_must_be_array', $paths);
         }
+<<<<<<< HEAD
         $paths[] = new restore_path_element('question_usage',
                 $element->get_path() . '/question_usage');
         $paths[] = new restore_path_element('question_attempt',
@@ -3555,12 +4046,50 @@ abstract class restore_questions_activity_structure_step extends restore_activit
                 true);
         $paths[] = new restore_path_element('question_attempt_step_data',
                 $element->get_path() . '/question_usage/question_attempts/question_attempt/steps/step/response/variable');
+=======
+        $paths[] = new restore_path_element($nameprefix . 'question_usage',
+                $element->get_path() . "/{$nameprefix}question_usage");
+        $paths[] = new restore_path_element($nameprefix . 'question_attempt',
+                $element->get_path() . "/{$nameprefix}question_usage/{$nameprefix}question_attempts/{$nameprefix}question_attempt");
+        $paths[] = new restore_path_element($nameprefix . 'question_attempt_step',
+                $element->get_path() . "/{$nameprefix}question_usage/{$nameprefix}question_attempts/{$nameprefix}question_attempt/{$nameprefix}steps/{$nameprefix}step",
+                true);
+        $paths[] = new restore_path_element($nameprefix . 'question_attempt_step_data',
+                $element->get_path() . "/{$nameprefix}question_usage/{$nameprefix}question_attempts/{$nameprefix}question_attempt/{$nameprefix}steps/{$nameprefix}step/{$nameprefix}response/{$nameprefix}variable");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
      * Process question_usages
      */
     protected function process_question_usage($data) {
+<<<<<<< HEAD
+=======
+        $this->restore_question_usage_worker($data, '');
+    }
+
+    /**
+     * Process question_attempts
+     */
+    protected function process_question_attempt($data) {
+        $this->restore_question_attempt_worker($data, '');
+    }
+
+    /**
+     * Process question_attempt_steps
+     */
+    protected function process_question_attempt_step($data) {
+        $this->restore_question_attempt_step_worker($data, '');
+    }
+
+    /**
+     * This method does the acutal work for process_question_usage or
+     * process_{nameprefix}_question_usage.
+     * @param array $data the data from the XML file.
+     * @param string $nameprefix the element name prefix.
+     */
+    protected function restore_question_usage_worker($data, $nameprefix) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $DB;
 
         // Clear our caches.
@@ -3578,7 +4107,11 @@ abstract class restore_questions_activity_structure_step extends restore_activit
 
         $this->inform_new_usage_id($newitemid);
 
+<<<<<<< HEAD
         $this->set_mapping('question_usage', $oldid, $newitemid, false);
+=======
+        $this->set_mapping($nameprefix . 'question_usage', $oldid, $newitemid, false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -3590,30 +4123,60 @@ abstract class restore_questions_activity_structure_step extends restore_activit
     abstract protected function inform_new_usage_id($newusageid);
 
     /**
+<<<<<<< HEAD
      * Process question_attempts
      */
     protected function process_question_attempt($data) {
+=======
+     * This method does the acutal work for process_question_attempt or
+     * process_{nameprefix}_question_attempt.
+     * @param array $data the data from the XML file.
+     * @param string $nameprefix the element name prefix.
+     */
+    protected function restore_question_attempt_worker($data, $nameprefix) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
         $question = $this->get_mapping('question', $data->questionid);
 
+<<<<<<< HEAD
         $data->questionusageid = $this->get_new_parentid('question_usage');
         $data->questionid      = $question->newitemid;
+=======
+        $data->questionusageid = $this->get_new_parentid($nameprefix . 'question_usage');
+        $data->questionid      = $question->newitemid;
+        if (!property_exists($data, 'variant')) {
+            $data->variant = 1;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $data->timemodified    = $this->apply_date_offset($data->timemodified);
 
         $newitemid = $DB->insert_record('question_attempts', $data);
 
+<<<<<<< HEAD
         $this->set_mapping('question_attempt', $oldid, $newitemid);
+=======
+        $this->set_mapping($nameprefix . 'question_attempt', $oldid, $newitemid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->qtypes[$newitemid] = $question->info->qtype;
         $this->newquestionids[$newitemid] = $data->questionid;
     }
 
     /**
+<<<<<<< HEAD
      * Process question_attempt_steps
      */
     protected function process_question_attempt_step($data) {
+=======
+     * This method does the acutal work for process_question_attempt_step or
+     * process_{nameprefix}_question_attempt_step.
+     * @param array $data the data from the XML file.
+     * @param string $nameprefix the element name prefix.
+     */
+    protected function restore_question_attempt_step_worker($data, $nameprefix) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $DB;
 
         $data = (object)$data;
@@ -3621,14 +4184,23 @@ abstract class restore_questions_activity_structure_step extends restore_activit
 
         // Pull out the response data.
         $response = array();
+<<<<<<< HEAD
         if (!empty($data->response['variable'])) {
             foreach ($data->response['variable'] as $variable) {
+=======
+        if (!empty($data->{$nameprefix . 'response'}[$nameprefix . 'variable'])) {
+            foreach ($data->{$nameprefix . 'response'}[$nameprefix . 'variable'] as $variable) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $response[$variable['name']] = $variable['value'];
             }
         }
         unset($data->response);
 
+<<<<<<< HEAD
         $data->questionattemptid = $this->get_new_parentid('question_attempt');
+=======
+        $data->questionattemptid = $this->get_new_parentid($nameprefix . 'question_attempt');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->userid      = $this->get_mappingid('user', $data->userid);
 
@@ -3641,6 +4213,10 @@ abstract class restore_questions_activity_structure_step extends restore_activit
                 $this->qtypes[$data->questionattemptid],
                 $this->newquestionids[$data->questionattemptid],
                 $data->sequencenumber, $response);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($response as $name => $value) {
             $row = new stdClass();
             $row->attemptstepid = $newitemid;

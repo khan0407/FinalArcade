@@ -38,7 +38,11 @@
         throw new moodle_exception('invalidaccess');
     }
     if ($action != 'add') {
+<<<<<<< HEAD
         $roleid = required_param('roleid', PARAM_INTEGER);
+=======
+        $roleid = required_param('roleid', PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $roleid = 0;
     }
@@ -56,7 +60,11 @@
     }
 
 /// Check access permissions.
+<<<<<<< HEAD
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_login();
     require_capability('moodle/role:manage', $systemcontext);
     admin_externalpage_setup('defineroles', '', array('action' => $action, 'roleid' => $roleid), $defineurl);

@@ -25,6 +25,10 @@
 
 $string['accessnoticesheader'] = 'You can preview this quiz, but if this were a real attempt, you would be blocked because:';
 $string['action'] = 'Action';
+<<<<<<< HEAD
+=======
+$string['activityoverview'] = 'You have quizzes that are due';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['adaptive'] = 'Adaptive mode';
 $string['adaptive_help'] = 'If enabled, multiple responses to a question are allowed within the same attempt at the quiz. So for example if a response is marked as incorrect, the student will be allowed to try again immediately. However, depending on the "Apply penalties" setting, a penalty will usually be subtracted for each wrong attempt.';
 $string['addaquestion'] = 'Add a question ...';
@@ -583,6 +587,10 @@ $string['questionnonav'] = '<span class="accesshide">Question </span>{$a->number
 $string['questionnonavinfo'] = '<span class="accesshide">Information </span>{$a->number}<span class="accesshide"> {$a->attributes}</span>';
 $string['questionnotloaded'] = 'Question {$a} has not been loaded from the database';
 $string['questionorder'] = 'Question order';
+<<<<<<< HEAD
+=======
+$string['questionposition'] = 'New position in order for question {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['questions'] = 'Questions';
 $string['questionsinclhidden'] = 'Questions (including hidden)';
 $string['questionsinthisquiz'] = 'Questions in this quiz';
@@ -641,7 +649,11 @@ $string['randomwithsubcat'] = 'Questions from this category and its subcategorie
 $string['readytosend'] = 'You are about to send your whole quiz to be graded.  Are you sure you want to continue?';
 $string['reattemptquiz'] = 'Re-attempt quiz';
 $string['recentlyaddedquestion'] = 'Recently added question!';
+<<<<<<< HEAD
 $string['recurse'] = 'Include questions from sub-categories too';
+=======
+$string['recurse'] = 'Include questions from subcategories too';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['regrade'] = 'Regrade all attempts';
 $string['regradecomplete'] = 'All attempts have been regraded';
 $string['regradecount'] = '{$a->changed} out of {$a->attempt} grades were changed';

@@ -219,6 +219,7 @@ if ($count > 0) {
         return "false";
     }
 
+<<<<<<< HEAD
 
 <?php
 // pull in the TOC callback
@@ -226,6 +227,8 @@ require_once($CFG->dirroot.'/mod/scorm/datamodels/callback.js.php');
 ?>
 
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function LMSFinish (param) {
         errorCode = "0";
         if (param == "") {
@@ -234,6 +237,7 @@ require_once($CFG->dirroot.'/mod/scorm/datamodels/callback.js.php');
                 result = StoreData(cmi,true);
                 if (nav.event != '') {
                     if (nav.event == 'continue') {
+<<<<<<< HEAD
                         setTimeout('scorm_get_next();',500);
                     } else {
                         setTimeout('scorm_get_prev();',500);
@@ -241,11 +245,27 @@ require_once($CFG->dirroot.'/mod/scorm/datamodels/callback.js.php');
                 } else {
                     if (<?php echo $scorm->auto ?> == 1) {
                         setTimeout('scorm_get_next();',500);
+=======
+                        setTimeout('mod_scorm_launch_next_sco();',500);
+                    } else {
+                        setTimeout('mod_scorm_launch_prev_sco();',500);
+                    }
+                } else {
+                    if (<?php echo $scorm->auto ?> == 1) {
+                        setTimeout('mod_scorm_launch_next_sco();',500);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 }
                 // trigger TOC update
                 var sURL = "<?php echo $CFG->wwwroot; ?>" + "/mod/scorm/prereqs.php?a=<?php echo $scorm->id ?>&scoid=<?php echo $scoid ?>&attempt=<?php echo $attempt ?>&mode=<?php echo $mode ?>&currentorg=<?php echo $currentorg ?>&sesskey=<?php echo sesskey(); ?>";
+<<<<<<< HEAD
                 YAHOO.util.Connect.asyncRequest('GET', sURL, this.connectPrereqCallback, null);
+=======
+                var callback = M.mod_scorm.connectPrereqCallback;
+                YUI().use('yui2-connection', function(Y) {
+                    Y.YUI2.util.Connect.asyncRequest('GET', sURL, callback, null);
+                });
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 return "true";
             } else {
                 errorCode = "301";

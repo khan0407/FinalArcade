@@ -59,7 +59,11 @@ class qtype_essay_question extends question_with_responses {
         } else {
             $expecteddata = array('answer' => PARAM_RAW);
         }
+<<<<<<< HEAD
         $expecteddata['answerformat'] = PARAM_FORMAT;
+=======
+        $expecteddata['answerformat'] = PARAM_ALPHANUMEXT;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($this->attachments != 0) {
             $expecteddata['attachments'] = question_attempt::PARAM_FILES;
         }
@@ -68,10 +72,15 @@ class qtype_essay_question extends question_with_responses {
 
     public function summarise_response(array $response) {
         if (isset($response['answer'])) {
+<<<<<<< HEAD
             $formatoptions = new stdClass();
             $formatoptions->para = false;
             return html_to_text(format_text(
                     $response['answer'], FORMAT_HTML, $formatoptions), 0, false);
+=======
+            return question_utils::to_plain_text($response['answer'],
+                    $response['answerformat'], array('para' => false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             return null;
         }

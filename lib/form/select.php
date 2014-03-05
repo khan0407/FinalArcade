@@ -87,6 +87,7 @@ class MoodleQuickForm_select extends HTML_QuickForm_select{
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @param array $helpbuttonargs array of arguments to make a help button
@@ -100,6 +101,8 @@ class MoodleQuickForm_select extends HTML_QuickForm_select{
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * get html for help button
      *
      * @return string html for help button

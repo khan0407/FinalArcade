@@ -37,9 +37,15 @@
         },
 
         setupTable: function(){
+<<<<<<< HEAD
             var lti_submissions_table = YAHOO.util.Dom.get('lti_submissions_table');
 
             var dataSource = new YAHOO.util.DataSource(lti_submissions_table);
+=======
+            var lti_submissions_table = Y.YUI2.util.Dom.get('lti_submissions_table');
+
+            var dataSource = new Y.YUI2.util.DataSource(lti_submissions_table);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             var configuredColumns = [
                 { key: "user", label: "User", sortable:true },
@@ -53,7 +59,11 @@
                 }
             ];
 
+<<<<<<< HEAD
             dataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+=======
+            dataSource.responseType = Y.YUI2.util.DataSource.TYPE_HTMLTABLE;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             dataSource.responseSchema = {
                 fields: [
                     { key: "user" },
@@ -62,7 +72,11 @@
                 ]
             };
 
+<<<<<<< HEAD
             new YAHOO.widget.DataTable("lti_submissions_table_container", configuredColumns, dataSource,
+=======
+            new Y.YUI2.widget.DataTable("lti_submissions_table_container", configuredColumns, dataSource,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 {
                     sortedBy: {key:"date", dir:"desc"}
                 }

@@ -25,34 +25,69 @@
 
 $string['advancedoptions'] = 'Advanced options';
 $string['allday'] = 'All day';
+<<<<<<< HEAD
+=======
+$string['annually'] = 'Annually';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['calendar'] = 'Calendar';
 $string['calendarheading'] = '{$a} Calendar';
 $string['calendarpreferences'] = 'Calendar preferences';
 $string['calendarurl'] = 'Calendar URL: {$a}';
 $string['clickhide'] = 'click to hide';
 $string['clickshow'] = 'click to show';
+<<<<<<< HEAD
+=======
+$string['colcalendar'] = 'Calendar';
+$string['collastupdated'] = 'Last updated';
+$string['colpoll'] = 'Update';
+$string['colactions'] = 'Actions';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['commontasks'] = 'Options';
 $string['confirmeventdelete'] = 'Are you sure you want to delete this event?';
 $string['course'] = 'Course';
 $string['courseevent'] = 'Course event';
 $string['courseevents'] = 'Course events';
 $string['courses'] = 'Courses';
+<<<<<<< HEAD
 $string['dayview'] = 'Day view';
+=======
+$string['daily'] = 'Daily';
+$string['dayview'] = 'Day view';
+$string['dayviewtitle'] = 'Day view: {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['daywithnoevents'] = 'There are no events this day.';
 $string['default'] = 'Default';
 $string['deleteevent'] = 'Delete event';
 $string['deleteevents'] = 'Delete events';
 $string['detailedmonthview'] = 'Detailed month view';
+<<<<<<< HEAD
+=======
+$string['detailedmonthviewtitle'] = 'Detailed month view: {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['durationminutes'] = 'Duration in minutes';
 $string['durationnone'] = 'Without duration';
 $string['durationuntil'] = 'Until';
 $string['editevent'] = 'Editing event';
+<<<<<<< HEAD
 $string['errorbeforecoursestart'] = 'Cannot set event before course start date';
 $string['errorinvaliddate'] = 'Invalid date';
 $string['errorinvalidminutes'] = 'Specify duration in minutes by giving a number between 1 and 999.';
 $string['errorinvalidrepeats'] = 'Specify the number of events by giving a number between 1 and 99.';
 $string['errornodescription'] = 'Description is required';
 $string['errornoeventname'] = 'Name is required';
+=======
+$string['erroraddingevent'] = 'Failed to add event';
+$string['errorbadsubscription'] = 'Calendar subscription not found.';
+$string['errorbeforecoursestart'] = 'Cannot set event before course start date';
+$string['errorcannotimport'] = 'You cannot set up a calendar subscription at this time.';
+$string['errorinvaliddate'] = 'Invalid date';
+$string['errorinvalidminutes'] = 'Specify duration in minutes by giving a number between 1 and 999.';
+$string['errorinvalidrepeats'] = 'Specify the number of events by giving a number between 1 and 99.';
+$string['errorinvalidicalurl'] = 'The given iCal URL is invalid.';
+$string['errornodescription'] = 'Description is required';
+$string['errornoeventname'] = 'Name is required';
+$string['errorrequiredurlorfile'] = 'Either a URL or a file is required to import a calendar.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['eventdate'] = 'Date';
 $string['eventdescription'] = 'Description';
 $string['eventduration'] = 'Duration';
@@ -63,6 +98,12 @@ $string['eventname'] = 'Event title';
 $string['eventnone'] = 'No events';
 $string['eventrepeat'] = 'Repeats';
 $string['eventsall'] = 'All events';
+<<<<<<< HEAD
+=======
+$string['eventsdeleted'] = 'Events deleted';
+$string['eventsimported'] = 'Events imported: {$a}';
+$string['eventsupdated'] = 'Events updated: {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['eventsfor'] = '{$a} events';
 $string['eventskey'] = 'Events key';
 $string['eventsrelatedtocourses'] = 'Events related to courses';
@@ -86,6 +127,7 @@ $string['group'] = 'Group';
 $string['groupevent'] = 'Group event';
 $string['groupevents'] = 'Group events';
 $string['hidden'] = 'hidden';
+<<<<<<< HEAD
 $string['ical'] = 'iCal';
 $string['invalidtimedurationminutes'] = 'The duration in minutes you have entered is invalid. Please enter the duration in minutes greater than 0 or select no duration.';
 $string['invalidtimedurationuntil'] = 'The date and time you selected for duration until is before the start time of the event. Please correct this before proceeding.';
@@ -99,6 +141,39 @@ $string['monththis'] = 'This month';
 $string['newevent'] = 'New event';
 $string['noupcomingevents'] = 'There are no upcoming events';
 $string['oneevent'] = '1 event';
+=======
+$string['hidecourseevents'] = 'Hide course events';
+$string['hideglobalevents'] = 'Hide global events';
+$string['hidegroupsevents'] = 'Hide group events';
+$string['hideuserevents'] = 'Hide user events';
+$string['hourly'] = 'Hourly';
+$string['ical'] = 'iCal';
+$string['importcalendar'] = 'Import calendar';
+$string['importcalendarheading'] = 'Import calendar...';
+$string['importcalendarfrom'] = 'Import from';
+$string['importfromfile'] = 'Calendar file (.ics)';
+$string['importfromurl'] = 'Calendar URL';
+$string['importfrominstructions'] = 'Please provide either a URL to a remote calendar, or upload a file.';
+$string['invalidtimedurationminutes'] = 'The duration in minutes you have entered is invalid. Please enter the duration in minutes greater than 0 or select no duration.';
+$string['invalidtimedurationuntil'] = 'The date and time you selected for duration until is before the start time of the event. Please correct this before proceeding.';
+$string['iwanttoexport'] = 'Export';
+$string['managesubscriptions'] = 'Manage subscriptions';
+$string['manyevents'] = '{$a} events';
+$string['mon'] = 'Mon';
+$string['monday'] = 'Monday';
+$string['monthly'] = 'Monthly';
+$string['monthlyview'] = 'Monthly view';
+$string['monthnext'] = 'Next month';
+$string['monththis'] = 'This month';
+$string['never'] = 'Never';
+$string['newevent'] = 'New event';
+$string['notitle'] = 'no title';
+$string['noupcomingevents'] = 'There are no upcoming events';
+$string['nocalendarsubscriptions'] = 'You have no calendar subscriptions.';
+$string['oneevent'] = '1 event';
+$string['pollinterval'] = 'Update interval';
+$string['pollinterval_help'] = 'How often you would like the calendar to update with new events.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['preferences'] = 'Preferences';
 $string['preferences_available'] = 'Your personal preferences';
 $string['pref_lookahead'] = 'Upcoming events look-ahead';
@@ -122,8 +197,22 @@ $string['repeatweeksl'] = 'Repeat weekly, creating altogether';
 $string['repeatweeksr'] = 'events';
 $string['sat'] = 'Sat';
 $string['saturday'] = 'Saturday';
+<<<<<<< HEAD
 $string['shown'] = 'shown';
 $string['spanningevents'] = 'Events underway';
+=======
+$string['showcourseevents'] = 'Show course events';
+$string['showglobalevents'] = 'Show global events';
+$string['showgroupsevents'] = 'Show group events';
+$string['showuserevents'] = 'Show user events';
+$string['shown'] = 'shown';
+$string['siteevents'] = 'Site events';
+$string['spanningevents'] = 'Events underway';
+$string['subscriptions'] = 'Subscriptions';
+$string['subscriptionname'] = 'Calendar name';
+$string['subscriptionremoved'] = 'Calendar subscription {$a} removed';
+$string['subscriptionupdated'] = 'Calendar subscription {$a} updated';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['sun'] = 'Sun';
 $string['sunday'] = 'Sunday';
 $string['thu'] = 'Thu';
@@ -155,6 +244,10 @@ $string['userevent'] = 'User event';
 $string['userevents'] = 'User events';
 $string['wed'] = 'Wed';
 $string['wednesday'] = 'Wednesday';
+<<<<<<< HEAD
+=======
+$string['weekly'] = 'Weekly';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['weeknext'] = 'Next week';
 $string['weekthis'] = 'This week';
 $string['yesterday'] = 'Yesterday';

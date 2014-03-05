@@ -10,7 +10,13 @@ class block_online_users extends block_base {
         $this->title = get_string('pluginname','block_online_users');
     }
 
+<<<<<<< HEAD
     function has_config() {return true;}
+=======
+    function has_config() {
+        return true;
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     function get_content() {
         global $USER, $CFG, $DB, $OUTPUT;

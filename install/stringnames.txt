@@ -1,5 +1,9 @@
 admindirname,install
 availablelangs,install
+<<<<<<< HEAD
+=======
+cannotcreatedboninstall,error
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 cannotcreatelangdir,error
 cannotcreatetempdir,error
 cannotdownloadcomponents,error
@@ -28,6 +32,10 @@ databasetypehead,install
 dataroot,install
 datarootpermission,install
 dbprefix,install
+<<<<<<< HEAD
+=======
+dmlexceptiononinstall,error
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 dirroot,install
 downloadedfilecheckfailed,error
 environmenthead,install

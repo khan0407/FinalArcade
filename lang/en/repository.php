@@ -102,7 +102,11 @@ $string['errornotyourfile'] = 'You cannot pick file which is not added by your';
 $string['erroruniquename'] = 'Repository instance name should be unique';
 $string['errorpostmaxsize'] = 'The uploaded file may exceed the post_max_size directive in php.ini.';
 $string['errorwhilecommunicatingwith'] = 'Error while communicating with the repository \'{$a}\'.';
+<<<<<<< HEAD
 $string['errorwhiledownload'] = 'An error occured while downloading the file: {$a}';
+=======
+$string['errorwhiledownload'] = 'An error occurred while downloading the file: {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['existingrepository'] = 'This repository already exists';
 $string['federatedsearch'] = 'Federated search';
 $string['fileexists'] = 'File name already being used, please use another name';
@@ -149,6 +153,10 @@ $string['manage'] = 'Manage repositories';
 $string['manageurl'] = 'Manage';
 $string['manageuserrepository'] = 'Manage individual repository';
 $string['moving'] = 'Moving';
+<<<<<<< HEAD
+=======
+$string['newfolder'] = 'New folder';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['newfoldername'] = 'New folder name:';
 $string['noenter'] = 'Nothing entered';
 $string['nofilesattached'] = 'No files attached';
@@ -193,6 +201,10 @@ $string['saving'] = 'Saving';
 $string['automatedbackup'] = 'Automated backups';
 $string['search'] = 'Search';
 $string['searching'] = 'Search in';
+<<<<<<< HEAD
+=======
+$string['searchrepo'] = 'Search repository';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['select'] = 'Select';
 $string['settings'] = 'Settings';
 $string['setupdefaultplugins'] = 'Setting up default repository plugins';

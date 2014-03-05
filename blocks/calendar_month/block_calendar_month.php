@@ -50,7 +50,11 @@ class block_calendar_month extends block_base {
             $this->content->text .= calendar_top_controls('course', array('id' => $courseid, 'm' => $cal_m, 'y' => $cal_y));
             $this->content->text .= calendar_get_mini($courses, $group, $user, $cal_m, $cal_y);
             $this->content->text .= '<h3 class="eventskey">'.get_string('eventskey', 'calendar').'</h3>';
+<<<<<<< HEAD
             $this->content->text .= '<div class="filters">'.calendar_filter_controls($this->page->url).'</div>';
+=======
+            $this->content->text .= '<div class="filters calendar_filters">'.calendar_filter_controls($this->page->url).'</div>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return $this->content;

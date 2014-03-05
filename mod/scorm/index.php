@@ -36,7 +36,10 @@ add_to_log($course->id, "scorm", "view all", "index.php?id=$course->id", "");
 
 $strscorm = get_string("modulename", "scorm");
 $strscorms = get_string("modulenameplural", "scorm");
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname = get_string("name");
 $strsummary = get_string("summary");
 $strreport = get_string("report", 'scorm');
@@ -48,9 +51,12 @@ $PAGE->navbar->add($strscorms);
 echo $OUTPUT->header();
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($usesections) {
     $sortorder = "cw.section ASC";
@@ -66,6 +72,10 @@ if (! $scorms = get_all_instances_in_course("scorm", $course)) {
 $table = new html_table();
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strsummary, $strreport);
     $table->align = array ("center", "left", "left", "left");
 } else {
@@ -74,11 +84,19 @@ if ($usesections) {
 }
 
 foreach ($scorms as $scorm) {
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $scorm->coursemodule);
     $tt = "";
     if ($usesections) {
         if ($scorm->section) {
             $tt = get_section_name($course, $sections[$scorm->section]);
+=======
+    $context = context_module::instance($scorm->coursemodule);
+    $tt = "";
+    if ($usesections) {
+        if ($scorm->section) {
+            $tt = get_section_name($course, $scorm->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     } else {
         $tt = userdate($scorm->timemodified);

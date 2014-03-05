@@ -23,7 +23,11 @@ class block_course_list extends block_list {
         $this->content->icons = array();
         $this->content->footer = '';
 
+<<<<<<< HEAD
         $icon  = '<img src="' . $OUTPUT->pix_url('i/course') . '" class="icon" alt="" />&nbsp;';
+=======
+        $icon  = '<img src="' . $OUTPUT->pix_url('i/course') . '" class="icon" alt="" />';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $adminseesall = true;
         if (isset($CFG->block_course_list_adminview)) {
@@ -33,17 +37,35 @@ class block_course_list extends block_list {
         }
 
         if (empty($CFG->disablemycourses) and isloggedin() and !isguestuser() and
+<<<<<<< HEAD
           !(has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) and $adminseesall)) {    // Just print My Courses
             if ($courses = enrol_get_my_courses(NULL, 'visible DESC, fullname ASC')) {
                 foreach ($courses as $course) {
                     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+          !(has_capability('moodle/course:update', context_system::instance()) and $adminseesall)) {    // Just print My Courses
+            // As this is producing navigation sort order should default to $CFG->navsortmycoursessort instead
+            // of using the default.
+            if (!empty($CFG->navsortmycoursessort)) {
+                $sortorder = 'visible DESC, ' . $CFG->navsortmycoursessort . ' ASC';
+            } else {
+                $sortorder = 'visible DESC, sortorder ASC';
+            }
+            if ($courses = enrol_get_my_courses(NULL, $sortorder)) {
+                foreach ($courses as $course) {
+                    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $linkcss = $course->visible ? "" : " class=\"dimmed\" ";
                     $this->content->items[]="<a $linkcss title=\"" . format_string($course->shortname, true, array('context' => $coursecontext)) . "\" ".
                                "href=\"$CFG->wwwroot/course/view.php?id=$course->id\">".$icon.format_string($course->fullname). "</a>";
                 }
                 $this->title = get_string('mycourses');
             /// If we can update any course of the view all isn't hidden, show the view all courses link
+<<<<<<< HEAD
                 if (has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) || empty($CFG->block_course_list_hideallcourseslink)) {
+=======
+                if (has_capability('moodle/course:update', context_system::instance()) || empty($CFG->block_course_list_hideallcourseslink)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $this->content->footer = "<a href=\"$CFG->wwwroot/course/index.php\">".get_string("fulllistofcourses")."</a> ...";
                 }
             }
@@ -57,12 +79,20 @@ class block_course_list extends block_list {
         if ($categories) {   //Check we have categories
             if (count($categories) > 1 || (count($categories) == 1 && $DB->count_records('course') > 200)) {     // Just print top level category links
                 foreach ($categories as $category) {
+<<<<<<< HEAD
                     $categoryname = format_string($category->name, true, array('context' => get_context_instance(CONTEXT_COURSECAT, $category->id)));
+=======
+                    $categoryname = format_string($category->name, true, array('context' => context_coursecat::instance($category->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $linkcss = $category->visible ? "" : " class=\"dimmed\" ";
                     $this->content->items[]="<a $linkcss href=\"$CFG->wwwroot/course/category.php?id=$category->id\">".$icon . $categoryname . "</a>";
                 }
             /// If we can update any course of the view all isn't hidden, show the view all courses link
+<<<<<<< HEAD
                 if (has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) || empty($CFG->block_course_list_hideallcourseslink)) {
+=======
+                if (has_capability('moodle/course:update', context_system::instance()) || empty($CFG->block_course_list_hideallcourseslink)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $this->content->footer .= "<a href=\"$CFG->wwwroot/course/index.php\">".get_string('fulllistofcourses').'</a> ...';
                 }
                 $this->title = get_string('categories');
@@ -72,16 +102,27 @@ class block_course_list extends block_list {
 
                 if ($courses) {
                     foreach ($courses as $course) {
+<<<<<<< HEAD
                         $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+                        $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $linkcss = $course->visible ? "" : " class=\"dimmed\" ";
 
                         $this->content->items[]="<a $linkcss title=\""
                                    . format_string($course->shortname, true, array('context' => $coursecontext))."\" ".
                                    "href=\"$CFG->wwwroot/course/view.php?id=$course->id\">"
+<<<<<<< HEAD
                                    .$icon. format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id))) . "</a>";
                     }
                 /// If we can update any course of the view all isn't hidden, show the view all courses link
                     if (has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) || empty($CFG->block_course_list_hideallcourseslink)) {
+=======
+                                   .$icon. format_string($course->fullname, true, array('context' => context_course::instance($course->id))) . "</a>";
+                    }
+                /// If we can update any course of the view all isn't hidden, show the view all courses link
+                    if (has_capability('moodle/course:update', context_system::instance()) || empty($CFG->block_course_list_hideallcourseslink)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $this->content->footer .= "<a href=\"$CFG->wwwroot/course/index.php\">".get_string('fulllistofcourses').'</a> ...';
                     }
                     $this->get_remote_courses();
@@ -89,7 +130,11 @@ class block_course_list extends block_list {
 
                     $this->content->icons[] = '';
                     $this->content->items[] = get_string('nocoursesyet');
+<<<<<<< HEAD
                     if (has_capability('moodle/course:create', get_context_instance(CONTEXT_COURSECAT, $category->id))) {
+=======
+                    if (has_capability('moodle/course:create', context_coursecat::instance($category->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $this->content->footer = '<a href="'.$CFG->wwwroot.'/course/edit.php?category='.$category->id.'">'.get_string("addnewcourse").'</a> ...';
                     }
                     $this->get_remote_courses();
@@ -109,7 +154,11 @@ class block_course_list extends block_list {
             return;
         }
 
+<<<<<<< HEAD
         $icon = '<img src="'.$OUTPUT->pix_url('i/mnethost') . '" class="icon" alt="" />&nbsp;';
+=======
+        $icon = '<img src="'.$OUTPUT->pix_url('i/mnethost') . '" class="icon" alt="" />';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // shortcut - the rest is only for logged in users!
         if (!isloggedin() || isguestuser()) {
@@ -120,8 +169,12 @@ class block_course_list extends block_list {
             $this->content->items[] = get_string('remotecourses','mnet');
             $this->content->icons[] = '';
             foreach ($courses as $course) {
+<<<<<<< HEAD
                 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
                 $this->content->items[]="<a title=\"" . format_string($course->shortname, true, array('context' => $coursecontext)) . "\" ".
+=======
+                $this->content->items[]="<a title=\"" . format_string($course->shortname, true) . "\" ".
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     "href=\"{$CFG->wwwroot}/auth/mnet/jump.php?hostid={$course->hostid}&amp;wantsurl=/course/view.php?id={$course->remoteid}\">"
                     .$icon. format_string($course->fullname) . "</a>";
             }
@@ -142,6 +195,17 @@ class block_course_list extends block_list {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Returns the role that best describes the course list block.
+     *
+     * @return string
+     */
+    public function get_aria_role() {
+        return 'navigation';
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 

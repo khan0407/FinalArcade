@@ -56,10 +56,16 @@ $PAGE->set_url($url);
 // Make sure that the user has permissions to manage groups.
 require_login($course);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('moodle/course:managegroups', $context);
 
 $PAGE->requires->yui2_lib('connection');
+=======
+$context = context_course::instance($course->id);
+require_capability('moodle/course:managegroups', $context);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->requires->js('/group/clientlib.js');
 
 // Check for multiple/no group errors
@@ -79,7 +85,11 @@ switch ($action) {
 
     case 'ajax_getmembersingroup':
         $roles = array();
+<<<<<<< HEAD
         if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id,u.firstname,u.lastname')) {
+=======
+        if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id, u.firstname, u.lastname')) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach($groupmemberroles as $roleid=>$roledata) {
                 $shortroledata = new stdClass();
                 $shortroledata->name = $roledata->name;
@@ -145,7 +155,11 @@ $strparticipants = get_string('participants');
 /// Print header
 $PAGE->set_title($strgroups);
 $PAGE->set_heading($course->fullname);
+<<<<<<< HEAD
 $PAGE->set_pagelayout('standard');
+=======
+$PAGE->set_pagelayout('admin');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 echo $OUTPUT->header();
 
 // Add tabs
@@ -247,7 +261,11 @@ $member_names = array();
 
 $atleastonemember = false;
 if ($singlegroup) {
+<<<<<<< HEAD
     if ($groupmemberroles = groups_get_members_by_role($groupids[0],$courseid,'u.id,u.firstname,u.lastname')) {
+=======
+    if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id, u.firstname, u.lastname')) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach($groupmemberroles as $roleid=>$roledata) {
             echo '<optgroup label="'.s($roledata->name).'">';
             foreach($roledata->users as $member) {

@@ -216,7 +216,11 @@ class feedback_item_info extends feedback_item_base {
                 $itemshowvalue = userdate($itemvalue);
                 break;
             case 2:
+<<<<<<< HEAD
                 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+                $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $itemvalue = format_string($course->shortname,
                                            true,
                                            array('context' => $coursecontext));
@@ -225,7 +229,11 @@ class feedback_item_info extends feedback_item_base {
                 break;
             case 3:
                 if ($coursecategory) {
+<<<<<<< HEAD
                     $category_context = get_context_instance(CONTEXT_COURSECAT, $coursecategory->id);
+=======
+                    $category_context = context_coursecat::instance($coursecategory->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $itemvalue = format_string($coursecategory->name,
                                                true,
                                                array('context' => $category_context));
@@ -303,7 +311,11 @@ class feedback_item_info extends feedback_item_base {
                 }
                 break;
             case 2:
+<<<<<<< HEAD
                 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+                $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $itemvalue = format_string($course->shortname,
                                            true,
                                            array('context' => $coursecontext));
@@ -312,7 +324,11 @@ class feedback_item_info extends feedback_item_base {
                 break;
             case 3:
                 if ($coursecategory) {
+<<<<<<< HEAD
                     $category_context = get_context_instance(CONTEXT_COURSECAT, $coursecategory->id);
+=======
+                    $category_context = context_coursecat::instance($coursecategory->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $itemvalue = format_string($coursecategory->name,
                                                true,
                                                array('context' => $category_context));

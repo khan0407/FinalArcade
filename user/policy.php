@@ -66,7 +66,11 @@ $strpolicyagree = get_string('policyagree');
 $strpolicyagreement = get_string('policyagreement');
 $strpolicyagreementclick = get_string('policyagreementclick');
 
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_title($strpolicyagreement);
 $PAGE->set_heading($SITE->fullname);
 $PAGE->navbar->add($strpolicyagreement);

@@ -24,6 +24,10 @@
  */
 
 require_once $CFG->dirroot.'/tag/lib.php';
+<<<<<<< HEAD
+=======
+require_once $CFG->dirroot.'/tag/locallib.php';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /**
  * Returns an ordered array of tags associated with visible courses
@@ -36,10 +40,17 @@ require_once $CFG->dirroot.'/tag/lib.php';
  * @param    string   $tagtype  (optional) The type of tag, empty string returns all types. Currently (Moodle 2.2) there are two
  *                              types of tags which are used within Moodle, they are 'official' and 'default'.
  * @param    int      $numtags  (optional) number of tags to display, default of 80 is set in the block, 0 returns all
+<<<<<<< HEAD
  * @param    string   $sort     (optional) selected sorting, default is alpha sort (name) also timemodified or popularity
  * @return   array
  */
 function coursetag_get_tags($courseid, $userid=0, $tagtype='', $numtags=0, $sort='name') {
+=======
+ * @param    string   $unused   (optional) was selected sorting, moved to tag_print_cloud()
+ * @return   array
+ */
+function coursetag_get_tags($courseid, $userid=0, $tagtype='', $numtags=0, $unused = '') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     global $CFG, $DB;
 
@@ -95,11 +106,14 @@ function coursetag_get_tags($courseid, $userid=0, $tagtype='', $numtags=0, $sort
     // prepare the return
     $return = array();
     if ($tags) {
+<<<<<<< HEAD
         // sort the tag display order
         if ($sort != 'popularity') {
             $CFG->tagsort = $sort;
             usort($tags, "coursetag_sort");
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // avoid print_tag_cloud()'s ksort upsetting ordering by setting the key here
         foreach ($tags as $value) {
             $return[] = $value;
@@ -116,11 +130,19 @@ function coursetag_get_tags($courseid, $userid=0, $tagtype='', $numtags=0, $sort
  *
  * @package  core_tag
  * @category tag
+<<<<<<< HEAD
  * @param    string $sort    (optional) selected sorting, default is alpha sort (name) also timemodified or popularity
  * @param    int    $numtags (optional) number of tags to display, default of 20 is set in the block, 0 returns all
  * @return   array
  */
 function coursetag_get_all_tags($sort='name', $numtags=0) {
+=======
+ * @param    string $unused (optional) was selected sorting - moved to tag_print_cloud()
+ * @param    int    $numtags (optional) number of tags to display, default of 20 is set in the block, 0 returns all
+ * @return   array
+ */
+function coursetag_get_all_tags($unused='', $numtags=0) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     global $CFG, $DB;
 
@@ -144,10 +166,13 @@ function coursetag_get_all_tags($sort='name', $numtags=0) {
 
     $return = array();
     if ($tags) {
+<<<<<<< HEAD
         if ($sort != 'popularity') {
             $CFG->tagsort = $sort;
             usort($tags, "coursetag_sort");
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($tags as $value) {
             $return[] = $value;
         }
@@ -157,6 +182,7 @@ function coursetag_get_all_tags($sort='name', $numtags=0) {
 }
 
 /**
+<<<<<<< HEAD
  * Sorting callback function for coursetag_get_tags() and coursetag_get_all_tags() only
  *
  * This function does a comparision on a field withing two variables, $a and $b. The field used is specified by
@@ -273,23 +299,34 @@ function coursetag_print_cloud($tagcloud, $return=false, $max_size=180, $min_siz
 }
 
 /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Returns javascript for use in tags block and supporting pages
  *
  * @package  core_tag
  * @category tag
+<<<<<<< HEAD
  * @param    string   $coursetagdivs comma separated divs ids
  * @return   null
  */
 function coursetag_get_jscript($coursetagdivs = '') {
+=======
+ * @return   null
+ */
+function coursetag_get_jscript() {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     global $CFG, $DB, $PAGE;
 
     $PAGE->requires->js('/tag/tag.js');
     $PAGE->requires->strings_for_js(array('jserror1', 'jserror2'), 'block_tags');
 
+<<<<<<< HEAD
     if ($coursetagdivs) {
         $PAGE->requires->js_function_call('set_course_tag_divs', $coursetagdivs);
     }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($coursetags = $DB->get_records('tag', null, 'name ASC', 'name, id')) {
         foreach ($coursetags as $key => $value) {
             $PAGE->requires->js_function_call('set_course_tag', array($key));
@@ -359,7 +396,11 @@ function coursetag_store_keywords($tags, $courseid, $userid=0, $tagtype='officia
     global $CFG;
 
     if (is_array($tags) and !empty($tags)) {
+<<<<<<< HEAD
         foreach($tags as $tag) {
+=======
+        foreach ($tags as $tag) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $tag = trim($tag);
             if (strlen($tag) > 0) {
                 //tag_set_add('course', $courseid, $tag, $userid); //deletes official tags
@@ -494,6 +535,7 @@ function coursetag_delete_course_tags($courseid, $showfeedback=false) {
     }
 }
 
+<<<<<<< HEAD
 /*
  * Function called by cron to create/update users rss feeds
  *
@@ -712,3 +754,5 @@ function coursetag_get_official_keywords($courseid, $asarray=false) {
     return $returnstr;
 }
 */
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

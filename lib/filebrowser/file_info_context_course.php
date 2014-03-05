@@ -323,7 +323,11 @@ class file_info_context_course extends file_info {
      * @return string
      */
     public function get_visible_name() {
+<<<<<<< HEAD
         return ($this->course->id == SITEID) ? get_string('frontpage', 'admin') : format_string($this->course->fullname, true, array('context'=>$this->context));
+=======
+        return ($this->course->id == SITEID) ? get_string('frontpage', 'admin') : format_string(get_course_display_name_for_list($this->course), true, array('context'=>$this->context));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -443,7 +447,11 @@ class file_info_context_course extends file_info {
     public function get_parent() {
         //TODO: error checking if get_parent_contextid() returns false
         $pcid = get_parent_contextid($this->context);
+<<<<<<< HEAD
         $parent = get_context_instance_by_id($pcid);
+=======
+        $parent = context::instance_by_id($pcid, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $this->browser->get_file_info($parent);
     }
 }

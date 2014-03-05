@@ -64,7 +64,11 @@ class portfolio_plugin_flickr extends portfolio_plugin_push_base {
                         'hidden'        => $this->get_export_config('hidden')));
                 if ($return) {
                     // Attach photo to a set if requested
+<<<<<<< HEAD
                     if ($this->get_export_config('set')) {
+=======
+                    if ($this->get_export_config('set') && !empty($this->flickr->parsed_response['photoid'])) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $this->flickr->photosets_addPhoto($this->get_export_config('set'),
                             $this->flickr->parsed_response['photoid']);
                     }
@@ -183,10 +187,19 @@ class portfolio_plugin_flickr extends portfolio_plugin_push_base {
 
         $mform->setDefaults(array('plugin_is_public' => true));
 
+<<<<<<< HEAD
         $sets = $this->get_sets();
 
         if (!empty($sets)) {
             $sets[0] = '----';
+=======
+        $rawsets = $this->get_sets();
+        if (!empty($rawsets)) {
+            $sets = array('0' => '----');
+            foreach ($rawsets as $key => $value) {
+                $sets[$key] = $value;
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $mform->addElement('select', 'plugin_set', get_string('set', 'portfolio_flickr'), $sets);
         }
     }

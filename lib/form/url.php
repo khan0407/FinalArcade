@@ -79,7 +79,11 @@ class MoodleQuickForm_url extends HTML_QuickForm_text{
      * @return string
      */
     function toHtml(){
+<<<<<<< HEAD
         global $CFG, $COURSE, $USER, $PAGE, $OUTPUT;
+=======
+        global $PAGE, $OUTPUT;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $id     = $this->_attributes['id'];
         $elname = $this->_attributes['name'];
@@ -94,6 +98,7 @@ class MoodleQuickForm_url extends HTML_QuickForm_text{
         if (empty($this->_options['usefilepicker'])) {
             return $str;
         }
+<<<<<<< HEAD
         $strsaved = get_string('filesaved', 'repository');
         $straddlink = get_string('choosealink', 'repository');
         if ($COURSE->id == SITEID) {
@@ -108,6 +113,11 @@ class MoodleQuickForm_url extends HTML_QuickForm_text{
 $straddlink
 </button>
 EOD;
+=======
+
+        $client_id = uniqid();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $args = new stdClass();
         $args->accepted_types = '*';
         $args->return_types = FILE_EXTERNAL;
@@ -117,6 +127,18 @@ EOD;
         $fp = new file_picker($args);
         $options = $fp->options;
 
+<<<<<<< HEAD
+=======
+        if (count($options->repositories) > 0) {
+            $straddlink = get_string('choosealink', 'repository');
+            $str .= <<<EOD
+<button id="filepicker-button-{$client_id}" style="display:none">
+$straddlink
+</button>
+EOD;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // print out file picker
         $str .= $OUTPUT->render($fp);
 
@@ -128,6 +150,7 @@ EOD;
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @param array $helpbuttonargs array of arguments to make a help button
@@ -141,6 +164,8 @@ EOD;
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * get html for help button
      *
      * @return string html for help button

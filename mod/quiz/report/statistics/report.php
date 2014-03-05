@@ -492,7 +492,11 @@ class quiz_statistics_report extends quiz_default_report {
 
         // The statistics.
         foreach ($todisplay as $property => $format) {
+<<<<<<< HEAD
             if (!isset($quizstats->$property) || empty($format[$property])) {
+=======
+            if (!isset($quizstats->$property) || !$format) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 continue;
             }
             $value = $quizstats->$property;
@@ -966,6 +970,7 @@ class quiz_statistics_report extends quiz_default_report {
     protected function everything_download_options() {
         $downloadoptions = $this->table->get_download_menu();
 
+<<<<<<< HEAD
         $output = '<form action="'. $this->table->baseurl .'" method="post">';
         $output .= '<div class="mdl-align">';
         $output .= '<input type="hidden" name="everything" value="1"/>';
@@ -973,6 +978,18 @@ class quiz_statistics_report extends quiz_default_report {
                 get_string('downloadeverything', 'quiz_statistics') . '"/>';
         $output .= html_writer::select($downloadoptions, 'download',
                 $this->table->defaultdownloadformat, false);
+=======
+        $downloadelements = new stdClass();
+        $downloadelements->formatsmenu = html_writer::select($downloadoptions, 'download',
+                $this->table->defaultdownloadformat, false);
+        $downloadelements->downloadbutton = '<input type="submit" value="' .
+                get_string('download') . '"/>';
+
+        $output = '<form action="'. $this->table->baseurl .'" method="post">';
+        $output .= '<div class="mdl-align">';
+        $output .= '<input type="hidden" name="everything" value="1"/>';
+        $output .= html_writer::tag('label', get_string('downloadeverything', 'quiz_statistics', $downloadelements));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $output .= '</div></form>';
 
         return $output;

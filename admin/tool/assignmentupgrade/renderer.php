@@ -119,7 +119,11 @@ class tool_assignmentupgrade_renderer extends plugin_renderer_base {
         $output = '';
         $output .= $this->header();
         $this->page->requires->js_init_call('M.tool_assignmentupgrade.init_upgrade_table', array());
+<<<<<<< HEAD
 
+=======
+        $this->page->requires->string_for_js('noassignmentsselected', 'tool_assignmentupgrade');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $output .= $this->heading(get_string('notupgradedtitle', 'tool_assignmentupgrade'));
         $output .= $this->box(get_string('notupgradedintro', 'tool_assignmentupgrade'));

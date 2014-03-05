@@ -48,7 +48,12 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
     // PHP doesn't support 'key' => $value1 | $value2 in class definition
     // We cannot do $_options = array('return_types'=> FILE_INTERNAL | FILE_REFERENCE);
     // So I have to set null here, and do it in constructor
+<<<<<<< HEAD
     protected $_options    = array('mainfile'=>'', 'subdirs'=>1, 'maxbytes'=>-1, 'maxfiles'=>-1, 'accepted_types'=>'*', 'return_types'=> null);
+=======
+    protected $_options = array('mainfile' => '', 'subdirs' => 1, 'maxbytes' => -1, 'maxfiles' => -1,
+            'accepted_types' => '*', 'return_types' =>  null, 'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * Constructor
@@ -134,6 +139,27 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns the maximum size of the area.
+     *
+     * @return int
+     */
+    function getAreamaxbytes() {
+        return $this->_options['areamaxbytes'];
+    }
+
+    /**
+     * Sets the maximum size of the area.
+     *
+     * @param int $areamaxbytes size limit
+     */
+    function setAreamaxbytes($areamaxbytes) {
+        $this->_options['areamaxbytes'] = $areamaxbytes;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns true if subdirectoy can be created, else false
      *
      * @return bool
@@ -170,6 +196,7 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
     }
 
     /**
+<<<<<<< HEAD
      * Sets help button for filemanager
      *
      * @param mixed $helpbuttonargs arguments to create help button
@@ -183,6 +210,8 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns html for help button.
      *
      * @return string html for help button
@@ -250,6 +279,10 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
         $options->accepted_types = $accepted_types;
         $options->return_types = $this->_options['return_types'];
         $options->context = $PAGE->context;
+<<<<<<< HEAD
+=======
+        $options->areamaxbytes = $this->_options['areamaxbytes'];
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $html = $this->_getTabs();
         $fm = new form_filemanager($options);
@@ -284,6 +317,10 @@ class form_filemanager implements renderable {
      * @param stdClass $options options for filemanager
      *   default options are:
      *       maxbytes=>-1,
+<<<<<<< HEAD
+=======
+     *       areamaxbytes => FILE_AREA_MAX_BYTES_UNLIMITED,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *       maxfiles=>-1,
      *       itemid=>0,
      *       subdirs=>false,
@@ -300,6 +337,10 @@ class form_filemanager implements renderable {
         require_once($CFG->dirroot. '/repository/lib.php');
         $defaults = array(
             'maxbytes'=>-1,
+<<<<<<< HEAD
+=======
+            'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'maxfiles'=>-1,
             'itemid'=>0,
             'subdirs'=>0,
@@ -335,7 +376,11 @@ class form_filemanager implements renderable {
         $this->options = file_get_drafarea_files($options->itemid, '/');
 
         // calculate file count
+<<<<<<< HEAD
         $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $options->itemid, 'id', false);
         $filecount = count($files);
         $this->options->filecount = $filecount;
@@ -376,6 +421,10 @@ class form_filemanager implements renderable {
             'itemid'=>$this->options->itemid,
             'subdirs'=>$this->options->subdirs,
             'maxbytes'=>$this->options->maxbytes,
+<<<<<<< HEAD
+=======
+            'areamaxbytes' => $this->options->areamaxbytes,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'maxfiles'=>$this->options->maxfiles,
             'ctx_id'=>$PAGE->context->id, // TODO ?
             'course'=>$PAGE->course->id, // TODO ?

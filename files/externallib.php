@@ -82,7 +82,11 @@ class core_files_external extends external_api {
         if (empty($fileinfo['contextid'])) {
             $context  = get_system_context();
         } else {
+<<<<<<< HEAD
             $context  = get_context_instance_by_id($fileinfo['contextid']);
+=======
+            $context  = context::instance_by_id($fileinfo['contextid']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         if (empty($fileinfo['component'])) {
             $fileinfo['component'] = null;
@@ -272,7 +276,11 @@ class core_files_external extends external_api {
         }
 
         if (!empty($fileinfo['contextid'])) {
+<<<<<<< HEAD
             $context = get_context_instance_by_id($fileinfo['contextid']);
+=======
+            $context = context::instance_by_id($fileinfo['contextid']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $context = get_system_context();
         }

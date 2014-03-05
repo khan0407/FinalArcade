@@ -28,7 +28,11 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/roles/lib.php');
 
+<<<<<<< HEAD
 $mode = required_param('mode', PARAM_ACTION);
+=======
+$mode = required_param('mode', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $classformode = array(
     'assign' => 'role_allow_assign_page',
     'override' => 'role_allow_override_page',
@@ -41,7 +45,11 @@ if (!isset($classformode[$mode])) {
 $baseurl = new moodle_url('/admin/roles/allow.php', array('mode'=>$mode));
 admin_externalpage_setup('defineroles', '', array(), $baseurl);
 
+<<<<<<< HEAD
 $syscontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$syscontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/role:manage', $syscontext);
 
 $controller = new $classformode[$mode]();

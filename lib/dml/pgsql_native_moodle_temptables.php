@@ -29,5 +29,20 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__.'/moodle_temptables.php');
 
 class pgsql_native_moodle_temptables extends moodle_temptables {
+<<<<<<< HEAD
     // I love these classes :-P
+=======
+    /**
+     * Analyze the data in temporary tables to force statistics collection after bulk data loads.
+     * PostgreSQL does not natively support automatic temporary table stats collection, so we do it.
+     *
+     * @return void
+     */
+    public function update_stats() {
+        $temptables = $this->get_temptables();
+        foreach ($temptables as $temptablename) {
+            $this->mdb->execute("ANALYZE {".$temptablename."}");
+        }
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

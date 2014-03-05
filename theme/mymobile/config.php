@@ -105,34 +105,58 @@ $THEME->layouts = array(
     'popup' => array(
         'file' => 'embedded.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>true),
+=======
+        'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'frametop' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nocoursefooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'maintenance' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'embedded' => array(
         'file' => 'embedded.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // Should display the content and basic headers only.
     'print' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>false, 'noblocks'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>false, 'noblocks'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
      // The pagelayout used when a redirection is occuring.
     'redirect' => array(
         'file' => 'embedded.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
      // The pagelayout used for reports
     'report' => array(
@@ -158,7 +182,11 @@ if ($thisdevice == "default" || $thisdevice == "tablet" || optional_param('mymob
 $THEME->javascripts = array(
     'jquery-1.7.1.min',
     'custom',
+<<<<<<< HEAD
     'jquery.mobile-1.1.0'
+=======
+    'jquery.mobile-1.1.1'
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 );
 
 // Sets a custom render factory to use with the theme, used when working with custom renderers.

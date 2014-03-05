@@ -24,6 +24,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['addedby'] = 'Added by {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['addgroup'] = 'Add user into group';
 $string['addgroupstogrouping'] = 'Add group to grouping';
 $string['addgroupstogroupings'] = 'Add/remove groups';
@@ -62,6 +66,10 @@ $string['erroraddremoveuser'] = 'Error adding/removing user {$a} to group';
 $string['erroreditgroup'] = 'Error creating/updating group {$a}';
 $string['erroreditgrouping'] = 'Error creating/updating grouping {$a}';
 $string['errorinvalidgroup'] = 'Error, invalid group {$a}';
+<<<<<<< HEAD
+=======
+$string['errorremovenotpermitted'] = 'You do not have permission to remove automatically-added group member {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['errorselectone'] = 'Please select a single group before choosing this option';
 $string['errorselectsome'] = 'Please select one or more groups before choosing this option';
 $string['evenallocation'] = 'Note: To keep group allocation even, the actual number of members per group differs from the number you specified.';

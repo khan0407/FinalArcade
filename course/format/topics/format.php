@@ -44,12 +44,25 @@ if (($marker >=0) && has_capability('moodle/course:setcurrentsection', $context)
     course_set_marker($course->id, $marker);
 }
 
+<<<<<<< HEAD
 $renderer = $PAGE->get_renderer('format_topics');
 
 if (!empty($displaysection)) {
     $renderer->print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
 } else {
     $renderer->print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused);
+=======
+// make sure all sections are created
+$course = course_get_format($course)->get_course();
+course_create_sections_if_missing($course, range(0, $course->numsections));
+
+$renderer = $PAGE->get_renderer('format_topics');
+
+if (!empty($displaysection)) {
+    $renderer->print_single_section_page($course, null, null, null, null, $displaysection);
+} else {
+    $renderer->print_multiple_section_page($course, null, null, null, null);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 // Include course format js module

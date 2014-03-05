@@ -10,7 +10,11 @@ $format = optional_param('format', '', PARAM_ALPHA);
 
 require_login();
 admin_externalpage_setup('userbulk');
+<<<<<<< HEAD
 require_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/user:update', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $return = $CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk.php';
 
@@ -148,6 +152,7 @@ function user_download_csv($fields) {
     global $CFG, $SESSION, $DB;
 
     require_once($CFG->dirroot.'/user/profile/lib.php');
+<<<<<<< HEAD
 
     $filename = clean_filename(get_string('users').'.csv');
 
@@ -165,6 +170,15 @@ function user_download_csv($fields) {
         $row[] = str_replace($delimiter, $encdelim, $fieldname);
     }
     echo implode($delimiter, $row)."\n";
+=======
+    require_once($CFG->libdir . '/csvlib.class.php');
+
+    $filename = clean_filename(get_string('users'));
+
+    $csvexport = new csv_export_writer();
+    $csvexport->set_filename($filename);
+    $csvexport->add_data($fields);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     foreach ($SESSION->bulk_users as $userid) {
         $row = array();
@@ -172,10 +186,27 @@ function user_download_csv($fields) {
             continue;
         }
         profile_load_data($user);
+<<<<<<< HEAD
         foreach ($fields as $field=>$unused) {
             $row[] = str_replace($delimiter, $encdelim, $user->$field);
         }
         echo implode($delimiter, $row)."\n";
     }
+=======
+        $userprofiledata = array();
+        foreach ($fields as $field=>$unused) {
+            // Custom user profile textarea fields come in an array
+            // The first element is the text and the second is the format.
+            // We only take the text.
+            if (is_array($user->$field)) {
+                $userprofiledata[] = reset($user->$field);
+            } else {
+                $userprofiledata[] = $user->$field;
+            }
+        }
+        $csvexport->add_data($userprofiledata);
+    }
+    $csvexport->download_file();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     die;
 }

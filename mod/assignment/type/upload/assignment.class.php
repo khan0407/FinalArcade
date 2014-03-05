@@ -64,12 +64,22 @@ class assignment_upload extends assignment_base {
 
         if (is_enrolled($this->context, $USER)) {
             if ($submission = $this->get_submission($USER->id)) {
+<<<<<<< HEAD
+=======
+                if ($submission->timemarked) {
+                    $this->view_feedback($submission);
+                }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $filecount = $this->count_user_files($submission->id);
             } else {
                 $filecount = 0;
             }
             if ($cansubmit or !empty($filecount)) { //if a user has submitted files using a previous role we should still show the files
+<<<<<<< HEAD
                 $this->view_feedback();
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 if (!$this->drafts_tracked() or !$this->isopen() or $this->is_finalized($submission)) {
                     echo $OUTPUT->heading(get_string('submission', 'assignment'), 3);
@@ -100,6 +110,7 @@ class assignment_upload extends assignment_base {
         $this->view_footer();
     }
 
+<<<<<<< HEAD
 
     function view_feedback($submission=NULL) {
         global $USER, $CFG, $DB, $OUTPUT, $PAGE;
@@ -194,6 +205,27 @@ class assignment_upload extends assignment_base {
     }
 
 
+=======
+    /**
+     * Display the response file to the student
+     *
+     * This default method prints the response file
+     *
+     * @param object $submission The submission object
+     */
+    function view_responsefile($submission) {
+        $fs = get_file_storage();
+        $noresponsefiles = $fs->is_area_empty($this->context->id, 'mod_assignment', 'response', $submission->id);
+        if (!$noresponsefiles) {
+            echo '<tr>';
+            echo '<td class="left side">&nbsp;</td>';
+            echo '<td class="content">';
+            echo $this->print_responsefiles($submission->userid);
+            echo '</td></tr>';
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function view_upload_form() {
         global $CFG, $USER, $OUTPUT;
 
@@ -408,10 +440,17 @@ class assignment_upload extends assignment_base {
         global $DB;
 
         // Grab the context assocated with our course module
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
 
         // Get ids of users enrolled in the given course.
         list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:view', $groupid);
+=======
+        $context = context_module::instance($this->cm->id);
+
+        // Get ids of users enrolled in the given course.
+        list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:submit', $groupid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $params['assignmentid'] = $this->cm->instance;
 
         $query = '';
@@ -430,6 +469,7 @@ class assignment_upload extends assignment_base {
     }
 
     function print_responsefiles($userid, $return=false) {
+<<<<<<< HEAD
         global $CFG, $USER, $OUTPUT, $PAGE;
 
         $mode    = optional_param('mode', '', PARAM_ALPHA);
@@ -443,6 +483,12 @@ class assignment_upload extends assignment_base {
         $fs = get_file_storage();
         $browser = get_file_browser();
 
+=======
+        global $OUTPUT, $PAGE;
+
+        $output = $OUTPUT->box_start('responsefiles');
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($submission = $this->get_submission($userid)) {
             $renderer = $PAGE->get_renderer('mod_assignment');
             $output .= $renderer->assignment_files($this->context, $submission->id, 'response');
@@ -1084,8 +1130,13 @@ class assignment_upload extends assignment_base {
         $mform->addHelpButton('var4', 'trackdrafts', 'assignment');
         $mform->setDefault('var4', 1);
 
+<<<<<<< HEAD
         $course_context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
         plagiarism_get_form_elements_module($mform, $course_context);
+=======
+        $course_context = context_course::instance($COURSE->id);
+        plagiarism_get_form_elements_module($mform, $course_context, 'mod_assignment');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function portfolio_exportable() {

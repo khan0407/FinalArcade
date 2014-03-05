@@ -203,7 +203,11 @@ class site_registration_form extends moodleform {
         $cleanhuburl = clean_param($huburl, PARAM_ALPHANUMEXT);
         $sitename = get_config('hub', 'site_name_' . $cleanhuburl);
         if ($sitename === false) {
+<<<<<<< HEAD
             $sitename = format_string($site->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+=======
+            $sitename = format_string($site->fullname, true, array('context' => context_course::instance(SITEID)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $sitedescription = get_config('hub', 'site_description_' . $cleanhuburl);
         if ($sitedescription === false) {

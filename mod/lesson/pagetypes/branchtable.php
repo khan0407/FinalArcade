@@ -176,7 +176,11 @@ class lesson_page_type_branchtable extends lesson_page {
         $DB->insert_record("lesson_branch", $branch);
 
         //  this is called when jumping to random from a branch table
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+=======
+        $context = context_module::instance($PAGE->cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if($newpageid == LESSON_UNSEENBRANCHPAGE) {
             if (has_capability('mod/lesson:manage', $context)) {
                  $newpageid = LESSON_NEXTPAGE;

@@ -59,7 +59,11 @@ class feedback_item_label extends feedback_item_base {
                              'items'=>$feedbackitems,
                              'feedback'=>$feedback->id);
 
+<<<<<<< HEAD
         $this->context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $this->context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         //preparing the editor for new file-api
         $item->presentationformat = FORMAT_HTML;
@@ -148,12 +152,20 @@ class feedback_item_label extends feedback_item_base {
             if ($template->ispublic) {
                 $context = get_system_context();
             } else {
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $template->course);
+=======
+                $context = context_course::instance($template->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $filearea = 'template';
         } else {
             $cm = get_coursemodule_from_instance('feedback', $item->feedback);
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+            $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $filearea = 'item';
         }
 
@@ -232,7 +244,11 @@ class feedback_item_label extends feedback_item_base {
     public function postupdate($item) {
         global $DB;
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $item->cmid);
+=======
+        $context = context_module::instance($item->cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $item = file_postupdate_standard_editor($item,
                                                 'presentation',
                                                 $this->presentationoptions,

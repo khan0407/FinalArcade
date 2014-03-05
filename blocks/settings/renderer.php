@@ -84,7 +84,11 @@ class block_settings_renderer extends plugin_renderer_base {
     }
 
     public function search_form(moodle_url $formtarget, $searchvalue) {
+<<<<<<< HEAD
         $content = html_writer::start_tag('form', array('class'=>'adminsearchform', 'method'=>'get', 'action'=>$formtarget));
+=======
+        $content = html_writer::start_tag('form', array('class'=>'adminsearchform', 'method'=>'get', 'action'=>$formtarget, 'role' => 'search'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $content .= html_writer::start_tag('div');
         $content .= html_writer::tag('label', s(get_string('searchinsettings', 'admin')), array('for'=>'adminsearchquery', 'class'=>'accesshide'));
         $content .= html_writer::empty_tag('input', array('id'=>'adminsearchquery', 'type'=>'text', 'name'=>'query', 'value'=>s($searchvalue)));

@@ -24,8 +24,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 $string['pluginname'] = 'Logged in user';
 $string['myprofile_settings'] = 'Visible user information';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['contentsettings'] = 'Display settings for content region';
 $string['display_picture'] = 'Display picture';
 $string['display_country'] = 'Display country';
@@ -45,3 +48,10 @@ $string['display_firstaccess'] = 'Display first access';
 $string['display_lastaccess'] = 'Display last access';
 $string['display_currentlogin'] = 'Display current login';
 $string['display_lastip'] = 'Display last IP';
+<<<<<<< HEAD
+=======
+$string['myprofile:addinstance'] = 'Add a new logged in user block';
+$string['myprofile:myaddinstance'] = 'Add a new logged in user block to My home';
+$string['myprofile_settings'] = 'Visible user information';
+$string['pluginname'] = 'Logged in user';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

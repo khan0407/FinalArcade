@@ -34,11 +34,19 @@ $string['clianswerno'] = 'n';
 $string['cliansweryes'] = 't';
 $string['cliincorrectvalueerror'] = 'Błąd, niepoprawna wartość "{$a->value}" dla "{$a->option}"';
 $string['cliincorrectvalueretry'] = 'Nieprawidłowa wartość, spróbuj ponownie';
+<<<<<<< HEAD
 $string['clitypevalue'] = 'wartość typu';
 $string['clitypevaluedefault'] = 'Typ wartości, naciśnij Enter, aby użyć wartości domyślnej ({$a})';
 $string['cliunknowoption'] = 'Nieznane opcje:
   {$a}
 Proszę użyć opcji --help.';
+=======
+$string['clitypevalue'] = 'typ wartości';
+$string['clitypevaluedefault'] = 'typ wartości, naciśnij Enter, aby użyć wartości domyślnej ({$a})';
+$string['cliunknowoption'] = 'Nieznana opcja:
+  {$a}
+Proszę użyć pomocy.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cliyesnoprompt'] = 'wpisz y (czyli tak) lub n (czyli nie)';
 $string['environmentrequireinstall'] = 'jest niezbędnę, żeby było zainstalowane/włączone';
 $string['environmentrequireversion'] = 'wersja {$a->needed} jest niezbędna a ty używasz wersji {$a->current}';

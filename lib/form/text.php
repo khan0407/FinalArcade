@@ -65,6 +65,36 @@ class MoodleQuickForm_text extends HTML_QuickForm_text{
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Freeze the element so that only its value is returned and set persistantfreeze to false
+     *
+     * @since     2.4
+     * @access    public
+     * @return    void
+     */
+    function freeze()
+    {
+        $this->_flagFrozen = true;
+        // No hidden element is needed refer MDL-30845
+        $this->setPersistantFreeze(false);
+    } //end func freeze
+
+    /**
+     * Returns the html to be used when the element is frozen
+     *
+     * @since     2.4
+     * @return    string Frozen html
+     */
+    function getFrozenHtml()
+    {
+        $attributes = array('readonly' => 'readonly');
+        $this->updateAttributes($attributes);
+        return $this->_getTabs() . '<input' . $this->_getAttrString($this->_attributes) . ' />' . $this->_getPersistantData();
+    } //end func getFrozenHtml
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns HTML for this form element.
      *
      * @return string
@@ -80,6 +110,7 @@ class MoodleQuickForm_text extends HTML_QuickForm_text{
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @param array $helpbuttonargs array of arguments to make a help button
@@ -93,6 +124,8 @@ class MoodleQuickForm_text extends HTML_QuickForm_text{
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * get html for help button
      *
      * @return string html for help button
@@ -101,6 +134,7 @@ class MoodleQuickForm_text extends HTML_QuickForm_text{
         return $this->_helpbutton;
     }
 
+<<<<<<< HEAD
     /**
      * Slightly different container template when frozen. Don't want to use a label tag
      * with a for attribute in that case for the element label but instead use a div.
@@ -115,4 +149,6 @@ class MoodleQuickForm_text extends HTML_QuickForm_text{
             return 'default';
         }
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

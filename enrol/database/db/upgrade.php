@@ -17,8 +17,12 @@
 /**
  * Database enrolment plugin upgrade.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage database
+=======
+ * @package    enrol_database
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +34,15 @@ function xmldb_enrol_database_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
 
+<<<<<<< HEAD
     // Moodle v2.3.0 release upgrade line
+=======
+    // Moodle v2.3.0 release upgrade line.
+    // Put any upgrade step following this.
+
+
+    // Moodle v2.4.0 release upgrade line
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // Put any upgrade step following this
 
 

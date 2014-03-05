@@ -37,7 +37,11 @@ $PAGE->set_pagelayout('popup');
 $action = optional_param('action', null, PARAM_TEXT);
 $typeid = optional_param('typeid', null, PARAM_INT);
 
+<<<<<<< HEAD
 require_capability('mod/lti:addcoursetool', get_context_instance(CONTEXT_COURSE, $courseid));
+=======
+require_capability('mod/lti:addcoursetool', context_course::instance($courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (!empty($typeid)) {
     $type = lti_get_type($typeid);

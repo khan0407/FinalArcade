@@ -410,7 +410,11 @@ class qformat_xml extends qformat_default {
         $qo = $this->import_headers($question);
 
         // 'header' parts particular to multichoice
+<<<<<<< HEAD
         $qo->qtype = MULTICHOICE;
+=======
+        $qo->qtype = 'multichoice';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $single = $this->getpath($question, array('#', 'single', 0, '#'), 'true');
         $qo->single = $this->trans_single($single);
         $shuffleanswers = $this->getpath($question,
@@ -503,7 +507,11 @@ class qformat_xml extends qformat_default {
             $qo->penalty = 0.3333333;
         }
 
+<<<<<<< HEAD
         $this->import_hints($qo, $question, false, false, $this->get_format($qo->questiontextformat));
+=======
+        $this->import_hints($qo, $question, true, false, $this->get_format($qo->questiontextformat));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $qo;
     }
@@ -519,7 +527,11 @@ class qformat_xml extends qformat_default {
         $qo = $this->import_headers($question);
 
         // 'header' parts particular to true/false
+<<<<<<< HEAD
         $qo->qtype = TRUEFALSE;
+=======
+        $qo->qtype = 'truefalse';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // In the past, it used to be assumed that the two answers were in the file
         // true first, then false. Howevever that was not always true. Now, we
@@ -577,7 +589,11 @@ class qformat_xml extends qformat_default {
         $qo = $this->import_headers($question);
 
         // header parts particular to shortanswer
+<<<<<<< HEAD
         $qo->qtype = SHORTANSWER;
+=======
+        $qo->qtype = 'shortanswer';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // get usecase
         $qo->usecase = $this->getpath($question, array('#', 'usecase', 0, '#'), $qo->usecase);
@@ -607,7 +623,11 @@ class qformat_xml extends qformat_default {
         // get common parts
         $qo = $this->import_headers($question);
         // header parts particular to shortanswer
+<<<<<<< HEAD
         $qo->qtype = DESCRIPTION;
+=======
+        $qo->qtype = 'description';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $qo->defaultmark = 0;
         $qo->length = 0;
         return $qo;
@@ -623,7 +643,11 @@ class qformat_xml extends qformat_default {
         $qo = $this->import_headers($question);
 
         // header parts particular to numerical
+<<<<<<< HEAD
         $qo->qtype = NUMERICAL;
+=======
+        $qo->qtype = 'numerical';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // get answers array
         $answers = $question['#']['answer'];
@@ -725,7 +749,11 @@ class qformat_xml extends qformat_default {
         $qo = $this->import_headers($question);
 
         // header parts particular to essay
+<<<<<<< HEAD
         $qo->qtype = ESSAY;
+=======
+        $qo->qtype = 'essay';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $qo->responseformat = $this->getpath($question,
                 array('#', 'responseformat', 0, '#'), 'editor');
@@ -749,7 +777,11 @@ class qformat_xml extends qformat_default {
         $qo = $this->import_headers($question);
 
         // header parts particular to calculated
+<<<<<<< HEAD
         $qo->qtype = CALCULATED;
+=======
+        $qo->qtype = 'calculated';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $qo->synchronize = $this->getpath($question, array('#', 'synchronize', 0, '#'), 0);
         $single = $this->getpath($question, array('#', 'single', 0, '#'), 'true');
         $qo->single = $this->trans_single($single);
@@ -1370,7 +1402,11 @@ class qformat_xml extends qformat_default {
                         $expout .= "<dataset_definition>\n";
                         $expout .= "    <status>".$this->writetext($def->status)."</status>\n";
                         $expout .= "    <name>".$this->writetext($def->name)."</name>\n";
+<<<<<<< HEAD
                         if ($question->qtype == CALCULATED) {
+=======
+                        if ($question->qtype == 'calculated') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $expout .= "    <type>calculated</type>\n";
                         } else {
                             $expout .= "    <type>calculatedsimple</type>\n";

@@ -321,8 +321,13 @@ function uu_process_template_callback($username, $firstname, $lastname, $block) 
  * @return array type=>name
  */
 function uu_supported_auths() {
+<<<<<<< HEAD
     // only following plugins are guaranteed to work properly
     $whitelist = array('manual', 'nologin', 'none', 'email');
+=======
+    // Only the following plugins are guaranteed to work properly.
+    $whitelist = array('email', 'ldap', 'manual', 'nologin', 'none');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $plugins = get_enabled_auth_plugins();
     $choices = array();
     foreach ($plugins as $plugin) {
@@ -341,7 +346,11 @@ function uu_supported_auths() {
  */
 function uu_allowed_roles() {
     // let's cheat a bit, frontpage is guaranteed to exist and has the same list of roles ;-)
+<<<<<<< HEAD
     $roles = get_assignable_roles(get_context_instance(CONTEXT_COURSE, SITEID), ROLENAME_ORIGINALANDSHORT);
+=======
+    $roles = get_assignable_roles(context_course::instance(SITEID), ROLENAME_ORIGINALANDSHORT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return array_reverse($roles, true);
 }
 
@@ -350,7 +359,11 @@ function uu_allowed_roles() {
  * @return array
  */
 function uu_allowed_roles_cache() {
+<<<<<<< HEAD
     $allowedroles = get_assignable_roles(get_context_instance(CONTEXT_COURSE, SITEID), ROLENAME_SHORT);
+=======
+    $allowedroles = get_assignable_roles(context_course::instance(SITEID), ROLENAME_SHORT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     foreach ($allowedroles as $rid=>$rname) {
         $rolecache[$rid] = new stdClass();
         $rolecache[$rid]->id   = $rid;

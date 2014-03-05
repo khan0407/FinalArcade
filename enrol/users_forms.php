@@ -36,7 +36,11 @@ class enrol_users_assign_form extends moodleform {
 
         $user       = $this->_customdata['user'];
         $course     = $this->_customdata['course'];
+<<<<<<< HEAD
         $context    = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context    = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $assignable = $this->_customdata['assignable'];
         $assignable = array_reverse($assignable, true); // students first
 
@@ -56,7 +60,11 @@ class enrol_users_assign_form extends moodleform {
         $mform->setType('user', PARAM_INT);
 
         $mform->addElement('hidden', 'action');
+<<<<<<< HEAD
         $mform->setType('action', PARAM_ACTION);
+=======
+        $mform->setType('action', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $mform->addElement('hidden', 'ifilter');
         $mform->setType('ifilter', PARAM_ALPHA);
@@ -87,7 +95,11 @@ class enrol_users_addmember_form extends moodleform {
 
         $user     = $this->_customdata['user'];
         $course   = $this->_customdata['course'];
+<<<<<<< HEAD
         $context  = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context  = context_course::instance($course->id, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $allgroups = $this->_customdata['allgroups'];
         $usergroups = groups_get_all_groups($course->id, $user->id, 0, 'g.id');
 
@@ -110,7 +122,11 @@ class enrol_users_addmember_form extends moodleform {
         $mform->setType('user', PARAM_INT);
 
         $mform->addElement('hidden', 'action');
+<<<<<<< HEAD
         $mform->setType('action', PARAM_ACTION);
+=======
+        $mform->setType('action', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $mform->addElement('hidden', 'ifilter');
         $mform->setType('ifilter', PARAM_ALPHA);

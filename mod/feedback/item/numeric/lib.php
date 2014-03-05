@@ -252,7 +252,13 @@ class feedback_item_numeric extends feedback_item_base {
 
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
+<<<<<<< HEAD
         echo '<div class="feedback_item_label_'.$align.'">';
+=======
+        $inputname = $item->typ . '_' . $item->id;
+        echo '<div class="feedback_item_label_'.$align.'">';
+        echo '<label for="'. $inputname .'">';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '('.$item->label.') ';
         echo format_text($item->name . $requiredmark, true, false, false);
         if ($item->dependitem) {
@@ -281,13 +287,22 @@ class feedback_item_numeric extends feedback_item_base {
                 break;
         }
         echo '</span>';
+<<<<<<< HEAD
+=======
+        echo '</label>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
 
         //print the presentation
         echo '<div class="feedback_item_presentation_'.$align.'">';
         echo '<span class="feedback_item_textfield">';
         echo '<input type="text" '.
+<<<<<<< HEAD
                     'name="'.$item->typ.'_'.$item->id.'" '.
+=======
+                    'id="'.$inputname.'" '.
+                    'name="'.$inputname.'" '.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     'size="10" '.
                     'maxlength="10" '.
                     'value="" />';
@@ -335,7 +350,13 @@ class feedback_item_numeric extends feedback_item_base {
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
+<<<<<<< HEAD
         echo '<div class="feedback_item_label_'.$align.$highlight.'">';
+=======
+        $inputname = $item->typ . '_' . $item->id;
+        echo '<div class="feedback_item_label_'.$align.$highlight.'">';
+        echo '<label for="'. $inputname .'">';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo format_text($item->name . $requiredmark, true, false, false);
         echo '<span class="feedback_item_numinfo">';
         switch(true) {
@@ -355,12 +376,20 @@ class feedback_item_numeric extends feedback_item_base {
                 break;
         }
         echo '</span>';
+<<<<<<< HEAD
+=======
+        echo '</label>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
 
         //print the presentation
         echo '<div class="feedback_item_presentation_'.$align.$highlight.'">';
         echo '<span class="feedback_item_textfield">';
         echo '<input type="text" '.
+<<<<<<< HEAD
+=======
+                     'id="'.$inputname.'" '.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                      'name="'.$item->typ.'_'.$item->id.'" '.
                      'size="10" '.
                      'maxlength="10" '.

@@ -26,7 +26,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+<<<<<<< HEAD
 $plugin->version = 2012061901;              // The current module version (Date: YYYYMMDDXX)
 $plugin->requires = 2011070101;             // Requires this Moodle version
+=======
+$plugin->version = 2012112900;              // The current module version (Date: YYYYMMDDXX)
+$plugin->requires = 2012112900;             // Requires this Moodle version
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $plugin->component = 'theme_mymobile';
 $plugin->maturity = MATURITY_STABLE;

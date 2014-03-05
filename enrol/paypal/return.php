@@ -34,7 +34,11 @@ if (!$course = $DB->get_record("course", array("id"=>$id))) {
     redirect($CFG->wwwroot);
 }
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_context($context);
 
 require_login();

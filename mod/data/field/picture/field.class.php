@@ -42,7 +42,11 @@ class data_field_picture extends data_field_base {
                 file_prepare_draft_area($itemid, $this->context->id, 'mod_data', 'content', $content->id);
                 if (!empty($content->content)) {
                     if ($file = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', $content->content)) {
+<<<<<<< HEAD
                         $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+                        $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         if (!$files = $fs->get_area_files($usercontext->id, 'user', 'draft', $itemid, 'id DESC', false)) {
                             return false;
                         }
@@ -215,7 +219,11 @@ class data_field_picture extends data_field_base {
             case 'file':
                 $fs = get_file_storage();
                 $fs->delete_area_files($this->context->id, 'mod_data', 'content', $content->id);
+<<<<<<< HEAD
                 $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+                $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $value);
                 if (count($files)<2) {
                     // no file
@@ -229,6 +237,16 @@ class data_field_picture extends data_field_base {
                             $content->content = $draftfile->get_filename();
 
                             $file = $fs->create_file_from_storedfile($file_record, $draftfile);
+<<<<<<< HEAD
+=======
+
+                            // If the file is not a valid image, redirect back to the upload form.
+                            if ($file->get_imageinfo() === false) {
+                                $url = new moodle_url('/mod/data/edit.php', array('d' => $this->field->dataid));
+                                redirect($url, get_string('invalidfiletype', 'error', $file->get_filename()));
+                            }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $DB->update_record('data_content', $content);
                             $this->update_thumbnail($content, $file);
 

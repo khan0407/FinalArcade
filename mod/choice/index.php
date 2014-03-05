@@ -18,7 +18,10 @@
 
     $strchoice = get_string("modulename", "choice");
     $strchoices = get_string("modulenameplural", "choice");
+<<<<<<< HEAD
     $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_title($strchoices);
     $PAGE->set_heading($course->fullname);
     $PAGE->navbar->add($strchoices);
@@ -29,9 +32,12 @@
     }
 
     $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
     if ($usesections) {
         $sections = get_all_sections($course->id);
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $sql = "SELECT cha.*
               FROM {choice} ch, {choice_answers} cha
@@ -52,6 +58,10 @@
     $table = new html_table();
 
     if ($usesections) {
+<<<<<<< HEAD
+=======
+        $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $table->head  = array ($strsectionname, get_string("question"), get_string("answer"));
         $table->align = array ("center", "left", "left");
     } else {
@@ -76,7 +86,11 @@
             $printsection = "";
             if ($choice->section !== $currentsection) {
                 if ($choice->section) {
+<<<<<<< HEAD
                     $printsection = get_section_name($course, $sections[$choice->section]);
+=======
+                    $printsection = get_section_name($course, $choice->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
                 if ($currentsection !== "") {
                     $table->data[] = 'hr';

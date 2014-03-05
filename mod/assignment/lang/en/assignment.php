@@ -23,6 +23,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['activityoverview'] = 'You have assignments that need attention';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['allowdeleting'] = 'Allow deleting';
 $string['allowdeleting_help'] = 'If enabled, students may delete uploaded files at any time before submitting for grading.';
 $string['allowmaxfiles'] = 'Maximum number of uploaded files';
@@ -222,3 +226,7 @@ $string['viewfeedback'] = 'View assignment grades and feedback';
 $string['viewmysubmission'] = 'View my submission';
 $string['viewsubmissions'] = 'View {$a} submitted assignments';
 $string['yoursubmission'] = 'Your submission';
+<<<<<<< HEAD
+=======
+$string['unsupportedsubplugin'] = 'The assignment type of \'{$a}\' is not currently supported. You may wait until the assignment type is made available, or delete the assignment.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

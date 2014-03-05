@@ -6,7 +6,11 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 $PAGE->https_required();
 
 $PAGE->set_url('/auth/ldap/ntlmsso_finish.php');
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Define variables used in page
 $site = get_site();

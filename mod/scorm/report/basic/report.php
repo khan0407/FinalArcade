@@ -22,6 +22,10 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+<<<<<<< HEAD
+=======
+require_once($CFG->libdir . '/csvlib.class.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 class scorm_basic_report extends scorm_default_report {
     /**
@@ -34,7 +38,11 @@ class scorm_basic_report extends scorm_default_report {
     function display($scorm, $cm, $course, $download) {
         global $CFG, $DB, $OUTPUT, $PAGE;
 
+<<<<<<< HEAD
         $contextmodule= get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $contextmodule= context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $action = optional_param('action', '', PARAM_ALPHA);
         $attemptids = optional_param_array('attemptid', array(), PARAM_RAW);
         $attemptsmode = optional_param('attemptsmode', SCORM_REPORT_ATTEMPTS_ALL_STUDENTS, PARAM_INT);
@@ -263,6 +271,7 @@ class scorm_basic_report extends scorm_default_report {
                 }
                 $rownum=1;
             } else if ($download=='CSV') {
+<<<<<<< HEAD
                 $filename .= ".txt";
                 header("Content-Type: application/download\n");
                 header("Content-Disposition: attachment; filename=\"$filename\"");
@@ -270,6 +279,11 @@ class scorm_basic_report extends scorm_default_report {
                 header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
                 header("Pragma: public");
                 echo implode("\t", $headers)." \n";
+=======
+                $csvexport = new csv_export_writer("tab");
+                $csvexport->set_filename($filename, ".txt");
+                $csvexport->add_data($headers);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $params = array();
             list($usql, $params) = $DB->get_in_or_equal($allowedlist, SQL_PARAMS_NAMED);
@@ -477,9 +491,14 @@ class scorm_basic_report extends scorm_default_report {
                             $colnum++;
                         }
                         $rownum++;
+<<<<<<< HEAD
                     } else if ($download=='CSV') {
                         $text = implode("\t", $row);
                         echo $text." \n";
+=======
+                    } else if ($download == 'CSV') {
+                        $csvexport->add_data($row);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 }
                 if (!$download) {
@@ -538,6 +557,10 @@ class scorm_basic_report extends scorm_default_report {
                 $workbook->close();
                 exit;
             } else if ($download == 'CSV') {
+<<<<<<< HEAD
+=======
+                $csvexport->download_file();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 exit;
             }
         } else {

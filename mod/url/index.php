@@ -37,7 +37,10 @@ add_to_log($course->id, 'url', 'view all', "index.php?id=$course->id", '');
 
 $strurl       = get_string('modulename', 'url');
 $strurls      = get_string('modulenameplural', 'url');
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname         = get_string('name');
 $strintro        = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
@@ -54,14 +57,21 @@ if (!$urls = get_all_instances_in_course('url', $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strintro);
     $table->align = array ('center', 'left', 'left');
 } else {
@@ -77,7 +87,11 @@ foreach ($urls as $url) {
         $printsection = '';
         if ($url->section !== $currentsection) {
             if ($url->section) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$url->section]);
+=======
+                $printsection = get_section_name($course, $url->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';

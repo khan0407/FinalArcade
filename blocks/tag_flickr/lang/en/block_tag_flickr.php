@@ -37,3 +37,7 @@ $string['numberofphotos'] = 'Number of photos';
 $string['pluginname'] = 'Flickr';
 $string['relevance'] = 'Relevance';
 $string['sortby'] = 'Sort by';
+<<<<<<< HEAD
+=======
+$string['tag_flickr:addinstance'] = 'Add a new flickr block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -34,14 +34,22 @@
             'id' => $courseid));
 
     if ($contextid) {
+<<<<<<< HEAD
         $context = get_context_instance_by_id($contextid, MUST_EXIST);
+=======
+        $context = context::instance_by_id($contextid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($context->contextlevel != CONTEXT_COURSE) {
             print_error('invalidcontext');
         }
         $course = $DB->get_record('course', array('id'=>$context->instanceid), '*', MUST_EXIST);
     } else {
         $course = $DB->get_record('course', array('id'=>$courseid), '*', MUST_EXIST);
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+        $context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     // not needed anymore
     unset($contextid);
@@ -49,10 +57,17 @@
 
     require_login($course);
 
+<<<<<<< HEAD
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
     $isfrontpage = ($course->id == SITEID);
 
     $frontpagectx = get_context_instance(CONTEXT_COURSE, SITEID);
+=======
+    $systemcontext = context_system::instance();
+    $isfrontpage = ($course->id == SITEID);
+
+    $frontpagectx = context_course::instance(SITEID);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ($isfrontpage) {
         $PAGE->set_pagelayout('admin');
@@ -64,6 +79,7 @@
 
     $rolenamesurl = new moodle_url("$CFG->wwwroot/user/index.php?contextid=$context->id&sifirst=&silast=");
 
+<<<<<<< HEAD
     $allroles = get_all_roles();
     $roles = get_profile_roles($context);
     $allrolenames = array();
@@ -78,6 +94,13 @@
         if (isset($roles[$role->id])) {
             $rolenames[$role->id] = $allrolenames[$role->id];
         }
+=======
+    $rolenames = role_fix_names(get_profile_roles($context), $context, ROLENAME_ALIAS, true);
+    if ($isfrontpage) {
+        $rolenames[0] = get_string('allsiteusers', 'role');
+    } else {
+        $rolenames[0] = get_string('allparticipants');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // make sure other roles may not be selected by any means
@@ -199,14 +222,22 @@
         $courselist = array();
         $popupurl = new moodle_url('/user/index.php?roleid='.$roleid.'&sifirst=&silast=');
         foreach ($mycourses as $mycourse) {
+<<<<<<< HEAD
             $coursecontext = get_context_instance(CONTEXT_COURSE, $mycourse->id);
+=======
+            $coursecontext = context_course::instance($mycourse->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $courselist[$mycourse->id] = format_string($mycourse->shortname, true, array('context' => $coursecontext));
         }
         if (has_capability('moodle/site:viewparticipants', $systemcontext)) {
             unset($courselist[SITEID]);
             $courselist = array(SITEID => format_string($SITE->shortname, true, array('context' => $systemcontext))) + $courselist;
         }
+<<<<<<< HEAD
         $select = new single_select($popupurl, 'id', $courselist, $course->id, array(''=>'choosedots'), 'courseform');
+=======
+        $select = new single_select($popupurl, 'id', $courselist, $course->id, null, 'courseform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $select->set_label(get_string('mycourses'));
         $controlstable->data[0]->cells[] = $OUTPUT->render($select);
     }
@@ -497,14 +528,24 @@
         $heading .= ": $a->number";
 
         if (user_can_assign($context, $roleid)) {
+<<<<<<< HEAD
             $heading .= ' <a href="'.$CFG->wwwroot.'/'.$CFG->admin.'/roles/assign.php?roleid='.$roleid.'&amp;contextid='.$context->id.'">';
             $heading .= '<img src="'.$OUTPUT->pix_url('i/edit') . '" class="icon" alt="" /></a>';
+=======
+            $headingurl = new moodle_url($CFG->wwwroot . '/' . $CFG->admin . '/roles/assign.php',
+                    array('roleid' => $roleid, 'contextid' => $context->id));
+            $heading .= $OUTPUT->action_icon($headingurl, new pix_icon('t/edit', get_string('edit')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         echo $OUTPUT->heading($heading, 3);
     } else {
         if ($course->id != SITEID && has_capability('moodle/course:enrolreview', $context)) {
             $editlink = $OUTPUT->action_icon(new moodle_url('/enrol/users.php', array('id' => $course->id)),
+<<<<<<< HEAD
                                              new pix_icon('i/edit', get_string('edit')));
+=======
+                                             new pix_icon('t/edit', get_string('edit')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $editlink = '';
         }
@@ -588,8 +629,13 @@
 
                     context_instance_preload($user);
 
+<<<<<<< HEAD
                     $context = get_context_instance(CONTEXT_COURSE, $course->id);
                     $usercontext = get_context_instance(CONTEXT_USER, $user->id);
+=======
+                    $context = context_course::instance($course->id);
+                    $usercontext = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                     $countries = get_string_manager()->get_list_of_countries();
 
@@ -728,7 +774,11 @@
                     }
                 }
 
+<<<<<<< HEAD
                 $usercontext = get_context_instance(CONTEXT_USER, $user->id);
+=======
+                $usercontext = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 if ($piclink = ($USER->id == $user->id || has_capability('moodle/user:viewdetails', $context) || has_capability('moodle/user:viewdetails', $usercontext))) {
                     $profilelink = '<strong><a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$course->id.'">'.fullname($user).'</a></strong>';

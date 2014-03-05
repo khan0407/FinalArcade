@@ -32,7 +32,11 @@ $time       = optional_param('time', 0, PARAM_INT);
 $numcourses = optional_param('numcourses', 20, PARAM_INT);
 
 if (empty($CFG->enablestats)) {
+<<<<<<< HEAD
     if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+    if (has_capability('moodle/site:config', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         redirect("$CFG->wwwroot/$CFG->admin/search.php?query=enablestats", get_string('mustenablestats', 'admin'), 3);
     } else {
         print_error('statsdisable');
@@ -68,8 +72,13 @@ if (empty($timeoptions)) {
     print_error('nostatstodisplay', 'error', $CFG->wwwroot.'/course/view.php?id='.$course->id);
 }
 
+<<<<<<< HEAD
 echo '<form action="index.php" method="post">'."\n";
 echo '<div>';
+=======
+echo html_writer::start_tag('form', array('action' => 'index.php', 'method' => 'post'));
+echo html_writer::start_tag('div');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $table = new html_table();
 $table->width = '*';
@@ -82,6 +91,7 @@ $timeoptionsmenu .= html_writer::select($timeoptions,'time',$time, false);
 
 $table->data[] = array(get_string('statsreporttype'),$reporttypemenu,
                        get_string('statstimeperiod'),$timeoptionsmenu,
+<<<<<<< HEAD
                        '<label class="accesshide" for="numcourses">' . get_string('numberofcourses') . '</label>' .
                        '<input type="text" id="numcourses" name="numcourses" size="3" maxlength="2" value="'.$numcourses.'" />',
                        '<input type="submit" value="'.get_string('view').'" />') ;
@@ -89,6 +99,15 @@ $table->data[] = array(get_string('statsreporttype'),$reporttypemenu,
 echo html_writer::table($table);
 echo '</div>';
 echo '</form>';
+=======
+                       html_writer::label(get_string('numberofcourses'), 'numcourses', false, array('class' => 'accesshide')) .
+                       html_writer::empty_tag('input', array('type' => 'text', 'id' => 'numcourses', 'name' => 'numcourses', 'size' => '3', 'maxlength' => '2', 'value' => $numcourses)),
+                       html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('view'))));
+
+echo html_writer::table($table);
+echo html_writer::end_tag('div');
+echo html_writer::end_tag('form');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 echo $OUTPUT->heading($reportoptions[$report]);
 

@@ -29,6 +29,10 @@ $string['aicchacpkeepsessiondata'] = 'AICC HACP session data';
 $string['aicchacpkeepsessiondata_desc'] = 'Length of time in days to keep the external AICC HACP session data (a high setting will fill up the table with old data but may be useful when debugging)';
 $string['activation'] = 'Activation';
 $string['activityloading'] = 'You will be automatically redirected to the activity in';
+<<<<<<< HEAD
+=======
+$string['activityoverview'] = 'You have SCORM packages that need attention';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['activitypleasewait'] = 'Activity loading, please wait ...';
 $string['adminsettings'] = 'Admin settings';
 $string['advanced'] = 'Parameters';
@@ -47,6 +51,12 @@ $string['asset'] = 'Asset';
 $string['assetlaunched'] = 'Asset - Viewed';
 $string['attempt'] = 'Attempt';
 $string['attempts'] = 'Attempts';
+<<<<<<< HEAD
+=======
+$string['attemptstatusall'] = 'My home and entry page';
+$string['attemptstatusmy'] = 'My home only';
+$string['attemptstatusentry'] = 'Entry page only';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['attemptsx'] = '{$a} attempts';
 $string['attempt1'] = '1 attempt';
 $string['attr_error'] = 'Bad value for attribute ({$a->attr}) in tag {$a->tag}.';
@@ -85,7 +95,11 @@ $string['directories'] = 'Show the directory links';
 $string['disabled'] = 'Disabled';
 $string['display'] = 'Display package';
 $string['displayattemptstatus'] = 'Display attempt status';
+<<<<<<< HEAD
 $string['displayattemptstatus_help'] = 'If enabled, scores and grades for attempts are displayed on the SCORM outline page.';
+=======
+$string['displayattemptstatus_help'] = 'This preference allows a summary of the users attempts to show in the course overview block in My home and/or the SCORM entry page.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['displayattemptstatusdesc'] = 'Whether a summary of the user\'s attempts is shown in the course overview block in My home and/or the SCORM entry page.';
 $string['displaycoursestructure'] = 'Display course structure on entry page';
 $string['displaycoursestructure_help'] = 'If enabled, the table of contents is displayed on the SCORM outline page.';
@@ -177,6 +191,10 @@ $string['interactionsweight'] = 'Weight assigned to the element';
 $string['interactionslearnerresponse'] = 'Learner\'s response';
 $string['invalidactivity'] = 'SCORM activity is incorrect';
 $string['invalidurl'] = 'Invalid URL specified';
+<<<<<<< HEAD
+=======
+$string['invalidurlhttpcheck'] = 'Invalid URL specified. Debug message:<pre>{$a->cmsg}</pre>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['invalidhacpsession'] = 'Invalid HACP session';
 $string['invalidmanifestresource'] = 'WARNING: The following resources were referenced in your manifest but couldn\'t be found:';
 $string['last'] = 'Last accessed on';

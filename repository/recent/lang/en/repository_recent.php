@@ -27,6 +27,10 @@ $string['configplugin'] = 'Configuration for recent files repository';
 $string['recentfilesnumber'] = 'Number of recent files';
 $string['emptyfilelist'] = 'There are no files to show';
 $string['notitle'] = 'notitle';
+<<<<<<< HEAD
 $string['recent:view'] = 'View recent files repsitory plugin';
+=======
+$string['recent:view'] = 'View recent files repository plugin';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['pluginname_help'] = 'Files recently used by current user';
 $string['pluginname'] = 'Recent files';

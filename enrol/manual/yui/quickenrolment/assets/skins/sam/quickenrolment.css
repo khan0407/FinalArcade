@@ -15,7 +15,11 @@ Structure of the user enroller panel
                             .picture
                             .details
                                 .fullname
+<<<<<<< HEAD
                                 .email
+=======
+                                .extrafields
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             .options
                                 .enrol
                     .uep-more-results
@@ -64,7 +68,12 @@ Structure of the user enroller panel
 .user-enroller-panel .uep-footer {padding:3px;background-color:#ddd;text-align:center;}
 .user-enroller-panel .uep-search {margin:3px;}
 .user-enroller-panel .uep-search label {padding-right:8px;}
+<<<<<<< HEAD
 .user-enroller-panel .uep-search input {width:70%;}
+=======
+.user-enroller-panel .uep-search input {width:50%;}
+.user-enroller-panel .uep-search input.uep-search-btn {width:20%;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .user-enroller-panel .uep-searchoptions {margin:3px;cursor:pointer;}
 .user-enroller-panel .uep-searchoptions select {margin-left:1em;}
 .user-enroller-panel .collapsibleheading img {margin-right:8px;}

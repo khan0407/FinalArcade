@@ -73,6 +73,11 @@ class moodle1_mod_forum_handler extends moodle1_mod_handler {
      * Converts /MOODLE_BACKUP/COURSE/MODULES/MOD/FORUM data
      */
     public function process_forum($data) {
+<<<<<<< HEAD
+=======
+        global $CFG;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // get the course module id and context id
         $instanceid     = $data['id'];
         $cminfo         = $this->get_cminfo($instanceid);
@@ -87,6 +92,15 @@ class moodle1_mod_forum_handler extends moodle1_mod_handler {
         $this->fileman->itemid   = 0;
         $data['intro'] = moodle1_converter::migrate_referenced_files($data['intro'], $this->fileman);
 
+<<<<<<< HEAD
+=======
+        // Convert the introformat if necessary.
+        if ($CFG->texteditors !== 'textarea') {
+            $data['intro'] = text_to_html($data['intro'], false, false, true);
+            $data['introformat'] = FORMAT_HTML;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // start writing forum.xml
         $this->open_xml_writer("activities/forum_{$this->moduleid}/forum.xml");
         $this->xmlwriter->begin_tag('activity', array('id' => $instanceid, 'moduleid' => $this->moduleid,

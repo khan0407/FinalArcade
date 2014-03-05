@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +21,12 @@
 /**
  * Self enrol plugin implementation.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage self
+=======
+ * @package    enrol_self
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,7 +40,11 @@ class enrol_self_enrol_form extends moodleform {
     protected $toomany = false;
 
     /**
+<<<<<<< HEAD
      * Overriding this function to get unique form id for multiple self enrolments
+=======
+     * Overriding this function to get unique form id for multiple self enrolments.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @return string form identifier
      */
@@ -54,10 +65,17 @@ class enrol_self_enrol_form extends moodleform {
         $mform->addElement('header', 'selfheader', $heading);
 
         if ($instance->customint3 > 0) {
+<<<<<<< HEAD
             // max enrol limit specified
             $count = $DB->count_records('user_enrolments', array('enrolid'=>$instance->id));
             if ($count >= $instance->customint3) {
                 // bad luck, no more self enrolments here
+=======
+            // Max enrol limit specified.
+            $count = $DB->count_records('user_enrolments', array('enrolid'=>$instance->id));
+            if ($count >= $instance->customint3) {
+                // Bad luck, no more self enrolments here.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $this->toomany = true;
                 $mform->addElement('static', 'notice', '', get_string('maxenrolledreached', 'enrol_self'));
                 return;
@@ -65,7 +83,11 @@ class enrol_self_enrol_form extends moodleform {
         }
 
         if ($instance->password) {
+<<<<<<< HEAD
             //change the id of self enrolment key input as there can be multiple self enrolment methods
+=======
+            // Change the id of self enrolment key input as there can be multiple self enrolment methods.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $mform->addElement('passwordunmask', 'enrolpassword', get_string('password', 'enrol_self'),
                     array('id' => 'enrolpassword_'.$instance->id));
         } else {
@@ -109,7 +131,11 @@ class enrol_self_enrol_form extends moodleform {
                         }
                     }
                     if (!$found) {
+<<<<<<< HEAD
                         // we can not hint because there are probably multiple passwords
+=======
+                        // We can not hint because there are probably multiple passwords.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $errors['enrolpassword'] = get_string('passwordinvalid', 'enrol_self');
                     }
 

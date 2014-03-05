@@ -11,6 +11,17 @@ width:20px;
 height:20px;
 }
 
+<<<<<<< HEAD
+=======
+.gradestable th img {
+    vertical-align: text-bottom;
+    padding-bottom: 0;
+}
+.gradestable th .grade_icons { margin-top: .3em; }
+.gradestable th img.sorticon { margin-left: .3em; }
+.dir-rtl .gradestable th img.sorticon { margin-left: 0; margin-right: .3em; }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 table#user-grades .catlevel2 {
 background-color:#f9f9f9;
 }
@@ -133,9 +144,14 @@ border-width:0 0 1px 1px;
 }
 
 table#user-grades th.categoryitem,
+<<<<<<< HEAD
 table#user-grades th.courseitem,
 table#user-grades td.topleft {
 vertical-align:top;
+=======
+table#user-grades td.topleft {
+vertical-align: bottom;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 border-style:solid;
 border-width:0 1px;
 }
@@ -160,10 +176,17 @@ border-width:0 1px 0 0;
 }
 
 table#user-grades th.item ,
+<<<<<<< HEAD
 table#user-grades th.categoryitem ,
 table#user-grades th.courseitem {
 border-bottom-color:#000;
 vertical-align:top;
+=======
+table#user-grades th.categoryitem,
+table#user-grades th.courseitem {
+border-bottom-color:#000;
+vertical-align:bottom;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 border-style:solid;
 border-width:1px;
 }
@@ -186,7 +209,13 @@ margin-right:10px;
 
 table#user-grades .quickfeedback {
 border:1px dashed #000;
+<<<<<<< HEAD
 }
+=======
+margin-left: 10px;
+}
+.dir-rtl table#user-grades .quickfeedback { margin-left: 0; margin-right: 10px;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .path-grade-report-grader #siteconfiglink {
 text-align:right;
@@ -255,7 +284,11 @@ padding:0;
 table#user-grades th.categoryitem,
 table#user-grades th.courseitem,
 .path-grade-report-grader table td.topleft {
+<<<<<<< HEAD
 vertical-align:top;
+=======
+vertical-align:bottom;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 border-color:#cecece #cecece #000;
 border-style:solid;
 border-width:0 1px 1px;
@@ -269,7 +302,11 @@ table#user-grades td.topleft {
 background-color:#fff;
 }
 
+<<<<<<< HEAD
 .path-grade-report-grader th.user img {
+=======
+.path-grade-report-grader th.user img.userpicture {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 border:3px double #cecece;
 vertical-align:top;
 width:2.7em;
@@ -316,8 +353,11 @@ padding:0;
 
 .path-grade-report-grader td input.text {
 border:1px solid #666;
+<<<<<<< HEAD
 margin-left:10px;
 margin-right:10px;
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 .path-grade-report-grader td input.submit {
@@ -465,8 +505,11 @@ width:2000px;
 float:right;
 }
 
+<<<<<<< HEAD
 .path-grade-report-grader .action-icon {margin-left:0.3em;}
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .path-grade-report-grader .gradestable th.user,
 .path-grade-report-grader .gradestable th.range,
 .path-grade-report-grader .flexible th,
@@ -575,9 +618,18 @@ background-color:#f3ead8;
 }
 
 .path-grade-report-grader table th.usersuspended img.usersuspendedicon {
+<<<<<<< HEAD
     vertical-align:middle;
 }
 
+=======
+    vertical-align: text-bottom;
+    margin-left: .45em;
+}
+
+.path-grade-report-grader .grade_icons { margin-bottom: .3em;}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .path-grade-report-grader .yui3-overlay {
     background-color: #FFEE69;
     border-color: #D4C237 #A6982B #A6982B;

@@ -74,7 +74,11 @@ class restore_section_task extends restore_task {
     public function build() {
 
         // Define the task contextid (the course one)
+<<<<<<< HEAD
         $this->contextid = get_context_instance(CONTEXT_COURSE, $this->get_courseid())->id;
+=======
+        $this->contextid = context_course::instance($this->get_courseid())->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // We always try to restore as much info from sections as possible, no matter of the type
         // of restore (new, existing, deleting, import...). MDL-27764
@@ -161,6 +165,12 @@ class restore_section_task extends restore_task {
         $section_included = new restore_section_included_setting($settingname, base_setting::IS_BOOLEAN, true);
         if (is_number($this->info->title)) {
             $label = get_string('includesection', 'backup', $this->info->title);
+<<<<<<< HEAD
+=======
+        } elseif (empty($this->info->title)) { // Don't throw error if title is empty, gracefully continue restore.
+            $this->log('Section title missing in backup for section id '.$this->info->sectionid, backup::LOG_WARNING, $this->name);
+            $label = get_string('unnamedsection', 'backup');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $label = $this->info->title;
         }

@@ -85,7 +85,11 @@ function handleOAuthBodyPOST($oauth_consumer_key, $oauth_consumer_secret, $body,
     // Must reject application/x-www-form-urlencoded
     if (isset($request_headers['Content-type'])) {
         if ($request_headers['Content-type'] == 'application/x-www-form-urlencoded' ) {
+<<<<<<< HEAD
             throw new Exception("OAuth request body signing must not use application/x-www-form-urlencoded");
+=======
+            throw new OAuthException("OAuth request body signing must not use application/x-www-form-urlencoded");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -99,7 +103,11 @@ function handleOAuthBodyPOST($oauth_consumer_key, $oauth_consumer_secret, $body,
     }
 
     if ( ! isset($oauth_body_hash)  ) {
+<<<<<<< HEAD
         throw new Exception("OAuth request body signing requires oauth_body_hash body");
+=======
+        throw new OAuthException("OAuth request body signing requires oauth_body_hash body");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // Verify the message signature
@@ -116,7 +124,11 @@ function handleOAuthBodyPOST($oauth_consumer_key, $oauth_consumer_secret, $body,
         $server->verify_request($request);
     } catch (Exception $e) {
         $message = $e->getMessage();
+<<<<<<< HEAD
         throw new Exception("OAuth signature failed: " . $message);
+=======
+        throw new OAuthException("OAuth signature failed: " . $message);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     $postdata = $body;
@@ -125,7 +137,11 @@ function handleOAuthBodyPOST($oauth_consumer_key, $oauth_consumer_secret, $body,
     $hash = base64_encode(sha1($postdata, TRUE));
 
     if ( $hash != $oauth_body_hash ) {
+<<<<<<< HEAD
         throw new Exception("OAuth oauth_body_hash mismatch");
+=======
+        throw new OAuthException("OAuth oauth_body_hash mismatch");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return $postdata;
@@ -155,11 +171,19 @@ function sendOAuthBodyPOST($method, $endpoint, $oauth_consumer_key, $oauth_consu
     $ctx = stream_context_create($params);
     $fp = @fopen($endpoint, 'rb', false, $ctx);
     if (!$fp) {
+<<<<<<< HEAD
         throw new Exception("Problem with $endpoint, $php_errormsg");
     }
     $response = @stream_get_contents($fp);
     if ($response === false) {
         throw new Exception("Problem reading data from $endpoint, $php_errormsg");
+=======
+        throw new OAuthException("Problem with $endpoint, $php_errormsg");
+    }
+    $response = @stream_get_contents($fp);
+    if ($response === false) {
+        throw new OAuthException("Problem reading data from $endpoint, $php_errormsg");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     return $response;
 }

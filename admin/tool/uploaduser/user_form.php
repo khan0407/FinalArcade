@@ -249,7 +249,11 @@ class admin_uploaduser_form2 extends moodleform {
         }
 
         $mform->addElement('text', 'city', get_string('city'), 'maxlength="100" size="25"');
+<<<<<<< HEAD
         $mform->setType('city', PARAM_MULTILANG);
+=======
+        $mform->setType('city', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (empty($CFG->defaultcity)) {
             $mform->setDefault('city', $templateuser->city);
         } else {
@@ -288,11 +292,19 @@ class admin_uploaduser_form2 extends moodleform {
         $mform->setType('idnumber', PARAM_NOTAGS);
 
         $mform->addElement('text', 'institution', get_string('institution'), 'maxlength="40" size="25"');
+<<<<<<< HEAD
         $mform->setType('institution', PARAM_MULTILANG);
         $mform->setDefault('institution', $templateuser->institution);
 
         $mform->addElement('text', 'department', get_string('department'), 'maxlength="30" size="25"');
         $mform->setType('department', PARAM_MULTILANG);
+=======
+        $mform->setType('institution', PARAM_TEXT);
+        $mform->setDefault('institution', $templateuser->institution);
+
+        $mform->addElement('text', 'department', get_string('department'), 'maxlength="30" size="25"');
+        $mform->setType('department', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->setDefault('department', $templateuser->department);
 
         $mform->addElement('text', 'phone1', get_string('phone'), 'maxlength="20" size="25"');
@@ -304,7 +316,11 @@ class admin_uploaduser_form2 extends moodleform {
         $mform->setAdvanced('phone2');
 
         $mform->addElement('text', 'address', get_string('address'), 'maxlength="70" size="25"');
+<<<<<<< HEAD
         $mform->setType('address', PARAM_MULTILANG);
+=======
+        $mform->setType('address', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->setAdvanced('address');
 
         // Next the profile defaults

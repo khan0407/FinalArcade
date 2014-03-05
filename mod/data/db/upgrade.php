@@ -32,7 +32,11 @@ function xmldb_data_upgrade($oldversion) {
     // Moodle v2.3.0 release upgrade line
     // Put any upgrade step following this
 
+<<<<<<< HEAD
     if ($oldversion < 2012061701) {
+=======
+    if ($oldversion < 2012112901) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Check if there is a directory containing any old presets.
         $olddatadir = $CFG->dataroot . '/data';
         $oldpresetdir = "$olddatadir/preset";
@@ -117,9 +121,19 @@ function xmldb_data_upgrade($oldversion) {
             @rmdir("$olddatadir");
         }
 
+<<<<<<< HEAD
         upgrade_mod_savepoint(true, 2012061701, 'data');
     }
 
+=======
+        upgrade_mod_savepoint(true, 2012112901, 'data');
+    }
+
+    // Moodle v2.4.0 release upgrade line
+    // Put any upgrade step following this
+
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return true;
 }
 

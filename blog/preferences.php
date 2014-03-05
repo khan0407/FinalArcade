@@ -57,6 +57,7 @@ $PAGE->set_pagelayout('standard');
 
 if ($courseid == SITEID) {
     require_login();
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);
     $PAGE->set_context($context);
 } else {
@@ -65,6 +66,16 @@ if ($courseid == SITEID) {
 }
 
 if (empty($CFG->bloglevel)) {
+=======
+    $context = context_system::instance();
+    $PAGE->set_context($context);
+} else {
+    require_login($courseid);
+    $context = context_course::instance($courseid);
+}
+
+if (empty($CFG->enableblogs)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     print_error('blogdisable', 'blog');
 }
 

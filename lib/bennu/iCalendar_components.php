@@ -232,7 +232,11 @@ class iCalendar_component {
     
     function unserialize($string) {
         $string = rfc2445_unfold($string); // Unfold any long lines
+<<<<<<< HEAD
         $lines = explode(RFC2445_CRLF, $string); // Create an array of lines
+=======
+        $lines = preg_split("<".RFC2445_CRLF."|\n|\r>", $string, 0, PREG_SPLIT_NO_EMPTY); // Create an array of lines.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         
         $components = array(); // Initialise a stack of components
         $this->clear_errors();

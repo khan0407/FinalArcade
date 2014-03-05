@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 
 /**
  * Moodle - Modular Object-Oriented Dynamic Learning Environment
@@ -17,15 +18,41 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+=======
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Customised version of phpmailer for Moodle
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * @package    moodle
  * @subpackage lib
  * @author     Dan Poltawski <talktodan@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+<<<<<<< HEAD
  *
  * Customised version of phpmailer for Moodle
  */
 
+=======
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // PLEASE NOTE: we use the phpmailer class _unmodified_
 // through the joys of OO. Distros are free to use their stock
 // version of this file.
@@ -73,7 +100,11 @@ class moodle_phpmailer extends PHPMailer {
      * Use internal moodles own textlib to encode mimeheaders.
      * Fall back to phpmailers inbuilt functions if not 
      */
+<<<<<<< HEAD
     public function EncodeHeader ($str, $position = 'text') {
+=======
+    public function EncodeHeader($str, $position = 'text') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $encoded = textlib::encode_mimeheader($str, $this->CharSet);
         if ($encoded !== false) {
             $encoded = str_replace("\n", $this->LE, $encoded);
@@ -126,4 +157,27 @@ class moodle_phpmailer extends PHPMailer {
         fclose($fp);
         return $out;
     }
+<<<<<<< HEAD
+=======
+
+    protected function PostSend() {
+        // Now ask phpunit if it wants to catch this message.
+        if (PHPUNIT_TEST) {
+            if (!phpunit_util::is_redirecting_phpmailer()) {
+                debugging('Unit tests must not send real emails! Use $this->start_phpmailer_redirection()');
+                return true;
+            }
+            $mail = new stdClass();
+            $mail->header = $this->MIMEHeader;
+            $mail->body = $this->MIMEBody;
+            $mail->subject = $this->Subject;
+            $mail->from = $this->From;
+            $mail->to = $this->to[0][0];
+            phpunit_util::phpmailer_sent($mail);
+            return true;
+        } else {
+            return parent::PostSend();
+        }
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

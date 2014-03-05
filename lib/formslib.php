@@ -158,6 +158,7 @@ abstract class moodleform {
      */
     function moodleform($action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true) {
         global $CFG, $FULLME;
+<<<<<<< HEAD
         if (empty($CFG->xmlstrictheaders)) {
             // no standard mform in moodle should allow autocomplete with the exception of user signup
             // this is valid attribute in html5, sorry, we have to ignore validation errors in legacy xhtml 1.0
@@ -169,6 +170,16 @@ abstract class moodleform {
                 if (strpos($attributes, 'autocomplete') === false) {
                     $attributes .= ' autocomplete="off" ';
                 }
+=======
+        // no standard mform in moodle should allow autocomplete with the exception of user signup
+        if (empty($attributes)) {
+            $attributes = array('autocomplete'=>'off');
+        } else if (is_array($attributes)) {
+            $attributes['autocomplete'] = 'off';
+        } else {
+            if (strpos($attributes, 'autocomplete') === false) {
+                $attributes .= ' autocomplete="off" ';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
 
@@ -267,7 +278,12 @@ abstract class moodleform {
                 $submission = $_POST;
             }
         } else {
+<<<<<<< HEAD
             $submission = array_merge_recursive($_GET, $_POST); // emulate handling of parameters in xxxx_param()
+=======
+            $submission = $_GET;
+            merge_query_params($submission, $_POST); // Emulate handling of parameters in xxxx_param().
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         // following trick is needed to enable proper sesskey checks when using GET forms
@@ -286,6 +302,18 @@ abstract class moodleform {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Internal method - should not be used anywhere.
+     * @deprecated since 2.6
+     * @return array $_POST.
+     */
+    protected function _get_post_params() {
+        return $_POST;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Internal method. Validates all old-style deprecated uploaded files.
      * The new way is to upload files via repository api.
      *
@@ -398,7 +426,11 @@ abstract class moodleform {
                     if ($rule['type'] == 'required') {
                         $draftid = (int)$mform->getSubmitValue($elementname);
                         $fs = get_file_storage();
+<<<<<<< HEAD
                         $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+                        $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         if (!$files = $fs->get_area_files($context->id, 'user', 'draft', $draftid, 'id DESC', false)) {
                             $errors[$elementname] = $rule['message'];
                         }
@@ -446,6 +478,7 @@ abstract class moodleform {
     }
 
     /**
+<<<<<<< HEAD
      * Sets file upload manager
      *
      * @deprecated since Moodle 2.0 Please don't used this API
@@ -459,6 +492,8 @@ abstract class moodleform {
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Check that form was submitted. Does not check validity of submitted data.
      *
      * @return bool true if form properly submitted
@@ -689,7 +724,11 @@ abstract class moodleform {
             }
             $draftid = $values[$elname];
             $fs = get_file_storage();
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!$files = $fs->get_area_files($context->id, 'user', 'draft', $draftid, 'id DESC', false)) {
                 return false;
             }
@@ -737,7 +776,11 @@ abstract class moodleform {
             }
             $draftid = $values[$elname];
             $fs = get_file_storage();
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!$files = $fs->get_area_files($context->id, 'user', 'draft', $draftid, 'id DESC', false)) {
                 return false;
             }
@@ -800,7 +843,11 @@ abstract class moodleform {
             }
             $draftid = $values[$elname];
             $fs = get_file_storage();
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!$files = $fs->get_area_files($context->id, 'user', 'draft', $draftid, 'id DESC', false)) {
                 return null;
             }
@@ -844,7 +891,11 @@ abstract class moodleform {
                 return false;
             }
             $draftid = $values[$elname];
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!$files = $fs->get_area_files($context->id, 'user' ,'draft', $draftid, 'id DESC', false)) {
                 return false;
             }
@@ -906,7 +957,11 @@ abstract class moodleform {
             }
             $draftid = $values[$elname];
             $fs = get_file_storage();
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!$files = $fs->get_area_files($context->id, 'user', 'draft', $draftid, 'id DESC', false)) {
                 return false;
             }
@@ -1243,6 +1298,40 @@ abstract class moodleform {
             )
         );
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Used by tests to simulate submitted form data submission from the user.
+     *
+     * For form fields where no data is submitted the default for that field as set by set_data or setDefault will be passed to
+     * get_data.
+     *
+     * This method sets $_POST or $_GET and $_FILES with the data supplied. Our unit test code empties all these
+     * global arrays after each test.
+     *
+     * @param array  $simulatedsubmitteddata       An associative array of form values (same format as $_POST).
+     * @param array  $simulatedsubmittedfiles      An associative array of files uploaded (same format as $_FILES). Can be omitted.
+     * @param string $method                       'post' or 'get', defaults to 'post'.
+     * @param null   $formidentifier               the default is to use the class name for this class but you may need to provide
+     *                                              a different value here for some forms that are used more than once on the
+     *                                              same page.
+     */
+    public static function mock_submit($simulatedsubmitteddata, $simulatedsubmittedfiles = array(), $method = 'post',
+                                       $formidentifier = null) {
+        $_FILES = $simulatedsubmittedfiles;
+        if ($formidentifier === null) {
+            $formidentifier = get_called_class();
+        }
+        $simulatedsubmitteddata['_qf__'.$formidentifier] = 1;
+        $simulatedsubmitteddata['sesskey'] = sesskey();
+        if (strtolower($method) === 'get') {
+            $_GET = $simulatedsubmitteddata;
+        } else {
+            $_POST = $simulatedsubmitteddata;
+        }
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -1318,6 +1407,7 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
         } else {
             $this->_pageparams = '';
         }
+<<<<<<< HEAD
         //no 'name' atttribute for form in xhtml strict :
         $attributes = array('action'=>$action, 'method'=>$method,
                 'accept-charset'=>'utf-8', 'id'=>'mform'.$formcounter) + $target;
@@ -1325,6 +1415,17 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
         $this->updateAttributes($attributes);
 
         //this is custom stuff for Moodle :
+=======
+        // No 'name' atttribute for form in xhtml strict :
+        $attributes = array('action' => $action, 'method' => $method, 'accept-charset' => 'utf-8') + $target;
+        if (is_null($this->getAttribute('id'))) {
+            $attributes['id'] = 'mform' . $formcounter;
+        }
+        $formcounter++;
+        $this->updateAttributes($attributes);
+
+        // This is custom stuff for Moodle :
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $oldclass=   $this->getAttribute('class');
         if (!empty($oldclass)){
             $this->updateAttributes(array('class'=>$oldclass.' mform'));
@@ -1651,6 +1752,7 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
     }
 
     /**
+<<<<<<< HEAD
      * Add an array of buttons to the form
      *
      * @param array $buttons An associative array representing help button to attach to
@@ -1708,6 +1810,8 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Add a help button to element, only one button per element is allowed.
      *
      * This is new, simplified and preferable method of setting a help icon on form elements.
@@ -1951,8 +2055,14 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
                         }
                     }
                     //for editor element, [text] is appended to the name.
+<<<<<<< HEAD
                     if ($element->getType() == 'editor') {
                         $elementName .= '[text]';
+=======
+                    $fullelementname = $elementName;
+                    if ($element->getType() == 'editor') {
+                        $fullelementname .= '[text]';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         //Add format to rule as moodleform check which format is supported by browser
                         //it is not set anywhere... So small hack to make sure we pass it down to quickform
                         if (is_null($rule['format'])) {
@@ -1960,8 +2070,13 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
                         }
                     }
                     // Fix for bug displaying errors for elements in a group
+<<<<<<< HEAD
                     $test[$elementName][0][] = $registry->getValidationScript($element, $elementName, $rule);
                     $test[$elementName][1]=$element;
+=======
+                    $test[$fullelementname][0][] = $registry->getValidationScript($element, $fullelementname, $rule);
+                    $test[$fullelementname][1]=$element;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     //end of fix
                 }
             }
@@ -1992,6 +2107,11 @@ function qf_errorHandler(element, _qfMsg) {
       errorSpan.id = \'id_error_\'+element.name;
       errorSpan.className = "error";
       element.parentNode.insertBefore(errorSpan, element.parentNode.firstChild);
+<<<<<<< HEAD
+=======
+      document.getElementById(errorSpan.id).setAttribute(\'TabIndex\', \'0\');
+      document.getElementById(errorSpan.id).focus();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     while (errorSpan.firstChild) {
@@ -1999,11 +2119,22 @@ function qf_errorHandler(element, _qfMsg) {
     }
 
     errorSpan.appendChild(document.createTextNode(_qfMsg.substring(3)));
+<<<<<<< HEAD
     errorSpan.appendChild(document.createElement("br"));
 
     if (div.className.substr(div.className.length - 6, 6) != " error"
         && div.className != "error") {
       div.className += " error";
+=======
+
+    if (div.className.substr(div.className.length - 6, 6) != " error"
+      && div.className != "error") {
+        div.className += " error";
+        linebreak = document.createElement("br");
+        linebreak.className = "error";
+        linebreak.id = \'id_error_break_\'+element.name;
+        errorSpan.parentNode.insertBefore(linebreak, errorSpan.nextSibling);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return false;
@@ -2012,6 +2143,13 @@ function qf_errorHandler(element, _qfMsg) {
     if (errorSpan) {
       errorSpan.parentNode.removeChild(errorSpan);
     }
+<<<<<<< HEAD
+=======
+    var linebreak = document.getElementById(\'id_error_break_\'+element.name);
+    if (linebreak) {
+      linebreak.parentNode.removeChild(linebreak);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (div.className.substr(div.className.length - 6, 6) == " error") {
       div.className = div.className.substr(0, div.className.length - 6);
@@ -2059,7 +2197,11 @@ function validate_' . $this->_formName . '_' . $escapedElementName . '(element) 
   ret = validate_' . $this->_formName . '_' . $escapedElementName.'(frm.elements[\''.$elementName.'\']) && ret;
   if (!ret && !first_focus) {
     first_focus = true;
+<<<<<<< HEAD
     frm.elements[\''.$elementName.'\'].focus();
+=======
+    document.getElementById(\'id_error_'.$elementName.'\').focus();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   }
 ';
 
@@ -2195,12 +2337,28 @@ function validate_' . $this->_formName . '(frm) {
      * is checked. If $condition is something else (like "eq" for equals) then it is checked to see if the value
      * of the $dependentOn element is $condition (such as equal) to $value.
      *
+<<<<<<< HEAD
+=======
+     * When working with multiple selects, the dependentOn has to be the real name of the select, meaning that
+     * it will most likely end up with '[]'. Also, the value should be an array of required values, or a string
+     * containing the values separated by pipes: array('red', 'blue') or 'red|blue'.
+     *
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param string $elementName the name of the element which will be disabled
      * @param string $dependentOn the name of the element whose state will be checked for condition
      * @param string $condition the condition to check
      * @param mixed $value used in conjunction with condition.
      */
+<<<<<<< HEAD
     function disabledIf($elementName, $dependentOn, $condition = 'notchecked', $value='1'){
+=======
+    function disabledIf($elementName, $dependentOn, $condition = 'notchecked', $value='1') {
+        // Multiple selects allow for a multiple selection, we transform the array to string here as
+        // an array cannot be used as a key in an associative array.
+        if (is_array($value)) {
+            $value = implode('|', $value);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!array_key_exists($dependentOn, $this->_dependencies)) {
             $this->_dependencies[$dependentOn] = array();
         }
@@ -2386,6 +2544,7 @@ class MoodleQuickForm_Renderer extends HTML_QuickForm_Renderer_Tableless{
         // switch next two lines for ol li containers for form items.
         //        $this->_elementTemplates=array('default'=>"\n\t\t".'<li class="fitem"><label>{label}{help}<!-- BEGIN required -->{req}<!-- END required --></label><div class="qfelement<!-- BEGIN error --> error<!-- END error --> {type}"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</div></li>');
         $this->_elementTemplates = array(
+<<<<<<< HEAD
         'default'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg} {help}</label></div><div class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</div></div>',
 
         'fieldset'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><div class="fgrouplabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg} {help}</label></div></div><fieldset class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</fieldset></div>',
@@ -2393,6 +2552,17 @@ class MoodleQuickForm_Renderer extends HTML_QuickForm_Renderer_Tableless{
         'static'=>"\n\t\t".'<div class="fitem {advanced}"><div class="fitemtitle"><div class="fstaticlabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg} {help}</label></div></div><div class="felement fstatic <!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}&nbsp;</div></div>',
 
 'warning'=>"\n\t\t".'<div class="fitem {advanced}">{element}</div>',
+=======
+        'default'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg}{help} </label></div><div class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</div></div>',
+
+        'actionbuttons'=>"\n\t\t".'<div id="{id}" class="fitem fitem_actionbuttons fitem_{type}"><div class="felement {type}">{element}</div></div>',
+
+        'fieldset'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><div class="fgrouplabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg}{help} </label></div></div><fieldset class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</fieldset></div>',
+
+        'static'=>"\n\t\t".'<div class="fitem {advanced}"><div class="fitemtitle"><div class="fstaticlabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg}{help} </label></div></div><div class="felement fstatic <!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}&nbsp;</div></div>',
+
+        'warning'=>"\n\t\t".'<div class="fitem {advanced}">{element}</div>',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         'nodisplay'=>'');
 
@@ -2709,10 +2879,15 @@ MoodleQuickForm::registerElementType('date_selector', "$CFG->libdir/form/datesel
 MoodleQuickForm::registerElementType('date_time_selector', "$CFG->libdir/form/datetimeselector.php", 'MoodleQuickForm_date_time_selector');
 MoodleQuickForm::registerElementType('duration', "$CFG->libdir/form/duration.php", 'MoodleQuickForm_duration');
 MoodleQuickForm::registerElementType('editor', "$CFG->libdir/form/editor.php", 'MoodleQuickForm_editor');
+<<<<<<< HEAD
 MoodleQuickForm::registerElementType('file', "$CFG->libdir/form/file.php", 'MoodleQuickForm_file');
 MoodleQuickForm::registerElementType('filemanager', "$CFG->libdir/form/filemanager.php", 'MoodleQuickForm_filemanager');
 MoodleQuickForm::registerElementType('filepicker', "$CFG->libdir/form/filepicker.php", 'MoodleQuickForm_filepicker');
 MoodleQuickForm::registerElementType('format', "$CFG->libdir/form/format.php", 'MoodleQuickForm_format');
+=======
+MoodleQuickForm::registerElementType('filemanager', "$CFG->libdir/form/filemanager.php", 'MoodleQuickForm_filemanager');
+MoodleQuickForm::registerElementType('filepicker', "$CFG->libdir/form/filepicker.php", 'MoodleQuickForm_filepicker');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 MoodleQuickForm::registerElementType('grading', "$CFG->libdir/form/grading.php", 'MoodleQuickForm_grading');
 MoodleQuickForm::registerElementType('group', "$CFG->libdir/form/group.php", 'MoodleQuickForm_group');
 MoodleQuickForm::registerElementType('header', "$CFG->libdir/form/header.php", 'MoodleQuickForm_header');

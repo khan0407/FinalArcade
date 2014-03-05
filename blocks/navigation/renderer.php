@@ -105,7 +105,13 @@ class block_navigation_renderer extends plugin_renderer_base {
             if ($item->hidden) {
                 $attributes['class'] = 'dimmed_text';
             }
+<<<<<<< HEAD
             if (is_string($item->action) || empty($item->action) || ($item->type === navigation_node::TYPE_CATEGORY && empty($options['linkcategories']))) {
+=======
+            if (is_string($item->action) || empty($item->action) ||
+                    (($item->type === navigation_node::TYPE_CATEGORY || $item->type === navigation_node::TYPE_MY_CATEGORY) &&
+                    empty($options['linkcategories']))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $attributes['tabindex'] = '0'; //add tab support to span but still maintain character stream sequence.
                 $content = html_writer::tag('span', $content, $attributes);
             } else if ($item->action instanceof action_link) {

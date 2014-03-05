@@ -23,6 +23,10 @@
     text-align: left;
     font-size: 1.1em;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl .block h3.main {text-align: right;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /* Login
 ------------------------------*/
@@ -45,6 +49,11 @@
 .block_login .footer {
     text-align: left;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl .block_login .footer {text-align: right;}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /* News
 -------------------------------*/
 

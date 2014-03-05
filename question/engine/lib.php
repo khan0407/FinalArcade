@@ -26,6 +26,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
+=======
+require_once($CFG->libdir . '/filelib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_once(dirname(__FILE__) . '/questionusage.php');
 require_once(dirname(__FILE__) . '/questionattempt.php');
 require_once(dirname(__FILE__) . '/questionattemptstep.php');
@@ -443,7 +447,11 @@ class question_display_options {
 
     /**
      * For questions with a number of sub-parts (like matching, or
+<<<<<<< HEAD
      * multiple-choice, multiple-reponse) display the number of sub-parts that
+=======
+     * multiple-choice, multiple-response) display the number of sub-parts that
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * were correct.
      * @var integer {@link question_display_options::HIDDEN} or
      * {@link question_display_options::VISIBLE}
@@ -816,6 +824,25 @@ abstract class question_utils {
         return self::clean_param_mark(
                 optional_param($parname, null, PARAM_RAW_TRIMMED));
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Convert part of some question content to plain text.
+     * @param string $text the text.
+     * @param int $format the text format.
+     * @param array $options formatting options. Passed to {@link format_text}.
+     * @return float|string|null cleaned mark as a float if possible. Otherwise '' or null.
+     */
+    public static function to_plain_text($text, $format, $options = array('noclean' => 'true')) {
+        // The following call to html_to_text uses the option that strips out
+        // all URLs, but format_text complains if it finds @@PLUGINFILE@@ tokens.
+        // So, we need to replace @@PLUGINFILE@@ with a real URL, but it doesn't
+        // matter what. We use http://example.com/.
+        $text = str_replace('@@PLUGINFILE@@/', 'http://example.com/', $text);
+        return html_to_text(format_text($text, $format, $options), 0, false);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -867,12 +894,22 @@ class question_variant_pseudorandom_no_repeats_strategy
     /** @var int the user id the attempt belongs to. */
     protected $userid;
 
+<<<<<<< HEAD
+=======
+    /** @var string extra input fed into the pseudo-random code. */
+    protected $extrarandomness = '';
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Constructor.
      * @param int $attemptno The attempt number.
      * @param int $userid the user the attempt is for (defaults to $USER->id).
      */
+<<<<<<< HEAD
     public function __construct($attemptno, $userid = null) {
+=======
+    public function __construct($attemptno, $userid = null, $extrarandomness = '') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->attemptno = $attemptno;
         if (is_null($userid)) {
             global $USER;
@@ -880,6 +917,13 @@ class question_variant_pseudorandom_no_repeats_strategy
         } else {
             $this->userid = $userid;
         }
+<<<<<<< HEAD
+=======
+
+        if ($extrarandomness) {
+            $this->extrarandomness = '|' . $extrarandomness;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function choose_variant($maxvariants, $seed) {
@@ -887,7 +931,11 @@ class question_variant_pseudorandom_no_repeats_strategy
             return 1;
         }
 
+<<<<<<< HEAD
         $hash = sha1($seed . '|user' . $this->userid);
+=======
+        $hash = sha1($seed . '|user' . $this->userid . $this->extrarandomness);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $randint = hexdec(substr($hash, 17, 7));
 
         return ($randint + $this->attemptno) % $maxvariants + 1;

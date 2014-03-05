@@ -41,10 +41,13 @@ $current_tab = $do_show;
 //get the objects
 ////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 if ($userid) {
     $formdata->userid = intval($userid);
 }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (! $cm = get_coursemodule_from_id('feedback', $id)) {
     print_error('invalidcoursemodule');
 }
@@ -61,6 +64,7 @@ $url = new moodle_url('/mod/feedback/show_entries.php', array('id'=>$cm->id, 'do
 
 $PAGE->set_url($url);
 
+<<<<<<< HEAD
 if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
         print_error('badcontext');
 }
@@ -71,6 +75,12 @@ if (($formdata = data_submitted()) AND !confirm_sesskey()) {
     print_error('invalidsesskey');
 }
 
+=======
+$context = context_module::instance($cm->id);
+
+require_login($course, true, $cm);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/feedback:viewreports', $context);
 
 ////////////////////////////////////////////////////////

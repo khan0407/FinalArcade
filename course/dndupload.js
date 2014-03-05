@@ -442,6 +442,10 @@ M.course_dndupload = {
             parent: modsel,
             li: document.createElement('li'),
             div: document.createElement('div'),
+<<<<<<< HEAD
+=======
+            indentdiv: document.createElement('div'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             a: document.createElement('a'),
             icon: document.createElement('img'),
             namespan: document.createElement('span'),
@@ -452,24 +456,41 @@ M.course_dndupload = {
 
         resel.li.className = 'activity resource modtype_resource';
 
+<<<<<<< HEAD
         resel.div.className = 'mod-indent';
         resel.li.appendChild(resel.div);
+=======
+        resel.indentdiv.className = 'mod-indent';
+        resel.li.appendChild(resel.indentdiv);
+
+        resel.div.className = 'activityinstance';
+        resel.indentdiv.appendChild(resel.div);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         resel.a.href = '#';
         resel.div.appendChild(resel.a);
 
         resel.icon.src = M.util.image_url('i/ajaxloader');
+<<<<<<< HEAD
         resel.icon.className = 'activityicon';
         resel.a.appendChild(resel.icon);
 
         resel.a.appendChild(document.createTextNode(' '));
 
+=======
+        resel.icon.className = 'activityicon iconlarge';
+        resel.a.appendChild(resel.icon);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         resel.namespan.className = 'instancename';
         resel.namespan.innerHTML = name;
         resel.a.appendChild(resel.namespan);
 
+<<<<<<< HEAD
         resel.div.appendChild(document.createTextNode(' '));
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         resel.groupingspan.className = 'groupinglabel';
         resel.div.appendChild(resel.groupingspan);
 
@@ -524,6 +545,10 @@ M.course_dndupload = {
         preview.li.appendChild(preview.div);
 
         preview.icon.src = M.util.image_url('t/addfile');
+<<<<<<< HEAD
+=======
+        preview.icon.className = 'icon';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         preview.div.appendChild(preview.icon);
 
         preview.div.appendChild(document.createTextNode(' '));
@@ -740,7 +765,11 @@ M.course_dndupload = {
 
                             resel.div.removeChild(resel.progressouter);
                             resel.li.id = result.elementid;
+<<<<<<< HEAD
                             resel.div.innerHTML += result.commands;
+=======
+                            resel.indentdiv.innerHTML += result.commands;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             if (result.onclick) {
                                 resel.a.onclick = result.onclick;
                             }

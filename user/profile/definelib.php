@@ -29,7 +29,11 @@ class profile_define_base {
 
         $form->addElement('text', 'name', get_string('profilename', 'admin'), 'size="50"');
         $form->addRule('name', $strrequired, 'required', null, 'client');
+<<<<<<< HEAD
         $form->setType('name', PARAM_MULTILANG);
+=======
+        $form->setType('name', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $form->addElement('editor', 'description', get_string('profiledescription', 'admin'), null, null);
 
@@ -289,6 +293,16 @@ function profile_delete_field($id) {
         print_error('cannotdeletecustomfield');
     }
 
+<<<<<<< HEAD
+=======
+    // Delete any module dependencies for this field
+    $DB->delete_records('course_modules_avail_fields', array('customfieldid' => $id));
+    $DB->delete_records('course_sections_avail_fields', array('customfieldid' => $id));
+
+    // Need to rebuild course cache to update the info
+    rebuild_course_cache();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /// Try to remove the record from the database
     $DB->delete_records('user_info_field', array('id'=>$id));
 

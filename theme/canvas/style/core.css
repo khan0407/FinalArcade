@@ -35,8 +35,12 @@ body {
 .errorbox,
 .continuebutton,
 .singlebutton,
+<<<<<<< HEAD
 .buttons,
 .singleselect {
+=======
+.buttons {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     text-align: center;
     margin: 1em 0;
 }
@@ -239,6 +243,10 @@ body {
     text-align: left;
     padding-left:10px
 }
+<<<<<<< HEAD
+=======
+.dir-rtl .userinfobox .content {text-align: right;padding-right:10px;padding-left:0px;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .userinfobox .links {
     vertical-align: top;
@@ -250,11 +258,19 @@ body {
     display: block;
     text-align: left;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl .userinfobox .links a {text-align: right;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .profilepicture {
     float: left;
     margin-right: 10px;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl .profilepicture {float: right;margin-left: 10px;margin-right: 0px;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 .descriptionbox {
     margin-left: 110px;

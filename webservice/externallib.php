@@ -24,6 +24,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+defined('MOODLE_INTERNAL') || die;
+
+require_once("$CFG->libdir/externallib.php");
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Web service related functions
  *
@@ -47,7 +54,12 @@ class core_webservice_external extends external_api {
                 new external_value(
                     PARAM_ALPHANUMEXT,
                     'service shortname'),
+<<<<<<< HEAD
                     'DEPRECATED PARAMETER - it was a design error in the original implementation. It is ignored now. (parameter kept for backward compatibility)',
+=======
+                    'DEPRECATED PARAMETER - it was a design error in the original implementation. \
+                    It is ignored now. (parameter kept for backward compatibility)',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     VALUE_DEFAULT,
                     array()
                 ),
@@ -60,20 +72,35 @@ class core_webservice_external extends external_api {
      * Note:
      * - no capability checking because we return only known information about logged user
      *
+<<<<<<< HEAD
      * @param array $serviceshortnames - DEPRECATED PARAMETER - values will be ignored - it was an original design error, we keep for backward compatibility.
      * @return array site info
      * @since Moodle 2.2
      */
     public function get_site_info($serviceshortnames = array()) {
+=======
+     * @param array $serviceshortnames - DEPRECATED PARAMETER - values will be ignored -
+     * it was an original design error, we keep for backward compatibility.
+     * @return array site info
+     * @since Moodle 2.2
+     */
+    public static function get_site_info($serviceshortnames = array()) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $USER, $SITE, $CFG, $DB;
 
         $params = self::validate_parameters(self::get_site_info_parameters(),
                       array('serviceshortnames'=>$serviceshortnames));
 
         $profileimageurl = moodle_url::make_pluginfile_url(
+<<<<<<< HEAD
                 get_context_instance(CONTEXT_USER, $USER->id)->id, 'user', 'icon', NULL, '/', 'f1');
 
         //site information
+=======
+                context_user::instance($USER->id)->id, 'user', 'icon', null, '/', 'f1');
+
+        // Site information.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $siteinfo =  array(
             'sitename' => $SITE->fullname,
             'siteurl' => $CFG->wwwroot,
@@ -81,10 +108,15 @@ class core_webservice_external extends external_api {
             'firstname' => $USER->firstname,
             'lastname' => $USER->lastname,
             'fullname' => fullname($USER),
+<<<<<<< HEAD
+=======
+            'lang' => current_language(),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'userid' => $USER->id,
             'userpictureurl' => $profileimageurl->out(false)
         );
 
+<<<<<<< HEAD
         //Retrieve the service and functions from the web service linked to the token
         //If you call this function directly from external (not a web service call),
         //then it will still return site info without information about a service
@@ -95,6 +127,18 @@ class core_webservice_external extends external_api {
 
             if (!empty($token)) { //no need to run if not a ws call
                 //retrieve service shortname
+=======
+        // Retrieve the service and functions from the web service linked to the token
+        // If you call this function directly from external (not a web service call),
+        // then it will still return site info without information about a service
+        // Note: wsusername/wspassword ws authentication is not supported.
+        $functions = array();
+        if ($CFG->enablewebservices) { // No need to check token if web service are disabled and not a ws call.
+            $token = optional_param('wstoken', '', PARAM_ALPHANUM);
+
+            if (!empty($token)) { // No need to run if not a ws call.
+                // Retrieve service shortname.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $servicesql = 'SELECT s.*
                                FROM {external_services} s, {external_tokens} t
                                WHERE t.externalserviceid = s.id AND token = ? AND t.userid = ? AND s.enabled = 1';
@@ -103,17 +147,30 @@ class core_webservice_external extends external_api {
                 $siteinfo['downloadfiles'] = $service->downloadfiles;
 
                 if (!empty($service)) {
+<<<<<<< HEAD
                     //retrieve the functions
+=======
+                    // Return the release and version number for web service users only.
+                    $siteinfo['release'] = $CFG->release;
+                    $siteinfo['version'] = $CFG->version;
+                    // Retrieve the functions.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $functionssql = "SELECT f.*
                             FROM {external_functions} f, {external_services_functions} sf
                             WHERE f.name = sf.functionname AND sf.externalserviceid = ?";
                     $functions = $DB->get_records_sql($functionssql, array($service->id));
                 } else {
+<<<<<<< HEAD
                     throw new coding_exception('No service found in get_site_info: something is buggy, it should have fail at the ws server authentication layer.');
+=======
+                    throw new coding_exception('No service found in get_site_info: something is buggy, \
+                                                it should have fail at the ws server authentication layer.');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
         }
 
+<<<<<<< HEAD
         //built up the returned values of the list of functions
         $componentversions = array();
         $avalaiblefunctions = array();
@@ -126,6 +183,20 @@ class core_webservice_external extends external_api {
                 $versionpath = get_component_directory($function->component).'/version.php';
                 if (is_readable($versionpath)) {
                     //we store the component version once retrieved (so we don't load twice the version.php)
+=======
+        // Build up the returned values of the list of functions.
+        $componentversions = array();
+        $availablefunctions = array();
+        foreach ($functions as $function) {
+            $functioninfo = array();
+            $functioninfo['name'] = $function->name;
+            if ($function->component == 'moodle' || $function->component == 'core') {
+                $version = $CFG->version; // Moodle version.
+            } else {
+                $versionpath = get_component_directory($function->component).'/version.php';
+                if (is_readable($versionpath)) {
+                    // We store the component version once retrieved (so we don't load twice the version.php).
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     if (!isset($componentversions[$function->component])) {
                         include($versionpath);
                         $componentversions[$function->component] = $plugin->version;
@@ -134,16 +205,31 @@ class core_webservice_external extends external_api {
                         $version = $componentversions[$function->component];
                     }
                 } else {
+<<<<<<< HEAD
                     //function component should always have a version.php,
                     //otherwise the function should have been described with component => 'moodle'
+=======
+                    // Function component should always have a version.php,
+                    // otherwise the function should have been described with component => 'moodle'.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     throw new moodle_exception('missingversionfile', 'webservice', '', $function->component);
                 }
             }
             $functioninfo['version'] = $version;
+<<<<<<< HEAD
             $avalaiblefunctions[] = $functioninfo;
         }
 
         $siteinfo['functions'] = $avalaiblefunctions;
+=======
+            $availablefunctions[] = $functioninfo;
+        }
+
+        $siteinfo['functions'] = $availablefunctions;
+
+        // Mobile CSS theme and alternative login url.
+        $siteinfo['mobilecssurl'] = $CFG->mobilecssurl;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $siteinfo;
     }
@@ -162,13 +248,23 @@ class core_webservice_external extends external_api {
                 'firstname'      => new external_value(PARAM_TEXT, 'first name'),
                 'lastname'       => new external_value(PARAM_TEXT, 'last name'),
                 'fullname'       => new external_value(PARAM_TEXT, 'user full name'),
+<<<<<<< HEAD
+=======
+                'lang'           => new external_value(PARAM_LANG, 'user language'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 'userid'         => new external_value(PARAM_INT, 'user id'),
                 'siteurl'        => new external_value(PARAM_RAW, 'site url'),
                 'userpictureurl' => new external_value(PARAM_URL, 'the user profile picture.
                     Warning: this url is the public URL that only works when forcelogin is set to NO and guestaccess is set to YES.
                     In order to retrieve user profile pictures independently of the Moodle config, replace "pluginfile.php" by
+<<<<<<< HEAD
                     "webservice/pluginfile.php?token=WSTOKEN&file=". Of course the user can only see profile picture depending on his/her permissions.
                     Moreover it is recommended to use HTTPS too.'),
+=======
+                    "webservice/pluginfile.php?token=WSTOKEN&file="
+                    Of course the user can only see profile picture depending
+                    on his/her permissions. Moreover it is recommended to use HTTPS too.'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 'functions'      => new external_multiple_structure(
                     new external_single_structure(
                         array(
@@ -177,7 +273,15 @@ class core_webservice_external extends external_api {
                                         'The version number of the component to which the function belongs')
                         ), 'functions that are available')
                     ),
+<<<<<<< HEAD
                 'downloadfiles'  => new external_value(PARAM_INT, '1 if users are allowed to download files, 0 if not', VALUE_OPTIONAL),
+=======
+                'downloadfiles'  => new external_value(PARAM_INT, '1 if users are allowed to download files, 0 if not',
+                                                       VALUE_OPTIONAL),
+                'release'  => new external_value(PARAM_TEXT, 'Moodle release number', VALUE_OPTIONAL),
+                'version'  => new external_value(PARAM_TEXT, 'Moodle version number', VALUE_OPTIONAL),
+                'mobilecssurl'  => new external_value(PARAM_URL, 'Mobile custom CSS theme', VALUE_OPTIONAL)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             )
         );
     }

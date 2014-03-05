@@ -39,6 +39,10 @@ $string['clitypevaluedefault'] = 'digite o valor, pressione Enter para utilizar 
 $string['cliunknowoption'] = 'Opções não reconhecidas:
   {$a}
 Por favor use a opção --help.';
+<<<<<<< HEAD
 $string['cliyesnoprompt'] = 'digite y (sim) ou n (não)';
+=======
+$string['cliyesnoprompt'] = 'digite s (sim) ou n (não)';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['environmentrequireinstall'] = 'deve ser instalado e habilitado';
 $string['environmentrequireversion'] = 'a versão {$a->needed} é necessária e você está usando a versão {$a->current}';

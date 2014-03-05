@@ -53,6 +53,10 @@ function workshop_supports($feature) {
         case FEATURE_COMPLETION_TRACKS_VIEWS:
             return true;
         case FEATURE_SHOW_DESCRIPTION:  return true;
+<<<<<<< HEAD
+=======
+        case FEATURE_PLAGIARISM:        return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         default:                        return null;
     }
 }
@@ -88,7 +92,11 @@ function workshop_add_instance(stdclass $workshop) {
     // we need to use context now, so we need to make sure all needed info is already in db
     $cmid = $workshop->coursemodule;
     $DB->set_field('course_modules', 'instance', $workshop->id, array('id' => $cmid));
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // process the custom wysiwyg editors
     if ($draftitemid = $workshop->instructauthorseditor['itemid']) {
@@ -103,6 +111,15 @@ function workshop_add_instance(stdclass $workshop) {
         $workshop->instructreviewersformat = $workshop->instructreviewerseditor['format'];
     }
 
+<<<<<<< HEAD
+=======
+    if ($draftitemid = $workshop->conclusioneditor['itemid']) {
+        $workshop->conclusion = file_save_draft_area_files($draftitemid, $context->id, 'mod_workshop', 'conclusion',
+                0, workshop::instruction_editors_options($context), $workshop->conclusioneditor['text']);
+        $workshop->conclusionformat = $workshop->conclusioneditor['format'];
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // re-save the record with the replaced URLs in editor fields
     $DB->update_record('workshop', $workshop);
 
@@ -135,6 +152,7 @@ function workshop_update_instance(stdclass $workshop) {
     $workshop->useselfassessment     = (int)!empty($workshop->useselfassessment);
     $workshop->latesubmissions       = (int)!empty($workshop->latesubmissions);
     $workshop->phaseswitchassessment = (int)!empty($workshop->phaseswitchassessment);
+<<<<<<< HEAD
     $workshop->evaluation            = 'best';
 
     // todo - if the grading strategy is being changed, we must replace all aggregated peer grades with nulls
@@ -142,6 +160,13 @@ function workshop_update_instance(stdclass $workshop) {
 
     $DB->update_record('workshop', $workshop);
     $context = get_context_instance(CONTEXT_MODULE, $workshop->coursemodule);
+=======
+
+    // todo - if the grading strategy is being changed, we may want to replace all aggregated peer grades with nulls
+
+    $DB->update_record('workshop', $workshop);
+    $context = context_module::instance($workshop->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // process the custom wysiwyg editors
     if ($draftitemid = $workshop->instructauthorseditor['itemid']) {
@@ -156,6 +181,15 @@ function workshop_update_instance(stdclass $workshop) {
         $workshop->instructreviewersformat = $workshop->instructreviewerseditor['format'];
     }
 
+<<<<<<< HEAD
+=======
+    if ($draftitemid = $workshop->conclusioneditor['itemid']) {
+        $workshop->conclusion = file_save_draft_area_files($draftitemid, $context->id, 'mod_workshop', 'conclusion',
+                0, workshop::instruction_editors_options($context), $workshop->conclusioneditor['text']);
+        $workshop->conclusionformat = $workshop->conclusioneditor['format'];
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // re-save the record with the replaced URLs in editor fields
     $DB->update_record('workshop', $workshop);
 
@@ -405,7 +439,11 @@ function workshop_print_recent_activity($course, $viewfullnames, $timestart) {
             }
         }
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $groupmode = groups_get_activity_groupmode($cm, $course);
 
         if ($activity->submissionmodified > $timestart and empty($submissions[$activity->submissionid])) {
@@ -630,7 +668,11 @@ function workshop_get_recent_mod_activity(&$activities, &$index, $timestart, $co
     $rs = $DB->get_recordset_sql($sql, $params);
 
     $groupmode       = groups_get_activity_groupmode($cm, $course);
+<<<<<<< HEAD
     $context         = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context         = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $grader          = has_capability('moodle/grade:viewall', $context);
     $accessallgroups = has_capability('moodle/site:accessallgroups', $context);
     $viewfullnames   = has_capability('moodle/site:viewfullnames', $context);
@@ -1172,6 +1214,10 @@ function workshop_get_file_areas($course, $cm, $context) {
     $areas['instructreviewers']        = get_string('areainstructreviewers', 'workshop');
     $areas['submission_content']       = get_string('areasubmissioncontent', 'workshop');
     $areas['submission_attachment']    = get_string('areasubmissionattachment', 'workshop');
+<<<<<<< HEAD
+=======
+    $areas['conclusion']               = get_string('areaconclusion', 'workshop');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     return $areas;
 }
@@ -1182,7 +1228,11 @@ function workshop_get_file_areas($course, $cm, $context) {
  * Apart from module intro (handled by pluginfile.php automatically), workshop files may be
  * media inserted into submission content (like images) and submission attachments. For these two,
  * the fileareas submission_content and submission_attachment are used.
+<<<<<<< HEAD
  * Besides that, areas instructauthors and instructreviewers contain the media
+=======
+ * Besides that, areas instructauthors, instructreviewers and conclusion contain the media
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * embedded using the mod_form.php.
  *
  * @package  mod_workshop
@@ -1220,9 +1270,29 @@ function workshop_pluginfile($course, $cm, $context, $filearea, array $args, $fo
 
         // finally send the file
         send_stored_file($file, $lifetime, 0, $forcedownload, $options);
+<<<<<<< HEAD
     }
 
     if ($filearea === 'instructreviewers') {
+=======
+
+    } else if ($filearea === 'instructreviewers') {
+        array_shift($args); // itemid is ignored here
+        $relativepath = implode('/', $args);
+        $fullpath = "/$context->id/mod_workshop/$filearea/0/$relativepath";
+
+        $fs = get_file_storage();
+        if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+            send_file_not_found();
+        }
+
+        $lifetime = isset($CFG->filelifetime) ? $CFG->filelifetime : 86400;
+
+        // finally send the file
+        send_stored_file($file, $lifetime, 0, $forcedownload, $options);
+
+    } else if ($filearea === 'conclusion') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         array_shift($args); // itemid is ignored here
         $relativepath = implode('/', $args);
         $fullpath = "/$context->id/mod_workshop/$filearea/0/$relativepath";
@@ -1401,7 +1471,11 @@ function workshop_get_file_info($browser, $areas, $course, $cm, $context, $filea
         return new file_info_stored($browser, $context, $storedfile, $urlbase, $topvisiblename, true, true, false, false);
     }
 
+<<<<<<< HEAD
     if ($filearea == 'instructauthors' or $filearea == 'instructreviewers') {
+=======
+    if ($filearea == 'instructauthors' or $filearea == 'instructreviewers' or $filearea == 'conclusion') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // always only itemid 0
 
         $filepath = is_null($filepath) ? '/' : $filepath;
@@ -1437,7 +1511,11 @@ function workshop_get_file_info($browser, $areas, $course, $cm, $context, $filea
 function workshop_extend_navigation(navigation_node $navref, stdclass $course, stdclass $module, cm_info $cm) {
     global $CFG;
 
+<<<<<<< HEAD
     if (has_capability('mod/workshop:submit', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+=======
+    if (has_capability('mod/workshop:submit', context_module::instance($cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $url = new moodle_url('/mod/workshop/submission.php', array('cmid' => $cm->id));
         $mysubmission = $navref->add(get_string('mysubmission', 'workshop'), $url);
         $mysubmission->mainnavonly = true;

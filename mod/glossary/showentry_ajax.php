@@ -54,14 +54,22 @@ if ($entries) {
         }
         // make sure the entry is approved (or approvable by current user)
         if (!$entry->approved and ($USER->id != $entry->userid)) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_MODULE, $entry->cmid);
+=======
+            $context = context_module::instance($entry->cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!has_capability('mod/glossary:approve', $context)) {
                 unset($entries[$key]);
                 continue;
             }
         }
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $entry->cmid);
+=======
+        $context = context_module::instance($entry->cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $definition = file_rewrite_pluginfile_urls($entry->definition, 'pluginfile.php', $context->id, 'mod_glossary', 'entry', $entry->id);
 
         $options = new stdClass();

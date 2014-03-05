@@ -33,7 +33,11 @@ if ($ADMIN->fulltree) {
 
     //--- enrol instance defaults ----------------------------------------------------------------------------
     if (!during_initial_install()) {
+<<<<<<< HEAD
         $options = get_default_enrol_roles(get_context_instance(CONTEXT_SYSTEM));
+=======
+        $options = get_default_enrol_roles(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $student = get_archetype_roles('student');
         $student = reset($student);
         $settings->add(new admin_setting_configselect_with_advanced('enrol_mnet/roleid',

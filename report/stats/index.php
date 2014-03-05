@@ -58,7 +58,11 @@ if (!empty($userid)) {
 }
 
 require_login($course);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('report/stats:view', $context);
 
 $PAGE->set_url(new moodle_url('/report/stats/index.php', array('course' => $course->id,
@@ -87,7 +91,11 @@ if ($course->id == SITEID) {
 report_stats_report($course, $report, $mode, $user, $roleid, $time);
 
 if (empty($CFG->enablestats)) {
+<<<<<<< HEAD
     if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+    if (has_capability('moodle/site:config', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         redirect("$CFG->wwwroot/$CFG->admin/settings.php?section=stats", get_string('mustenablestats', 'admin'), 3);
     } else {
         print_error('statsdisable');

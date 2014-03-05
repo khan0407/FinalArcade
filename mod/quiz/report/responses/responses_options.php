@@ -39,7 +39,11 @@ class quiz_responses_options extends mod_quiz_attempts_report_options {
     /** @var bool whether to show the question text columns. */
     public $showqtext = false;
 
+<<<<<<< HEAD
     /** @var bool whether to show the students' reponse columns. */
+=======
+    /** @var bool whether to show the students' response columns. */
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     public $showresponses = true;
 
     /** @var bool whether to show the correct response columns. */

@@ -46,13 +46,21 @@ $maxbytes  = optional_param('maxbytes', 0, PARAM_INT);          // Maxbytes
 $req_path  = optional_param('p', '', PARAM_RAW);                // Path
 $accepted_types  = optional_param_array('accepted_types', '*', PARAM_RAW);
 $saveas_filename = optional_param('title', '', PARAM_FILE);     // save as file name
+<<<<<<< HEAD
+=======
+$areamaxbytes  = optional_param('areamaxbytes', FILE_AREA_MAX_BYTES_UNLIMITED, PARAM_INT); // Area max bytes.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $saveas_path   = optional_param('savepath', '/', PARAM_PATH);   // save as file path
 $search_text   = optional_param('s', '', PARAM_CLEANHTML);
 $linkexternal  = optional_param('linkexternal', '', PARAM_ALPHA);
 $usefilereference  = optional_param('usefilereference', false, PARAM_BOOL);
 
 list($context, $course, $cm) = get_context_info_array($contextid);
+<<<<<<< HEAD
 require_login($course, false, $cm);
+=======
+require_login($course, false, $cm, false, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_context($context);
 
 echo $OUTPUT->header(); // send headers
@@ -74,6 +82,11 @@ $repooptions = array(
     'ajax' => true,
     'mimetypes' => $accepted_types
 );
+<<<<<<< HEAD
+=======
+
+ajax_capture_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $repo = repository::get_repository_by_id($repo_id, $contextid, $repooptions);
 
 // Check permissions
@@ -94,8 +107,13 @@ switch ($action) {
     // global search
     case 'gsearch':
         $params = array();
+<<<<<<< HEAD
         $params['context'] = array(get_context_instance_by_id($contextid), get_system_context());
         $params['currentcontext'] = get_context_instance_by_id($contextid);
+=======
+        $params['context'] = array(context::instance_by_id($contextid), get_system_context());
+        $params['currentcontext'] = context::instance_by_id($contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $repos = repository::get_instances($params);
         $list = array();
         foreach($repos as $repo){
@@ -127,6 +145,10 @@ switch ($action) {
         if ($repo->check_login()) {
             $listing = repository::prepare_listing($repo->get_listing($req_path, $page));
             $listing['repo_id'] = $repo_id;
+<<<<<<< HEAD
+=======
+            ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo json_encode($listing);
             break;
         } else {
@@ -135,23 +157,39 @@ switch ($action) {
     case 'login':
         $listing = $repo->print_login();
         $listing['repo_id'] = $repo_id;
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode($listing);
         break;
     case 'logout':
         $logout = $repo->logout();
         $logout['repo_id'] = $repo_id;
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode($logout);
         break;
     case 'searchform':
         $search_form['repo_id'] = $repo_id;
         $search_form['form'] = $repo->print_search();
         $search_form['allowcaching'] = true;
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode($search_form);
         break;
     case 'search':
         $search_result = repository::prepare_listing($repo->search($search_text, (int)$page));
         $search_result['repo_id'] = $repo_id;
         $search_result['issearchresult'] = true;
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode($search_result);
         break;
     case 'download':
@@ -190,6 +228,10 @@ switch ($action) {
             $info['file'] = $saveas_filename;
             $info['type'] = 'link';
             $info['url'] = $link;
+<<<<<<< HEAD
+=======
+            ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo json_encode($info);
             die;
         } else {
@@ -209,7 +251,11 @@ switch ($action) {
                 $record->filepath = trim($record->filepath, '/');
                 $record->filepath = '/'.$record->filepath.'/';
             }
+<<<<<<< HEAD
             $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $now = time();
             $record->contextid = $usercontext->id;
             $record->timecreated = $now;
@@ -281,6 +327,10 @@ switch ($action) {
                 // You can cache reository file in this callback
                 // or complete other tasks.
                 $repo->cache_file_by_reference($reference, $storedfile);
+<<<<<<< HEAD
+=======
+                ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 echo json_encode($event);
                 die;
             } else if ($repo->has_moodle_files()) {
@@ -289,8 +339,14 @@ switch ($action) {
 
                 // If the moodle file is an alias we copy this alias, otherwise we copy the file
                 // {@link repository::copy_to_area()}.
+<<<<<<< HEAD
                 $fileinfo = $repo->copy_to_area($reference, $record, $maxbytes);
 
+=======
+                $fileinfo = $repo->copy_to_area($reference, $record, $maxbytes, $areamaxbytes);
+
+                ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 echo json_encode($fileinfo);
                 die;
             } else {
@@ -301,6 +357,14 @@ switch ($action) {
                     die(json_encode($err));
                 }
 
+<<<<<<< HEAD
+=======
+                // Check if we exceed the max bytes of the area.
+                if (file_is_draft_area_limit_reached($itemid, $areamaxbytes, filesize($downloadedfile['path']))) {
+                    throw new file_exception('maxareabytes');
+                }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // Check if exceed maxbytes.
                 if ($maxbytes != -1 && filesize($downloadedfile['path']) > $maxbytes) {
                     throw new file_exception('maxbytes');
@@ -311,12 +375,20 @@ switch ($action) {
                     $info['e'] = get_string('error', 'moodle');
                 }
             }
+<<<<<<< HEAD
+=======
+            ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo json_encode($info);
             die;
         }
         break;
     case 'upload':
         $result = $repo->upload($saveas_filename, $maxbytes);
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode($result);
         break;
 
@@ -329,6 +401,10 @@ switch ($action) {
         $newfilename = required_param('newfilename', PARAM_FILE);
 
         $info = repository::overwrite_existing_draftfile($itemid, $filepath, $filename, $newfilepath, $newfilename);
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode($info);
         break;
 
@@ -336,6 +412,10 @@ switch ($action) {
         // delete tmp file
         $newfilepath = required_param('newfilepath', PARAM_PATH);
         $newfilename = required_param('newfilename', PARAM_FILE);
+<<<<<<< HEAD
+=======
+        ajax_check_captured_output();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo json_encode(repository::delete_tempfile_from_draft($itemid, $newfilepath, $newfilename));
 
         break;

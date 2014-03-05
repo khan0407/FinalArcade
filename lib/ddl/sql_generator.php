@@ -1013,6 +1013,7 @@ abstract class sql_generator {
         $results = array();
 
         // Get the real index name
+<<<<<<< HEAD
         $dbindexname = $this->mdb->get_manager()->find_index_name($xmldb_table, $xmldb_index);
 
         // Replace TABLENAME and INDEXNAME as needed
@@ -1020,6 +1021,18 @@ abstract class sql_generator {
         $dropsql = str_replace('INDEXNAME', $this->getEncQuoted($dbindexname), $dropsql);
 
         $results[] = $dropsql;
+=======
+        $dbindexnames = $this->mdb->get_manager()->find_index_name($xmldb_table, $xmldb_index, true);
+
+        // Replace TABLENAME and INDEXNAME as needed
+        if ($dbindexnames) {
+            foreach ($dbindexnames as $dbindexname) {
+                $dropsql = str_replace('TABLENAME', $this->getTableName($xmldb_table), $this->drop_index_sql);
+                $dropsql = str_replace('INDEXNAME', $this->getEncQuoted($dbindexname), $dropsql);
+                $results[] = $dropsql;
+            }
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $results;
     }
@@ -1083,6 +1096,7 @@ abstract class sql_generator {
             $name .= substr(trim($field),0,3);
         }
         // Prepend the prefix
+<<<<<<< HEAD
         $name = $this->prefix . $name;
 
         $name = substr(trim($name), 0, $this->names_max_length - 1 - strlen($suffix)); //Max names_max_length
@@ -1117,6 +1131,21 @@ abstract class sql_generator {
                 }
             }
             $namewithsuffix = $newnamewithsuffix;
+=======
+        $name = trim($this->prefix . $name);
+
+        // Make sure name does not exceed the maximum name length and add suffix.
+        $maxlengthwithoutsuffix = $this->names_max_length - strlen($suffix) - ($suffix ? 1 : 0);
+        $namewithsuffix = substr($name, 0, $maxlengthwithoutsuffix) . ($suffix ? ('_' . $suffix) : '');
+
+        // If the calculated name is in the cache, or if we detect it by introspecting the DB let's modify if
+        $counter = 1;
+        while (in_array($namewithsuffix, $used_names) || $this->isNameInUse($namewithsuffix, $suffix, $tablename)) {
+            // Now iterate until not used name is found, incrementing the counter
+            $counter++;
+            $namewithsuffix = substr($name, 0, $maxlengthwithoutsuffix - strlen($counter)) .
+                    $counter . ($suffix ? ('_' . $suffix) : '');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         // Add the name to the cache

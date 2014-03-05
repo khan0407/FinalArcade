@@ -69,7 +69,11 @@ if ((!$user = $DB->get_record('user', array('id' => $userid))) || ($user->delete
 }
 
 $currentuser = ($user->id == $USER->id);
+<<<<<<< HEAD
 $context = $usercontext = get_context_instance(CONTEXT_USER, $userid, MUST_EXIST);
+=======
+$context = $usercontext = context_user::instance($userid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (!$currentuser &&
     !empty($CFG->forceloginforprofiles) &&
@@ -78,7 +82,11 @@ if (!$currentuser &&
 
     // Course managers can be browsed at site level. If not forceloginforprofiles, allow access (bug #4366)
     $struser = get_string('user');
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+    $PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_title("$SITE->shortname: $struser");  // Do not leak the name
     $PAGE->set_heading("$SITE->shortname: $struser");
     $PAGE->set_url('/user/profile.php', array('id'=>$userid));
@@ -95,7 +103,11 @@ if (!$currentpage = my_get_page($userid, MY_PAGE_PUBLIC)) {
 }
 
 if (!$currentpage->userid) {
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);  // A trick so that we even see non-sticky blocks
+=======
+    $context = context_system::instance();  // A trick so that we even see non-sticky blocks
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 $PAGE->set_context($context);

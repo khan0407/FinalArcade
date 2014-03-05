@@ -16,6 +16,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once($CFG->dirroot.'/grade/export/lib.php');
+<<<<<<< HEAD
+=======
+require_once($CFG->libdir . '/csvlib.class.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 class grade_export_txt extends grade_export {
 
@@ -23,8 +27,25 @@ class grade_export_txt extends grade_export {
 
     public $separator; // default separator
 
+<<<<<<< HEAD
     public function __construct($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2, $separator = 'comma', $onlyactive = false) {
         parent::__construct($course, $groupid, $itemlist, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints, $onlyactive);
+=======
+    /**
+     * Constructor should set up all the private variables ready to be pulled
+     * @param object $course
+     * @param int $groupid id of selected group, 0 means all
+     * @param string $itemlist comma separated list of item ids, empty means all
+     * @param boolean $export_feedback
+     * @param boolean $updatedgradesonly
+     * @param string $displaytype
+     * @param int $decimalpoints
+     * @param boolean $onlyactive
+     * @param boolean $usercustomfields include user custom field in export
+     */
+    public function __construct($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2, $separator = 'comma', $onlyactive = false, $usercustomfields = false) {
+        parent::__construct($course, $groupid, $itemlist, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints, $onlyactive, $usercustomfields);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->separator = $separator;
     }
 
@@ -40,6 +61,7 @@ class grade_export_txt extends grade_export {
         $export_tracking = $this->track_exports();
 
         $strgrades = get_string('grades');
+<<<<<<< HEAD
 
         switch ($this->separator) {
             case 'comma':
@@ -94,11 +116,51 @@ class grade_export_txt extends grade_export {
 
             echo $user->firstname.$separator.$user->lastname.$separator.$user->idnumber.$separator.$user->institution.$separator.$user->department.$separator.$user->email;
 
+=======
+        $profilefields = grade_helper::get_user_profile_fields($this->course->id, $this->usercustomfields);
+
+        $shortname = format_string($this->course->shortname, true, array('context' => context_course::instance($this->course->id)));
+        $downloadfilename = clean_filename("$shortname $strgrades");
+        $csvexport = new csv_export_writer($this->separator);
+        $csvexport->set_filename($downloadfilename);
+
+        // Print names of all the fields
+        $exporttitle = array();
+        foreach ($profilefields as $field) {
+            $exporttitle[] = $field->fullname;
+        }
+
+        // Add a feedback column.
+        foreach ($this->columns as $grade_item) {
+            $exporttitle[] = $this->format_column_name($grade_item);
+            if ($this->export_feedback) {
+                $exporttitle[] = $this->format_column_name($grade_item, true);
+            }
+        }
+        $csvexport->add_data($exporttitle);
+
+        // Print all the lines of data.
+        $geub = new grade_export_update_buffer();
+        $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
+        $gui->require_active_enrolment($this->onlyactive);
+        $gui->allow_user_custom_fields($this->usercustomfields);
+        $gui->init();
+        while ($userdata = $gui->next_user()) {
+
+            $exportdata = array();
+            $user = $userdata->user;
+
+            foreach ($profilefields as $field) {
+                $fieldvalue = grade_helper::get_user_field_value($user, $field);
+                $exportdata[] = $fieldvalue;
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach ($userdata->grades as $itemid => $grade) {
                 if ($export_tracking) {
                     $status = $geub->track($grade);
                 }
 
+<<<<<<< HEAD
                 echo $separator.$this->format_grade($grade);
 
                 if ($this->export_feedback) {
@@ -110,6 +172,19 @@ class grade_export_txt extends grade_export {
         $gui->close();
         $geub->close();
 
+=======
+                $exportdata[] = $this->format_grade($grade);
+
+                if ($this->export_feedback) {
+                    $exportdata[] = $this->format_feedback($userdata->feedbacks[$itemid]);
+                }
+            }
+            $csvexport->add_data($exportdata);
+        }
+        $gui->close();
+        $geub->close();
+        $csvexport->download_file();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         exit;
     }
 }

@@ -56,10 +56,23 @@ if (!empty($add)) {
     $module = $DB->get_record('modules', array('name'=>$add), '*', MUST_EXIST);
 
     require_login($course);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
     require_capability('moodle/course:manageactivities', $context);
 
     $cw = get_course_section($section, $course->id);
+=======
+    $context = context_course::instance($course->id);
+    require_capability('moodle/course:manageactivities', $context);
+
+    // There is no page for this in the navigation. The closest we'll have is the course section.
+    // If the course section isn't displayed on the navigation this will fall back to the course which
+    // will be the closest match we have.
+    navigation_node::override_active_url(course_get_url($course, $section));
+
+    course_create_sections_if_missing($course, $section);
+    $cw = get_fast_modinfo($course)->get_section_info($section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (!course_allowed_module($course, $module->name)) {
         print_error('moduledisable');
@@ -121,6 +134,10 @@ if (!empty($add)) {
     } else {
         $pageheading = get_string('addinganew', 'moodle', $fullmodulename);
     }
+<<<<<<< HEAD
+=======
+    $navbaraddition = $pageheading;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 } else if (!empty($update)) {
 
@@ -131,7 +148,11 @@ if (!empty($add)) {
     $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm); // needed to setup proper $COURSE
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('moodle/course:manageactivities', $context);
 
     $module = $DB->get_record('modules', array('id'=>$cm->module), '*', MUST_EXIST);
@@ -227,6 +248,10 @@ if (!empty($add)) {
     } else {
         $pageheading = get_string('updatinga', 'moodle', $fullmodulename);
     }
+<<<<<<< HEAD
+=======
+    $navbaraddition = null;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 } else {
     require_login();
@@ -282,9 +307,15 @@ if ($mform->is_cancelled()) {
     }
 
     if (!empty($fromform->coursemodule)) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $fromform->coursemodule);
     } else {
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_module::instance($fromform->coursemodule);
+    } else {
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     $fromform->course = $course->id;
@@ -356,7 +387,11 @@ if ($mform->is_cancelled()) {
 
         $DB->update_record('course_modules', $cm);
 
+<<<<<<< HEAD
         $modcontext = get_context_instance(CONTEXT_MODULE, $fromform->coursemodule);
+=======
+        $modcontext = context_module::instance($fromform->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // update embedded links and save files
         if (plugin_supports('mod', $fromform->modulename, FEATURE_MOD_INTRO, true)) {
@@ -449,7 +484,11 @@ if ($mform->is_cancelled()) {
 
         if (!$returnfromfunc or !is_number($returnfromfunc)) {
             // undo everything we can
+<<<<<<< HEAD
             $modcontext = get_context_instance(CONTEXT_MODULE, $fromform->coursemodule);
+=======
+            $modcontext = context_module::instance($fromform->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             delete_context(CONTEXT_MODULE, $fromform->coursemodule);
             $DB->delete_records('course_modules', array('id'=>$fromform->coursemodule));
 
@@ -465,7 +504,11 @@ if ($mform->is_cancelled()) {
         $DB->set_field('course_modules', 'instance', $returnfromfunc, array('id'=>$fromform->coursemodule));
 
         // update embedded links and save files
+<<<<<<< HEAD
         $modcontext = get_context_instance(CONTEXT_MODULE, $fromform->coursemodule);
+=======
+        $modcontext = context_module::instance($fromform->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!empty($introeditor)) {
             $fromform->intro = file_save_draft_area_files($introeditor['itemid'], $modcontext->id,
                                                           'mod_'.$fromform->modulename, 'intro', 0,
@@ -475,9 +518,13 @@ if ($mform->is_cancelled()) {
 
         // course_modules and course_sections each contain a reference
         // to each other, so we have to update one of them twice.
+<<<<<<< HEAD
         $sectionid = add_mod_to_section($fromform);
 
         $DB->set_field('course_modules', 'section', $sectionid, array('id'=>$fromform->coursemodule));
+=======
+        $sectionid = course_add_cm_to_section($course, $fromform->coursemodule, $fromform->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // make sure visibility is set correctly (in particular in calendar)
         // note: allow them to set it even without moodle/course:activityvisibility
@@ -644,14 +691,28 @@ if ($mform->is_cancelled()) {
     $strmodulenameplural = get_string('modulenameplural', $module->name);
 
     if (!empty($cm->id)) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     } else {
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_module::instance($cm->id);
+    } else {
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     $PAGE->set_heading($course->fullname);
     $PAGE->set_title($streditinga);
     $PAGE->set_cacheable(false);
+<<<<<<< HEAD
+=======
+
+    if (isset($navbaraddition)) {
+        $PAGE->navbar->add($navbaraddition);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo $OUTPUT->header();
 
     if (get_string_manager()->string_exists('modulename_help', $module->name)) {

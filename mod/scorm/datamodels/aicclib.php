@@ -117,7 +117,11 @@ function scorm_parse_aicc($scorm) {
         $cm = get_coursemodule_from_instance('scorm', $scorm->id);
         $scorm->cmid = $cm->id;
     }
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $scorm->cmid);
+=======
+    $context = context_module::instance($scorm->cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $fs = get_file_storage();
 
@@ -134,11 +138,23 @@ function scorm_parse_aicc($scorm) {
         $extension = strtolower(substr($ext, 1));
         if (in_array($extension, $extaiccfiles)) {
             $id = strtolower(basename($filename, $ext));
+<<<<<<< HEAD
+=======
+            if (!isset($ids[$id])) {
+                $ids[$id] = new stdClass();
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $ids[$id]->$extension = $file;
         }
     }
 
     foreach ($ids as $courseid => $id) {
+<<<<<<< HEAD
+=======
+        if (!isset($courses[$courseid])) {
+            $courses[$courseid] = new stdClass();
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (isset($id->crs)) {
             $contents = $id->crs->get_content();
             $rows = explode("\r\n", $contents);
@@ -169,6 +185,12 @@ function scorm_parse_aicc($scorm) {
                 if (preg_match($regexp, $rows[$i], $matches)) {
                     for ($j=0; $j<count($columns->columns); $j++) {
                         $column = $columns->columns[$j];
+<<<<<<< HEAD
+=======
+                        if (!isset($courses[$courseid]->elements[substr(trim($matches[$columns->mastercol+1]), 1 , -1)])) {
+                            $courses[$courseid]->elements[substr(trim($matches[$columns->mastercol+1]), 1 , -1)] = new stdClass();
+                        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $courses[$courseid]->elements[substr(trim($matches[$columns->mastercol+1]), 1 , -1)]->$column = substr(trim($matches[$j+1]), 1, -1);
                     }
                 }
@@ -268,13 +290,24 @@ function scorm_parse_aicc($scorm) {
             if (isset($course->elements)) {
                 foreach ($course->elements as $element) {
                     unset($sco);
+<<<<<<< HEAD
+=======
+                    $sco = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $sco->identifier = $element->system_id;
                     $sco->scorm = $scorm->id;
                     $sco->organization = $course->id;
                     $sco->title = $element->title;
 
+<<<<<<< HEAD
                     if (!isset($element->parent) || strtolower($element->parent) == 'root') {
                         $sco->parent = '/';
+=======
+                    if (!isset($element->parent)) {
+                        $sco->parent = '/';
+                    } else if (strtolower($element->parent) == 'root') {
+                        $sco->parent = $course->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     } else {
                         $sco->parent = $element->parent;
                     }

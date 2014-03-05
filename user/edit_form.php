@@ -83,7 +83,11 @@ class user_edit_form extends moodleform {
 
             // print picture
             if (!empty($CFG->gdversion)) {
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_USER, $user->id, MUST_EXIST);
+=======
+                $context = context_user::instance($user->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $fs = get_file_storage();
                 $hasuploadedpicture = ($fs->file_exists($context->id, 'user', 'icon', 0, '/', 'f2.png') || $fs->file_exists($context->id, 'user', 'icon', 0, '/', 'f2.jpg'));
                 if (!empty($user->picture) && $hasuploadedpicture) {
@@ -147,7 +151,11 @@ class user_edit_form extends moodleform {
             $errors['email'] = get_string('toomanybounces');
         }
 
+<<<<<<< HEAD
         if (isset($usernew->email) and !empty($CFG->verifychangedemail) and !isset($errors['email']) and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if (isset($usernew->email) and !empty($CFG->verifychangedemail) and !isset($errors['email']) and !has_capability('moodle/user:update', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $errorstr = email_is_not_allowed($usernew->email);
             if ($errorstr !== false) {
                 $errors['email'] = $errorstr;

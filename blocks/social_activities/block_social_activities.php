@@ -29,7 +29,11 @@ class block_social_activities extends block_list {
 
         require_once($CFG->dirroot.'/course/lib.php');
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $isediting = $this->page->user_is_editing() && has_capability('moodle/course:manageactivities', $context);
         $modinfo = get_fast_modinfo($course);
 
@@ -64,6 +68,7 @@ class block_social_activities extends block_list {
 
 /// slow & hacky editing mode
         $ismoving = ismoving($course->id);
+<<<<<<< HEAD
         $sections = get_all_sections($course->id);
 
         if(!empty($sections) && isset($sections[0])) {
@@ -73,6 +78,10 @@ class block_social_activities extends block_list {
         if (!empty($section)) {
             get_all_mods($course->id, $mods, $modnames, $modnamesplural, $modnamesused);
         }
+=======
+        $modinfo = get_fast_modinfo($course);
+        $section = $modinfo->get_section_info(0);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $groupbuttons = $course->groupmode;
         $groupbuttonslink = (!$course->groupmodeforce);
@@ -91,6 +100,7 @@ class block_social_activities extends block_list {
             $this->content->items[] = $USER->activitycopyname.'&nbsp;(<a href="'.$CFG->wwwroot.'/course/mod.php?cancelcopy=true&amp;sesskey='.sesskey().'">'.$strcancel.'</a>)';
         }
 
+<<<<<<< HEAD
         if (!empty($section) && !empty($section->sequence)) {
             $sectionmods = explode(',', $section->sequence);
             $options = array('overflowdiv'=>true);
@@ -99,6 +109,15 @@ class block_social_activities extends block_list {
                     continue;
                 }
                 $mod = $mods[$modnumber];
+=======
+        if (!empty($modinfo->sections[0])) {
+            $options = array('overflowdiv'=>true);
+            foreach ($modinfo->sections[0] as $modnumber) {
+                $mod = $modinfo->cms[$modnumber];
+                if (!$mod->uservisible) {
+                    continue;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if (!$ismoving) {
                     if ($groupbuttons) {
                         if (! $mod->groupmodelink = $groupbuttonslink) {
@@ -145,11 +164,15 @@ class block_social_activities extends block_list {
             $this->content->icons[] = '';
         }
 
+<<<<<<< HEAD
         if ($modnames) {
             $this->content->footer = print_section_add_menus($course, 0, $modnames, true, true);
         } else {
             $this->content->footer = '';
         }
+=======
+        $this->content->footer = print_section_add_menus($course, 0, null, true, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $this->content;
     }

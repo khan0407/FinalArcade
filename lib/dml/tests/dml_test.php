@@ -51,6 +51,7 @@ class dml_testcase extends database_driver_testcase {
         return new xmldb_table($tablename);
     }
 
+<<<<<<< HEAD
     protected function enable_debugging() {
         ob_start(); // hide debug warning
     }
@@ -62,6 +63,8 @@ class dml_testcase extends database_driver_testcase {
         return $debuginfo;
     }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function test_diagnose() {
         $DB = $this->tdb;
         $result = $DB->diagnose();
@@ -688,6 +691,20 @@ class dml_testcase extends database_driver_testcase {
         $table->add_field('negativedfltint', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '-1');
         $table->add_field('negativedfltnumber', XMLDB_TYPE_NUMBER, '10', null, XMLDB_NOTNULL, null, '-2');
         $table->add_field('negativedfltfloat', XMLDB_TYPE_FLOAT, '10', null, XMLDB_NOTNULL, null, '-3');
+<<<<<<< HEAD
+=======
+        $table->add_field('someint1', XMLDB_TYPE_INTEGER, '1', null, null, null, '0');
+        $table->add_field('someint2', XMLDB_TYPE_INTEGER, '2', null, null, null, '0');
+        $table->add_field('someint3', XMLDB_TYPE_INTEGER, '3', null, null, null, '0');
+        $table->add_field('someint4', XMLDB_TYPE_INTEGER, '4', null, null, null, '0');
+        $table->add_field('someint5', XMLDB_TYPE_INTEGER, '5', null, null, null, '0');
+        $table->add_field('someint6', XMLDB_TYPE_INTEGER, '6', null, null, null, '0');
+        $table->add_field('someint7', XMLDB_TYPE_INTEGER, '7', null, null, null, '0');
+        $table->add_field('someint8', XMLDB_TYPE_INTEGER, '8', null, null, null, '0');
+        $table->add_field('someint9', XMLDB_TYPE_INTEGER, '9', null, null, null, '0');
+        $table->add_field('someint10', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('someint18', XMLDB_TYPE_INTEGER, '18', null, null, null, '0');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $dbman->create_table($table);
 
@@ -709,6 +726,18 @@ class dml_testcase extends database_driver_testcase {
         $this->assertEquals(0, $field->default_value);
         $this->assertTrue($field->not_null);
 
+<<<<<<< HEAD
+=======
+        for($i=1;$i<=10;$i++) {
+            $field = $columns['someint'.$i];
+            $this->assertEquals('I', $field->meta_type);
+            $this->assertGreaterThanOrEqual($i, $field->max_length);
+        }
+        $field = $columns['someint18'];
+        $this->assertEquals('I', $field->meta_type);
+        $this->assertGreaterThanOrEqual(18, $field->max_length);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $field = $columns['name'];
         $this->assertEquals('C', $field->meta_type);
         $this->assertFalse($field->auto_increment);
@@ -982,10 +1011,14 @@ class dml_testcase extends database_driver_testcase {
         $conditions = array('onetext' => '1');
         try {
             $rs = $DB->get_recordset($tablename, $conditions);
+<<<<<<< HEAD
             if (debugging()) {
                 // only in debug mode - hopefully all devs test code in debug mode...
                 $this->fail('An Exception is missing, expected due to equating of text fields');
             }
+=======
+            $this->fail('An Exception is missing, expected due to equating of text fields');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } catch (exception $e) {
             $this->assertTrue($e instanceof dml_exception);
             $this->assertEquals($e->errorcode, 'textconditionsnotallowed');
@@ -1469,6 +1502,11 @@ class dml_testcase extends database_driver_testcase {
     }
 
     public function test_get_records_sql() {
+<<<<<<< HEAD
+=======
+        global $CFG;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $DB = $this->tdb;
         $dbman = $DB->get_manager();
 
@@ -1507,10 +1545,21 @@ class dml_testcase extends database_driver_testcase {
         $this->assertEquals($inskey4, next($records)->id);
 
         // Awful test, requires debug enabled and sent to browser. Let's do that and restore after test
+<<<<<<< HEAD
         $this->enable_debugging();
         $records = $DB->get_records_sql("SELECT course AS id, course AS course FROM {{$tablename}}", null);
         $this->assertFalse($this->get_debugging() === '');
         $this->assertEquals(6, count($records));
+=======
+        $records = $DB->get_records_sql("SELECT course AS id, course AS course FROM {{$tablename}}", null);
+        $this->assertDebuggingCalled();
+        $this->assertEquals(6, count($records));
+        $CFG->debug = DEBUG_MINIMAL;
+        $records = $DB->get_records_sql("SELECT course AS id, course AS course FROM {{$tablename}}", null);
+        $this->assertDebuggingNotCalled();
+        $this->assertEquals(6, count($records));
+        $CFG->debug = DEBUG_DEVELOPER;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // negative limits = no limits
         $records = $DB->get_records_sql("SELECT * FROM {{$tablename}} ORDER BY id", null, -1, -1);
@@ -1722,6 +1771,11 @@ class dml_testcase extends database_driver_testcase {
     }
 
     public function test_get_record_sql() {
+<<<<<<< HEAD
+=======
+        global $CFG;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $DB = $this->tdb;
         $dbman = $DB->get_manager();
 
@@ -1758,9 +1812,18 @@ class dml_testcase extends database_driver_testcase {
             $this->assertTrue(true);
         }
 
+<<<<<<< HEAD
         $this->enable_debugging();
         $this->assertNotEmpty($DB->get_record_sql("SELECT * FROM {{$tablename}}", array(), IGNORE_MISSING));
         $this->assertFalse($this->get_debugging() === '');
+=======
+        $this->assertNotEmpty($DB->get_record_sql("SELECT * FROM {{$tablename}}", array(), IGNORE_MISSING));
+        $this->assertDebuggingCalled();
+        $CFG->debug = DEBUG_MINIMAL;
+        $this->assertNotEmpty($DB->get_record_sql("SELECT * FROM {{$tablename}}", array(), IGNORE_MISSING));
+        $this->assertDebuggingNotCalled();
+        $CFG->debug = DEBUG_DEVELOPER;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // multiple matches ignored
         $this->assertNotEmpty($DB->get_record_sql("SELECT * FROM {{$tablename}}", array(), IGNORE_MULTIPLE));
@@ -1802,6 +1865,7 @@ class dml_testcase extends database_driver_testcase {
             $this->assertTrue(true);
         }
 
+<<<<<<< HEAD
         $this->enable_debugging();
         $this->assertEquals(5, $DB->get_field($tablename, 'course', array('course' => 5), IGNORE_MULTIPLE));
         $this->assertSame($this->get_debugging(), '');
@@ -1809,6 +1873,13 @@ class dml_testcase extends database_driver_testcase {
         $this->enable_debugging();
         $this->assertEquals(5, $DB->get_field($tablename, 'course', array('course' => 5), IGNORE_MISSING));
         $this->assertFalse($this->get_debugging() === '');
+=======
+        $this->assertEquals(5, $DB->get_field($tablename, 'course', array('course' => 5), IGNORE_MULTIPLE));
+        $this->assertDebuggingNotCalled();
+
+        $this->assertEquals(5, $DB->get_field($tablename, 'course', array('course' => 5), IGNORE_MISSING));
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // test for exception throwing on text conditions being compared. (MDL-24863, unwanted auto conversion of param to int)
         $conditions = array('onetext' => '1');
@@ -2913,13 +2984,21 @@ class dml_testcase extends database_driver_testcase {
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $dbman->create_table($table);
 
+<<<<<<< HEAD
         $this->assertEquals(0, $DB->count_records($tablename));
+=======
+        $this->assertSame(0, $DB->count_records($tablename));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $DB->insert_record($tablename, array('course' => 3));
         $DB->insert_record($tablename, array('course' => 4));
         $DB->insert_record($tablename, array('course' => 5));
 
+<<<<<<< HEAD
         $this->assertEquals(3, $DB->count_records($tablename));
+=======
+        $this->assertSame(3, $DB->count_records($tablename));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // test for exception throwing on text conditions being compared. (MDL-24863, unwanted auto conversion of param to int)
         $conditions = array('onetext' => '1');
@@ -2948,13 +3027,21 @@ class dml_testcase extends database_driver_testcase {
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $dbman->create_table($table);
 
+<<<<<<< HEAD
         $this->assertEquals(0, $DB->count_records($tablename));
+=======
+        $this->assertSame(0, $DB->count_records($tablename));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $DB->insert_record($tablename, array('course' => 3));
         $DB->insert_record($tablename, array('course' => 4));
         $DB->insert_record($tablename, array('course' => 5));
 
+<<<<<<< HEAD
         $this->assertEquals(2, $DB->count_records_select($tablename, 'course > ?', array(3)));
+=======
+        $this->assertSame(2, $DB->count_records_select($tablename, 'course > ?', array(3)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function test_count_records_sql() {
@@ -2966,6 +3053,7 @@ class dml_testcase extends database_driver_testcase {
 
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+<<<<<<< HEAD
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $dbman->create_table($table);
 
@@ -2976,6 +3064,34 @@ class dml_testcase extends database_driver_testcase {
         $DB->insert_record($tablename, array('course' => 5));
 
         $this->assertEquals(2, $DB->count_records_sql("SELECT COUNT(*) FROM {{$tablename}} WHERE course > ?", array(3)));
+=======
+        $table->add_field('onechar', XMLDB_TYPE_CHAR, '100', null, null, null);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $dbman->create_table($table);
+
+        $this->assertSame(0, $DB->count_records($tablename));
+
+        $DB->insert_record($tablename, array('course' => 3, 'onechar' => 'a'));
+        $DB->insert_record($tablename, array('course' => 4, 'onechar' => 'b'));
+        $DB->insert_record($tablename, array('course' => 5, 'onechar' => 'c'));
+
+        $this->assertSame(2, $DB->count_records_sql("SELECT COUNT(*) FROM {{$tablename}} WHERE course > ?", array(3)));
+
+        // test invalid use
+        try {
+            $DB->count_records_sql("SELECT onechar FROM {{$tablename}} WHERE course = ?", array(3));
+            $this->fail('Exception expected when non-number field used in count_records_sql');
+        } catch (exception $e) {
+            $this->assertInstanceOf('coding_exception', $e);
+        }
+
+        try {
+            $DB->count_records_sql("SELECT course FROM {{$tablename}} WHERE 1 = 2");
+            $this->fail('Exception expected when non-number field used in count_records_sql');
+        } catch (exception $e) {
+            $this->assertInstanceOf('coding_exception', $e);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function test_record_exists() {
@@ -3542,7 +3658,11 @@ class dml_testcase extends database_driver_testcase {
         $this->assertEquals(next($records)->nametext, '91.10');
     }
 
+<<<<<<< HEAD
     function sql_compare_text() {
+=======
+    public function test_sql_compare_text() {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $DB = $this->tdb;
         $dbman = $DB->get_manager();
 
@@ -3557,6 +3677,7 @@ class dml_testcase extends database_driver_testcase {
 
         $DB->insert_record($tablename, array('name'=>'abcd',   'description'=>'abcd'));
         $DB->insert_record($tablename, array('name'=>'abcdef', 'description'=>'bbcdef'));
+<<<<<<< HEAD
         $DB->insert_record($tablename, array('name'=>'aaaabb', 'description'=>'aaaacccccccccccccccccc'));
 
         $sql = "SELECT * FROM {{$tablename}} WHERE name = ".$DB->sql_compare_text('description');
@@ -3566,6 +3687,45 @@ class dml_testcase extends database_driver_testcase {
         $sql = "SELECT * FROM {{$tablename}} WHERE name = ".$DB->sql_compare_text('description', 4);
         $records = $DB->get_records_sql($sql);
         $this->assertEquals(count($records), 2);
+=======
+        $DB->insert_record($tablename, array('name'=>'aaaa', 'description'=>'aaaacccccccccccccccccc'));
+        $DB->insert_record($tablename, array('name'=>'xxxx',   'description'=>'123456789a123456789b123456789c123456789d'));
+
+        // Only some supported databases truncate TEXT fields for comparisons, currently MSSQL and Oracle.
+        $dbtruncatestextfields = ($DB->get_dbfamily() == 'mssql' || $DB->get_dbfamily() == 'oracle');
+
+        if ($dbtruncatestextfields) {
+            // Ensure truncation behaves as expected.
+
+            $sql = "SELECT " . $DB->sql_compare_text('description') . " AS field FROM {{$tablename}} WHERE name = ?";
+            $description = $DB->get_field_sql($sql, array('xxxx'));
+
+            // Should truncate to 32 chars (the default).
+            $this->assertEquals('123456789a123456789b123456789c12', $description);
+
+            $sql = "SELECT " . $DB->sql_compare_text('description', 35) . " AS field FROM {{$tablename}} WHERE name = ?";
+            $description = $DB->get_field_sql($sql, array('xxxx'));
+
+            // Should truncate to the specified number of chars.
+            $this->assertEquals('123456789a123456789b123456789c12345', $description);
+        }
+
+        // Ensure text field comparison is successful.
+        $sql = "SELECT * FROM {{$tablename}} WHERE name = ".$DB->sql_compare_text('description');
+        $records = $DB->get_records_sql($sql);
+        $this->assertCount(1, $records);
+
+        $sql = "SELECT * FROM {{$tablename}} WHERE name = ".$DB->sql_compare_text('description', 4);
+        $records = $DB->get_records_sql($sql);
+        if ($dbtruncatestextfields) {
+            // Should truncate description to 4 characters before comparing.
+            $this->assertCount(2, $records);
+        } else {
+            // Should leave untruncated, so one less match.
+            $this->assertCount(1, $records);
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function test_unique_index_collation_trouble() {
@@ -4103,6 +4263,25 @@ class dml_testcase extends database_driver_testcase {
         $records = $DB->get_records_sql($sql, null);
         $this->assertEquals($result, $records);
 
+<<<<<<< HEAD
+=======
+        // Test CASE expressions in the ORDER BY clause - used by MDL-34657.
+        $sql = "SELECT id, course, name
+                  FROM {{$tablename}}
+              ORDER BY CASE WHEN (course = 5 OR name  = 'xyz') THEN 0 ELSE 1 END, name, course";
+        // First, records matching the course = 5 OR name = 'xyz', then the rest. Each
+        // group ordered by name and course.
+        $result = array(
+            3 => (object)array('id' => 3, 'course' => 5, 'name' => 'def'),
+            1 => (object)array('id' => 1, 'course' => 3, 'name' => 'xyz'),
+            4 => (object)array('id' => 4, 'course' => 2, 'name' => 'abc'),
+            2 => (object)array('id' => 2, 'course' => 3, 'name' => 'abc'));
+        $records = $DB->get_records_sql($sql, null);
+        $this->assertEquals($result, $records);
+        // Verify also array keys, order is important in this test.
+        $this->assertEquals(array_keys($result), array_keys($records));
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // test limits in queries with DISTINCT/ALL clauses and multiple whitespace. MDL-25268
         $sql = "SELECT   DISTINCT   course
                   FROM {{$tablename}}
@@ -4196,6 +4375,92 @@ class dml_testcase extends database_driver_testcase {
         $this->assertEquals(1, $DB->count_records($tablename));
     }
 
+<<<<<<< HEAD
+=======
+    function test_transaction_ignore_error_trouble() {
+        $DB = $this->tdb;
+        $dbman = $DB->get_manager();
+
+        $table = $this->get_test_table();
+        $tablename = $table->getName();
+
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('course', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_index('course', XMLDB_INDEX_UNIQUE, array('course'));
+        $dbman->create_table($table);
+
+        // Test error on SQL_QUERY_INSERT.
+        $transaction = $DB->start_delegated_transaction();
+        $this->assertEquals(0, $DB->count_records($tablename));
+        $DB->insert_record($tablename, (object)array('course'=>1));
+        $this->assertEquals(1, $DB->count_records($tablename));
+        try {
+            $DB->insert_record($tablename, (object)array('course'=>1));
+        } catch (Exception $e) {
+            // This must be ignored and it must not roll back the whole transaction.
+        }
+        $DB->insert_record($tablename, (object)array('course'=>2));
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $transaction->allow_commit();
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $this->assertFalse($DB->is_transaction_started());
+
+        // Test error on SQL_QUERY_SELECT.
+        $DB->delete_records($tablename);
+        $transaction = $DB->start_delegated_transaction();
+        $this->assertEquals(0, $DB->count_records($tablename));
+        $DB->insert_record($tablename, (object)array('course'=>1));
+        $this->assertEquals(1, $DB->count_records($tablename));
+        try {
+            $DB->get_records_sql('s e l e c t');
+        } catch (Exception $e) {
+            // This must be ignored and it must not roll back the whole transaction.
+        }
+        $DB->insert_record($tablename, (object)array('course'=>2));
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $transaction->allow_commit();
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $this->assertFalse($DB->is_transaction_started());
+
+        // Test error on structure SQL_QUERY_UPDATE.
+        $DB->delete_records($tablename);
+        $transaction = $DB->start_delegated_transaction();
+        $this->assertEquals(0, $DB->count_records($tablename));
+        $DB->insert_record($tablename, (object)array('course'=>1));
+        $this->assertEquals(1, $DB->count_records($tablename));
+        try {
+            $DB->execute('xxxx');
+        } catch (Exception $e) {
+            // This must be ignored and it must not roll back the whole transaction.
+        }
+        $DB->insert_record($tablename, (object)array('course'=>2));
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $transaction->allow_commit();
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $this->assertFalse($DB->is_transaction_started());
+
+        // Test error on structure SQL_QUERY_STRUCTURE.
+        $DB->delete_records($tablename);
+        $transaction = $DB->start_delegated_transaction();
+        $this->assertEquals(0, $DB->count_records($tablename));
+        $DB->insert_record($tablename, (object)array('course'=>1));
+        $this->assertEquals(1, $DB->count_records($tablename));
+        try {
+            $DB->change_database_structure('xxxx');
+        } catch (Exception $e) {
+            // This must be ignored and it must not roll back the whole transaction.
+        }
+        $DB->insert_record($tablename, (object)array('course'=>2));
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $transaction->allow_commit();
+        $this->assertEquals(2, $DB->count_records($tablename));
+        $this->assertFalse($DB->is_transaction_started());
+
+        // NOTE: SQL_QUERY_STRUCTURE is intentionally not tested here because it should never fail.
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function test_onelevel_rollback() {
         $DB = $this->tdb;
         $dbman = $DB->get_manager();

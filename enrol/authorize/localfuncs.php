@@ -206,7 +206,11 @@ function send_welcome_messages($orderdata) {
             $sender = get_admin();
         }
         else {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $ei->courseid);
+=======
+            $context = context_course::instance($ei->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $paymentmanagers = get_users_by_capability($context, 'enrol/authorize:managepayments', '', '', '0', '1');
             $sender = array_shift($paymentmanagers);
         }
@@ -217,7 +221,11 @@ function send_welcome_messages($orderdata) {
             $lastuserid = $ei->userid;
 
             while ($ei && $ei->userid == $lastuserid) {
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $ei->courseid);
+=======
+                $context = context_course::instance($ei->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $usercourses[] = format_string($ei->fullname, true, array('context' => $context));
                 if (!$rs->valid()) {
                     break;
@@ -233,7 +241,11 @@ function send_welcome_messages($orderdata) {
                 $a->profileurl = "$CFG->wwwroot/user/view.php?id=$lastuserid";
                 $a->paymenturl = "$CFG->wwwroot/enrol/authorize/index.php?user=$lastuserid";
                 $emailmessage = get_string('welcometocoursesemail', 'enrol_authorize', $a);
+<<<<<<< HEAD
                 $subject = get_string("enrolmentnew", 'enrol', format_string($SITE->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID))));
+=======
+                $subject = get_string("enrolmentnew", 'enrol', format_string($SITE->shortname, true, array('context' => context_course::instance(SITEID))));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';
@@ -269,7 +281,11 @@ function authorize_verify_account() {
 
     $original_antest = $plugin->get_config('an_test');
     $plugin->set_config('an_test', 1); // Test mode
+<<<<<<< HEAD
     $shortname = format_string($SITE->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+=======
+    $shortname = format_string($SITE->shortname, true, array('context' => context_course::instance(SITEID)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $order = new stdClass();
     $order->id = -1;

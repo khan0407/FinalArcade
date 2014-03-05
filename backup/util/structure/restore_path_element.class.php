@@ -47,9 +47,15 @@ class restore_path_element {
     /**
      * Constructor - instantiates one restore_path_element, specifying its basic info.
      *
+<<<<<<< HEAD
      * @param string $name name of the element
      * @param string $path path of the element
      * @param bool $grouped to gather information in grouped mode or no
+=======
+     * @param string $name name of the thing being restored. This determines the name of the process_... method called.
+     * @param string $path path of the element.
+     * @param bool $grouped to gather information in grouped mode or no.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     public function __construct($name, $path, $grouped = false) {
 

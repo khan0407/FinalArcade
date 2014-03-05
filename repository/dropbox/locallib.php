@@ -25,7 +25,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+=======
+defined('MOODLE_INTERNAL') || die();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_once($CFG->libdir.'/oauthlib.php');
 
 /**

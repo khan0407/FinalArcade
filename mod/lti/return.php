@@ -61,7 +61,11 @@ if (!empty($errormsg)) {
 
     echo htmlspecialchars($errormsg);
 
+<<<<<<< HEAD
     $canaddtools = has_capability('mod/lti:addcoursetool', get_context_instance(CONTEXT_COURSE, $courseid));
+=======
+    $canaddtools = has_capability('mod/lti:addcoursetool', context_course::instance($courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ($unsigned == 1 && $canaddtools) {
         echo '<br /><br />';

@@ -34,13 +34,21 @@ foreach ($url_params as $var => $val) {
 }
 $PAGE->set_url('/blog/index.php', $url_params);
 
+<<<<<<< HEAD
 if (empty($CFG->bloglevel)) {
+=======
+if (empty($CFG->enableblogs)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     print_error('blogdisable', 'blog');
 }
 
 //correct tagid if a text tag is provided as a param
 if (!empty($tag)) {
+<<<<<<< HEAD
     if ($tagrec = $DB->get_record_sql("SELECT * FROM {tag} WHERE ". $DB->sql_like('name', '?', false), array("%$tag%"))) {
+=======
+    if ($tagrec = $DB->get_record('tag', array('name' => $tag))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $tagid = $tagrec->id;
     } else {
         unset($tagid);
@@ -56,7 +64,11 @@ if (!empty($groupid) && empty($courseid)) {
     $courseid = $DB->get_field('groups', 'courseid', array('id'=>$groupid));
 }
 
+<<<<<<< HEAD
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // check basic permissions
 if ($CFG->bloglevel == BLOG_GLOBAL_LEVEL) {
@@ -122,7 +134,11 @@ if (!empty($courseid)) {
     }
 
     $courseid = $course->id;
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     require_login($course);
 
@@ -130,7 +146,11 @@ if (!empty($courseid)) {
         print_error('cannotviewcourseblog', 'blog');
     }
 } else {
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, SITEID);
+=======
+    $coursecontext = context_course::instance(SITEID);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 if (!empty($groupid)) {
@@ -146,7 +166,11 @@ if (!empty($groupid)) {
         print_error('invalidcourseid');
     }
 
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $courseid = $course->id;
     require_login($course);
 

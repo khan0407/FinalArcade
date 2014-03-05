@@ -20,13 +20,18 @@
  * This page allows the current user to edit a self user enrolment.
  * It is not compatible with the frontpage.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage self
+=======
+ * @package    enrol_self
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2011 Sam Hemelryk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require('../../config.php');
+<<<<<<< HEAD
 require_once("$CFG->dirroot/enrol/locallib.php"); // Required for the course enrolment manager
 require_once("$CFG->dirroot/enrol/renderer.php"); // Required for the course enrolment users table
 require_once("$CFG->dirroot/enrol/self/editenrolment_form.php"); // Forms for this page
@@ -50,10 +55,33 @@ $course = $DB->get_record_sql($sql, $params, MUST_EXIST);
 context_instance_preload($course);
 
 // Make sure the course isn't the front page
+=======
+require_once("$CFG->dirroot/enrol/locallib.php"); // Required for the course enrolment manager.
+require_once("$CFG->dirroot/enrol/renderer.php"); // Required for the course enrolment users table.
+require_once("$CFG->dirroot/enrol/self/editenrolment_form.php"); // Forms for this page.
+
+$ueid   = required_param('ue', PARAM_INT);
+$filter = optional_param('ifilter', 0, PARAM_INT); // Table filter for return url.
+
+// Get the user enrolment object.
+$ue = $DB->get_record('user_enrolments', array('id' => $ueid), '*', MUST_EXIST);
+// Get the user for whom the enrolment is.
+$user = $DB->get_record('user', array('id'=>$ue->userid), '*', MUST_EXIST);
+// Get the course the enrolment is to.
+$sql = "SELECT c.*
+          FROM {course} c
+          JOIN {enrol} e ON e.courseid = c.id
+         WHERE e.id = :enrolid";
+$params = array('enrolid' => $ue->enrolid);
+$course = $DB->get_record_sql($sql, $params, MUST_EXIST);
+
+// Make sure the course isn't the front page.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if ($course->id == SITEID) {
     redirect(new moodle_url('/'));
 }
 
+<<<<<<< HEAD
 // Obvioulsy
 require_login($course);
 // The user must be able to manage self enrolments within the course
@@ -62,6 +90,21 @@ require_capability("enrol/self:manage", get_context_instance(CONTEXT_COURSE, $co
 // Get the enrolment manager for this course
 $manager = new course_enrolment_manager($PAGE, $course, $filter);
 // Get an enrolment users table object. Doign this will automatically retrieve the the URL params
+=======
+// Do not allow any changes if plugin disabled.
+if (!enrol_is_enabled('self')) {
+    redirect(new moodle_url('/course/view.php', array('id'=>$course->id)));
+}
+
+// Obviously.
+require_login($course);
+// The user must be able to manage self enrolments within the course.
+require_capability("enrol/self:manage", context_course::instance($course->id, MUST_EXIST));
+
+// Get the enrolment manager for this course.
+$manager = new course_enrolment_manager($PAGE, $course, $filter);
+// Get an enrolment users table object. Doing this will automatically retrieve the the URL params
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // relating to table the user was viewing before coming here, and allows us to return the user to the
 // exact page of the users screen they can from.
 $table = new course_enrolment_users_table($manager, $PAGE);
@@ -70,20 +113,31 @@ $table = new course_enrolment_users_table($manager, $PAGE);
 $usersurl = new moodle_url('/enrol/users.php', array('id' => $course->id));
 // The URl to return the user too after this screen.
 $returnurl = new moodle_url($usersurl, $manager->get_url_params()+$table->get_url_params());
+<<<<<<< HEAD
 // The URL of this page
+=======
+// The URL of this page.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $url = new moodle_url('/enrol/self/editenrolment.php', $returnurl->params());
 
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('admin');
 navigation_node::override_active_url($usersurl);
 
+<<<<<<< HEAD
 // Gets the compontents of the user enrolment
 list($instance, $plugin) = $manager->get_user_enrolment_components($ue);
 // Check that the user can manage this instance, and that the instance is of the correct type
+=======
+// Gets the components of the user enrolment.
+list($instance, $plugin) = $manager->get_user_enrolment_components($ue);
+// Check that the user can manage this instance, and that the instance is of the correct type.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (!$plugin->allow_manage($instance) || $instance->enrol != 'self' || !($plugin instanceof enrol_self_plugin)) {
     print_error('erroreditenrolment', 'enrol');
 }
 
+<<<<<<< HEAD
 // Get the self enrolment edit form
 $mform = new enrol_self_user_enrolment_form($url, array('user'=>$user, 'course'=>$course, 'ue'=>$ue));
 $mform->set_data($PAGE->url->params());
@@ -94,6 +148,16 @@ if ($mform->is_cancelled()) {
 } else if ($mform->is_submitted() && $mform->is_validated() && confirm_sesskey()) {
     // The forms been submit, validated and the sesskey has been checked ... edit the enrolment.
     $data = $mform->get_data();
+=======
+// Get the self enrolment edit form.
+$mform = new enrol_self_user_enrolment_form($url, array('user'=>$user, 'course'=>$course, 'ue'=>$ue));
+$mform->set_data($PAGE->url->params());
+
+if ($mform->is_cancelled()) {
+    redirect($returnurl);
+
+} else if ($data = $mform->get_data()) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($manager->edit_enrolment($ue, $data)) {
         redirect($returnurl);
     }
@@ -110,4 +174,8 @@ $PAGE->navbar->add($fullname);
 echo $OUTPUT->header();
 echo $OUTPUT->heading($fullname);
 $mform->display();
+<<<<<<< HEAD
 echo $OUTPUT->footer();
+=======
+echo $OUTPUT->footer();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

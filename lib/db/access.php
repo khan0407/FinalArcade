@@ -574,6 +574,18 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    // Can the user ignore the setting userquota?
+    // The permissions are cloned from ignorefilesizelimits as it was partly used for that purpose.
+    'moodle/user:ignoreuserquota' => array(
+        'riskbitmap' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'clonepermissionsfrom' => 'moodle/course:ignorefilesizelimits'
+    ),
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // can the user manage the system default dashboard page?
     'moodle/my:configsyspages' => array(
 
@@ -1435,6 +1447,20 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    'moodle/course:movesections' => array(
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/course:update'
+    ),
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'moodle/site:mnetlogintoremote' => array(
 
         'captype' => 'read',
@@ -1666,6 +1692,20 @@ $capabilities = array(
         )
     ),
 
+<<<<<<< HEAD
+=======
+    'moodle/tag:flag' => array(
+        'riskbitmask' => RISK_SPAM,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+            'user' => CAP_ALLOW
+        )
+    ),
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'moodle/tag:editblocks' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

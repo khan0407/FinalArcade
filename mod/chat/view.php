@@ -56,7 +56,11 @@ if ($id) {
 
 require_course_login($course, true, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_context($context);
 
 // show some info for guests
@@ -77,7 +81,11 @@ $stridle         = get_string('idle', 'chat');
 $strcurrentusers = get_string('currentusers', 'chat');
 $strnextsession  = get_string('nextsession', 'chat');
 
+<<<<<<< HEAD
 $courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+$courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $title = $courseshortname . ': ' . format_string($chat->name);
 
 // Mark viewed by user (if required)
@@ -101,7 +109,11 @@ groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/chat/view.php?id=$cm->id")
 $params = array();
 if ($currentgroup) {
     $groupselect = " AND groupid = '$currentgroup'";
+<<<<<<< HEAD
     $groupparam = "&amp;groupid=$currentgroup";
+=======
+    $groupparam = "_group{$currentgroup}";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $params['groupid'] = $currentgroup;
 } else {
     $groupselect = "";
@@ -126,6 +138,7 @@ if (has_capability('mod/chat:chat', $context)) {
         echo '</p>';
     }
 
+<<<<<<< HEAD
     if (empty($USER->screenreader)) {
         $params['id'] = $chat->id;
         $chattarget = new moodle_url("/mod/chat/gui_$CFG->chat_method/index.php", $params);
@@ -141,6 +154,17 @@ if (has_capability('mod/chat:chat', $context)) {
     $params['id'] = $chat->id;
     $link = new moodle_url('/mod/chat/gui_basic/index.php', $params);
     $action = new popup_action('click', $link, "chat{$course->id}{$chat->id}{$groupparam}", array('height' => 500, 'width' => 700));
+=======
+    $params['id'] = $chat->id;
+    $chattarget = new moodle_url("/mod/chat/gui_$CFG->chat_method/index.php", $params);
+    echo '<p>';
+    echo $OUTPUT->action_link($chattarget, $strenterchat, new popup_action('click', $chattarget, "chat{$course->id}_{$chat->id}{$groupparam}", array('height' => 500, 'width' => 700)));
+    echo '</p>';
+
+    $params['id'] = $chat->id;
+    $link = new moodle_url('/mod/chat/gui_basic/index.php', $params);
+    $action = new popup_action('click', $link, "chat{$course->id}_{$chat->id}{$groupparam}", array('height' => 500, 'width' => 700));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo '<p>';
     echo $OUTPUT->action_link($link, get_string('noframesjs', 'message'), $action, array('title'=>get_string('modulename', 'chat')));
     echo '</p>';

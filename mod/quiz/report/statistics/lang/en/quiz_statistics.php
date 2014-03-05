@@ -40,7 +40,11 @@ $string['coursename'] = 'Course name';
 $string['detailedanalysis'] = 'More detailed analysis of the responses to this question';
 $string['discrimination_index'] = 'Discrimination index';
 $string['discriminative_efficiency'] = 'Discriminative efficiency';
+<<<<<<< HEAD
 $string['downloadeverything'] = 'Download full report as';
+=======
+$string['downloadeverything'] = 'Download full report as {$a->formatsmenu} {$a->downloadbutton}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['duration'] = 'Open for';
 $string['effective_weight'] = 'Effective weight';
 $string['errordeleting'] = 'Error deleting old {$a} records.';

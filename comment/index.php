@@ -29,7 +29,11 @@ require_once($CFG->dirroot.'/comment/locallib.php');
 require_login();
 admin_externalpage_setup('comments', '', null, '', array('pagelayout'=>'report'));
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+$context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/comment:delete', $context);
 
 $PAGE->requires->js_init_call('M.core_comment.init_admin', null, true);

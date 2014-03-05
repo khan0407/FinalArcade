@@ -190,7 +190,11 @@ if ($id) {
 
     // Getting subwiki instance. If it does not exists, redirect to create page
     if (!$subwiki = wiki_get_subwiki_by_group($wiki->id, $gid, $uid)) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+        $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $modeanduser = $wiki->wikimode == 'individual' && $uid != $USER->id;
         $modeandgroupmember = $wiki->wikimode == 'collaborative' && !groups_is_member($gid);
@@ -271,7 +275,11 @@ if ($id) {
     print_error('incorrectparameters');
 }
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/wiki:viewpage', $context);
 
 // Update 'viewed' state if required by completion system

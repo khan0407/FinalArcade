@@ -19,7 +19,11 @@ require_once($CFG->dirroot . '/repository/lib.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 $repository       = optional_param('repos', '', PARAM_ALPHANUMEXT);
+<<<<<<< HEAD
 $action           = optional_param('action', '', PARAM_ACTION);
+=======
+$action           = optional_param('action', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $sure             = optional_param('sure', '', PARAM_ALPHA);
 $downloadcontents = optional_param('downloadcontents', false, PARAM_BOOL);
 
@@ -47,7 +51,11 @@ if ($action == 'newon') {
     $visible = false;
 }
 
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 admin_externalpage_setup($pagename);
 
 $sesskeyurl = $CFG->wwwroot.'/'.$CFG->admin.'/repository.php?sesskey=' . sesskey();
@@ -140,8 +148,15 @@ if (($action == 'edit') || ($action == 'new')) {
             $success = $repositorytype->update_options($settings);
         } else {
             $type = new repository_type($plugin, (array)$fromform, $visible);
+<<<<<<< HEAD
             $type->create();
             $success = true;
+=======
+            $success = true;
+            if (!$repoid = $type->create()) {
+                $success = false;
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $data = data_submitted();
         }
         if ($success) {
@@ -286,9 +301,15 @@ if (($action == 'edit') || ($action == 'new')) {
 
     // Get list of used plug-ins
     $instances = repository::get_types();
+<<<<<<< HEAD
     if (!empty($instances)) {
         // Array to store plugins being used
         $alreadyplugins = array();
+=======
+    // Array to store plugins being used
+    $alreadyplugins = array();
+    if (!empty($instances)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $totalinstances = count($instances);
         $updowncount = 1;
         foreach ($instances as $i) {

@@ -38,7 +38,11 @@ if ($cancel) {
 //HTTPS is required in this page when $CFG->loginhttps enabled
 $PAGE->https_required();
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+$context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_url("$CFG->httpswwwroot/login/index.php");
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('login');
@@ -272,7 +276,12 @@ if (empty($SESSION->wantsurl)) {
                           $_SERVER["HTTP_REFERER"] != $CFG->wwwroot &&
                           $_SERVER["HTTP_REFERER"] != $CFG->wwwroot.'/' &&
                           $_SERVER["HTTP_REFERER"] != $CFG->httpswwwroot.'/login/' &&
+<<<<<<< HEAD
                           $_SERVER["HTTP_REFERER"] != $CFG->httpswwwroot.'/login/index.php')
+=======
+                          strpos($_SERVER["HTTP_REFERER"], $CFG->httpswwwroot.'/login/?') !== 0 &&
+                          strpos($_SERVER["HTTP_REFERER"], $CFG->httpswwwroot.'/login/index.php') !== 0) // There might be some extra params such as ?lang=.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         ? $_SERVER["HTTP_REFERER"] : NULL;
 }
 

@@ -32,6 +32,7 @@ class grade_export_ods extends grade_export {
 
         $strgrades = get_string('grades');
 
+<<<<<<< HEAD
         $shortname = format_string($this->course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $this->course->id)));
 
     /// Calculate file name
@@ -55,21 +56,54 @@ class grade_export_ods extends grade_export {
             $myxls->write_string(0, $pos++, $this->format_column_name($grade_item));
 
             /// add a column_feedback column
+=======
+        $shortname = format_string($this->course->shortname, true, array('context' => context_course::instance($this->course->id)));
+
+        // Calculate file name
+        $downloadfilename = clean_filename("$shortname $strgrades.ods");
+        // Creating a workbook
+        $workbook = new MoodleODSWorkbook("-");
+        // Sending HTTP headers
+        $workbook->send($downloadfilename);
+        // Adding the worksheet
+        $myxls = $workbook->add_worksheet($strgrades);
+
+
+        // Print names of all the fields.
+        $profilefields = grade_helper::get_user_profile_fields($this->course->id, $this->usercustomfields);
+        foreach ($profilefields as $id => $field) {
+            $myxls->write_string(0, $id, $field->fullname);
+        }
+        $pos = count($profilefields);
+        foreach ($this->columns as $grade_item) {
+            $myxls->write_string(0, $pos++, $this->format_column_name($grade_item));
+
+            // Add a column_feedback column.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if ($this->export_feedback) {
                 $myxls->write_string(0, $pos++, $this->format_column_name($grade_item, true));
             }
         }
 
+<<<<<<< HEAD
     /// Print all the lines of data.
+=======
+        // Print all the lines of data.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $i = 0;
         $geub = new grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->require_active_enrolment($this->onlyactive);
+<<<<<<< HEAD
+=======
+        $gui->allow_user_custom_fields($this->usercustomfields);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $gui->init();
         while ($userdata = $gui->next_user()) {
             $i++;
             $user = $userdata->user;
 
+<<<<<<< HEAD
             $myxls->write_string($i,0,$user->firstname);
             $myxls->write_string($i,1,$user->lastname);
             $myxls->write_string($i,2,$user->idnumber);
@@ -77,6 +111,14 @@ class grade_export_ods extends grade_export {
             $myxls->write_string($i,4,$user->department);
             $myxls->write_string($i,5,$user->email);
             $j=6;
+=======
+            foreach($profilefields as $id => $field) {
+                $fieldvalue = grade_helper::get_user_field_value($user, $field);
+                $myxls->write_string($i, $id, $fieldvalue);
+            }
+            $j = count($profilefields);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             foreach ($userdata->grades as $itemid => $grade) {
                 if ($export_tracking) {
                     $status = $geub->track($grade);
@@ -99,7 +141,11 @@ class grade_export_ods extends grade_export {
         $gui->close();
         $geub->close();
 
+<<<<<<< HEAD
     /// Close the workbook
+=======
+        // Close the workbook.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $workbook->close();
 
         exit;

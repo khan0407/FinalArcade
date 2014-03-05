@@ -36,7 +36,11 @@ require_login();
 $courseid = required_param('courseid', PARAM_INT); //if no courseid is given
 $parentcourse = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+$context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_course($parentcourse);
 $PAGE->set_url('/blocks/community/communitycourse.php');
 $PAGE->set_heading($SITE->fullname);
@@ -67,8 +71,13 @@ $communitymanager = new block_community_manager();
 $renderer = $PAGE->get_renderer('block_community');
 
 /// Check if the page has been called with trust argument
+<<<<<<< HEAD
 $add = optional_param('add', -1, PARAM_INTEGER);
 $confirm = optional_param('confirmed', false, PARAM_INTEGER);
+=======
+$add = optional_param('add', -1, PARAM_INT);
+$confirm = optional_param('confirmed', false, PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if ($add != -1 and $confirm and confirm_sesskey()) {
     $course = new stdClass();
     $course->name = optional_param('coursefullname', '', PARAM_TEXT);
@@ -93,8 +102,13 @@ if ($usercandownload and $cancelrestore and confirm_sesskey()) {
 
 /// Download
 $huburl = optional_param('huburl', false, PARAM_URL);
+<<<<<<< HEAD
 $download = optional_param('download', -1, PARAM_INTEGER);
 $downloadcourseid = optional_param('downloadcourseid', '', PARAM_INTEGER);
+=======
+$download = optional_param('download', -1, PARAM_INT);
+$downloadcourseid = optional_param('downloadcourseid', '', PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $coursefullname = optional_param('coursefullname', '', PARAM_ALPHANUMEXT);
 $backupsize = optional_param('backupsize', 0, PARAM_INT);
 if ($usercandownload and $download != -1 and !empty($downloadcourseid) and confirm_sesskey()) {
@@ -125,12 +139,21 @@ if ($usercandownload and $download != -1 and !empty($downloadcourseid) and confi
 }
 
 /// Remove community
+<<<<<<< HEAD
 $remove = optional_param('remove', '', PARAM_INTEGER);
 $communityid = optional_param('communityid', '', PARAM_INTEGER);
 if ($remove != -1 and !empty($communityid) and confirm_sesskey()) {
     $communitymanager->block_community_remove_course($communityid, $USER->id);
     echo $OUTPUT->header();
     echo $renderer->remove_success(new moodle_url(get_referer(false)));
+=======
+$remove = optional_param('remove', '', PARAM_INT);
+$communityid = optional_param('communityid', '', PARAM_INT);
+if ($remove != -1 and !empty($communityid) and confirm_sesskey()) {
+    $communitymanager->block_community_remove_course($communityid, $USER->id);
+    echo $OUTPUT->header();
+    echo $renderer->remove_success(new moodle_url('/course/view.php', array('id' => $courseid)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo $OUTPUT->footer();
     die();
 }
@@ -152,8 +175,13 @@ $hubselectorform->set_data($fromformdata);
 
 //Retrieve courses by web service
 $courses = null;
+<<<<<<< HEAD
 if (optional_param('executesearch', 0, PARAM_INTEGER) and confirm_sesskey()) {
     $downloadable = optional_param('downloadable', false, PARAM_INTEGER);
+=======
+if (optional_param('executesearch', 0, PARAM_INT) and confirm_sesskey()) {
+    $downloadable = optional_param('downloadable', false, PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $options = new stdClass();
     if (!empty($fromformdata['coverage'])) {
@@ -178,7 +206,11 @@ if (optional_param('executesearch', 0, PARAM_INTEGER) and confirm_sesskey()) {
     $options->orderby = $fromformdata['orderby'];
 
     //the range of course requested
+<<<<<<< HEAD
     $options->givememore = optional_param('givememore', 0, PARAM_INTEGER);
+=======
+    $options->givememore = optional_param('givememore', 0, PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //check if the selected hub is from the registered list (in this case we use the private token)
     $token = 'publichub';

@@ -48,8 +48,17 @@ YUI.add('moodle-calendar-eventmanager', function(Y) {
                     width : Math.floor(constraint.get('offsetWidth')*0.9)+"px"
                 });
                 panel.render(td);
+<<<<<<< HEAD
                 panel.get('boundingBox').addClass('calendar-event-panel');
                 this.on('showevent', panel.show, panel);
+=======
+                node.setAttribute('aria-controls', panel.get('id'));
+                panel.get('boundingBox').addClass('calendar-event-panel');
+                panel.get('boundingBox').setAttribute('aria-live', 'off');
+                this.on('showevent', panel.show, panel);
+                this.on('showevent', this.setAriashow, panel);
+                this.on('hideevent', this.setAriahide, panel);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 this.on('hideevent', panel.hide, panel);
             }
         },
@@ -63,6 +72,15 @@ YUI.add('moodle-calendar-eventmanager', function(Y) {
         cancelShow : function() {
             clearTimeout(this.get(SHOWTIMEOUT));
         },
+<<<<<<< HEAD
+=======
+        setAriashow : function() {
+            this.get('boundingBox').setAttribute('aria-live', 'assertive');
+        },
+        setAriahide : function() {
+             this.get('boundingBox').setAttribute('aria-live', 'off');
+        },
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         show : function() {
             this.initPanel();
             this.fire('showevent');
@@ -92,11 +110,18 @@ YUI.add('moodle-calendar-eventmanager', function(Y) {
             },
             node : {
                 setter : function(node) {
+<<<<<<< HEAD
                     var n = Y.one(node);
                     if (!n) {
                         Y.fail(ENAME+': invalid event node set');
                     }
                     return n;
+=======
+                    if (typeof(node) === 'string') {
+                        node = Y.one('#'+node);
+                    }
+                    return node;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             },
             title : {
@@ -128,4 +153,8 @@ YUI.add('moodle-calendar-eventmanager', function(Y) {
     M.core_calendar = M.core_calendar || {}
     Y.mix(M.core_calendar, EVENTMANAGER);
 
+<<<<<<< HEAD
 }, '@VERSION@', {requires:['base', 'node', 'event-mouseenter', 'overlay', 'moodle-calendar-eventmanager-skin', 'test']});
+=======
+}, '@VERSION@', {requires:['base', 'node', 'event-mouseenter', 'overlay', 'moodle-calendar-eventmanager-skin', 'test']});
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

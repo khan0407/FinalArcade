@@ -30,4 +30,7 @@ $string['pluginname'] = 'Aiken format';
 $string['pluginname_help'] = 'This is a simple format ...';
 $string['pluginname_link'] = 'qformat/aiken';
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

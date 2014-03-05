@@ -65,6 +65,7 @@ $url = new moodle_url('/mod/feedback/show_nonrespondents.php', array('id'=>$cm->
 
 $PAGE->set_url($url);
 
+<<<<<<< HEAD
 if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
         print_error('badcontext');
 }
@@ -73,6 +74,12 @@ if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
 if (!$coursecontext = get_context_instance(CONTEXT_COURSE, $course->id)) {
         print_error('badcontext');
 }
+=======
+$context = context_module::instance($cm->id);
+
+//we need the coursecontext to allow sending of mass mails
+$coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login($course, true, $cm);
 
@@ -85,7 +92,11 @@ require_capability('mod/feedback:viewreports', $context);
 if ($action == 'sendmessage' AND has_capability('moodle/course:bulkmessaging', $coursecontext)) {
     $shortname = format_string($course->shortname,
                             true,
+<<<<<<< HEAD
                             array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+                            array('context' => $coursecontext));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $strfeedbacks = get_string("modulenameplural", "feedback");
 
     $htmlmessage = "<body id=\"email\">";

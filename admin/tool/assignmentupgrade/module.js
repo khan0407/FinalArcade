@@ -56,7 +56,11 @@ M.tool_assignmentupgrade = {
             assignmentsinput = Y.one('input.selectedassignments');
             assignmentsinput.set('value', selectedassignments.join(','));
             if (selectedassignments.length == 0) {
+<<<<<<< HEAD
                 alert(M.str.assign.noassignmentsselected);
+=======
+                alert(M.str.tool_assignmentupgrade.noassignmentsselected);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 e.preventDefault();
             }
         });

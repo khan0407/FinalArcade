@@ -85,7 +85,11 @@ class core_course_external extends external_api {
         }
 
         // now security checks
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         try {
             self::validate_context($context);
         } catch (Exception $e) {
@@ -105,14 +109,22 @@ class core_course_external extends external_api {
 
             //retrieve sections
             $modinfo = get_fast_modinfo($course);
+<<<<<<< HEAD
             $sections = get_all_sections($course->id);
+=======
+            $sections = $modinfo->get_section_info_all();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             //for each sections (first displayed to last displayed)
             $modinfosections = $modinfo->get_sections();
             foreach ($sections as $key => $section) {
 
+<<<<<<< HEAD
                 $showsection = (has_capability('moodle/course:viewhiddensections', $context) or $section->visible or !$course->hiddensections);
                 if (!$showsection) {
+=======
+                if (!$section->uservisible) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     continue;
                 }
 
@@ -148,8 +160,15 @@ class core_course_external extends external_api {
 
                         $modcontext = context_module::instance($cm->id);
 
+<<<<<<< HEAD
                         if (!empty($cm->showdescription)) {
                             $module['description'] = $cm->get_content();
+=======
+                        if (!empty($cm->showdescription) or $cm->modname == 'label') {
+                            // We want to use the external format. However from reading get_formatted_content(), get_content() format is always FORMAT_HTML.
+                            list($module['description'], $descriptionformat) = external_format_text($cm->get_content(),
+                                FORMAT_HTML, $modcontext->id, $cm->modname, 'intro', $cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         }
 
                         //url of the module
@@ -300,7 +319,12 @@ class core_course_external extends external_api {
         foreach ($courses as $course) {
 
             // now security checks
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+            $context = context_course::instance($course->id, IGNORE_MISSING);
+            $courseformatoptions = course_get_format($course)->get_format_options();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             try {
                 self::validate_context($context);
             } catch (Exception $e) {
@@ -320,7 +344,14 @@ class core_course_external extends external_api {
                 external_format_text($course->summary, $course->summaryformat, $context->id, 'course', 'summary', 0);
             $courseinfo['format'] = $course->format;
             $courseinfo['startdate'] = $course->startdate;
+<<<<<<< HEAD
             $courseinfo['numsections'] = $course->numsections;
+=======
+            if (array_key_exists('numsections', $courseformatoptions)) {
+                // For backward-compartibility
+                $courseinfo['numsections'] = $courseformatoptions['numsections'];
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             //some field should be returned only if the user has update permission
             $courseadmin = has_capability('moodle/course:update', $context);
@@ -332,7 +363,14 @@ class core_course_external extends external_api {
                 $courseinfo['newsitems'] = $course->newsitems;
                 $courseinfo['visible'] = $course->visible;
                 $courseinfo['maxbytes'] = $course->maxbytes;
+<<<<<<< HEAD
                 $courseinfo['hiddensections'] = $course->hiddensections;
+=======
+                if (array_key_exists('hiddensections', $courseformatoptions)) {
+                    // For backward-compartibility
+                    $courseinfo['hiddensections'] = $courseformatoptions['hiddensections'];
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $courseinfo['groupmode'] = $course->groupmode;
                 $courseinfo['groupmodeforce'] = $course->groupmodeforce;
                 $courseinfo['defaultgroupingid'] = $course->defaultgroupingid;
@@ -343,6 +381,16 @@ class core_course_external extends external_api {
                 $courseinfo['enablecompletion'] = $course->enablecompletion;
                 $courseinfo['completionstartonenrol'] = $course->completionstartonenrol;
                 $courseinfo['completionnotify'] = $course->completionnotify;
+<<<<<<< HEAD
+=======
+                $courseinfo['courseformatoptions'] = array();
+                foreach ($courseformatoptions as $key => $value) {
+                    $courseinfo['courseformatoptions'][] = array(
+                        'name' => $key,
+                        'value' => $value
+                    );
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             if ($courseadmin or $course->visible
@@ -381,7 +429,13 @@ class core_course_external extends external_api {
                                     'number of recent items appearing on the course page', VALUE_OPTIONAL),
                             'startdate' => new external_value(PARAM_INT,
                                     'timestamp when the course start'),
+<<<<<<< HEAD
                             'numsections' => new external_value(PARAM_INT, 'number of weeks/topics'),
+=======
+                            'numsections' => new external_value(PARAM_INT,
+                                    '(deprecated, use courseformatoptions) number of weeks/topics',
+                                    VALUE_OPTIONAL),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             'maxbytes' => new external_value(PARAM_INT,
                                     'largest size of file that can be uploaded into the course',
                                     VALUE_OPTIONAL),
@@ -390,7 +444,11 @@ class core_course_external extends external_api {
                             'visible' => new external_value(PARAM_INT,
                                     '1: available to student, 0:not available', VALUE_OPTIONAL),
                             'hiddensections' => new external_value(PARAM_INT,
+<<<<<<< HEAD
                                     'How the hidden sections in the course are displayed to students',
+=======
+                                    '(deprecated, use courseformatoptions) How the hidden sections in the course are displayed to students',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                     VALUE_OPTIONAL),
                             'groupmode' => new external_value(PARAM_INT, 'no group, separate, visible',
                                     VALUE_OPTIONAL),
@@ -416,6 +474,16 @@ class core_course_external extends external_api {
                                     'forced course language', VALUE_OPTIONAL),
                             'forcetheme' => new external_value(PARAM_PLUGIN,
                                     'name of the force theme', VALUE_OPTIONAL),
+<<<<<<< HEAD
+=======
+                            'courseformatoptions' => new external_multiple_structure(
+                                new external_single_structure(
+                                    array('name' => new external_value(PARAM_ALPHANUMEXT, 'course format option name'),
+                                        'value' => new external_value(PARAM_RAW, 'course format option value')
+                                )),
+                                    'additional options for particular course format', VALUE_OPTIONAL
+                             ),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         ), 'course'
                 )
         );
@@ -451,8 +519,14 @@ class core_course_external extends external_api {
                                     VALUE_DEFAULT, $courseconfig->newsitems),
                             'startdate' => new external_value(PARAM_INT,
                                     'timestamp when the course start', VALUE_OPTIONAL),
+<<<<<<< HEAD
                             'numsections' => new external_value(PARAM_INT, 'number of weeks/topics',
                                     VALUE_DEFAULT, $courseconfig->numsections),
+=======
+                            'numsections' => new external_value(PARAM_INT,
+                                    '(deprecated, use courseformatoptions) number of weeks/topics',
+                                    VALUE_OPTIONAL),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             'maxbytes' => new external_value(PARAM_INT,
                                     'largest size of file that can be uploaded into the course',
                                     VALUE_DEFAULT, $courseconfig->maxbytes),
@@ -462,8 +536,13 @@ class core_course_external extends external_api {
                             'visible' => new external_value(PARAM_INT,
                                     '1: available to student, 0:not available', VALUE_OPTIONAL),
                             'hiddensections' => new external_value(PARAM_INT,
+<<<<<<< HEAD
                                     'How the hidden sections in the course are displayed to students',
                                     VALUE_DEFAULT, $courseconfig->hiddensections),
+=======
+                                    '(deprecated, use courseformatoptions) How the hidden sections in the course are displayed to students',
+                                    VALUE_OPTIONAL),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             'groupmode' => new external_value(PARAM_INT, 'no group, separate, visible',
                                     VALUE_DEFAULT, $courseconfig->groupmode),
                             'groupmodeforce' => new external_value(PARAM_INT, '1: yes, 0: no',
@@ -484,6 +563,15 @@ class core_course_external extends external_api {
                                     'forced course language', VALUE_OPTIONAL),
                             'forcetheme' => new external_value(PARAM_PLUGIN,
                                     'name of the force theme', VALUE_OPTIONAL),
+<<<<<<< HEAD
+=======
+                            'courseformatoptions' => new external_multiple_structure(
+                                new external_single_structure(
+                                    array('name' => new external_value(PARAM_ALPHANUMEXT, 'course format option name'),
+                                        'value' => new external_value(PARAM_RAW, 'course format option value')
+                                )),
+                                    'additional options for particular course format', VALUE_OPTIONAL),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         )
                     ), 'courses to create'
                 )
@@ -514,7 +602,11 @@ class core_course_external extends external_api {
         foreach ($params['courses'] as $course) {
 
             // Ensure the current user is allowed to run this function
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSECAT, $course['categoryid']);
+=======
+            $context = context_coursecat::instance($course['categoryid'], IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             try {
                 self::validate_context($context);
             } catch (Exception $e) {
@@ -566,6 +658,15 @@ class core_course_external extends external_api {
             // Summary format.
             $course['summaryformat'] = external_validate_format($course['summaryformat']);
 
+<<<<<<< HEAD
+=======
+            if (!empty($course['courseformatoptions'])) {
+                foreach ($course['courseformatoptions'] as $option) {
+                    $course[$option['name']] = $option['value'];
+                }
+            }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             //Note: create_course() core function check shortname, idnumber, category
             $course['id'] = create_course((object) $course)->id;
 
@@ -887,6 +988,192 @@ class core_course_external extends external_api {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns description of method parameters for import_course
+     *
+     * @return external_function_parameters
+     * @since Moodle 2.4
+     */
+    public static function import_course_parameters() {
+        return new external_function_parameters(
+            array(
+                'importfrom' => new external_value(PARAM_INT, 'the id of the course we are importing from'),
+                'importto' => new external_value(PARAM_INT, 'the id of the course we are importing to'),
+                'deletecontent' => new external_value(PARAM_INT, 'whether to delete the course content where we are importing to (default to 0 = No)', VALUE_DEFAULT, 0),
+                'options' => new external_multiple_structure(
+                    new external_single_structure(
+                        array(
+                                'name' => new external_value(PARAM_ALPHA, 'The backup option name:
+                                            "activities" (int) Include course activites (default to 1 that is equal to yes),
+                                            "blocks" (int) Include course blocks (default to 1 that is equal to yes),
+                                            "filters" (int) Include course filters  (default to 1 that is equal to yes)'
+                                            ),
+                                'value' => new external_value(PARAM_RAW, 'the value for the option 1 (yes) or 0 (no)'
+                            )
+                        )
+                    ), VALUE_DEFAULT, array()
+                ),
+            )
+        );
+    }
+
+    /**
+     * Imports a course
+     *
+     * @param int $importfrom The id of the course we are importing from
+     * @param int $importto The id of the course we are importing to
+     * @param bool $deletecontent Whether to delete the course we are importing to content
+     * @param array $options List of backup options
+     * @return null
+     * @since Moodle 2.4
+     */
+    public static function import_course($importfrom, $importto, $deletecontent = 0, $options = array()) {
+        global $CFG, $USER, $DB;
+        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+        require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
+
+        // Parameter validation.
+        $params = self::validate_parameters(
+            self::import_course_parameters(),
+            array(
+                'importfrom' => $importfrom,
+                'importto' => $importto,
+                'deletecontent' => $deletecontent,
+                'options' => $options
+            )
+        );
+
+        if ($params['deletecontent'] !== 0 and $params['deletecontent'] !== 1) {
+            throw new moodle_exception('invalidextparam', 'webservice', '', $params['deletecontent']);
+        }
+
+        // Context validation.
+
+        if (! ($importfrom = $DB->get_record('course', array('id'=>$params['importfrom'])))) {
+            throw new moodle_exception('invalidcourseid', 'error');
+        }
+
+        if (! ($importto = $DB->get_record('course', array('id'=>$params['importto'])))) {
+            throw new moodle_exception('invalidcourseid', 'error');
+        }
+
+        $importfromcontext = context_course::instance($importfrom->id);
+        self::validate_context($importfromcontext);
+
+        $importtocontext = context_course::instance($importto->id);
+        self::validate_context($importtocontext);
+
+        $backupdefaults = array(
+            'activities' => 1,
+            'blocks' => 1,
+            'filters' => 1
+        );
+
+        $backupsettings = array();
+
+        // Check for backup and restore options.
+        if (!empty($params['options'])) {
+            foreach ($params['options'] as $option) {
+
+                // Strict check for a correct value (allways 1 or 0, true or false).
+                $value = clean_param($option['value'], PARAM_INT);
+
+                if ($value !== 0 and $value !== 1) {
+                    throw new moodle_exception('invalidextparam', 'webservice', '', $option['name']);
+                }
+
+                if (!isset($backupdefaults[$option['name']])) {
+                    throw new moodle_exception('invalidextparam', 'webservice', '', $option['name']);
+                }
+
+                $backupsettings[$option['name']] = $value;
+            }
+        }
+
+        // Capability checking.
+
+        require_capability('moodle/backup:backuptargetimport', $importfromcontext);
+        require_capability('moodle/restore:restoretargetimport', $importtocontext);
+
+        $bc = new backup_controller(backup::TYPE_1COURSE, $importfrom->id, backup::FORMAT_MOODLE,
+                backup::INTERACTIVE_NO, backup::MODE_IMPORT, $USER->id);
+
+        foreach ($backupsettings as $name => $value) {
+            $bc->get_plan()->get_setting($name)->set_value($value);
+        }
+
+        $backupid       = $bc->get_backupid();
+        $backupbasepath = $bc->get_plan()->get_basepath();
+
+        $bc->execute_plan();
+        $bc->destroy();
+
+        // Restore the backup immediately.
+
+        // Check if we must delete the contents of the destination course.
+        if ($params['deletecontent']) {
+            $restoretarget = backup::TARGET_EXISTING_DELETING;
+        } else {
+            $restoretarget = backup::TARGET_EXISTING_ADDING;
+        }
+
+        $rc = new restore_controller($backupid, $importto->id,
+                backup::INTERACTIVE_NO, backup::MODE_IMPORT, $USER->id, $restoretarget);
+
+        foreach ($backupsettings as $name => $value) {
+            $rc->get_plan()->get_setting($name)->set_value($value);
+        }
+
+        if (!$rc->execute_precheck()) {
+            $precheckresults = $rc->get_precheck_results();
+            if (is_array($precheckresults) && !empty($precheckresults['errors'])) {
+                if (empty($CFG->keeptempdirectoriesonbackup)) {
+                    fulldelete($backupbasepath);
+                }
+
+                $errorinfo = '';
+
+                foreach ($precheckresults['errors'] as $error) {
+                    $errorinfo .= $error;
+                }
+
+                if (array_key_exists('warnings', $precheckresults)) {
+                    foreach ($precheckresults['warnings'] as $warning) {
+                        $errorinfo .= $warning;
+                    }
+                }
+
+                throw new moodle_exception('backupprecheckerrors', 'webservice', '', $errorinfo);
+            }
+        } else {
+            if ($restoretarget == backup::TARGET_EXISTING_DELETING) {
+                restore_dbops::delete_course_content($importto->id);
+            }
+        }
+
+        $rc->execute_plan();
+        $rc->destroy();
+
+        if (empty($CFG->keeptempdirectoriesonbackup)) {
+            fulldelete($backupbasepath);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns description of method result value
+     *
+     * @return external_description
+     * @since Moodle 2.4
+     */
+    public static function import_course_returns() {
+        return null;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns description of method parameters
      *
      * @return external_function_parameters

@@ -34,7 +34,11 @@ if (!$course = $DB->get_record('course', array('id'=>$id))) {
 }
 
 require_login($course);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $id);
+=======
+$context = context_course::instance($id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/txt:view', $context);
@@ -46,7 +50,11 @@ if (groups_get_course_groupmode($COURSE) == SEPARATEGROUPS and !has_capability('
 }
 
 // print all the exported data here
+<<<<<<< HEAD
 $export = new grade_export_txt($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints, $separator, $onlyactive);
+=======
+$export = new grade_export_txt($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints, $separator, $onlyactive, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $export->print_grades();
 
 

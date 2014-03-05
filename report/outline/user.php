@@ -66,6 +66,7 @@ $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 
 
+<<<<<<< HEAD
 get_all_mods($course->id, $mods, $modnames, $modnamesplural, $modnamesused);
 $sections = get_all_sections($course->id);
 $itemsprinted = false;
@@ -81,6 +82,17 @@ for ($i=0; $i<=$course->numsections; $i++) {
             // Check the section has a sequence. This is the sequence of modules/resources.
             // If there is no sequence there is nothing to display.
             if ($section->sequence) {
+=======
+$modinfo = get_fast_modinfo($course);
+$sections = $modinfo->get_section_info_all();
+$itemsprinted = false;
+
+foreach ($sections as $i => $section) {
+
+        if ($section->uservisible) { // prevent hidden sections in user activity. Thanks to Geoff Wilbert!
+            // Check the section has modules/resources, if not there is nothing to display.
+            if (!empty($modinfo->sections[$i])) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $itemsprinted = true;
                 echo '<div class="section">';
                 echo '<h2>';
@@ -93,6 +105,7 @@ for ($i=0; $i<=$course->numsections; $i++) {
                     echo "<table cellpadding=\"4\" cellspacing=\"0\">";
                 }
 
+<<<<<<< HEAD
                 $sectionmods = explode(",", $section->sequence);
                 foreach ($sectionmods as $sectionmod) {
                     if (empty($mods[$sectionmod])) {
@@ -101,6 +114,12 @@ for ($i=0; $i<=$course->numsections; $i++) {
                     $mod = $mods[$sectionmod];
 
                     if (empty($mod->visible)) {
+=======
+                foreach ($modinfo->sections[$i] as $cmid) {
+                    $mod = $modinfo->cms[$cmid];
+
+                    if (empty($mod->uservisible)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         continue;
                     }
 
@@ -151,7 +170,10 @@ for ($i=0; $i<=$course->numsections; $i++) {
                 echo '</div>';  // section
             }
         }
+<<<<<<< HEAD
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 if (!$itemsprinted) {

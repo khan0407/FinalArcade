@@ -42,7 +42,11 @@ class moodlesimplepie_testcase extends basic_testcase {
     # A url which we know doesn't exist
     const INVALIDURL = 'http://download.moodle.org/unittest/rsstest-which-doesnt-exist.xml';
     # This tinyurl redirects to th rsstest.xml file
+<<<<<<< HEAD
     const REDIRECTURL = 'http://tinyurl.com/lvyslv';
+=======
+    const REDIRECTURL = 'http://download.moodle.org/unittest/rss_redir.php';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     # The number of seconds tests should wait for the server to respond (high to prevent false positives).
     const TIMEOUT = 10;
 

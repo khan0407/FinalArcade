@@ -30,5 +30,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
+=======
+$string['parentlanguage'] = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = 'Norsk - bokmål';

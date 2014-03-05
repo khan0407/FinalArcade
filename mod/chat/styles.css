@@ -1,8 +1,13 @@
 /** General Styles **/
 .path-mod-chat .chat-event .picture,
+<<<<<<< HEAD
 .path-mod-chat .chat-message .picture {width:40px;vertical-align:top;}
 .path-mod-chat .chat-event .text,
 .path-mod-chat .chat-message .text {text-align: left;}
+=======
+.path-mod-chat .chat-message .picture {width:40px;}
+.path-mod-chat .chat-event .text {text-align: left;}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 .path-mod-chat #messages-list,
 .path-mod-chat #users-list {list-style-type:none;padding:0;margin:0}
 .path-mod-chat #chat-header {overflow: hidden;}

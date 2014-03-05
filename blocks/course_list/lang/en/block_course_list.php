@@ -26,7 +26,14 @@
 $string['adminview'] = 'Admin view';
 $string['allcourses'] = 'Admin user sees all courses';
 $string['configadminview'] = 'What should the admin see in the course list block?';
+<<<<<<< HEAD
 $string['confighideallcourseslink'] = 'Hide "All courses" link at the bottom of the block. Link hiding does not affects Admin\'s view';
 $string['hideallcourseslink'] = 'Hide All courses link';
+=======
+$string['confighideallcourseslink'] = 'Remove the \'All courses\' link under the list of courses. (This setting does not affect the admin view.)';
+$string['course_list:addinstance'] = 'Add a new courses block';
+$string['course_list:myaddinstance'] = 'Add a new courses block to My home';
+$string['hideallcourseslink'] = 'Hide \'All courses\' link';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['owncourses'] = 'Admin user sees own courses';
 $string['pluginname'] = 'Courses';

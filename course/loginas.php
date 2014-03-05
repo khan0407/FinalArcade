@@ -39,8 +39,13 @@ $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 
 /// User must be logged in
 
+<<<<<<< HEAD
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$systemcontext = context_system::instance();
+$coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login();
 
@@ -60,6 +65,26 @@ if (has_capability('moodle/user:loginas', $systemcontext)) {
         print_error('usernotincourse');
     }
     $context = $coursecontext;
+<<<<<<< HEAD
+=======
+
+    // Check if course has SEPARATEGROUPS and user is part of that group.
+    if (groups_get_course_groupmode($course) == SEPARATEGROUPS &&
+            !has_capability('moodle/site:accessallgroups', $context)) {
+        $samegroup = false;
+        if ($groups = groups_get_all_groups($course->id, $USER->id)) {
+            foreach ($groups as $group) {
+                if (groups_is_member($group->id, $userid)) {
+                    $samegroup = true;
+                    break;
+                }
+            }
+        }
+        if (!$samegroup) {
+            print_error('nologinas');
+        }
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /// Login as this user and return to course home page.

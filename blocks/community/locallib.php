@@ -38,6 +38,10 @@ class block_community_manager {
         $community = $this->block_community_get_course($course->url, $userid);
 
         if (empty($community)) {
+<<<<<<< HEAD
+=======
+            $community = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $community->userid = $userid;
             $community->coursename = $course->name;
             $community->coursedescription = $course->description;
@@ -113,7 +117,11 @@ class block_community_manager {
 
         $fs = get_file_storage();
         $record = new stdClass();
+<<<<<<< HEAD
         $record->contextid = get_context_instance(CONTEXT_USER, $USER->id)->id;
+=======
+        $record->contextid = context_user::instance($USER->id)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $record->component = 'user';
         $record->filearea = 'private';
         $record->itemid = 0;

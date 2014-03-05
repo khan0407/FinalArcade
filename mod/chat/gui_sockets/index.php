@@ -25,8 +25,12 @@ if (!$cm = get_coursemodule_from_instance('chat', $chat->id, $course->id)) {
 }
 
 require_login($course, false, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/chat:chat', $context);
 
 /// Check to see if groups are being used here
@@ -51,7 +55,11 @@ if (!$chat_sid = chat_login_user($chat->id, 'sockets', $groupid, $course)) {
 }
 
 $params = "chat_sid=$chat_sid";
+<<<<<<< HEAD
 $courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+$courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>

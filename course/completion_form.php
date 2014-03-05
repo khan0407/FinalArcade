@@ -65,7 +65,11 @@ class course_completion_form extends moodleform {
         $mform->setDefault('overall_aggregation', $completion->get_aggregation_method());
 
         // Course prerequisite completion criteria
+<<<<<<< HEAD
         $mform->addElement('header', 'courseprerequisites', get_string('courseprerequisites', 'completion'));
+=======
+        $mform->addElement('header', 'courseprerequisites', get_string('completiondependencies', 'completion'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Get applicable courses
         $courses = $DB->get_records_sql(
@@ -105,7 +109,11 @@ class course_completion_form extends moodleform {
             $selectbox = array();
             $selected = array();
             foreach ($courses as $c) {
+<<<<<<< HEAD
                 $selectbox[$c->id] = $list[$c->category] . ' / ' . format_string($c->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $c->id)));
+=======
+                $selectbox[$c->id] = $list[$c->category] . ' / ' . format_string($c->fullname, true, array('context' => context_course::instance($c->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 // If already selected
                 if ($c->selected) {
@@ -134,7 +142,11 @@ class course_completion_form extends moodleform {
         // Role completion criteria
         $mform->addElement('header', 'roles', get_string('manualcompletionby', 'completion'));
 
+<<<<<<< HEAD
         $roles = get_roles_with_capability('moodle/course:markcomplete', CAP_ALLOW, get_context_instance(CONTEXT_COURSE, $course->id));
+=======
+        $roles = get_roles_with_capability('moodle/course:markcomplete', CAP_ALLOW, context_course::instance($course->id, IGNORE_MISSING));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!empty($roles)) {
             $mform->addElement('select', 'role_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);

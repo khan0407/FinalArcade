@@ -40,6 +40,11 @@ abstract class grade_export {
     public $displaytype; // display type (e.g. real, percentages, letter) for exports
     public $decimalpoints; // number of decimal points for exports
     public $onlyactive; // only include users with an active enrolment
+<<<<<<< HEAD
+=======
+    public $usercustomfields; // include users custom fields
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Constructor should set up all the private variables ready to be pulled
      * @access public
@@ -47,10 +52,21 @@ abstract class grade_export {
      * @param int $groupid id of selected group, 0 means all
      * @param string $itemlist comma separated list of item ids, empty means all
      * @param boolean $export_feedback
+<<<<<<< HEAD
      * @param boolean $export_letters
      * @note Exporting as letters will lead to data loss if that exported set it re-imported.
      */
     public function grade_export($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2, $onlyactive = false) {
+=======
+     * @param boolean $updatedgradesonly
+     * @param string $displaytype
+     * @param int $decimalpoints
+     * @param boolean $onlyactive
+     * @param boolean $usercustomfields include user custom field in export
+     * @note Exporting as letters will lead to data loss if that exported set it re-imported.
+     */
+    public function grade_export($course, $groupid=0, $itemlist='', $export_feedback=false, $updatedgradesonly = false, $displaytype = GRADE_DISPLAY_TYPE_REAL, $decimalpoints = 2, $onlyactive = false, $usercustomfields = false) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->course = $course;
         $this->groupid = $groupid;
         $this->grade_items = grade_item::fetch_all(array('courseid'=>$this->course->id));
@@ -85,6 +101,10 @@ abstract class grade_export {
         $this->displaytype = $displaytype;
         $this->decimalpoints = $decimalpoints;
         $this->onlyactive = $onlyactive;
+<<<<<<< HEAD
+=======
+        $this->usercustomfields = $usercustomfields;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -182,7 +202,11 @@ abstract class grade_export {
             $name .= ' ('.get_string('feedback').')';
         }
 
+<<<<<<< HEAD
         return strip_tags($name);
+=======
+        return html_to_text($name, 0, false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -205,16 +229,30 @@ abstract class grade_export {
      */
     public function display_preview($require_user_idnumber=false) {
         global $OUTPUT;
+<<<<<<< HEAD
+=======
+
+        $userprofilefields = grade_helper::get_user_profile_fields($this->course->id, $this->usercustomfields);
+        $formatoptions = new stdClass();
+        $formatoptions->para = false;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo $OUTPUT->heading(get_string('previewrows', 'grades'));
 
         echo '<table>';
         echo '<tr>';
+<<<<<<< HEAD
         echo '<th>'.get_string("firstname")."</th>".
              '<th>'.get_string("lastname")."</th>".
              '<th>'.get_string("idnumber")."</th>".
              '<th>'.get_string("institution")."</th>".
              '<th>'.get_string("department")."</th>".
              '<th>'.get_string("email")."</th>";
+=======
+        foreach ($userprofilefields as $field) {
+            echo '<th>' . $field->fullname . '</th>';
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($this->columns as $grade_item) {
             echo '<th>'.$this->format_column_name($grade_item).'</th>';
 
@@ -225,10 +263,17 @@ abstract class grade_export {
         }
         echo '</tr>';
         /// Print all the lines of data.
+<<<<<<< HEAD
 
         $i = 0;
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
         $gui->require_active_enrolment($this->onlyactive);
+=======
+        $i = 0;
+        $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
+        $gui->require_active_enrolment($this->onlyactive);
+        $gui->allow_user_custom_fields($this->usercustomfields);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $gui->init();
         while ($userdata = $gui->next_user()) {
             // number of preview rows
@@ -269,7 +314,15 @@ abstract class grade_export {
             }
 
             echo '<tr>';
+<<<<<<< HEAD
             echo "<td>$user->firstname</td><td>$user->lastname</td><td>$user->idnumber</td><td>$user->institution</td><td>$user->department</td><td>$user->email</td>";
+=======
+            foreach ($userprofilefields as $field) {
+                $fieldvalue = grade_helper::get_user_field_value($user, $field);
+                // @see profile_field_base::display_data().
+                echo '<td>' . format_text($fieldvalue, FORMAT_MOODLE, $formatoptions) . '</td>';
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo $rowstr;
             echo "</tr>";
 
@@ -298,7 +351,12 @@ abstract class grade_export {
                         'updatedgradesonly' =>$this->updatedgradesonly,
                         'displaytype'       =>$this->displaytype,
                         'decimalpoints'     =>$this->decimalpoints,
+<<<<<<< HEAD
                         'export_onlyactive' =>$this->onlyactive);
+=======
+                        'export_onlyactive' =>$this->onlyactive,
+                        'usercustomfields'  =>$this->usercustomfields);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $params;
     }

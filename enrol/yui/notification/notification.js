@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 YUI.add('moodle-enrol-notification', function(Y) {
 
 var DIALOGUE_NAME = 'Moodle dialogue',
@@ -390,3 +391,12 @@ M.core.exception = EXCEPTION;
 M.core.ajaxException = AJAXEXCEPTION;
 
 }, '@VERSION@', {requires:['base','node','panel','event-key', 'moodle-enrol-notification-skin', 'dd-plugin']});
+=======
+/**
+ * This module provides backwards compatability and should be removed
+ * entirely in Moodle 2.5
+ */
+YUI.add('moodle-enrol-notification', function(Y) {
+    console.log("You are using a deprecated name. Please update your YUI module to use moodle-core-notification instead of moodle-enrol-notification");
+}, '@VERSION@', {requires:['base','node','overlay','event-key', 'moodle-core-notification']});
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

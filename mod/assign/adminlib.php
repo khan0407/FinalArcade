@@ -187,16 +187,26 @@ class assign_plugin_manager {
             $visible = !get_config($this->subtype . '_' . $plugin, 'disabled');
 
             if ($visible) {
+<<<<<<< HEAD
                 $row[] = $this->format_icon_link('hide', $plugin, 'i/hide', get_string('disable'));
             } else {
                 $row[] = $this->format_icon_link('show', $plugin, 'i/show', get_string('enable'));
+=======
+                $row[] = $this->format_icon_link('hide', $plugin, 't/hide', get_string('disable'));
+            } else {
+                $row[] = $this->format_icon_link('show', $plugin, 't/show', get_string('enable'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             $movelinks = '';
             if (!$idx == 0) {
                 $movelinks .= $this->format_icon_link('moveup', $plugin, 't/up', get_string('up'));
             } else {
+<<<<<<< HEAD
                 $movelinks .= $OUTPUT->spacer(array('width'=>15));
+=======
+                $movelinks .= $OUTPUT->spacer(array('width'=>16));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($idx != count($plugins) - 1) {
                 $movelinks .= $this->format_icon_link('movedown', $plugin, 't/down', get_string('down'));
@@ -447,10 +457,17 @@ class assign_plugin_manager {
      * @param string $subtype - The type of plugin (submission or feedback)
      * @param part_of_admin_tree $admin - The handle to the admin menu
      * @param admin_settingpage $settings - The handle to current node in the navigation tree
+<<<<<<< HEAD
      * @param stdClass $module - The handle to the current module
      * @return None
      */
     static function add_admin_assign_plugin_settings($subtype, part_of_admin_tree $admin, admin_settingpage $settings, stdClass $module) {
+=======
+     * @param stdClass|plugininfo_mod $module - The handle to the current module
+     * @return None
+     */
+    static function add_admin_assign_plugin_settings($subtype, part_of_admin_tree $admin, admin_settingpage $settings, $module) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $CFG;
 
         $plugins = get_plugin_list_with_file($subtype, 'settings.php', false);
@@ -463,7 +480,11 @@ class assign_plugin_manager {
 
         foreach ($pluginsbyname as $pluginname => $plugin) {
             $settings = new admin_settingpage($subtype . '_'.$plugin,
+<<<<<<< HEAD
                     $pluginname, 'moodle/site:config', !$module->visible);
+=======
+                    $pluginname, 'moodle/site:config', $module->is_enabled() === false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if ($admin->fulltree) {
                 $shortsubtype = substr($subtype, strlen('assign'));
                 include($CFG->dirroot . "/mod/assign/$shortsubtype/$plugin/settings.php");

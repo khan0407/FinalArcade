@@ -37,7 +37,10 @@ $PAGE->set_pagelayout('incourse');
 // Get all required strings
 $strbooks        = get_string('modulenameplural', 'mod_book');
 $strbook         = get_string('modulename', 'mod_book');
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname         = get_string('name');
 $strintro        = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
@@ -57,14 +60,21 @@ if (!$books = get_all_instances_in_course('book', $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strintro);
     $table->align = array ('center', 'left', 'left');
 } else {
@@ -80,7 +90,11 @@ foreach ($books as $book) {
         $printsection = '';
         if ($book->section !== $currentsection) {
             if ($book->section) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$book->section]);
+=======
+                $printsection = get_section_name($course, $book->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';

@@ -353,7 +353,11 @@ class file_info_context_module extends file_info {
      */
     public function get_parent() {
         $pcid = get_parent_contextid($this->context);
+<<<<<<< HEAD
         $parent = get_context_instance_by_id($pcid);
+=======
+        $parent = context::instance_by_id($pcid, IGNORE_MISSING);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $this->browser->get_file_info($parent);
     }
 }

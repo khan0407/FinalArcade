@@ -31,6 +31,11 @@ $string['courseactivities'] = 'Categories, courses, and course Activities';
 $string['enabledockdesc'] = 'Allow the user to dock this block';
 $string['expansionlimit'] = 'Generate navigation for the following';
 $string['linkcategoriesdesc'] = 'Display categories as links';
+<<<<<<< HEAD
+=======
+$string['navigation:addinstance'] = 'Add a new navigation block';
+$string['navigation:myaddinstance'] = 'Add a new navigation block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['pluginname'] = 'Navigation';
 $string['trimmode'] = 'Trim mode';
 $string['trimmoderight'] = 'Trim characters from the right';

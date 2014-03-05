@@ -600,7 +600,12 @@ class HTML_QuickForm extends HTML_Common {
         } else {
             $args = func_get_args();
             $elementObject =& $this->_loadElement('addElement', $element, array_slice($args, 1));
+<<<<<<< HEAD
             if (@PEAR::isError($elementObject)) {
+=======
+            $pear = new PEAR();
+            if ($pear->isError($elementObject)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 return $elementObject;
             }
         }
@@ -1875,7 +1880,12 @@ class HTML_QuickForm extends HTML_Common {
             }
             foreach ($elementList as $elementName) {
                 $value = $this->exportValue($elementName);
+<<<<<<< HEAD
                 if (PEAR::isError($value)) {
+=======
+                $pear = new PEAR();
+                if ($pear->isError($value)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     return $value;
                 }
                 $values[$elementName] = $value;

@@ -90,6 +90,11 @@ class edit_index_save extends XMLDBAction {
         $unique = required_param('unique', PARAM_INT);
         $fields = required_param('fields', PARAM_CLEAN);
         $fields = str_replace(' ', '', trim(strtolower($fields)));
+<<<<<<< HEAD
+=======
+        $hints = required_param('hints', PARAM_CLEAN);
+        $hints = str_replace(' ', '', trim(strtolower($hints)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $editeddir = $XMLDB->editeddirs[$dirpath];
         $structure = $editeddir->xml_file->getStructure();
@@ -160,11 +165,26 @@ class edit_index_save extends XMLDBAction {
                 }
             }
         }
+<<<<<<< HEAD
+=======
+        $hintsarr = array();
+        foreach (explode(',', $hints) as $hint) {
+            $hint = preg_replace('/[^a-z]/', '', $hint);
+            if ($hint === '') {
+                continue;
+            }
+            $hintsarr[] = $hint;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!empty($errors)) {
             $tempindex = new xmldb_index($name);
             $tempindex->setUnique($unique);
             $tempindex->setFields($fieldsarr);
+<<<<<<< HEAD
+=======
+            $tempindex->setHints($hintsarr);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // Prepare the output
             $o = '<p>' .implode(', ', $errors) . '</p>
                   <p>' . $tempindex->readableInfo() . '</p>';
@@ -197,6 +217,10 @@ class edit_index_save extends XMLDBAction {
             // Set the rest of fields
             $index->setUnique($unique);
             $index->setFields($fieldsarr);
+<<<<<<< HEAD
+=======
+            $index->setHints($hintsarr);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             // If the hash has changed from the old one, change the version
             // and mark the structure as changed

@@ -50,6 +50,10 @@ class quiz_overview_settings_form extends mod_quiz_attempts_report_form {
                     get_string('showdetailedmarks', 'quiz_overview'));
         } else {
             $mform->addElement('hidden', 'slotmarks', 0);
+<<<<<<< HEAD
+=======
+            $mform->setType('slotmarks', PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 }

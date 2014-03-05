@@ -2,6 +2,7 @@
 /*~ class.smtp.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer - PHP email class                                    |
+<<<<<<< HEAD
 |   Version: 5.1                                                            |
 |   Contact: via sourceforge.net support pages (also www.codeworxtech.com)  |
 |      Info: http://phpmailer.sourceforge.net                               |
@@ -11,6 +12,17 @@
 |   Authors: Andy Prevost (codeworxtech) codeworxtech@users.sourceforge.net |
 |          : Marcus Bointon (coolbru) coolbru@users.sourceforge.net         |
 |   Founder: Brent R. Matzelle (original founder)                           |
+=======
+|   Version: 5.2.1                                                          |
+|      Site: https://code.google.com/a/apache-extras.org/p/phpmailer/       |
+| ------------------------------------------------------------------------- |
+|     Admin: Jim Jagielski (project admininistrator)                        |
+|   Authors: Andy Prevost (codeworxtech) codeworxtech@users.sourceforge.net |
+|          : Marcus Bointon (coolbru) coolbru@users.sourceforge.net         |
+|          : Jim Jagielski (jimjag) jimjag@gmail.com                        |
+|   Founder: Brent R. Matzelle (original founder)                           |
+| Copyright (c) 2010-2012, Jim Jagielski. All Rights Reserved.              |
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 | Copyright (c) 2004-2009, Andy Prevost. All Rights Reserved.               |
 | Copyright (c) 2001-2003, Brent R. Matzelle                                |
 | ------------------------------------------------------------------------- |
@@ -19,11 +31,14 @@
 | This program is distributed in the hope that it will be useful - WITHOUT  |
 | ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or     |
 | FITNESS FOR A PARTICULAR PURPOSE.                                         |
+<<<<<<< HEAD
 | ------------------------------------------------------------------------- |
 | We offer a number of paid services (www.codeworxtech.com):                |
 | - Web Hosting on highly optimized fast and secure servers                 |
 | - Technology Consulting                                                   |
 | - Oursourcing (highly qualified programmers and graphic designers)        |
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 '---------------------------------------------------------------------------'
 */
 
@@ -34,8 +49,15 @@
  * @author Andy Prevost
  * @author Marcus Bointon
  * @copyright 2004 - 2008 Andy Prevost
+<<<<<<< HEAD
  * @license http://www.gnu.org/copyleft/lesser.html Distributed under the Lesser General Public License (LGPL)
  * @version $Id$
+=======
+ * @author Jim Jagielski
+ * @copyright 2010 - 2012 Jim Jagielski
+ * @license http://www.gnu.org/copyleft/lesser.html Distributed under the Lesser General Public License (LGPL)
+ * @version $Id: class.smtp.php 450 2010-06-23 16:46:33Z coolbru $
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 
 /**
@@ -71,6 +93,15 @@ class SMTP {
    */
   public $do_verp = false;
 
+<<<<<<< HEAD
+=======
+  /**
+   * Sets the SMTP PHPMailer Version number
+   * @var string
+   */
+  public $Version         = '5.2.1';
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   /////////////////////////////////////////////////
   // PROPERTIES, PRIVATE AND PROTECTED
   /////////////////////////////////////////////////
@@ -794,7 +825,12 @@ class SMTP {
    */
   private function get_lines() {
     $data = "";
+<<<<<<< HEAD
     while($str = @fgets($this->smtp_conn,515)) {
+=======
+    while(!feof($this->smtp_conn)) {
+      $str = @fgets($this->smtp_conn,515);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
       if($this->do_debug >= 4) {
         echo "SMTP -> get_lines(): \$data was \"$data\"" . $this->CRLF . '<br />';
         echo "SMTP -> get_lines(): \$str is \"$str\"" . $this->CRLF . '<br />';
@@ -811,4 +847,8 @@ class SMTP {
 
 }
 
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

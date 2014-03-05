@@ -53,10 +53,17 @@ class block_activity_modules extends block_list {
 
         foreach ($modfullnames as $modname => $modfullname) {
             if ($modname === 'resources') {
+<<<<<<< HEAD
                 $icon = $OUTPUT->pix_icon(file_extension_icon('.htm'), '', 'moodle', array('class' => 'icon')). '&nbsp;';
                 $this->content->items[] = '<a href="'.$CFG->wwwroot.'/course/resources.php?id='.$course->id.'">'.$icon.$modfullname.'</a>';
             } else {
                 $icon = '<img src="'.$OUTPUT->pix_url('icon', $modname) . '" class="icon" alt="" />&nbsp;';
+=======
+                $icon = $OUTPUT->pix_icon('icon', '', 'mod_page', array('class' => 'icon'));
+                $this->content->items[] = '<a href="'.$CFG->wwwroot.'/course/resources.php?id='.$course->id.'">'.$icon.$modfullname.'</a>';
+            } else {
+                $icon = '<img src="'.$OUTPUT->pix_url('icon', $modname) . '" class="icon" alt="" />';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $this->content->items[] = '<a href="'.$CFG->wwwroot.'/mod/'.$modname.'/index.php?id='.$course->id.'">'.$icon.$modfullname.'</a>';
             }
         }
@@ -64,6 +71,20 @@ class block_activity_modules extends block_list {
         return $this->content;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Returns the role that best describes this blocks contents.
+     *
+     * This returns 'navigation' as the blocks contents is a list of links to activities and resources.
+     *
+     * @return string 'navigation'
+     */
+    public function get_aria_role() {
+        return 'navigation';
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function applicable_formats() {
         return array('all' => true, 'mod' => false, 'my' => false, 'admin' => false,
                      'tag' => false);

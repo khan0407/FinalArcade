@@ -29,6 +29,14 @@ defined('MOODLE_INTERNAL') || die();
  */
 define('BYTESERVING_BOUNDARY', 's1k2o3d4a5k6s7');
 
+<<<<<<< HEAD
+=======
+/**
+ * Unlimited area size constant
+ */
+define('FILE_AREA_MAX_BYTES_UNLIMITED', -1);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_once("$CFG->libdir/filestorage/file_exceptions.php");
 require_once("$CFG->libdir/filestorage/file_storage.php");
 require_once("$CFG->libdir/filestorage/zip_packer.php");
@@ -318,7 +326,11 @@ function file_get_unused_draft_itemid() {
         print_error('noguest');
     }
 
+<<<<<<< HEAD
     $contextid = get_context_instance(CONTEXT_USER, $USER->id)->id;
+=======
+    $contextid = context_user::instance($USER->id)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $fs = get_file_storage();
     $draftitemid = rand(1, 999999999);
@@ -357,7 +369,11 @@ function file_prepare_draft_area(&$draftitemid, $contextid, $component, $fileare
         $options['forcehttps'] = false;
     }
 
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $fs = get_file_storage();
 
     if (empty($draftitemid)) {
@@ -460,28 +476,80 @@ function file_rewrite_pluginfile_urls($text, $file, $contextid, $component, $fil
  * @param int $draftitemid the draft area item id.
  * @return array with the following entries:
  *      'filecount' => number of files in the draft area.
+<<<<<<< HEAD
+=======
+ *      'filesize' => total size of the area.
+ *      'filesize_without_references' => total size of the area excluding file references.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * (more information will be added as needed).
  */
 function file_get_draft_area_info($draftitemid) {
     global $CFG, $USER;
 
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $fs = get_file_storage();
 
     $results = array();
 
+<<<<<<< HEAD
     // The number of files
     $draftfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid, 'id', false);
     $results['filecount'] = count($draftfiles);
     $results['filesize'] = 0;
     foreach ($draftfiles as $file) {
         $results['filesize'] += $file->get_filesize();
+=======
+    // The number of files.
+    $draftfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid, 'id', false);
+    $results['filecount'] = count($draftfiles);
+    $results['filesize'] = 0;
+    $results['filesize_without_references'] = 0;
+    foreach ($draftfiles as $file) {
+        $filesize = $file->get_filesize();
+        $results['filesize'] += $filesize;
+        if (!$file->is_external_file()) {
+            $results['filesize_without_references'] += $filesize;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return $results;
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * Returns whether a draft area has exceeded/will exceed its size limit.
+ *
+ * Please note that the unlimited value for $areamaxbytes is -1 {@link FILE_AREA_MAX_BYTES_UNLIMITED}, not 0.
+ *
+ * @param int $draftitemid the draft area item id.
+ * @param int $areamaxbytes the maximum size allowed in this draft area.
+ * @param int $newfilesize the size that would be added to the current area.
+ * @param bool $includereferences true to include the size of the references in the area size.
+ * @return bool true if the area will/has exceeded its limit.
+ * @since 2.4
+ */
+function file_is_draft_area_limit_reached($draftitemid, $areamaxbytes, $newfilesize = 0, $includereferences = false) {
+    if ($areamaxbytes != FILE_AREA_MAX_BYTES_UNLIMITED) {
+        $draftinfo = file_get_draft_area_info($draftitemid);
+        $areasize = $draftinfo['filesize_without_references'];
+        if ($includereferences) {
+            $areasize = $draftinfo['filesize'];
+        }
+        if ($areasize + $newfilesize > $areamaxbytes) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Get used space of files
  * @global moodle_database $DB
  * @global stdClass $USER
@@ -490,7 +558,11 @@ function file_get_draft_area_info($draftitemid) {
 function file_get_user_used_space() {
     global $DB, $USER;
 
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $sql = "SELECT SUM(files1.filesize) AS totalbytes FROM {files} files1
             JOIN (SELECT contenthash, filename, MAX(id) AS id
             FROM {files}
@@ -526,7 +598,11 @@ function file_correct_filepath($str) { //TODO: what is this? (skodak)
 function file_get_drafarea_folders($draftitemid, $filepath, &$data) {
     global $USER, $OUTPUT, $CFG;
     $data->children = array();
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $fs = get_file_storage();
     if ($files = $fs->get_directory_files($context->id, 'user', 'draft', $draftitemid, $filepath, false)) {
         foreach ($files as $file) {
@@ -558,7 +634,11 @@ function file_get_drafarea_folders($draftitemid, $filepath, &$data) {
 function file_get_drafarea_files($draftitemid, $filepath = '/') {
     global $USER, $OUTPUT, $CFG;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $fs = get_file_storage();
 
     $data = new stdClass();
@@ -714,7 +794,11 @@ function file_restore_source_field_from_draft_file($storedfile) {
 function file_save_draft_area_files($draftitemid, $contextid, $component, $filearea, $itemid, array $options=null, $text=null, $forcehttps=false) {
     global $USER;
 
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $fs = get_file_storage();
 
     $options = (array)$options;
@@ -727,6 +811,12 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
     if (!isset($options['maxbytes']) || $options['maxbytes'] == USER_CAN_IGNORE_FILE_SIZE_LIMITS) {
         $options['maxbytes'] = 0; // unlimited
     }
+<<<<<<< HEAD
+=======
+    if (!isset($options['areamaxbytes'])) {
+        $options['areamaxbytes'] = FILE_AREA_MAX_BYTES_UNLIMITED; // Unlimited.
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $allowreferences = true;
     if (isset($options['return_types']) && !($options['return_types'] & FILE_REFERENCE)) {
         // we assume that if $options['return_types'] is NOT specified, we DO allow references.
@@ -735,6 +825,16 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
         $allowreferences = false;
     }
 
+<<<<<<< HEAD
+=======
+    // Check if the draft area has exceeded the authorised limit. This should never happen as validation
+    // should have taken place before, unless the user is doing something nauthly. If so, let's just not save
+    // anything at all in the next area.
+    if (file_is_draft_area_limit_reached($draftitemid, $options['areamaxbytes'])) {
+        return null;
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $draftfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid, 'id');
     $oldfiles   = $fs->get_area_files($contextid, $component, $filearea, $itemid, 'id');
 
@@ -746,7 +846,11 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
         $newhashes = array();
         $filecount = 0;
         foreach ($draftfiles as $file) {
+<<<<<<< HEAD
             if (!$options['subdirs'] && ($file->get_filepath() !== '/' or $file->is_directory())) {
+=======
+            if (!$options['subdirs'] && $file->get_filepath() !== '/') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 continue;
             }
             if (!$allowreferences && $file->is_external_file()) {
@@ -897,7 +1001,11 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
 function file_rewrite_urls_to_pluginfile($text, $draftitemid, $forcehttps = false) {
     global $CFG, $USER;
 
+<<<<<<< HEAD
     $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+    $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $wwwroot = $CFG->wwwroot;
     if ($forcehttps) {
@@ -1430,6 +1538,10 @@ function &get_mimetypes_array() {
         'jcw'  => array ('type'=>'text/xml', 'icon'=>'markup'),
         'jmt'  => array ('type'=>'text/xml', 'icon'=>'markup'),
         'jmx'  => array ('type'=>'text/xml', 'icon'=>'markup'),
+<<<<<<< HEAD
+=======
+        'jnlp' => array ('type'=>'application/x-java-jnlp-file', 'icon'=>'markup'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         'jpe'  => array ('type'=>'image/jpeg', 'icon'=>'jpeg', 'groups'=>array('image', 'web_image'), 'string'=>'image'),
         'jpeg' => array ('type'=>'image/jpeg', 'icon'=>'jpeg', 'groups'=>array('image', 'web_image'), 'string'=>'image'),
         'jpg'  => array ('type'=>'image/jpeg', 'icon'=>'jpeg', 'groups'=>array('image', 'web_image'), 'string'=>'image'),
@@ -1936,6 +2048,46 @@ function send_header_404() {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * The readfile function can fail when files are larger than 2GB (even on 64-bit
+ * platforms). This wrapper uses readfile for small files and custom code for
+ * large ones.
+ *
+ * @param string $path Path to file
+ * @param int $filesize Size of file (if left out, will get it automatically)
+ * @return int|bool Size read (will always be $filesize) or false if failed
+ */
+function readfile_allow_large($path, $filesize = -1) {
+    // Automatically get size if not specified.
+    if ($filesize === -1) {
+        $filesize = filesize($path);
+    }
+    if ($filesize <= 2147483647) {
+        // If the file is up to 2^31 - 1, send it normally using readfile.
+        return readfile($path);
+    } else {
+        // For large files, read and output in 64KB chunks.
+        $handle = fopen($path, 'r');
+        if ($handle === false) {
+            return false;
+        }
+        $left = $filesize;
+        while ($left > 0) {
+            $size = min($left, 65536);
+            $buffer = fread($handle, $size);
+            if ($buffer === false) {
+                return false;
+            }
+            echo $buffer;
+            $left -= $size;
+        }
+        return $filesize;
+    }
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Enhanced readfile() with optional acceleration.
  * @param string|stored_file $file
  * @param string $mimetype
@@ -1957,7 +2109,11 @@ function readfile_accel($file, $mimetype, $accelerate) {
 
     if (is_object($file)) {
         header('Etag: "' . $file->get_contenthash() . '"');
+<<<<<<< HEAD
         if (isset($_SERVER['HTTP_IF_NONE_MATCH']) and $_SERVER['HTTP_IF_NONE_MATCH'] === $file->get_contenthash()) {
+=======
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) and trim($_SERVER['HTTP_IF_NONE_MATCH'], '"') === $file->get_contenthash()) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             header('HTTP/1.1 304 Not Modified');
             return;
         }
@@ -2057,7 +2213,11 @@ function readfile_accel($file, $mimetype, $accelerate) {
     if (is_object($file)) {
         $file->readfile();
     } else {
+<<<<<<< HEAD
         readfile($file);
+=======
+        readfile_allow_large($file, $filesize);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 
@@ -2128,11 +2288,19 @@ function send_temp_file($path, $filename, $pathisstring=false) {
 
     header('Content-Disposition: attachment; filename="'.$filename.'"');
     if (strpos($CFG->wwwroot, 'https://') === 0) { //https sites - watch out for IE! KB812935 and KB316431
+<<<<<<< HEAD
         header('Cache-Control: private, max-age=10');
         header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
         header('Pragma: ');
     } else { //normal http - prevent caching at all cost
         header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+=======
+        header('Cache-Control: private, max-age=10, no-transform');
+        header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
+        header('Pragma: ');
+    } else { //normal http - prevent caching at all cost
+        header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0, no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
         header('Pragma: no-cache');
     }
@@ -2219,18 +2387,30 @@ function send_file($path, $filename, $lifetime = 'default' , $filter=0, $pathiss
             $private = ' private,';
         }
         $nobyteserving = false;
+<<<<<<< HEAD
         header('Cache-Control:'.$private.' max-age='.$lifetime);
+=======
+        header('Cache-Control:'.$private.' max-age='.$lifetime.', no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         header('Expires: '. gmdate('D, d M Y H:i:s', time() + $lifetime) .' GMT');
         header('Pragma: ');
 
     } else { // Do not cache files in proxies and browsers
         $nobyteserving = true;
         if (strpos($CFG->wwwroot, 'https://') === 0) { //https sites - watch out for IE! KB812935 and KB316431
+<<<<<<< HEAD
             header('Cache-Control: private, max-age=10');
             header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
             header('Pragma: ');
         } else { //normal http - prevent caching at all cost
             header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+=======
+            header('Cache-Control: private, max-age=10, no-transform');
+            header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
+            header('Pragma: ');
+        } else { //normal http - prevent caching at all cost
+            header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0, no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
             header('Pragma: no-cache');
         }
@@ -2386,17 +2566,29 @@ function send_stored_file($stored_file, $lifetime=86400 , $filter=0, $forcedownl
         if (isloggedin() and !isguestuser()) {
             $private = ' private,';
         }
+<<<<<<< HEAD
         header('Cache-Control:'.$private.' max-age='.$lifetime);
+=======
+        header('Cache-Control:'.$private.' max-age='.$lifetime.', no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         header('Expires: '. gmdate('D, d M Y H:i:s', time() + $lifetime) .' GMT');
         header('Pragma: ');
 
     } else { // Do not cache files in proxies and browsers
         if (strpos($CFG->wwwroot, 'https://') === 0) { //https sites - watch out for IE! KB812935 and KB316431
+<<<<<<< HEAD
             header('Cache-Control: private, max-age=10');
             header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
             header('Pragma: ');
         } else { //normal http - prevent caching at all cost
             header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+=======
+            header('Cache-Control: private, max-age=10, no-transform');
+            header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
+            header('Pragma: ');
+        } else { //normal http - prevent caching at all cost
+            header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0, no-transform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
             header('Pragma: no-cache');
         }
@@ -2959,7 +3151,10 @@ class curl {
      */
     private function formatHeader($ch, $header)
     {
+<<<<<<< HEAD
         $this->count++;
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (strlen($header) > 2) {
             list($key, $value) = explode(" ", rtrim($header, "\r\n"), 2);
             $key = rtrim($key, ':');
@@ -3591,7 +3786,11 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
             send_file_not_found();
         }
 
+<<<<<<< HEAD
         if (empty($CFG->bloglevel)) {
+=======
+        if (empty($CFG->enableblogs)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             print_error('siteblogdisable', 'blog');
         }
 
@@ -3844,7 +4043,11 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
                 }
                 // no redirect here because it is not cached
                 $theme = theme_config::load($themename);
+<<<<<<< HEAD
                 $imagefile = $theme->resolve_image_location('u/'.$filename, 'moodle');
+=======
+                $imagefile = $theme->resolve_image_location('u/'.$filename, 'moodle', null);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 send_file($imagefile, basename($imagefile), 60*60*24*14);
             }
 
@@ -3902,7 +4105,11 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
 
                 while (!$canview && count($courses) > 0) {
                     $course = array_shift($courses);
+<<<<<<< HEAD
                     if (has_capability('moodle/user:viewdetails', get_context_instance(CONTEXT_COURSE, $course->id))) {
+=======
+                    if (has_capability('moodle/user:viewdetails', context_course::instance($course->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $canview = true;
                     }
                 }
@@ -3919,7 +4126,11 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
 
         } else if ($filearea === 'profile' and $context->contextlevel == CONTEXT_COURSE) {
             $userid = (int)array_shift($args);
+<<<<<<< HEAD
             $usercontext = get_context_instance(CONTEXT_USER, $userid);
+=======
+            $usercontext = context_user::instance($userid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if ($CFG->forcelogin) {
                 require_login();
@@ -4037,6 +4248,7 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
                 send_file_not_found();
             }
 
+<<<<<<< HEAD
             if ($course->numsections < $section->section) {
                 if (!has_capability('moodle/course:update', $context)) {
                     // block access to unavailable sections if can not edit course
@@ -4044,6 +4256,8 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
                 }
             }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $filename = array_pop($args);
             $filepath = $args ? '/'.implode('/', $args).'/' : '/';
             if (!$file = $fs->get_file($context->id, 'course', 'section', $sectionid, $filepath, $filename) or $file->is_directory()) {

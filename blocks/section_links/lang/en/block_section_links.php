@@ -34,5 +34,9 @@ $string['numsectionsdesc2'] = 'Once the number of sections in the course reaches
 $string['numsections1'] = 'Number of sections';
 $string['numsections2'] = 'Alternative number of sections';
 $string['pluginname'] = 'Section links';
+<<<<<<< HEAD
+=======
+$string['section_links:addinstance'] = 'Add a new section links block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['topics'] = 'Topics';
 $string['weeks'] = 'Weeks';

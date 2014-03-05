@@ -24,6 +24,11 @@
  */
 
 $string['configtimetosee'] = 'Number of minutes determining the period of inactivity after which a user is no longer considered to be online.';
+<<<<<<< HEAD
+=======
+$string['online_users:addinstance'] = 'Add a new online users block';
+$string['online_users:myaddinstance'] = 'Add a new online users block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['online_users:viewlist'] = 'View list of online users';
 $string['periodnminutes'] = 'last {$a} minutes';
 $string['pluginname'] = 'Online users';

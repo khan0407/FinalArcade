@@ -40,7 +40,11 @@ $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST)
 $lesson = new lesson($DB->get_record('lesson', array('id' => $cm->instance), '*', MUST_EXIST));
 
 require_login($course, false, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/lesson:edit', $context);
 
 $strimportquestions = get_string("importquestions", "lesson");

@@ -41,7 +41,11 @@ if (! $course = $DB->get_record('course', array('id'=> $scorm->course))) {
 
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 if (has_capability('mod/scorm:viewreport', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+=======
+if (has_capability('mod/scorm:viewreport', context_module::instance($cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     redirect('report.php?id='.$cm->id);
 } else {
     redirect('view.php?id='.$cm->id);

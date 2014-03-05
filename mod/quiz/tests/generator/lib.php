@@ -54,7 +54,11 @@ class mod_quiz_generator extends phpunit_module_generator {
                 mod_quiz_display_options::LATER_WHILE_OPEN | mod_quiz_display_options::AFTER_CLOSE;
 
         $defaultquizsettings = array(
+<<<<<<< HEAD
             'name'                   => get_string('pluginname', 'data').' '.$i,
+=======
+            'name'                   => get_string('pluginname', 'quiz').' '.$i,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'intro'                  => 'Test quiz ' . $i,
             'introformat'            => FORMAT_MOODLE,
             'timeopen'               => 0,

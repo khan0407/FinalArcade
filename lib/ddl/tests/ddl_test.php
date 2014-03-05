@@ -160,13 +160,20 @@ class ddl_testcase extends database_driver_testcase {
         // first make sure it returns false if table does not exist
         $table = $this->tables['test_table0'];
 
+<<<<<<< HEAD
         ob_start(); // hide debug warning
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         try {
             $result = $DB->get_records('test_table0');
         } catch (dml_exception $e) {
             $result = false;
         }
+<<<<<<< HEAD
         ob_end_clean();
+=======
+        $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $this->assertFalse($result);
 
@@ -183,13 +190,20 @@ class ddl_testcase extends database_driver_testcase {
         // drop table and test again
         $dbman->drop_table($table);
 
+<<<<<<< HEAD
         ob_start(); // hide debug warning
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         try {
             $result = $DB->get_records('test_table0');
         } catch (dml_exception $e) {
             $result = false;
         }
+<<<<<<< HEAD
         ob_end_clean();
+=======
+        $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $this->assertFalse($result);
 
@@ -1123,13 +1137,20 @@ class ddl_testcase extends database_driver_testcase {
         $record = new stdClass();
         $record->name = NULL;
 
+<<<<<<< HEAD
         ob_start(); // hide debug warning
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         try {
             $result = $DB->insert_record('test_table_cust0', $record, false);
         } catch (dml_exception $e) {
             $result = false;
         }
+<<<<<<< HEAD
         ob_end_clean();
+=======
+        $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->assertFalse($result);
 
         $field = new xmldb_field('name');
@@ -1145,13 +1166,20 @@ class ddl_testcase extends database_driver_testcase {
         $field->set_attributes(XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, null);
         $dbman->change_field_notnull($table, $field);
 
+<<<<<<< HEAD
         ob_start(); // hide debug warning
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         try {
             $result = $DB->insert_record('test_table_cust0', $record, false);
         } catch (dml_exception $e) {
             $result = false;
         }
+<<<<<<< HEAD
         ob_end_clean();
+=======
+        $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->assertFalse($result);
 
         $dbman->drop_table($table);
@@ -1214,13 +1242,20 @@ class ddl_testcase extends database_driver_testcase {
         $index->set_attributes(XMLDB_INDEX_UNIQUE, array('onenumber', 'name'));
         $dbman->add_index($table, $index);
 
+<<<<<<< HEAD
         ob_start(); // hide debug warning
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         try {
             $result = $DB->insert_record('test_table_cust0', $record, false);
         } catch (dml_exception $e) {
             $result = false;;
         }
+<<<<<<< HEAD
         ob_end_clean();
+=======
+        $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->assertFalse($result);
 
         $dbman->drop_table($table);
@@ -1398,12 +1433,19 @@ class ddl_testcase extends database_driver_testcase {
 
         // feed nonexistent file
         try {
+<<<<<<< HEAD
             ob_start(); // hide debug warning
             $dbman->delete_tables_from_xmldb_file('fpsoiudfposui');
             ob_end_clean();
             $this->assertTrue(false);
         } catch (Exception $e) {
             ob_end_clean();
+=======
+            $dbman->delete_tables_from_xmldb_file('fpsoiudfposui');
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->assertTrue($e instanceof moodle_exception);
         }
 
@@ -1414,12 +1456,19 @@ class ddl_testcase extends database_driver_testcase {
             $devhack = true;
         }
         try {
+<<<<<<< HEAD
             ob_start(); // hide debug warning
             $dbman->delete_tables_from_xmldb_file(__DIR__ . '/fixtures/invalid.xml');
             $this->assertTrue(false);
             ob_end_clean();
         } catch (Exception $e) {
             ob_end_clean();
+=======
+            $dbman->delete_tables_from_xmldb_file(__DIR__ . '/fixtures/invalid.xml');
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->assertTrue($e instanceof moodle_exception);
         }
         if ($devhack) {
@@ -1443,12 +1492,19 @@ class ddl_testcase extends database_driver_testcase {
 
         // feed nonexistent file
         try {
+<<<<<<< HEAD
             ob_start(); // hide debug warning
             $dbman->install_from_xmldb_file('fpsoiudfposui');
             ob_end_clean();
             $this->assertTrue(false);
         } catch (Exception $e) {
             ob_end_clean();
+=======
+            $dbman->install_from_xmldb_file('fpsoiudfposui');
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->assertTrue($e instanceof moodle_exception);
         }
 
@@ -1459,12 +1515,19 @@ class ddl_testcase extends database_driver_testcase {
             $devhack = true;
         }
         try {
+<<<<<<< HEAD
             ob_start(); // hide debug warning
             $dbman->install_from_xmldb_file(__DIR__ . '/fixtures/invalid.xml');
             ob_end_clean();
             $this->assertTrue(false);
         } catch (Exception $e) {
             ob_end_clean();
+=======
+            $dbman->install_from_xmldb_file(__DIR__ . '/fixtures/invalid.xml');
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->resetDebugging();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->assertTrue($e instanceof moodle_exception);
         }
         if ($devhack) {
@@ -1529,7 +1592,14 @@ class ddl_testcase extends database_driver_testcase {
         $this->assertEquals($records[1]->secondname, $this->records['test_table1'][0]->secondname);
         $this->assertEquals($records[2]->intro, $this->records['test_table1'][1]->intro);
 
+<<<<<<< HEAD
         // Drop table1
+=======
+        // Collect statistics about the data in the temp table.
+        $DB->update_temp_table_stats();
+
+        // Drop table1.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $dbman->drop_table($table1);
         $this->assertFalse($dbman->table_exists('test_table1'));
 
@@ -1542,8 +1612,15 @@ class ddl_testcase extends database_driver_testcase {
             $this->assertTrue($e instanceof ddl_table_missing_exception);
         }
 
+<<<<<<< HEAD
         // Fill/modify/delete a few table0 records
         // TODO: that's
+=======
+        // Collect statistics about the data in the temp table with less tables.
+        $DB->update_temp_table_stats();
+
+        // Fill/modify/delete a few table0 records.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Drop table0
         $dbman->drop_table($table0);
@@ -1555,10 +1632,16 @@ class ddl_testcase extends database_driver_testcase {
         $this->assertTrue($dbman->table_exists('test_table1'));
 
         // Make sure it can be dropped using deprecated drop_temp_table()
+<<<<<<< HEAD
         $CFG->debug = 0;
         $dbman->drop_temp_table($table1);
         $this->assertFalse($dbman->table_exists('test_table1'));
         $CFG->debug = DEBUG_DEVELOPER;
+=======
+        $dbman->drop_temp_table($table1);
+        $this->assertFalse($dbman->table_exists('test_table1'));
+        $this->assertDebuggingCalled();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function test_concurrent_temp_tables() {
@@ -1649,6 +1732,53 @@ class ddl_testcase extends database_driver_testcase {
         $this->assertTrue(count($reserved) > 1);
     }
 
+<<<<<<< HEAD
+=======
+    public function test_index_hints() {
+        $DB = $this->tdb;
+        $dbman = $DB->get_manager();
+
+        $table = new xmldb_table('testtable');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null);
+        $table->add_field('path', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_index('name', XMLDB_INDEX_NOTUNIQUE, array('name'), array('xxxx,yyyy'));
+        $table->add_index('path', XMLDB_INDEX_NOTUNIQUE, array('path'), array('varchar_pattern_ops'));
+
+        // Drop if exists
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+        $dbman->create_table($table);
+        $tablename = $table->getName();
+        $this->tables[$tablename] = $table;
+
+        $table = new xmldb_table('testtable');
+        $index = new xmldb_index('name', XMLDB_INDEX_NOTUNIQUE, array('name'), array('xxxx,yyyy'));
+        $this->assertTrue($dbman->index_exists($table, $index));
+
+        $table = new xmldb_table('testtable');
+        $index = new xmldb_index('path', XMLDB_INDEX_NOTUNIQUE, array('path'), array('varchar_pattern_ops'));
+        $this->assertTrue($dbman->index_exists($table, $index));
+
+        // Try unique indexes too.
+        $dbman->drop_table($this->tables[$tablename]);
+
+        $table = new xmldb_table('testtable');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('path', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_index('path', XMLDB_INDEX_UNIQUE, array('path'), array('varchar_pattern_ops'));
+        $dbman->create_table($table);
+        $this->tables[$tablename] = $table;
+
+        $table = new xmldb_table('testtable');
+        $index = new xmldb_index('path', XMLDB_INDEX_UNIQUE, array('path'), array('varchar_pattern_ops'));
+        $this->assertTrue($dbman->index_exists($table, $index));
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     public function test_index_max_bytes() {
         $DB = $this->tdb;
         $dbman = $DB->get_manager();
@@ -1835,6 +1965,62 @@ class ddl_testcase extends database_driver_testcase {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public function test_object_name() {
+        $gen = $this->tdb->get_manager()->generator;
+
+        // This will form short object name and max length should not be exceeded.
+        $table = 'tablename';
+        $fields = 'id';
+        $suffix = 'pk';
+        for ($i=0; $i<12; $i++) {
+            $this->assertLessThanOrEqual($gen->names_max_length,
+                    strlen($gen->getNameForObject($table, $fields, $suffix)),
+                    'Generated object name is too long. $i = '.$i);
+        }
+
+        // This will form too long object name always and it must be trimmed to exactly 30 chars.
+        $table = 'aaaa_bbbb_cccc_dddd_eeee_ffff_gggg';
+        $fields = 'aaaaa,bbbbb,ccccc,ddddd';
+        $suffix = 'idx';
+        for ($i=0; $i<12; $i++) {
+            $this->assertEquals($gen->names_max_length,
+                    strlen($gen->getNameForObject($table, $fields, $suffix)),
+                    'Generated object name is too long. $i = '.$i);
+        }
+
+        // Same test without suffix.
+        $table = 'bbbb_cccc_dddd_eeee_ffff_gggg_hhhh';
+        $fields = 'aaaaa,bbbbb,ccccc,ddddd';
+        $suffix = '';
+        for ($i=0; $i<12; $i++) {
+            $this->assertEquals($gen->names_max_length,
+                    strlen($gen->getNameForObject($table, $fields, $suffix)),
+                    'Generated object name is too long. $i = '.$i);
+        }
+
+        // This must only trim name when counter is 10 or more.
+        $table = 'cccc_dddd_eeee_ffff_gggg_hhhh_iiii';
+        $fields = 'id';
+        $suffix = 'idx';
+        // Since we don't know how long prefix is, loop to generate tablename that gives exactly maxlengh-1 length.
+        // Skip this test if prefix is too long.
+        while (strlen($table) && strlen($gen->prefix.preg_replace('/_/','',$table).'_id_'.$suffix) >= $gen->names_max_length) {
+            $table = rtrim(substr($table, 0, strlen($table) - 1), '_');
+        }
+        if (strlen($table)) {
+            $this->assertEquals($gen->names_max_length - 1,
+                        strlen($gen->getNameForObject($table, $fields, $suffix)));
+            for ($i=0; $i<12; $i++) {
+                $this->assertEquals($gen->names_max_length,
+                        strlen($gen->getNameForObject($table, $fields, $suffix)),
+                        'Generated object name is too long. $i = '.$i);
+            }
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // Following methods are not supported == Do not test
     /*
         public function testRenameIndex() {

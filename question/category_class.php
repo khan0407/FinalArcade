@@ -134,6 +134,7 @@ class question_category_list_item extends list_item {
  */
 class question_category_object {
 
+<<<<<<< HEAD
     var $str;
     /**
      * Nested lists to display categories.
@@ -144,15 +145,38 @@ class question_category_object {
     var $newtable;
     var $tab;
     var $tabsize = 3;
+=======
+    /**
+     * @var array common language strings.
+     */
+    public $str;
+
+    /**
+     * @var array nested lists to display categories.
+     */
+    public $editlists = array();
+    public $newtable;
+    public $tab;
+    public $tabsize = 3;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * @var moodle_url Object representing url for this page
      */
+<<<<<<< HEAD
     var $pageurl;
     /**
      * @var question_category_edit_form Object representing form for adding / editing categories.
      */
     var $catform;
+=======
+    public $pageurl;
+
+    /**
+     * @var question_category_edit_form Object representing form for adding / editing categories.
+     */
+    public $catform;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * Constructor
@@ -255,7 +279,11 @@ class question_category_object {
             $listhtml = $list->to_html(0, array('str'=>$this->str));
             if ($listhtml){
                 echo $OUTPUT->box_start('boxwidthwide boxaligncenter generalbox questioncategories contextlevel' . $list->context->contextlevel);
+<<<<<<< HEAD
                 echo $OUTPUT->heading(get_string('questioncatsfor', 'question', print_context_name(get_context_instance_by_id($context))), 3);
+=======
+                echo $OUTPUT->heading(get_string('questioncatsfor', 'question', print_context_name(context::instance_by_id($context))), 3);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 echo $listhtml;
                 echo $OUTPUT->box_end();
             }
@@ -376,14 +404,22 @@ class question_category_object {
     /**
      * Creates a new category with given params
      */
+<<<<<<< HEAD
     public function add_category($newparent, $newcategory, $newinfo, $return = false) {
+=======
+    public function add_category($newparent, $newcategory, $newinfo, $return = false, $newinfoformat = FORMAT_HTML) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $DB;
         if (empty($newcategory)) {
             print_error('categorynamecantbeblank', 'question');
         }
         list($parentid, $contextid) = explode(',', $newparent);
         //moodle_form makes sure select element output is legal no need for further cleaning
+<<<<<<< HEAD
         require_capability('moodle/question:managecategory', get_context_instance_by_id($contextid));
+=======
+        require_capability('moodle/question:managecategory', context::instance_by_id($contextid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($parentid) {
             if(!($DB->get_field('question_categories', 'contextid', array('id' => $parentid)) == $contextid)) {
@@ -396,6 +432,10 @@ class question_category_object {
         $cat->contextid = $contextid;
         $cat->name = $newcategory;
         $cat->info = $newinfo;
+<<<<<<< HEAD
+=======
+        $cat->infoformat = $newinfoformat;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $cat->sortorder = 999;
         $cat->stamp = make_unique_id_code();
         $categoryid = $DB->insert_record("question_categories", $cat);
@@ -409,7 +449,11 @@ class question_category_object {
     /**
      * Updates an existing category with given params
      */
+<<<<<<< HEAD
     public function update_category($updateid, $newparent, $newname, $newinfo) {
+=======
+    public function update_category($updateid, $newparent, $newname, $newinfo, $newinfoformat = FORMAT_HTML) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $CFG, $DB;
         if (empty($newname)) {
             print_error('categorynamecantbeblank', 'question');
@@ -427,12 +471,20 @@ class question_category_object {
         }
 
         // Check permissions.
+<<<<<<< HEAD
         $fromcontext = get_context_instance_by_id($oldcat->contextid);
+=======
+        $fromcontext = context::instance_by_id($oldcat->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         require_capability('moodle/question:managecategory', $fromcontext);
 
         // If moving to another context, check permissions some more.
         if ($oldcat->contextid != $tocontextid) {
+<<<<<<< HEAD
             $tocontext = get_context_instance_by_id($tocontextid);
+=======
+            $tocontext = context::instance_by_id($tocontextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             require_capability('moodle/question:managecategory', $tocontext);
         }
 
@@ -441,6 +493,10 @@ class question_category_object {
         $cat->id = $updateid;
         $cat->name = $newname;
         $cat->info = $newinfo;
+<<<<<<< HEAD
+=======
+        $cat->infoformat = $newinfoformat;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $cat->parent = $parentid;
         $cat->contextid = $tocontextid;
         $DB->update_record('question_categories', $cat);

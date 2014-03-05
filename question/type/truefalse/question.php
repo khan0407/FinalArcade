@@ -41,7 +41,11 @@ class qtype_truefalse_question extends question_graded_automatically {
     public $falseanswerid;
 
     public function get_expected_data() {
+<<<<<<< HEAD
         return array('answer' => PARAM_INTEGER);
+=======
+        return array('answer' => PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function get_correct_response() {

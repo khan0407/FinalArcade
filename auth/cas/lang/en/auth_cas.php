@@ -47,6 +47,11 @@ $string['auth_cas_invalidcaslogin'] = 'Sorry, your login has failed - you could 
 $string['auth_cas_language'] = 'Select language for authentication pages';
 $string['auth_cas_language_key'] = 'Language';
 $string['auth_cas_logincas'] = 'Secure connection access';
+<<<<<<< HEAD
+=======
+$string['auth_cas_logout_return_url_key'] = 'Alternative logout return URL';
+$string['auth_cas_logout_return_url'] = 'Provide the URL that CAS users shall be redirected to after logging out.<br />If left empty, users will be redirected to the location that moodle will redirect users to';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['auth_cas_logoutcas'] = 'Select \'yes\' if you want to logout from CAS when you disconnect from Moodle';
 $string['auth_cas_logoutcas_key'] = 'CAS logout option';
 $string['auth_cas_multiauth'] = 'Select \'yes\' if you want to have multi-authentication (CAS + other authentication)';

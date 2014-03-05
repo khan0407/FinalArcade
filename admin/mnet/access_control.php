@@ -16,13 +16,20 @@ require_login();
 
 admin_externalpage_setup('ssoaccesscontrol');
 
+<<<<<<< HEAD
 echo $OUTPUT->header();
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (!extension_loaded('openssl')) {
     print_error('requiresopenssl', 'mnet');
 }
 
+<<<<<<< HEAD
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $sesskey = sesskey();
 $formerror = array();
 
@@ -65,9 +72,17 @@ if (!empty($action) and confirm_sesskey()) {
 
             if (mnet_update_sso_access_control($idrec->username, $idrec->mnet_host_id, $accessctrl)) {
                 if ($accessctrl == 'allow') {
+<<<<<<< HEAD
                     redirect('access_control.php', get_string('ssl_acl_allow','mnet', array('uset'=>$idrec->username, 'host'=>$mnethosts[$idrec->mnet_host_id])));
                 } elseif ($accessctrl == 'deny') {
                     redirect('access_control.php', get_string('ssl_acl_deny','mnet', array('user'=>$idrec->username, 'host'=>$mnethosts[$idrec->mnet_host_id])));
+=======
+                    redirect('access_control.php', get_string('ssl_acl_allow','mnet', array('user' => $idrec->username,
+                        'host' => $mnethosts[$idrec->mnet_host_id])));
+                } else if ($accessctrl == 'deny') {
+                    redirect('access_control.php', get_string('ssl_acl_deny','mnet', array('user' => $idrec->username,
+                        'host' => $mnethosts[$idrec->mnet_host_id])));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
             break;
@@ -118,6 +133,11 @@ if ($form = data_submitted() and confirm_sesskey()) {
     exit;
 }
 
+<<<<<<< HEAD
+=======
+echo $OUTPUT->header();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Explain
 echo $OUTPUT->box(get_string('ssoacldescr','mnet'));
 // Are the needed bits enabled?

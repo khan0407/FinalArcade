@@ -1,14 +1,31 @@
 /*******************************************************************
+<<<<<<< HEAD
 * The http://phpmailer.codeworxtech.com/ website now carries a few *
 * advertisements through the Google Adsense network. Please visit  *
 * the advertiser sites and help us offset some of our costs.       *
 * Thanks ....                                                      *
+=======
+*     http://code.google.com/a/apache-extras.org/p/phpmailer/      *
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 ********************************************************************/
 
 PHPMailer
 Full Featured Email Transfer Class for PHP
 ==========================================
 
+<<<<<<< HEAD
+=======
+Version 5.2.1 (January 16, 2012)
+
+Patch release (see changelog.txt).
+
+Version 5.2.0 (July 19, 2011)
+
+With the release of this version, PHPMailer has moved to Apache
+Extras:
+   http://code.google.com/a/apache-extras.org/p/phpmailer/
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 Version 5.0.0 (April 02, 2009)
 
 With the release of this version, we are initiating a new version numbering

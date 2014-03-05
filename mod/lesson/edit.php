@@ -35,7 +35,11 @@ $lesson = new lesson($DB->get_record('lesson', array('id' => $cm->instance), '*'
 
 require_login($course, false, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/lesson:manage', $context);
 
 $mode    = optional_param('mode', get_user_preferences('lesson_view', 'collapsed'), PARAM_ALPHA);
@@ -47,7 +51,11 @@ if ($mode != get_user_preferences('lesson_view', 'collapsed') && $mode !== 'sing
 
 $lessonoutput = $PAGE->get_renderer('mod_lesson');
 $PAGE->navbar->add(get_string('edit'));
+<<<<<<< HEAD
 echo $lessonoutput->header($lesson, $cm, $mode);
+=======
+echo $lessonoutput->header($lesson, $cm, $mode, false, null, get_string('edit', 'lesson'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (!$lesson->has_pages()) {
     // There are no pages; give teacher some options

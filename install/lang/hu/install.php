@@ -55,7 +55,11 @@ $string['paths'] = 'Útvonalak';
 $string['pathserrcreatedataroot'] = 'A telepítő nem tudja létrehozni az adatkönyvtárat ({$a->dataroot}).';
 $string['pathshead'] = 'Útvonalak megerősítése';
 $string['pathsrodataroot'] = 'Az adatok gyökérkönyvtára nem írható.';
+<<<<<<< HEAD
 $string['pathsroparentdataroot'] = 'A felettes könyvtás ({$a->parent}) nem írható. A telepítő nem tudja létrehozni az adatkönyvtárat ({$a->dataroot}).';
+=======
+$string['pathsroparentdataroot'] = 'A felettes könyvtár ({$a->parent}) nem írható. A telepítő nem tudja létrehozni az adatkönyvtárat ({$a->dataroot}).';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['pathssubadmindir'] = 'Egy pár webes gazdagép esetén az /admin speciális URL pl. a vezérlőpanel eléréséhez. Ez ütközik a Moodle admin oldalainak standard helyével. Javítás: a telepítésben nevezze át a rendszergazda könyvtárát, az új nevet pedig írja be ide. Például: <em>moodleadmin</em>. Ezzel helyrehozhatók a Moodle rendszergazdai ugrópontjai.';
 $string['pathssubdataroot'] = 'Szüksége van egy helyre, ahol a Moodle mentheti a feltöltött állományokat. Ez a könyvtár a webszerver felhasználója (általában \'nobody\' vagy \'apache\') számára legyen mind olvasható, MIND ÍRHATÓ. Ha nem létezik, a telepítő megpróbálja létrehozni.';
 $string['pathssubdirroot'] = 'Teljes útvonal a Moodle telepítéséhez. ';

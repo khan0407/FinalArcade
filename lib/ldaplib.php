@@ -7,11 +7,19 @@
  * data structures, useful for both ldap authentication (or ldap based
  * authentication like CAS) and enrolment plugins.
  *
+<<<<<<< HEAD
  * @author     I�aki Arenaza
  * @package    core
  * @subpackage lib
  * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
  * @copyright  2010 onwards I�aki Arenaza
+=======
+ * @author     Iñaki Arenaza
+ * @package    core
+ * @subpackage lib
+ * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
+ * @copyright  2010 onwards Iñaki Arenaza
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -22,6 +30,14 @@ if (!defined('ROOTDSE')) {
     define ('ROOTDSE', '');
 }
 
+<<<<<<< HEAD
+=======
+// Default page size when using LDAP paged results
+if (!defined('LDAP_DEFAULT_PAGESIZE')) {
+    define('LDAP_DEFAULT_PAGESIZE', 250);
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Returns predefined user types
  *
@@ -236,6 +252,7 @@ function ldap_find_userdn($ldapconnection, $username, $contexts, $objectclass, $
         }
 
         if ($search_sub) {
+<<<<<<< HEAD
             $ldap_result = ldap_search($ldapconnection, $context,
                                        '(&'.$objectclass.'('.$search_attrib.'='.ldap_filter_addslashes($username).'))',
                                        array($search_attrib));
@@ -243,6 +260,19 @@ function ldap_find_userdn($ldapconnection, $username, $contexts, $objectclass, $
             $ldap_result = ldap_list($ldapconnection, $context,
                                      '(&'.$objectclass.'('.$search_attrib.'='.ldap_filter_addslashes($username).'))',
                                      array($search_attrib));
+=======
+            $ldap_result = @ldap_search($ldapconnection, $context,
+                                        '(&'.$objectclass.'('.$search_attrib.'='.ldap_filter_addslashes($username).'))',
+                                        array($search_attrib));
+        } else {
+            $ldap_result = @ldap_list($ldapconnection, $context,
+                                      '(&'.$objectclass.'('.$search_attrib.'='.ldap_filter_addslashes($username).'))',
+                                      array($search_attrib));
+        }
+
+        if (!$ldap_result) {
+            continue; // Not found in this context.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $entry = ldap_first_entry($ldapconnection, $ldap_result);
@@ -364,3 +394,27 @@ function ldap_stripslashes($text) {
 
     return $text;
 }
+<<<<<<< HEAD
+=======
+
+
+/**
+ * Check if PHP supports LDAP paged results and we can use them (we have to use LDAP
+ * version 3, otherwise the server doesn't use them).
+ *
+ * @param ldapversion integer The LDAP protocol version we use.
+ *
+ * @return boolean true is paged results can be used, false otherwise.
+ */
+function ldap_paged_results_supported($ldapversion) {
+
+    if (((int)$ldapversion === 3) &&
+        function_exists('ldap_control_paged_result') &&
+        function_exists('ldap_control_paged_result_response')) {
+
+        return true;
+    }
+
+    return false;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

@@ -1,6 +1,10 @@
 <?php
 /*
+<<<<<<< HEAD
 V5.16 26 Mar 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+=======
+V5.17 17 May 2012  (c) 2000-2012 John Lim (jlim#natsoft.com). All rights reserved.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -36,6 +40,10 @@ class ADODB_mysql extends ADOConnection {
 	var $forceNewConnect = false;
 	var $poorAffectedRows = true;
 	var $clientFlags = 0;
+<<<<<<< HEAD
+=======
+	var $charSet = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	var $substr = "substring";
 	var $nameQuote = '`';		/// string to use to quote identifiers and names
 	var $compat323 = false; 		// true if compat with mysql 3.23
@@ -44,7 +52,29 @@ class ADODB_mysql extends ADOConnection {
 	{			
 		if (defined('ADODB_EXTENSION')) $this->rsPrefix .= 'ext_';
 	}
+<<<<<<< HEAD
 	
+=======
+
+
+  // SetCharSet - switch the client encoding
+  function SetCharSet($charset_name)
+  {
+    if (!function_exists('mysql_set_charset'))
+    	return false;
+
+    if ($this->charSet !== $charset_name) {
+      $ok = @mysql_set_charset($charset_name,$this->_connectionID);
+      if ($ok) {
+		$this->charSet = $charset_name;
+        return true;
+      }
+	  return false;
+    }
+	return true;
+  }
+  
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	function ServerInfo()
 	{
 		$arr['description'] = ADOConnection::GetOne("select version()");

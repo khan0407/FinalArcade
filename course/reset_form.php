@@ -26,7 +26,11 @@ class course_reset_form extends moodleform {
 
         $mform->addElement('header', 'rolesheader', get_string('roles'));
 
+<<<<<<< HEAD
         $roles = get_assignable_roles(get_context_instance(CONTEXT_COURSE, $COURSE->id));
+=======
+        $roles = get_assignable_roles(context_course::instance($COURSE->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $roles[0] = get_string('noroles', 'role');
         $roles = array_reverse($roles, true);
 

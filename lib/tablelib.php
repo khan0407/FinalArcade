@@ -75,6 +75,10 @@ class flexible_table {
     var $pagesize    = 30;
     var $currpage    = 0;
     var $totalrows   = 0;
+<<<<<<< HEAD
+=======
+    var $currentrow  = 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     var $sort_default_column = NULL;
     var $sort_default_order  = SORT_ASC;
 
@@ -217,6 +221,11 @@ class flexible_table {
 
     /**
      * Use text sorting functions for this column (required for text columns with Oracle).
+<<<<<<< HEAD
+=======
+     * Be warned that you cannot use this with column aliases. You can only do this
+     * with real columns. See MDL-40481 for an example.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param string column name
      */
     function text_sorting($column) {
@@ -939,11 +948,23 @@ class flexible_table {
     function download_buttons() {
         if ($this->is_downloadable() && !$this->is_downloading()) {
             $downloadoptions = $this->get_download_menu();
+<<<<<<< HEAD
             $html = '<form action="'. $this->baseurl .'" method="post">';
             $html .= '<div class="mdl-align">';
             $html .= '<input type="submit" value="'.get_string('downloadas', 'table').'"/>';
             $html .= html_writer::label(get_string('downloadoptions', 'table'), 'menudownload', false, array('class' => 'accesshide'));
             $html .= html_writer::select($downloadoptions, 'download', $this->defaultdownloadformat, false);
+=======
+
+            $downloadelements = new stdClass();
+            $downloadelements->formatsmenu = html_writer::select($downloadoptions,
+                    'download', $this->defaultdownloadformat, false);
+            $downloadelements->downloadbutton = '<input type="submit" value="'.
+                    get_string('download').'"/>';
+            $html = '<form action="'. $this->baseurl .'" method="post">';
+            $html .= '<div class="mdl-align">';
+            $html .= html_writer::tag('label', get_string('downloadas', 'table', $downloadelements));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $html .= '</div></form>';
 
             return $html;
@@ -965,6 +986,10 @@ class flexible_table {
         } else {
             $this->start_html();
             $this->print_headers();
+<<<<<<< HEAD
+=======
+            echo html_writer::start_tag('tbody');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -973,15 +998,26 @@ class flexible_table {
      */
     function print_row($row, $classname = '') {
         static $suppress_lastrow = NULL;
+<<<<<<< HEAD
         static $oddeven = 1;
         $rowclasses = array('r' . $oddeven);
         $oddeven = $oddeven ? 0 : 1;
+=======
+        $oddeven = $this->currentrow % 2;
+        $rowclasses = array('r' . $oddeven);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($classname) {
             $rowclasses[] = $classname;
         }
 
+<<<<<<< HEAD
         echo html_writer::start_tag('tr', array('class' => implode(' ', $rowclasses)));
+=======
+        $rowid = $this->uniqueid . '_r' . $this->currentrow;
+
+        echo html_writer::start_tag('tr', array('class' => implode(' ', $rowclasses), 'id' => $rowid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // If we have a separator, print it
         if ($row === NULL) {
@@ -1006,6 +1042,10 @@ class flexible_table {
 
                 echo html_writer::tag('td', $content, array(
                         'class' => 'cell c' . $index . $this->column_class[$column],
+<<<<<<< HEAD
+=======
+                        'id' => $rowid . '_c' . $index,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         'style' => $this->make_styles_string($this->column_style[$column])));
             }
         }
@@ -1016,6 +1056,10 @@ class flexible_table {
         if ($suppress_enabled) {
             $suppress_lastrow = $row;
         }
+<<<<<<< HEAD
+=======
+        $this->currentrow++;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1028,6 +1072,18 @@ class flexible_table {
             $this->print_nothing_to_display();
 
         } else {
+<<<<<<< HEAD
+=======
+            // Print empty rows to fill the table to the current pagesize.
+            // This is done so the header aria-controls attributes do not point to
+            // non existant elements.
+            $emptyrow = array_fill(0, count($this->columns), '');
+            while ($this->currentrow < $this->pagesize) {
+                $this->print_row($emptyrow, 'emptyrow');
+            }
+
+            echo html_writer::end_tag('tbody');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             echo html_writer::end_tag('table');
             echo html_writer::end_tag('div');
             $this->wrap_html_finish();
@@ -1057,6 +1113,7 @@ class flexible_table {
         // Some headers contain <br /> tags, do not include in title, hence the
         // strip tags.
 
+<<<<<<< HEAD
         if (!empty($this->sess->collapse[$column])) {
             return html_writer::link($this->baseurl->out(false, array($this->request[TABLE_VAR_SHOW] => $column)),
                     html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/switch_plus'), 'alt' => get_string('show'))),
@@ -1066,6 +1123,30 @@ class flexible_table {
             return html_writer::link($this->baseurl->out(false, array($this->request[TABLE_VAR_HIDE] => $column)),
                     html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/switch_minus'), 'alt' => get_string('hide'))),
                     array('title' => get_string('hide') . ' ' . strip_tags($this->headers[$index])));
+=======
+        $ariacontrols = '';
+        for ($i = 0; $i < $this->pagesize; $i++) {
+            $ariacontrols .= $this->uniqueid . '_r' . $i . '_c' . $index . ' ';
+        }
+
+        $ariacontrols = trim($ariacontrols);
+
+        if (!empty($this->sess->collapse[$column])) {
+            $linkattributes = array('title' => get_string('show') . ' ' . strip_tags($this->headers[$index]),
+                                    'aria-expanded' => 'false',
+                                    'aria-controls' => $ariacontrols);
+            return html_writer::link($this->baseurl->out(false, array($this->request[TABLE_VAR_SHOW] => $column)),
+                    html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/switch_plus'), 'alt' => get_string('show'))),
+                    $linkattributes);
+
+        } else if ($this->headers[$index] !== NULL) {
+            $linkattributes = array('title' => get_string('hide') . ' ' . strip_tags($this->headers[$index]),
+                                    'aria-expanded' => 'true',
+                                    'aria-controls' => $ariacontrols);
+            return html_writer::link($this->baseurl->out(false, array($this->request[TABLE_VAR_HIDE] => $column)),
+                    html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/switch_minus'), 'alt' => get_string('hide'))),
+                    $linkattributes);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -1075,6 +1156,10 @@ class flexible_table {
     function print_headers() {
         global $CFG, $OUTPUT;
 
+<<<<<<< HEAD
+=======
+        echo html_writer::start_tag('thead');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo html_writer::start_tag('tr');
         foreach ($this->columns as $column => $index) {
 
@@ -1145,6 +1230,10 @@ class flexible_table {
         }
 
         echo html_writer::end_tag('tr');
+<<<<<<< HEAD
+=======
+        echo html_writer::end_tag('thead');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1162,10 +1251,17 @@ class flexible_table {
 
         if ($order == SORT_ASC) {
             return html_writer::empty_tag('img',
+<<<<<<< HEAD
                     array('src' => $OUTPUT->pix_url('t/down'), 'alt' => get_string('asc')));
         } else {
             return html_writer::empty_tag('img',
                     array('src' => $OUTPUT->pix_url('t/up'), 'alt' => get_string('desc')));
+=======
+                    array('src' => $OUTPUT->pix_url('t/sort_asc'), 'alt' => get_string('asc'), 'class' => 'iconsort'));
+        } else {
+            return html_writer::empty_tag('img',
+                    array('src' => $OUTPUT->pix_url('t/sort_desc'), 'alt' => get_string('desc'), 'class' => 'iconsort'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -1466,7 +1562,11 @@ class table_default_export_format_parent {
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_spreadsheet_export_format_parent extends table_default_export_format_parent {
+<<<<<<< HEAD
     var $rownum;
+=======
+    var $currentrow;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     var $workbook;
     var $worksheet;
     /**
@@ -1505,30 +1605,52 @@ class table_spreadsheet_export_format_parent extends table_default_export_format
 
     function start_table($sheettitle) {
         $this->worksheet = $this->workbook->add_worksheet($sheettitle);
+<<<<<<< HEAD
         $this->rownum=0;
+=======
+        $this->currentrow=0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function output_headers($headers) {
         $colnum = 0;
         foreach ($headers as $item) {
+<<<<<<< HEAD
             $this->worksheet->write($this->rownum,$colnum,$item,$this->formatheaders);
             $colnum++;
         }
         $this->rownum++;
+=======
+            $this->worksheet->write($this->currentrow,$colnum,$item,$this->formatheaders);
+            $colnum++;
+        }
+        $this->currentrow++;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function add_data($row) {
         $colnum = 0;
         foreach ($row as $item) {
+<<<<<<< HEAD
             $this->worksheet->write($this->rownum,$colnum,$item,$this->formatnormal);
             $colnum++;
         }
         $this->rownum++;
+=======
+            $this->worksheet->write($this->currentrow,$colnum,$item,$this->formatnormal);
+            $colnum++;
+        }
+        $this->currentrow++;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return true;
     }
 
     function add_seperator() {
+<<<<<<< HEAD
         $this->rownum++;
+=======
+        $this->currentrow++;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return true;
     }
 
@@ -1582,6 +1704,7 @@ class table_ods_export_format extends table_spreadsheet_export_format_parent {
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_text_export_format_parent extends table_default_export_format_parent {
+<<<<<<< HEAD
     protected $seperator = "\t";
     protected $mimetype = 'text/tab-separated-values';
     protected $ext = '.txt';
@@ -1594,6 +1717,21 @@ class table_text_export_format_parent extends table_default_export_format_parent
         header('Cache-Control: must-revalidate,post-check=0,pre-check=0');
         header('Pragma: public');
         $this->documentstarted = true;
+=======
+    protected $seperator = "tab";
+    protected $mimetype = 'text/tab-separated-values';
+    protected $ext = '.txt';
+    protected $myexporter;
+
+    public function __construct() {
+        $this->myexporter = new csv_export_writer($this->seperator, '"', $this->mimetype);
+    }
+
+    public function start_document($filename) {
+        $this->filename = $filename;
+        $this->documentstarted = true;
+        $this->myexporter->set_filename($filename, $this->ext);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     public function start_table($sheettitle) {
@@ -1601,19 +1739,35 @@ class table_text_export_format_parent extends table_default_export_format_parent
     }
 
     public function output_headers($headers) {
+<<<<<<< HEAD
         echo $this->format_row($headers);
     }
 
     public function add_data($row) {
         echo $this->format_row($row);
+=======
+        $this->myexporter->add_data($headers);
+    }
+
+    public function add_data($row) {
+        $this->myexporter->add_data($row);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return true;
     }
 
     public function finish_table() {
+<<<<<<< HEAD
         echo "\n\n";
     }
 
     public function finish_document() {
+=======
+        //nothing to do here
+    }
+
+    public function finish_document() {
+        $this->myexporter->download_file();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         exit;
     }
 
@@ -1637,24 +1791,39 @@ class table_text_export_format_parent extends table_default_export_format_parent
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_tsv_export_format extends table_text_export_format_parent {
+<<<<<<< HEAD
     protected $seperator = "\t";
+=======
+    protected $seperator = "tab";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     protected $mimetype = 'text/tab-separated-values';
     protected $ext = '.txt';
 }
 
+<<<<<<< HEAD
 
+=======
+require_once($CFG->libdir . '/csvlib.class.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * @package   moodlecore
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_csv_export_format extends table_text_export_format_parent {
+<<<<<<< HEAD
     protected $seperator = ",";
+=======
+    protected $seperator = "comma";
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     protected $mimetype = 'text/csv';
     protected $ext = '.csv';
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * @package   moodlecore
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
@@ -1677,6 +1846,10 @@ class table_xhtml_export_format extends table_default_export_format_parent {
 <html xmlns="http://www.w3.org/1999/xhtml"
   xml:lang="en" lang="en">
 <head>
+<<<<<<< HEAD
+=======
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 <style type="text/css">/*<![CDATA[*/
 
 .flexible th {
@@ -1740,6 +1913,10 @@ EOF;
 
     function output_headers($headers) {
         $this->table->print_headers();
+<<<<<<< HEAD
+=======
+        echo html_writer::start_tag('tbody');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     function add_data($row) {

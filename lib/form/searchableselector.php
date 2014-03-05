@@ -64,12 +64,19 @@ class MoodleQuickForm_searchableselector extends MoodleQuickForm_select{
      */
     function toHtml(){
         global $OUTPUT;
+<<<<<<< HEAD
         if ($this->_hiddenLabel){
+=======
+        if ($this->_hiddenLabel || $this->_flagFrozen) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return parent::toHtml();
         } else {
             // Javascript for the search/selection fields
             global $PAGE;
+<<<<<<< HEAD
             $PAGE->requires->yui2_lib('event');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $PAGE->requires->js('/lib/form/searchableselector.js');
             $PAGE->requires->js_function_call('selector.filter_init', array(get_string('search'),$this->getAttribute('id')));
 

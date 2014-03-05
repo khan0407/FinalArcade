@@ -42,7 +42,11 @@ if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
 }
 
 require_course_login($course->id, true, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/glossary:export', $context);
 
 $returnurl = "view.php?id=$cm->id&amp;mode=$prevmode&amp;hook=".urlencode($hook);
@@ -56,8 +60,13 @@ if (!$maincm = get_coursemodule_from_instance('glossary', $mainglossary->id)) {
     print_error('invalidcoursemodule');
 }
 
+<<<<<<< HEAD
 $context     = get_context_instance(CONTEXT_MODULE, $cm->id);
 $maincontext = get_context_instance(CONTEXT_MODULE, $maincm->id);
+=======
+$context     = context_module::instance($cm->id);
+$maincontext = context_module::instance($maincm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');

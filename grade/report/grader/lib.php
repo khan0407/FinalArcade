@@ -107,7 +107,11 @@ class grade_report_grader extends grade_report {
         global $CFG;
         parent::__construct($courseid, $gpr, $context, $page);
 
+<<<<<<< HEAD
         $this->canviewhidden = has_capability('moodle/grade:viewhidden', get_context_instance(CONTEXT_COURSE, $this->course->id));
+=======
+        $this->canviewhidden = has_capability('moodle/grade:viewhidden', context_course::instance($this->course->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // load collapsed settings for this report
         if ($collapsed = get_user_preferences('grade_report_grader_collapsed_categories')) {
@@ -226,6 +230,13 @@ class grade_report_grader extends grade_report {
                         $changedgrades = true;
 
                     } else if ($datatype === 'feedback') {
+<<<<<<< HEAD
+=======
+                        // If quick grading is on, feedback needs to be compared without line breaks.
+                        if ($this->get_pref('quickgrading')) {
+                            $oldvalue->feedback = preg_replace("/\r\n|\r|\n/", "", $oldvalue->feedback);
+                        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         if (($oldvalue->feedback === $postedvalue) or ($oldvalue->feedback === NULL and empty($postedvalue))) {
                             continue;
                         }
@@ -526,10 +537,18 @@ class grade_report_grader extends grade_report {
     /**
      * Builds and returns a div with on/off toggles.
      * @return string HTML code
+<<<<<<< HEAD
      */
     public function get_toggles_html() {
         global $CFG, $USER, $COURSE, $OUTPUT;
 
+=======
+     * @deprecated since 2.4 as it appears not to be used any more.
+     */
+    public function get_toggles_html() {
+        global $CFG, $USER, $COURSE, $OUTPUT;
+        debugging('Call to deprecated function grade_report_grader::get_toggles_html().', DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $html = '';
         if ($USER->gradeediting[$this->courseid]) {
             if (has_capability('moodle/grade:manage', $this->context) or has_capability('moodle/grade:hide', $this->context)) {
@@ -566,10 +585,18 @@ class grade_report_grader extends grade_report {
     * @param string $type The type of toggle
     * @param bool $return Whether to return the HTML string rather than printing it
     * @return void
+<<<<<<< HEAD
     */
     public function print_toggle($type) {
         global $CFG, $OUTPUT;
 
+=======
+    * @deprecated since 2.4 as it appears not to be used any more.
+    */
+    public function print_toggle($type) {
+        global $CFG, $OUTPUT;
+        debugging('Call to deprecated function grade_report_grader::print_toggle().', DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $icons = array('eyecons' => 't/hide',
                        'calculations' => 't/calc',
                        'locks' => 't/lock',
@@ -624,7 +651,10 @@ class grade_report_grader extends grade_report {
         $rows = array();
 
         $showuserimage = $this->get_pref('showuserimage');
+<<<<<<< HEAD
         $fixedstudents = $this->is_fixed_students();
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $strfeedback  = $this->get_lang_string("feedback");
         $strgrade     = $this->get_lang_string('grade');
@@ -1044,6 +1074,12 @@ class grade_report_grader extends grade_report {
                     } else if ($item->gradetype != GRADE_TYPE_TEXT) { // Value type
                         if ($this->get_pref('quickgrading') and $grade->is_editable()) {
                             $value = format_float($gradeval, $decimalpoints);
+<<<<<<< HEAD
+=======
+                            $gradelabel = fullname($user) . ' ' . $item->itemname;
+                            $itemcell->text .= '<label class="accesshide" for="grade_'.$userid.'_'.$item->id.'">'
+                                          .get_string('useractivitygrade', 'gradereport_grader', $gradelabel).'</label>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             $itemcell->text .= '<input size="6" tabindex="' . $tabindices[$item->id]['grade']
                                           . '" type="text" class="text" title="'. $strgrade .'" name="grade['
                                           .$userid.'][' .$item->id.']" id="grade_'.$userid.'_'.$item->id.'" value="'.$value.'" />';
@@ -1055,7 +1091,13 @@ class grade_report_grader extends grade_report {
 
                     // If quickfeedback is on, print an input element
                     if ($this->get_pref('showquickfeedback') and $grade->is_editable()) {
+<<<<<<< HEAD
 
+=======
+                        $feedbacklabel = fullname($user) . ' ' . $item->itemname;
+                        $itemcell->text .= '<label class="accesshide" for="feedback_'.$userid.'_'.$item->id.'">'
+                                      .get_string('useractivityfeedback', 'gradereport_grader', $feedbacklabel).'</label>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $itemcell->text .= '<input class="quickfeedback" tabindex="' . $tabindices[$item->id]['feedback'].'" id="feedback_'.$userid.'_'.$item->id
                                       . '" size="6" title="' . $strfeedback . '" type="text" name="feedback['.$userid.']['.$item->id.']" value="' . s($grade->feedback) . '" />';
                     }
@@ -1652,7 +1694,11 @@ class grade_report_grader extends grade_report {
      */
     public function is_fixed_students() {
         global $USER, $CFG;
+<<<<<<< HEAD
         return empty($USER->screenreader) && $CFG->grade_report_fixedstudents &&
+=======
+        return $CFG->grade_report_fixedstudents &&
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             (check_browser_version('MSIE', '7.0') ||
              check_browser_version('Firefox', '2.0') ||
              check_browser_version('Gecko', '2006010100') ||
@@ -1678,6 +1724,11 @@ class grade_report_grader extends grade_report {
         $strsortdesc  = $this->get_lang_string('sortdesc', 'grades');
         $strfirstname = $this->get_lang_string('firstname');
         $strlastname  = $this->get_lang_string('lastname');
+<<<<<<< HEAD
+=======
+        $iconasc = $OUTPUT->pix_icon('t/sort_asc', $strsortasc, '', array('class' => 'iconsmall sorticon'));
+        $icondesc = $OUTPUT->pix_icon('t/sort_desc', $strsortdesc, '', array('class' => 'iconsmall sorticon'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $firstlink = html_writer::link(new moodle_url($this->baseurl, array('sortitemid'=>'firstname')), $strfirstname);
         $lastlink = html_writer::link(new moodle_url($this->baseurl, array('sortitemid'=>'lastname')), $strlastname);
@@ -1686,9 +1737,15 @@ class grade_report_grader extends grade_report {
 
         if ($this->sortitemid === 'lastname') {
             if ($this->sortorder == 'ASC') {
+<<<<<<< HEAD
                 $arrows['studentname'] .= print_arrow('up', $strsortasc, true);
             } else {
                 $arrows['studentname'] .= print_arrow('down', $strsortdesc, true);
+=======
+                $arrows['studentname'] .= $iconasc;
+            } else {
+                $arrows['studentname'] .= $icondesc;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
 
@@ -1696,9 +1753,15 @@ class grade_report_grader extends grade_report {
 
         if ($this->sortitemid === 'firstname') {
             if ($this->sortorder == 'ASC') {
+<<<<<<< HEAD
                 $arrows['studentname'] .= print_arrow('up', $strsortasc, true);
             } else {
                 $arrows['studentname'] .= print_arrow('down', $strsortdesc, true);
+=======
+                $arrows['studentname'] .= $iconasc;
+            } else {
+                $arrows['studentname'] .= $icondesc;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
 
@@ -1709,9 +1772,15 @@ class grade_report_grader extends grade_report {
 
             if ($field == $this->sortitemid) {
                 if ($this->sortorder == 'ASC') {
+<<<<<<< HEAD
                     $arrows[$field] .= print_arrow('up', $strsortasc, true);
                 } else {
                     $arrows[$field] .= print_arrow('down', $strsortdesc, true);
+=======
+                    $arrows[$field] .= $iconasc;
+                } else {
+                    $arrows[$field] .= $icondesc;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
             }
         }
@@ -1722,6 +1791,7 @@ class grade_report_grader extends grade_report {
     /**
      * Returns the maximum number of students to be displayed on each page
      *
+<<<<<<< HEAD
      * Takes into account the 'studentsperpage' user preference and the 'max_input_vars'
      * PHP setting. Too many fields is only a problem when submitting grades but
      * we respect 'max_input_vars' even when viewing grades to prevent students disappearing
@@ -1767,6 +1837,12 @@ class grade_report_grader extends grade_report {
         }
 
         return $studentsperpage;
+=======
+     * @return int The maximum number of students to display per page
+     */
+    public function get_students_per_page() {
+        return $this->get_pref('studentsperpage');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 

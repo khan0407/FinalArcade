@@ -37,11 +37,18 @@ if (!$course = $DB->get_record('course', array('id'=>$id))) {
 require_course_login($course);
 $PAGE->set_pagelayout('incourse');
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
 add_to_log($course->id, "data", "view all", "index.php?id=$course->id", "");
 
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+$context = context_course::instance($course->id);
+
+add_to_log($course->id, "data", "view all", "index.php?id=$course->id", "");
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname = get_string('name');
 $strdata = get_string('modulename','data');
 $strdataplural  = get_string('modulenameplural','data');
@@ -56,9 +63,12 @@ if (! $datas = get_all_instances_in_course("data", $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $timenow  = time();
 $strname  = get_string('name');
@@ -69,6 +79,10 @@ $strnumnotapproved = get_string('numnotapproved', 'data');
 $table = new html_table();
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strdescription, $strentries, $strnumnotapproved);
     $table->align = array ('center', 'center', 'center', 'center', 'center');
 } else {
@@ -120,7 +134,11 @@ foreach ($datas as $data) {
     if ($usesections) {
         if ($data->section !== $currentsection) {
             if ($data->section) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$data->section]);
+=======
+                $printsection = get_section_name($course, $data->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';

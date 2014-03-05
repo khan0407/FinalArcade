@@ -26,5 +26,10 @@
 $string['configtitle'] = 'Block title';
 $string['configtitleblankhides'] = 'Block title (no title if blank)';
 $string['leaveblanktohide'] = 'leave blank to hide the title';
+<<<<<<< HEAD
+=======
+$string['mentees:addinstance'] = 'Add a new mentees block';
+$string['mentees:myaddinstance'] = 'Add a new mentees block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['newmenteesblock'] = '(new Mentees block)';
 $string['pluginname'] = 'Mentees';

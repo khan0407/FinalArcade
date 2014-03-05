@@ -9,7 +9,11 @@ $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
 require_login();
 admin_externalpage_setup('userbulk');
+<<<<<<< HEAD
 require_capability('moodle/site:readallmessages', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:readallmessages', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $return = $CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk.php';
 

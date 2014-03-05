@@ -253,7 +253,11 @@ class qtype_multianswer_edit_form extends question_edit_form {
             $mform->addElement('hidden', 'confirm', 0);
         }
 
+<<<<<<< HEAD
         $this->add_interactive_settings();
+=======
+        $this->add_interactive_settings(true, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
 
@@ -424,7 +428,11 @@ class qtype_multianswer_edit_form extends question_edit_form {
         if ($default_values != "") {
             $question = (object)((array)$question + $default_values);
         }
+<<<<<<< HEAD
         $question = $this->data_preprocessing_hints($question);
+=======
+        $question = $this->data_preprocessing_hints($question, true, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         parent::set_data($question);
     }
 

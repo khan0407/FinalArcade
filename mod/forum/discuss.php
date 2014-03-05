@@ -46,6 +46,7 @@
 
     require_course_login($course, true, $cm);
 
+<<<<<<< HEAD
 /// Add ajax-related libs
     $PAGE->requires->yui2_lib('event');
     $PAGE->requires->yui2_lib('connection');
@@ -55,12 +56,22 @@
     require_once($CFG->dirroot.'/mod/forum/lib.php');
 
     $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    // move this down fix for MDL-6926
+    require_once($CFG->dirroot.'/mod/forum/lib.php');
+
+    $modcontext = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('mod/forum:viewdiscussion', $modcontext, NULL, true, 'noviewdiscussionspermission', 'forum');
 
     if (!empty($CFG->enablerssfeeds) && !empty($CFG->forum_enablerssfeeds) && $forum->rsstype && $forum->rssarticles) {
         require_once("$CFG->libdir/rsslib.php");
 
+<<<<<<< HEAD
         $rsstitle = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id))) . ': ' . format_string($forum->name);
+=======
+        $rsstitle = format_string($course->shortname, true, array('context' => context_course::instance($course->id))) . ': ' . format_string($forum->name);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         rss_add_http_header($modcontext, 'mod_forum', $forum, $rsstitle);
     }
 
@@ -90,7 +101,11 @@
             print_error('cannotmovenotvisible', 'forum', $return);
         }
 
+<<<<<<< HEAD
         require_capability('mod/forum:startdiscussion', get_context_instance(CONTEXT_MODULE,$cmto->id));
+=======
+        require_capability('mod/forum:startdiscussion', context_module::instance($cmto->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!forum_move_attachments($discussion, $forum->id, $forumto->id)) {
             echo $OUTPUT->notification("Errors occurred while moving attachment directories - check your file permissions");
@@ -99,10 +114,15 @@
         $DB->set_field('forum_read', 'forumid', $forumto->id, array('discussionid' => $discussion->id));
         add_to_log($course->id, 'forum', 'move discussion', "discuss.php?d=$discussion->id", $discussion->id, $cmto->id);
 
+<<<<<<< HEAD
         require_once($CFG->libdir.'/rsslib.php');
         require_once($CFG->dirroot.'/mod/forum/rsslib.php');
 
         // Delete the RSS files for the 2 forums to force regeneration of the feeds
+=======
+        // Delete the RSS files for the 2 forums to force regeneration of the feeds
+        require_once($CFG->dirroot.'/mod/forum/rsslib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         forum_rss_delete_file($forum);
         forum_rss_delete_file($forumto);
 
@@ -188,7 +208,11 @@
     if (!empty($CFG->enableportfolios) && has_capability('mod/forum:exportdiscussion', $modcontext)) {
         require_once($CFG->libdir.'/portfoliolib.php');
         $button = new portfolio_add_button();
+<<<<<<< HEAD
         $button->set_callback_options('forum_portfolio_caller', array('discussionid' => $discussion->id), '/mod/forum/locallib.php');
+=======
+        $button->set_callback_options('forum_portfolio_caller', array('discussionid' => $discussion->id), 'mod_forum');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $button = $button->to_html(PORTFOLIO_ADD_FULL_FORM, get_string('exportdiscussion', 'mod_forum'));
         $buttonextraclass = '';
         if (empty($button)) {
@@ -215,16 +239,27 @@
         $modinfo = get_fast_modinfo($course);
         if (isset($modinfo->instances['forum'])) {
             $forummenu = array();
+<<<<<<< HEAD
             $sections = get_all_sections($course->id);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // Check forum types and eliminate simple discussions.
             $forumcheck = $DB->get_records('forum', array('course' => $course->id),'', 'id, type');
             foreach ($modinfo->instances['forum'] as $forumcm) {
                 if (!$forumcm->uservisible || !has_capability('mod/forum:startdiscussion',
+<<<<<<< HEAD
                     get_context_instance(CONTEXT_MODULE,$forumcm->id))) {
                     continue;
                 }
                 $section = $forumcm->sectionnum;
                 $sectionname = get_section_name($course, $sections[$section]);
+=======
+                    context_module::instance($forumcm->id))) {
+                    continue;
+                }
+                $section = $forumcm->sectionnum;
+                $sectionname = get_section_name($course, $section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if (empty($forummenu[$section])) {
                     $forummenu[$section] = array($sectionname => array());
                 }

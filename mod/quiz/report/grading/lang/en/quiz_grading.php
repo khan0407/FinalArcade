@@ -30,7 +30,12 @@ $string['automaticallygraded'] = 'Automatically graded';
 $string['backtothelistofquestions'] = 'Back to the list of questions';
 $string['bydate'] = 'By date';
 $string['bystudentidnumber'] = 'By student id number';
+<<<<<<< HEAD
 $string['bystudentname'] = 'By student name';
+=======
+$string['bystudentfirstname'] = 'By student first name';
+$string['bystudentlastname'] = 'By student last name';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotloadquestioninfo'] = 'Unable to load questiontype specific question information';
 $string['cannotgradethisattempt'] = 'Cannot grade this attempt.';
 $string['changeoptions'] = 'Change options';

@@ -229,7 +229,11 @@ class webdav_client {
      *
      * Creates a new collection/directory on a webdav server
      * @param string path
+<<<<<<< HEAD
      * @return int status code received as reponse from webdav server (see rfc 2518)
+=======
+     * @return int status code received as response from webdav server (see rfc 2518)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      */
     function mkcol($path) {
         $this->_path = $this->translate_uri($path);
@@ -1444,7 +1448,11 @@ EOD;
     /**
      * Private method get_respond
      *
+<<<<<<< HEAD
      * Reads the reponse from the webdav server.
+=======
+     * Reads the response from the webdav server.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * Stores data into class vars _header for the header data and
      * _body for the rest of the response.

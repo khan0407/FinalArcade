@@ -220,10 +220,17 @@ function url_display_frame($url, $cm, $course) {
 
     } else {
         $config = get_config('url');
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cm->id);
         $exteurl = url_get_full_url($url, $cm, $course, $config);
         $navurl = "$CFG->wwwroot/mod/url/view.php?id=$cm->id&amp;frameset=top";
         $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_module::instance($cm->id);
+        $exteurl = url_get_full_url($url, $cm, $course, $config);
+        $navurl = "$CFG->wwwroot/mod/url/view.php?id=$cm->id&amp;frameset=top";
+        $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
         $title = strip_tags($courseshortname.': '.format_string($url->name));
         $framesize = $config->framesize;
@@ -438,10 +445,17 @@ function url_get_variable_options($config) {
     );
 
     if ($config->rolesinparams) {
+<<<<<<< HEAD
         $roles = get_all_roles();
         $roleoptions = array();
         foreach ($roles as $role) {
             $roleoptions['course'.$role->shortname] = get_string('yourwordforx', '', $role->name);
+=======
+        $roles = role_fix_names(get_all_roles());
+        $roleoptions = array();
+        foreach ($roles as $role) {
+            $roleoptions['course'.$role->shortname] = get_string('yourwordforx', '', $role->localname);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $options[get_string('roles')] = $roleoptions;
     }
@@ -462,7 +476,11 @@ function url_get_variable_values($url, $cm, $course, $config) {
 
     $site = get_site();
 
+<<<<<<< HEAD
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $values = array (
         'courseid'        => $course->id,
@@ -509,9 +527,14 @@ function url_get_variable_values($url, $cm, $course, $config) {
 
     //hmm, this is pretty fragile and slow, why do we need it here??
     if ($config->rolesinparams) {
+<<<<<<< HEAD
         $roles = get_all_roles();
         $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
         $roles = role_fix_names($roles, $coursecontext, ROLENAME_ALIAS);
+=======
+        $coursecontext = context_course::instance($course->id);
+        $roles = role_fix_names(get_all_roles($coursecontext), $coursecontext, ROLENAME_ALIAS);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($roles as $role) {
             $values['course'.$role->shortname] = $role->localname;
         }
@@ -541,13 +564,21 @@ function url_get_encrypted_parameter($url, $config) {
 /**
  * Optimised mimetype detection from general URL
  * @param $fullurl
+<<<<<<< HEAD
  * @return string mimetype
  */
 function url_guess_icon($fullurl) {
+=======
+ * @param int $size of the icon.
+ * @return string|null mimetype or null when the filetype is not relevant.
+ */
+function url_guess_icon($fullurl, $size = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     global $CFG;
     require_once("$CFG->libdir/filelib.php");
 
     if (substr_count($fullurl, '/') < 3 or substr($fullurl, -1) === '/') {
+<<<<<<< HEAD
         // most probably default directory - index.php, index.html, etc.
         return file_extension_icon('.htm');
     }
@@ -556,6 +587,20 @@ function url_guess_icon($fullurl) {
 
     if ($icon === file_extension_icon('')) {
         return file_extension_icon('.htm');
+=======
+        // Most probably default directory - index.php, index.html, etc. Return null because
+        // we want to use the default module icon instead of the HTML file icon.
+        return null;
+    }
+
+    $icon = file_extension_icon($fullurl, $size);
+    $htmlicon = file_extension_icon('.htm', $size);
+    $unknownicon = file_extension_icon('', $size);
+
+    // We do not want to return those icon types, the module icon is more appropriate.
+    if ($icon === $unknownicon || $icon === $htmlicon) {
+        return null;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return $icon;

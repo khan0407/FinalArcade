@@ -130,6 +130,10 @@ if ($type === "usercourse.png") {
 
    $graph = new graph(750, 400);
 
+<<<<<<< HEAD
+=======
+   $a = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
    $a->coursename = format_string($course->shortname, true, array('context' => $coursecontext));
    $a->username = fullname($user, true);
    $graph->parameter['title'] = get_string("hitsoncourse", "", $a);
@@ -191,6 +195,10 @@ if ($type === "usercourse.png") {
 
    $graph = new graph(750, 400);
 
+<<<<<<< HEAD
+=======
+   $a = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
    $a->coursename = format_string($course->shortname, true, array('context' => $coursecontext));
    $a->username = fullname($user, true);
    $graph->parameter['title'] = get_string("hitsoncoursetoday", "", $a);

@@ -229,7 +229,11 @@ class assign_submission_file extends assign_submission_plugin {
      * @param stdClass $submission The submission
      * @return array - return an array of files indexed by filename
      */
+<<<<<<< HEAD
     public function get_files(stdClass $submission) {
+=======
+    public function get_files(stdClass $submission, stdClass $user) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $result = array();
         $fs = get_file_storage();
 

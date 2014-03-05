@@ -131,7 +131,11 @@ abstract class qtype_renderer extends plugin_renderer_base {
 
     /**
      * Generate the specific feedback. This is feedback that varies according to
+<<<<<<< HEAD
      * the reponse the student gave.
+=======
+     * the response the student gave.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param question_attempt $qa the question attempt to display.
      * @return string HTML fragment.
      */
@@ -158,7 +162,11 @@ abstract class qtype_renderer extends plugin_renderer_base {
 
     /**
      * Gereate the specific feedback. This is feedback that varies according to
+<<<<<<< HEAD
      * the reponse the student gave.
+=======
+     * the response the student gave.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param question_attempt $qa the question attempt to display.
      * @return string HTML fragment.
      */
@@ -226,6 +234,7 @@ abstract class qtype_renderer extends plugin_renderer_base {
      * @return string html fragment.
      */
     protected function feedback_image($fraction, $selected = true) {
+<<<<<<< HEAD
         $state = question_state::graded_state_for_fraction($fraction);
 
         if ($state == question_state::$gradedright) {
@@ -244,6 +253,13 @@ abstract class qtype_renderer extends plugin_renderer_base {
         $attributes = array(
             'src' => $this->output->pix_url('i/' . $icon),
             'alt' => get_string($state->get_feedback_class(), 'question'),
+=======
+        $feedbackclass = question_state::graded_state_for_fraction($fraction)->get_feedback_class();
+
+        $attributes = array(
+            'src' => $this->output->pix_url('i/grade_' . $feedbackclass),
+            'alt' => get_string($feedbackclass, 'question'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'class' => 'questioncorrectnessicon',
         );
 

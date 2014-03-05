@@ -29,6 +29,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
 /**#@+
  * The core question types.
  *
@@ -50,6 +51,8 @@ if (!defined('SHORTANSWER')) {
 }
 /**#@-*/
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Given some question info and some data about the the answers
  * this function parses, organises and saves the question
@@ -59,10 +62,17 @@ if (!defined('SHORTANSWER')) {
  * Lifted from mod/quiz/lib.php -
  *    1. all reference to oldanswers removed
  *    2. all reference to quiz_multichoice table removed
+<<<<<<< HEAD
  *    3. In SHORTANSWER questions usecase is store in the qoption field
  *    4. In NUMERIC questions store the range as two answers
  *    5. TRUEFALSE options are ignored
  *    6. For MULTICHOICE questions with more than one answer the qoption field is true
+=======
+ *    3. In shortanswer questions usecase is store in the qoption field
+ *    4. In numeric questions store the range as two answers
+ *    5. truefalse options are ignored
+ *    6. For multichoice questions with more than one answer the qoption field is true
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * @param opject $question Contains question data like question, type and answers.
  * @return object Returns $result->error or $result->notice.
@@ -116,7 +126,11 @@ function lesson_save_question_options($question, $lesson) {
             }
             break;
 
+<<<<<<< HEAD
         case LESSON_PAGE_NUMERICAL:   // Note similarities to SHORTANSWER
+=======
+        case LESSON_PAGE_NUMERICAL:   // Note similarities to shortanswer.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $answers = array();
             $maxfraction = -1;
@@ -306,11 +320,19 @@ class qformat_default {
     var $displayerrors = true;
     var $category = NULL;
     var $questionids = array();
+<<<<<<< HEAD
     var $qtypeconvert = array(NUMERICAL   => LESSON_PAGE_NUMERICAL,
                               MULTICHOICE => LESSON_PAGE_MULTICHOICE,
                               TRUEFALSE   => LESSON_PAGE_TRUEFALSE,
                               SHORTANSWER => LESSON_PAGE_SHORTANSWER,
                               MATCH       => LESSON_PAGE_MATCHING
+=======
+    var $qtypeconvert = array('numerical'   => LESSON_PAGE_NUMERICAL,
+                               'multichoice' => LESSON_PAGE_MULTICHOICE,
+                               'truefalse'   => LESSON_PAGE_TRUEFALSE,
+                               'shortanswer' => LESSON_PAGE_SHORTANSWER,
+                               'match'       => LESSON_PAGE_MATCHING
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                               );
 
     // Importing functions
@@ -344,6 +366,16 @@ class qformat_default {
                 $this->count_questions($questions)), 'notifysuccess');
 
         $count = 0;
+<<<<<<< HEAD
+=======
+        $addquestionontop = false;
+        if ($pageid == 0) {
+            $addquestionontop = true;
+            $updatelessonpage = $DB->get_record('lesson_pages', array('lessonid' => $lesson->id, 'prevpageid' => 0));
+        } else {
+            $updatelessonpage = $DB->get_record('lesson_pages', array('lessonid' => $lesson->id, 'id' => $pageid));
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $unsupportedquestions = 0;
 
@@ -353,11 +385,19 @@ class qformat_default {
                 case 'category':
                     break;
                 // the good ones
+<<<<<<< HEAD
                 case SHORTANSWER :
                 case NUMERICAL :
                 case TRUEFALSE :
                 case MULTICHOICE :
                 case MATCH :
+=======
+                case 'shortanswer' :
+                case 'numerical' :
+                case 'truefalse' :
+                case 'multichoice' :
+                case 'match' :
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $count++;
 
                     //Show nice formated question in one line.
@@ -367,12 +407,20 @@ class qformat_default {
                     $newpage->lessonid = $lesson->id;
                     $newpage->qtype = $this->qtypeconvert[$question->qtype];
                     switch ($question->qtype) {
+<<<<<<< HEAD
                         case SHORTANSWER :
+=======
+                        case 'shortanswer' :
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             if (isset($question->usecase)) {
                                 $newpage->qoption = $question->usecase;
                             }
                             break;
+<<<<<<< HEAD
                         case MULTICHOICE :
+=======
+                        case 'multichoice' :
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             if (isset($question->single)) {
                                 $newpage->qoption = !$question->single;
                             }
@@ -399,7 +447,10 @@ class qformat_default {
                         $newpageid = $DB->insert_record("lesson_pages", $newpage);
                         // update the linked list
                         $DB->set_field("lesson_pages", "nextpageid", $newpageid, array("id" => $pageid));
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     } else {
                         // new page is the first page
                         // get the existing (first) page (if any)
@@ -418,6 +469,10 @@ class qformat_default {
                             $DB->set_field("lesson_pages", "prevpageid", $newpageid, array("id" => $page->id));
                         }
                     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     // reset $pageid and put the page ID in $question, used in save_question_option()
                     $pageid = $newpageid;
                     $question->id = $newpageid;
@@ -445,7 +500,18 @@ class qformat_default {
                     $unsupportedquestions++;
                     break;
             }
+<<<<<<< HEAD
 
+=======
+        }
+        // Update the prev links if there were existing pages.
+        if (!empty($updatelessonpage)) {
+            if ($addquestionontop) {
+                $DB->set_field("lesson_pages", "prevpageid", $pageid, array("id" => $updatelessonpage->id));
+            } else {
+                $DB->set_field("lesson_pages", "prevpageid", $pageid, array("id" => $updatelessonpage->nextpageid));
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         if ($unsupportedquestions) {
             echo $OUTPUT->notification(get_string('unknownqtypesnotimported', 'lesson', $unsupportedquestions));

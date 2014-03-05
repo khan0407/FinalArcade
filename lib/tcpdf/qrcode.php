@@ -1,9 +1,15 @@
 <?php
 //============================================================+
 // File name   : qrcode.php
+<<<<<<< HEAD
 // Version     : 1.0.009
 // Begin       : 2010-03-22
 // Last Update : 2010-12-16
+=======
+// Version     : 1.0.010
+// Begin       : 2010-03-22
+// Last Update : 2012-07-25
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Author      : Nicola Asuni - Tecnick.com LTD - Manor Coach House, Church Hill, Aldershot, Hants, GU12 4RQ, UK - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -76,7 +82,11 @@
  *
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
+<<<<<<< HEAD
  * @version 1.0.009
+=======
+ * @version 1.0.010
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 
 // definitions
@@ -286,7 +296,11 @@ if (!function_exists('str_split')) {
  *
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
+<<<<<<< HEAD
  * @version 1.0.009
+=======
+ * @version 1.0.010
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 class QRcode {
 
@@ -1439,12 +1453,19 @@ class QRcode {
 
 	/**
 	 * splitString
+<<<<<<< HEAD
 	 */
 	 protected function splitString() {
 		while (strlen($this->dataStr) > 0) {
 			if ($this->dataStr == '') {
 				return 0;
 			}
+=======
+	 * @return (int)
+	 */
+	 protected function splitString() {
+		while (strlen($this->dataStr) > 0) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			$mode = $this->identifyMode(0);
 			switch ($mode) {
 				case QR_MODE_NM: {
@@ -1476,6 +1497,10 @@ class QRcode {
 			}
 			$this->dataStr = substr($this->dataStr, $length);
 		}
+<<<<<<< HEAD
+=======
+		return 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 	/**
@@ -2028,7 +2053,11 @@ class QRcode {
 		if ($ver > $this->version) {
 			$this->version = $ver;
 		}
+<<<<<<< HEAD
 		for (;;) {
+=======
+		while (true) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			$cbs = $this->createBitStream($items);
 			$items = $cbs[0];
 			$bits = $cbs[1];
@@ -2315,17 +2344,30 @@ class QRcode {
 
 	/**
 	 * Return a version number that satisfies the input code length.
+<<<<<<< HEAD
 	 * @param $size (int) input code length (byte)
+=======
+	 * @param $size (int) input code length (bytes)
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 * @param $level (int) error correction level
 	 * @return int version number
 	 */
 	protected function getMinimumVersion($size, $level) {
+<<<<<<< HEAD
 		for ($i=1; $i <= QRSPEC_VERSION_MAX; ++$i) {
 			$words = $this->capacity[$i][QRCAP_WORDS] - $this->capacity[$i][QRCAP_EC][$level];
+=======
+		for ($i = 1; $i <= QRSPEC_VERSION_MAX; ++$i) {
+			$words = ($this->capacity[$i][QRCAP_WORDS] - $this->capacity[$i][QRCAP_EC][$level]);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			if ($words >= $size) {
 				return $i;
 			}
 		}
+<<<<<<< HEAD
+=======
+		// the size of input data is greater than QR capacity, try to lover the error correction mode
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 		return -1;
 	}
 

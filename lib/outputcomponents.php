@@ -92,7 +92,11 @@ class file_picker implements renderable {
         $options->currentfile = '';
         if (!empty($options->itemid)) {
             $fs = get_file_storage();
+<<<<<<< HEAD
             $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+            $usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (empty($options->filename)) {
                 if ($files = $fs->get_area_files($usercontext->id, 'user', 'draft', $options->itemid, 'id DESC', false)) {
                     $file = reset($files);
@@ -1108,9 +1112,12 @@ class html_writer {
      * @return string HTML fragment
      */
     public static function attribute($name, $value) {
+<<<<<<< HEAD
         if (is_array($value)) {
             debugging("Passed an array for the HTML attribute $name", DEBUG_DEVELOPER);
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($value instanceof moodle_url) {
             return ' ' . $name . '="' . $value->out() . '"';
         }
@@ -2378,6 +2385,15 @@ class block_contents {
     public $title = '';
 
     /**
+<<<<<<< HEAD
+=======
+     * @var string The label to use when the block does not, or will not have a visible title.
+     * You should never set this as well as title... it will just be ignored.
+     */
+    public $arialabel = '';
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @var string HTML for the content
      */
     public $content = '';

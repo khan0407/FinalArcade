@@ -133,32 +133,57 @@ Modules: Calendar
 .block .content h3.eventskey {
     margin-top:0.5em;
     margin-bottom:0;
+<<<<<<< HEAD
     margin-left:0.5em;
 }
+=======
+}
+.block .calendar_filters li { padding: 0; }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /*
 Colors for Calendar Events
 -----------------------*/
 #calendar .event_global,
 .minicalendar .event_global,
+<<<<<<< HEAD
 .block_calendar_month .event_global {
+=======
+.block_calendar_month .event_global,
+.calendar_event_global {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     border-color:#def2ba !important;
     background-color:#def2ba;
 }
 #calendar .event_course,
 .minicalendar .event_course,
+<<<<<<< HEAD
 .block_calendar_month .event_course {
+=======
+.block_calendar_month .event_course,
+.calendar_event_course {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     border-color:#c6dfeb !important;
     background-color:#c6dfeb;
 }
 #calendar .event_group,
 .minicalendar .event_group,
+<<<<<<< HEAD
 .block_calendar_month .event_group {
+=======
+.block_calendar_month .event_group,
+.calendar_event_group {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     border-color:#feffc2 !important;
     background-color:#feffc2;
 }
 #calendar .event_user,
 .minicalendar .event_user,
+<<<<<<< HEAD
 .block_calendar_month .event_user {
+=======
+.block_calendar_month .event_user,
+.calendar_event_user {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     border-color:#d9c6e2 !important;
     background-color:#d9c6e2;
 }

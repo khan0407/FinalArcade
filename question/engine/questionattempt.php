@@ -49,7 +49,11 @@ class question_attempt {
     const USE_RAW_DATA = 'use raw data';
 
     /**
+<<<<<<< HEAD
      * @var string special value used by manual grading because {@link PARAM_NUMBER}
+=======
+     * @var string special value used by manual grading because {@link PARAM_FLOAT}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * converts '' to 0.
      */
     const PARAM_MARK = 'parammark';
@@ -547,6 +551,13 @@ class question_attempt {
      * @return string A brief textual description of the current state.
      */
     public function get_state_string($showcorrectness) {
+<<<<<<< HEAD
+=======
+        // Special case when attempt is based on previous one, see MDL-31226.
+        if ($this->get_num_steps() == 1 && $this->get_state() == question_state::$complete) {
+            return get_string('notchanged', 'question');
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $this->behaviour->get_state_string($showcorrectness);
     }
 
@@ -832,9 +843,15 @@ class question_attempt {
 
         // Initialise the first step.
         $firststep = new question_attempt_step($submitteddata, $timestamp, $userid, $existingstepid);
+<<<<<<< HEAD
         $firststep->set_state(question_state::$todo);
         if ($submitteddata) {
             $this->question->apply_attempt_state($firststep);
+=======
+        if ($submitteddata) {
+            $firststep->set_state(question_state::$complete);
+            $this->behaviour->apply_attempt_state($firststep);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $this->behaviour->init_first_step($firststep, $variant);
         }
@@ -912,7 +929,11 @@ class question_attempt {
      * @param array $postdata (optional, only inteded for testing use) take the
      *      data from this array, instead of from $_POST. At the moment, this
      *      behaves as if there were no files.
+<<<<<<< HEAD
      * @param string $text optional reponse text.
+=======
+     * @param string $text optional response text.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @return question_file_saver that can be used to save the files later.
      */
     protected function process_response_files($name, $draftidname, $postdata = null, $text = null) {
@@ -953,7 +974,11 @@ class question_attempt {
      * that it is valid or cleaning it in any way.
      * @return array name => value.
      */
+<<<<<<< HEAD
     protected function get_all_submitted_qt_vars($postdata) {
+=======
+    public function get_all_submitted_qt_vars($postdata) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (is_null($postdata)) {
             $postdata = $_POST;
         }
@@ -962,7 +987,11 @@ class question_attempt {
         $prefixlen = strlen($this->get_field_prefix());
 
         $submitteddata = array();
+<<<<<<< HEAD
         foreach ($_POST as $name => $value) {
+=======
+        foreach ($postdata as $name => $value) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (preg_match($pattern, $name)) {
                 $submitteddata[substr($name, $prefixlen)] = $value;
             }

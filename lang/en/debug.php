@@ -41,7 +41,10 @@ $string['missingconfigversion'] = 'Config table does not contain version, can no
 $string['modulenotexist'] = '{$a} module doesn\'t exist';
 $string['morethanonerecordinfetch'] = 'Found more than one record in fetch() !';
 $string['mustbeoveride'] = 'Abstract {$a} method must be overridden.';
+<<<<<<< HEAD
 $string['noactivityname'] = 'Page object derived from page_generic_activity but did not define $this->activityname';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['noadminrole'] = 'No admin role could be found';
 $string['noblocks'] = 'No blocks installed!';
 $string['nocate'] = 'No categories!';

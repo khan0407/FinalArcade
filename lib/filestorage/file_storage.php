@@ -398,7 +398,11 @@ class file_storage {
      * @param bool $includedirs whether or not include directories
      * @return array of stored_files indexed by pathanmehash
      */
+<<<<<<< HEAD
     public function get_area_files($contextid, $component, $filearea, $itemid = false, $sort = "sortorder, itemid, filepath, filename", $includedirs = true) {
+=======
+    public function get_area_files($contextid, $component, $filearea, $itemid = false, $sort = "itemid, filepath, filename", $includedirs = true) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $DB;
 
         $conditions = array('contextid'=>$contextid, 'component'=>$component, 'filearea'=>$filearea);
@@ -443,7 +447,11 @@ class file_storage {
      */
     public function get_area_tree($contextid, $component, $filearea, $itemid) {
         $result = array('dirname'=>'', 'dirfile'=>null, 'subdirs'=>array(), 'files'=>array());
+<<<<<<< HEAD
         $files = $this->get_area_files($contextid, $component, $filearea, $itemid, "itemid, filepath, filename", true);
+=======
+        $files = $this->get_area_files($contextid, $component, $filearea, $itemid, '', true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // first create directory structure
         foreach ($files as $hash=>$dir) {
             if (!$dir->is_directory()) {
@@ -480,10 +488,37 @@ class file_storage {
             $pointer['files'][$file->get_filename()] = $file;
             unset($pointer);
         }
+<<<<<<< HEAD
+=======
+        $result = $this->sort_area_tree($result);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $result;
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Sorts the result of {@link file_storage::get_area_tree()}.
+     *
+     * @param array $tree Array of results provided by {@link file_storage::get_area_tree()}
+     * @return array of sorted results
+     */
+    protected function sort_area_tree($tree) {
+        foreach ($tree as $key => &$value) {
+            if ($key == 'subdirs') {
+                collatorlib::ksort($value, collatorlib::SORT_NATURAL);
+                foreach ($value as $subdirname => &$subtree) {
+                    $subtree = $this->sort_area_tree($subtree);
+                }
+            } else if ($key == 'files') {
+                collatorlib::ksort($value, collatorlib::SORT_NATURAL);
+            }
+        }
+        return $tree;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Returns all files and optionally directories
      *
      * @param int $contextid context ID

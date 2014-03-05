@@ -29,8 +29,13 @@ require_once($CFG->libdir . '/tablelib.php');
 require_login();
 
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
+<<<<<<< HEAD
 $courseid = optional_param('courseid', 0, PARAM_INTEGER);
 $deleterssid = optional_param('deleterssid', 0, PARAM_INTEGER);
+=======
+$courseid = optional_param('courseid', 0, PARAM_INT);
+$deleterssid = optional_param('deleterssid', 0, PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($courseid == SITEID) {
     $courseid = 0;
@@ -40,7 +45,11 @@ if ($courseid) {
     $PAGE->set_course($course);
     $context = $PAGE->context;
 } else {
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_context($context);
 }
 

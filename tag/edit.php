@@ -36,7 +36,11 @@ if (empty($CFG->usetags)) {
 }
 
 //Editing a tag requires moodle/tag:edit capability
+<<<<<<< HEAD
 $systemcontext   = get_context_instance(CONTEXT_SYSTEM);
+=======
+$systemcontext   = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/tag:edit', $systemcontext);
 
 if ($tag_name) {
@@ -55,11 +59,14 @@ $PAGE->set_context($systemcontext);
 $PAGE->set_blocks_editing_capability('moodle/tag:editblocks');
 $PAGE->set_pagelayout('base');
 
+<<<<<<< HEAD
 $PAGE->requires->yui2_lib('connection');
 $PAGE->requires->yui2_lib('animation');
 $PAGE->requires->yui2_lib('datasource');
 $PAGE->requires->yui2_lib('autocomplete');
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $tagname = tag_display_name($tag);
 
 // set the relatedtags field of the $tag object that will be passed to the form

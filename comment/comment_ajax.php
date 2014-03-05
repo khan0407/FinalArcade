@@ -22,6 +22,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define('AJAX_SCRIPT', true);
+<<<<<<< HEAD
+=======
+define('NO_DEBUG_DISPLAY', true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_once('../config.php');
 require_once($CFG->dirroot . '/comment/lib.php');
@@ -35,6 +39,13 @@ if (empty($CFG->usecomments)) {
 
 list($context, $course, $cm) = get_context_info_array($contextid);
 
+<<<<<<< HEAD
+=======
+if ( $contextid == SYSCONTEXTID ) {
+    $course = $SITE;
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_url('/comment/comment_ajax.php');
 
 // Allow anonymous user to view comments providing forcelogin now enabled

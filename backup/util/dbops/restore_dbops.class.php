@@ -346,8 +346,12 @@ abstract class restore_dbops {
         global $CFG, $DB;
 
         // Gather various information about roles
+<<<<<<< HEAD
         $coursectx = get_context_instance(CONTEXT_COURSE, $courseid);
         $allroles = $DB->get_records('role');
+=======
+        $coursectx = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $assignablerolesshortname = get_assignable_roles($coursectx, ROLENAME_SHORT, false, $userid);
 
         // Note: under 1.9 we had one function restore_samerole() that performed one complete
@@ -615,6 +619,7 @@ abstract class restore_dbops {
                 } else {
                     self::set_backup_ids_record($restoreid, 'question_category', $category->id, $matchcat->id, $targetcontext->id);
                     $questions = self::restore_get_questions($restoreid, $category->id);
+<<<<<<< HEAD
                     foreach ($questions as $question) {
                         $matchq = $DB->get_record('question', array(
                                       'category' => $matchcat->id,
@@ -622,6 +627,22 @@ abstract class restore_dbops {
                                       'version' => $question->version));
                         // 5a) No match, check if user can add q
                         if (!$matchq) {
+=======
+
+                    // Collect all the questions for this category into memory so we only talk to the DB once.
+                    $questioncache = $DB->get_records_sql_menu("SELECT ".$DB->sql_concat('stamp', "' '", 'version').", id
+                                                                  FROM {question}
+                                                                 WHERE category = ?", array($matchcat->id));
+
+                    foreach ($questions as $question) {
+                        if (isset($questioncache[$question->stamp." ".$question->version])) {
+                            $matchqid = $questioncache[$question->stamp." ".$question->version];
+                        } else {
+                            $matchqid = false;
+                        }
+                        // 5a) No match, check if user can add q
+                        if (!$matchqid) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                             // 6a) User can, mark the q to be created
                             if ($canadd) {
                                 // Nothing to mark, newitemid means create
@@ -646,7 +667,11 @@ abstract class restore_dbops {
 
                         // 5b) Match, mark q to be mapped
                         } else {
+<<<<<<< HEAD
                             self::set_backup_ids_record($restoreid, 'question', $question->id, $matchq->id);
+=======
+                            self::set_backup_ids_record($restoreid, 'question', $question->id, $matchqid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         }
                     }
                 }
@@ -720,7 +745,11 @@ abstract class restore_dbops {
         switch ($contextlevel) {
              // For system is easy, the best context is the system context
              case CONTEXT_SYSTEM:
+<<<<<<< HEAD
                  $targetcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+                 $targetcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                  break;
 
              // For coursecat, we are going to look for stamps in all the
@@ -740,8 +769,13 @@ abstract class restore_dbops {
                  }
                  $contexts = array();
                  // Build the array of contexts we are going to look
+<<<<<<< HEAD
                  $systemctx = get_context_instance(CONTEXT_SYSTEM);
                  $coursectx = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+                 $systemctx = context_system::instance();
+                 $coursectx = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                  $parentctxs= get_parent_contexts($coursectx);
                  foreach ($parentctxs as $parentctx) {
                      // Exclude system context
@@ -762,14 +796,22 @@ abstract class restore_dbops {
                      $matchingcontexts = $DB->get_records_sql($sql, $params);
                      // Only if ONE and ONLY ONE context is found, use it as valid target
                      if (count($matchingcontexts) == 1) {
+<<<<<<< HEAD
                          $targetcontext = get_context_instance_by_id(reset($matchingcontexts)->contextid);
+=======
+                         $targetcontext = context::instance_by_id(reset($matchingcontexts)->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                      }
                  }
                  break;
 
              // For course is easy, the best context is the course context
              case CONTEXT_COURSE:
+<<<<<<< HEAD
                  $targetcontext = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+                 $targetcontext = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                  break;
 
              // For module is easy, there is not best context, as far as the
@@ -778,7 +820,11 @@ abstract class restore_dbops {
              // case is handled by {@link prechek_precheck_qbanks_by_level}
              // in an special way
              case CONTEXT_MODULE:
+<<<<<<< HEAD
                  $targetcontext = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+                 $targetcontext = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                  break;
         }
         return $targetcontext;
@@ -902,6 +948,18 @@ abstract class restore_dbops {
             }
 
             if (empty($file->repositoryid)) {
+<<<<<<< HEAD
+=======
+                // If contenthash is empty then gracefully skip adding file.
+                if (empty($file->contenthash)) {
+                    $result = new stdClass();
+                    $result->code = 'file_missing_in_backup';
+                    $result->message = sprintf('missing file (%s) contenthash in backup for component %s', $file->filename, $component);
+                    $result->level = backup::LOG_WARNING;
+                    $results[] = $result;
+                    continue;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // this is a regular file, it must be present in the backup pool
                 $backuppath = $basepath . backup_file_manager::get_backup_content_file_location($file->contenthash);
 
@@ -1082,7 +1140,11 @@ abstract class restore_dbops {
             // but for deleted users that don't have a context anymore (MDL-30192). We are done for them
             // and nothing else (custom fields, prefs, tags, files...) will be created.
             if (empty($user->deleted)) {
+<<<<<<< HEAD
                 $newuserctxid = $user->deleted ? 0 : get_context_instance(CONTEXT_USER, $newuserid)->id;
+=======
+                $newuserctxid = $user->deleted ? 0 : context_user::instance($newuserid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 self::set_backup_ids_record($restoreid, 'context', $recuser->parentitemid, $newuserctxid);
 
                 // Process custom fields
@@ -1370,7 +1432,11 @@ abstract class restore_dbops {
         $mnethosts = $DB->get_records('mnet_host', array(), 'wwwroot', 'wwwroot, id');
 
         // Calculate the context we are going to use for capability checking
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+        $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Calculate if we have perms to create users, by checking:
         // to 'moodle/restore:createuser' and 'moodle/restore:userinfo'
@@ -1539,7 +1605,11 @@ abstract class restore_dbops {
         global $DB;
 
         // Get the course context
+<<<<<<< HEAD
         $coursectx = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+        $coursectx = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Get all the mapped roles we have
         $rs = $DB->get_recordset('backup_ids_temp', array('backupid' => $restoreid, 'itemname' => 'role'), '', 'itemid');
         foreach ($rs as $recrole) {

@@ -30,3 +30,7 @@ $string['url'] = 'URL';
 $string['url:view'] = 'Use URL downloader in file picker';
 $string['validname'] = 'You must provide a valid file name';
 $string['configplugin'] = 'URL repository type configuration';
+<<<<<<< HEAD
+=======
+$string['validfiletype'] = 'You must provide a URL to an image file or a page containing images.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

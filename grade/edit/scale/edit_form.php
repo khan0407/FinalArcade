@@ -88,7 +88,11 @@ class edit_scale_form extends moodleform {
             if (empty($courseid)) {
                 $mform->hardFreeze('standard');
 
+<<<<<<< HEAD
             } else if (!has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+            } else if (!has_capability('moodle/course:managescales', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 //if they dont have managescales at system level the shouldnt be allowed to make scales standard (or not standard)
                 $mform->hardFreeze('standard');
 
@@ -102,7 +106,11 @@ class edit_scale_form extends moodleform {
 
         } else {
             $mform->removeElement('used');
+<<<<<<< HEAD
             if (empty($courseid) or !has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+            if (empty($courseid) or !has_capability('moodle/course:managescales', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $mform->hardFreeze('standard');
             }
         }

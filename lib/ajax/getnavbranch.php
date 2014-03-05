@@ -35,14 +35,25 @@ require_once($CFG->dirroot.'/course/lib.php');
 try {
     // Start buffer capture so that we can `remove` any errors
     ob_start();
+<<<<<<< HEAD
     // Require id This is the key for whatever branch we want to get
     $branchid = required_param('id', PARAM_INT);
+=======
+    // Require id This is the key for whatever branch we want to get.
+    // This accepts alphanum because the courses and my courses branches don't have numerical keys.
+    // For those branches we return the alphanum key, courses and mycourses.
+    $branchid = required_param('id', PARAM_ALPHANUM);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // This identifies the type of the branch we want to get
     $branchtype = required_param('type', PARAM_INT);
     // This identifies the block instance requesting AJAX extension
     $instanceid = optional_param('instance', null, PARAM_INT);
 
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+    $PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Create a global nav object
     $navigation = new global_navigation_for_ajax($PAGE, $branchtype, $branchid);
@@ -87,14 +98,31 @@ try {
     }
     $converter = new navigation_json();
 
+<<<<<<< HEAD
     // Find the actuall branch we are looking for
     $branch = $navigation->find($branchid, $branchtype);
+=======
+    // Find the actual branch we are looking for
+    if ($branchtype != 0) {
+        $branch = $navigation->find($branchid, $branchtype);
+    } else if ($branchid === 'mycourses' || $branchid === 'courses') {
+        $branch = $navigation->find($branchid, navigation_node::TYPE_ROOTNODE);
+    } else {
+        throw new coding_exception('Invalid branch type/id passed to AJAX call to load branches.');
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Remove links to categories if required.
     if (!$linkcategories) {
         foreach ($branch->find_all_of_type(navigation_node::TYPE_CATEGORY) as $category) {
             $category->action = null;
         }
+<<<<<<< HEAD
+=======
+        foreach ($branch->find_all_of_type(navigation_node::TYPE_MY_CATEGORY) as $category) {
+            $category->action = null;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // Stop buffering errors at this point

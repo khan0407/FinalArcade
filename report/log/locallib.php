@@ -97,12 +97,20 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
         $showcourses = 1;
     }
 
+<<<<<<< HEAD
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Context for remote data is always SITE
     // Groups for remote data are always OFF
     if ($hostid == $CFG->mnet_localhost_id) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         /// Setup for group handling.
         if ($course->groupmode == SEPARATEGROUPS and !has_capability('moodle/site:accessallgroups', $context)) {
@@ -143,7 +151,11 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
 
     // If looking at a different host, we're interested in all our site users
     if ($hostid == $CFG->mnet_localhost_id && $course->id != SITEID) {
+<<<<<<< HEAD
         $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname, u.idnumber', 'lastname ASC, firstname ASC', $limitfrom, $limitnum);
+=======
+        $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname, u.idnumber', null, $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         // this may be a lot of users :-(
         $courseusers = $DB->get_records('user', array('deleted'=>0), 'lastaccess DESC', 'id, firstname, lastname, idnumber', $limitfrom, $limitnum);
@@ -226,13 +238,22 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
 /// Casting $course->modinfo to string prevents one notice when the field is null
     if ($modinfo = unserialize((string)$course->modinfo)) {
         $section = 0;
+<<<<<<< HEAD
         $sections = get_all_sections($course->id);
+=======
+        $thissection = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($modinfo as $mod) {
             if ($mod->mod == "label") {
                 continue;
             }
             if ($mod->section > 0 and $section <> $mod->section) {
+<<<<<<< HEAD
                 $activities["section/$mod->section"] = '--- '.get_section_name($course, $sections[$mod->section]).' ---';
+=======
+                $activities[] = $thissection;
+                $thissection = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $section = $mod->section;
             $mod->name = strip_tags(format_string($mod->name, true));
@@ -242,12 +263,26 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
             if (!$mod->visible) {
                 $mod->name = "(".$mod->name.")";
             }
+<<<<<<< HEAD
             $activities["$mod->cm"] = $mod->name;
+=======
+            $key = get_section_name($course, $mod->section);
+            if (!isset($thissection[$key])) {
+                $thissection[$key] = array();
+            }
+            $thissection[$key][$mod->cm] = $mod->name;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if ($mod->cm == $modid) {
                 $selectedactivity = "$mod->cm";
             }
         }
+<<<<<<< HEAD
+=======
+        if (!empty($thissection)) {
+            $activities[] = $thissection;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     if (has_capability('report/log:view', $sitecontext) && !$course->category) {
@@ -352,6 +387,10 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
         }
         echo html_writer::label(get_string('participantslist'), 'menuuser', false, array('class' => 'accesshide'));
         echo html_writer::select($users, "user", $selecteduser, false);
+<<<<<<< HEAD
+=======
+        $a = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $a->url = "$CFG->wwwroot/report/log/index.php?chooselog=0&group=$selectedgroup&user=$selecteduser"
             ."&id=$course->id&date=$selecteddate&modid=$selectedactivity&showusers=1&showcourses=$showcourses";
         print_string('logtoomanyusers','moodle',$a);
@@ -409,8 +448,13 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
         $showcourses = 1;
     }
 
+<<<<<<< HEAD
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $sitecontext = context_system::instance();
+    $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /// Setup for group handling.
     if ($course->groupmode == SEPARATEGROUPS and !has_capability('moodle/site:accessallgroups', $context)) {
@@ -445,7 +489,11 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
     $limitfrom = empty($showusers) ? 0 : '';
     $limitnum  = empty($showusers) ? COURSE_MAX_USERS_PER_DROPDOWN + 1 : '';
 
+<<<<<<< HEAD
     $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname', 'lastname ASC, firstname ASC', $limitfrom, $limitnum);
+=======
+    $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname', null, $limitfrom, $limitnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (count($courseusers) < COURSE_MAX_USERS_PER_DROPDOWN && !$showusers) {
         $showusers = 1;
@@ -479,13 +527,22 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
 /// Casting $course->modinfo to string prevents one notice when the field is null
     if ($modinfo = unserialize((string)$course->modinfo)) {
         $section = 0;
+<<<<<<< HEAD
         $sections = get_all_sections($course->id);
+=======
+        $thissection = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($modinfo as $mod) {
             if ($mod->mod == "label") {
                 continue;
             }
             if ($mod->section > 0 and $section <> $mod->section) {
+<<<<<<< HEAD
                 $activities["section/$mod->section"] = '--- '.get_section_name($course, $sections[$mod->section]).' ---';
+=======
+                $activities[] = $thissection;
+                $thissection = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             $section = $mod->section;
             $mod->name = strip_tags(format_string($mod->name, true));
@@ -495,12 +552,26 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
             if (!$mod->visible) {
                 $mod->name = "(".$mod->name.")";
             }
+<<<<<<< HEAD
             $activities["$mod->cm"] = $mod->name;
+=======
+            $key = get_section_name($course, $mod->section);
+            if (!isset($thissection[$key])) {
+                $thissection[$key] = array();
+            }
+            $thissection[$key][$mod->cm] = $mod->name;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             if ($mod->cm == $modid) {
                 $selectedactivity = "$mod->cm";
             }
         }
+<<<<<<< HEAD
+=======
+        if (!empty($thissection)) {
+            $activities[] = $thissection;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     if (has_capability('report/log:view', $sitecontext) && ($course->id == SITEID)) {

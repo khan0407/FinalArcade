@@ -528,7 +528,12 @@ class moodle1_converter extends base_converter {
      * CONTEXT_SYSTEM and CONTEXT_COURSE ignore the $instance as they represent a
      * single system or the course being restored.
      *
+<<<<<<< HEAD
      * @see get_context_instance()
+=======
+     * @see context_system::instance()
+     * @see context_course::instance()
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param int $level the context level, like CONTEXT_COURSE or CONTEXT_MODULE
      * @param int $instance the instance id, for example $course->id for courses or $cm->id for activity modules
      * @return int the context id
@@ -1280,6 +1285,10 @@ class moodle1_file_manager implements loggable {
 
         // Check the trailing slash in the $rootpath
         if (substr($rootpath, -1) === '/') {
+<<<<<<< HEAD
+=======
+            debugging('moodle1_file_manager::migrate_directory() expects $rootpath without the trailing slash', DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $rootpath = substr($rootpath, 0, strlen($rootpath) - 1);
         }
 

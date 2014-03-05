@@ -333,10 +333,18 @@ abstract class grade_report {
      */
     protected function get_sort_arrow($direction='move', $sortlink=null) {
         global $OUTPUT;
+<<<<<<< HEAD
         $matrix = array('up' => 'desc', 'down' => 'asc', 'move' => 'desc');
         $strsort = $this->get_lang_string('sort' . $matrix[$direction]);
 
         $arrow = print_arrow($direction, $strsort, true);
+=======
+        $pix = array('up' => 't/sort_desc', 'down' => 't/sort_asc', 'move' => 't/sort');
+        $matrix = array('up' => 'desc', 'down' => 'asc', 'move' => 'desc');
+        $strsort = $this->get_lang_string('sort' . $matrix[$direction]);
+
+        $arrow = $OUTPUT->pix_icon($pix[$direction], $strsort, '', array('class' => 'sorticon'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return html_writer::link($sortlink, $arrow, array('title'=>$strsort));
     }
 

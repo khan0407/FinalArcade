@@ -34,11 +34,19 @@
     require_once(dirname(__FILE__) . '/../config.php');
     require_once($CFG->libdir . '/adminlib.php');
 
+<<<<<<< HEAD
     $action = optional_param('action', '', PARAM_ACTION);
     $filterpath = optional_param('filterpath', '', PARAM_PATH);
 
     require_login();
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $action = optional_param('action', '', PARAM_ALPHANUMEXT);
+    $filterpath = optional_param('filterpath', '', PARAM_PATH);
+
+    require_login();
+    $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('moodle/site:config', $systemcontext);
 
     $returnurl = "$CFG->wwwroot/$CFG->admin/filters.php";
@@ -68,7 +76,11 @@
     switch ($action) {
 
     case 'setstate':
+<<<<<<< HEAD
         if ($newstate = optional_param('newstate', '', PARAM_INTEGER)) {
+=======
+        if ($newstate = optional_param('newstate', '', PARAM_INT)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             filter_set_global_state($filterpath, $newstate);
             if ($newstate == TEXTFILTER_DISABLED) {
                 filter_set_applies_to_strings($filterpath, false);
@@ -247,15 +259,26 @@ function get_table_row($filterinfo, $isfirstrow, $islastactive, $applytostrings)
 
     // Re-order
     $updown = '';
+<<<<<<< HEAD
     $spacer = '<img src="' . $OUTPUT->pix_url('spacer') . '" class="iconsmall" alt="" /> ';
     if ($filterinfo->active != TEXTFILTER_DISABLED) {
         if (!$isfirstrow) {
             $updown .= $OUTPUT->action_icon(filters_action_url($filter, 'up'), new pix_icon('t/up', get_string('up')));
+=======
+    $spacer = '<img src="' . $OUTPUT->pix_url('spacer') . '" class="iconsmall" alt="" />';
+    if ($filterinfo->active != TEXTFILTER_DISABLED) {
+        if (!$isfirstrow) {
+            $updown .= $OUTPUT->action_icon(filters_action_url($filter, 'up'), new pix_icon('t/up', get_string('up'), '', array('class' => 'iconsmall')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $updown .= $spacer;
         }
         if (!$islastactive) {
+<<<<<<< HEAD
             $updown .= $OUTPUT->action_icon(filters_action_url($filter, 'down'), new pix_icon('t/down', get_string('down')));
+=======
+            $updown .= $OUTPUT->action_icon(filters_action_url($filter, 'down'), new pix_icon('t/down', get_string('down'), '', array('class' => 'iconsmall')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $updown .= $spacer;
         }

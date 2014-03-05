@@ -51,7 +51,11 @@ if (!isset($SESSION->xmldb)) {
 $site = get_site();
 
 require_login();
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Body of the script, based on action, we delegate the work
 $action = optional_param ('action', 'main_view', PARAM_ALPHAEXT);

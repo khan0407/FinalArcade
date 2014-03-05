@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +21,12 @@
 /**
  * Database enrolment plugin settings and presets.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage database
+=======
+ * @package    enrol_database
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -43,7 +50,11 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new admin_setting_configpasswordunmask('enrol_database/dbpass', get_string('dbpass', 'enrol_database'), '', ''));
 
+<<<<<<< HEAD
     $settings->add(new admin_setting_configtext('enrol_database/dbname', get_string('dbname', 'enrol_database'), '', ''));
+=======
+    $settings->add(new admin_setting_configtext('enrol_database/dbname', get_string('dbname', 'enrol_database'), get_string('dbname_desc', 'enrol_database'), ''));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $settings->add(new admin_setting_configtext('enrol_database/dbencoding', get_string('dbencoding', 'enrol_database'), '', 'utf-8'));
 
@@ -63,7 +74,11 @@ if ($ADMIN->fulltree) {
     $options = array('id'=>'id', 'idnumber'=>'idnumber', 'email'=>'email', 'username'=>'username'); // only local users if username selected, no mnet users!
     $settings->add(new admin_setting_configselect('enrol_database/localuserfield', get_string('localuserfield', 'enrol_database'), '', 'idnumber', $options));
 
+<<<<<<< HEAD
     $options = array('id'=>'id', 'shortname'=>'shortname', 'fullname'=>'fullname');
+=======
+    $options = array('id'=>'id', 'shortname'=>'shortname');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $settings->add(new admin_setting_configselect('enrol_database/localrolefield', get_string('localrolefield', 'enrol_database'), '', 'shortname', $options));
 
     $options = array('id'=>'id', 'idnumber'=>'idnumber');
@@ -81,7 +96,11 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('enrol_database/remoterolefield', get_string('remoterolefield', 'enrol_database'), get_string('remoterolefield_desc', 'enrol_database'), ''));
 
     if (!during_initial_install()) {
+<<<<<<< HEAD
         $options = get_default_enrol_roles(get_context_instance(CONTEXT_SYSTEM));
+=======
+        $options = get_default_enrol_roles(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $student = get_archetype_roles('student');
         $student = reset($student);
         $settings->add(new admin_setting_configselect('enrol_database/defaultrole', get_string('defaultrole', 'enrol_database'), get_string('defaultrole_desc', 'enrol_database'), $student->id, $options));

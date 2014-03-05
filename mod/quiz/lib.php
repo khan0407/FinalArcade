@@ -106,6 +106,10 @@ function quiz_add_instance($quiz) {
  */
 function quiz_update_instance($quiz, $mform) {
     global $CFG, $DB;
+<<<<<<< HEAD
+=======
+    require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Process the options from the form.
     $result = quiz_process_options($quiz);
@@ -113,11 +117,24 @@ function quiz_update_instance($quiz, $mform) {
         return $result;
     }
 
+<<<<<<< HEAD
     $oldquiz = $DB->get_record('quiz', array('id' => $quiz->instance));
 
     // Repaginate, if asked to.
     if (!$quiz->shufflequestions && !empty($quiz->repaginatenow)) {
         require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+=======
+    // Get the current value, so we can see what changed.
+    $oldquiz = $DB->get_record('quiz', array('id' => $quiz->instance));
+
+    // We need two values from the existing DB record that are not in the form,
+    // in some of the function calls below.
+    $quiz->sumgrades = $oldquiz->sumgrades;
+    $quiz->grade     = $oldquiz->grade;
+
+    // Repaginate, if asked to.
+    if (!$quiz->shufflequestions && !empty($quiz->repaginatenow)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $quiz->questions = quiz_repaginate(quiz_clean_layout($oldquiz->questions, true),
                 $quiz->questionsperpage);
     }
@@ -131,19 +148,30 @@ function quiz_update_instance($quiz, $mform) {
     quiz_after_add_or_update($quiz);
 
     if ($oldquiz->grademethod != $quiz->grademethod) {
+<<<<<<< HEAD
         require_once($CFG->dirroot . '/mod/quiz/locallib.php');
         $quiz->sumgrades = $oldquiz->sumgrades;
         $quiz->grade = $oldquiz->grade;
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         quiz_update_all_final_grades($quiz);
         quiz_update_grades($quiz);
     }
 
+<<<<<<< HEAD
     $updateattempts = $oldquiz->timelimit != $quiz->timelimit
                    || $oldquiz->timeclose != $quiz->timeclose
                    || $oldquiz->graceperiod != $quiz->graceperiod;
     if ($updateattempts) {
         require_once($CFG->dirroot . '/mod/quiz/locallib.php');
         quiz_update_open_attempts(array('quizid'=>$quiz->id));
+=======
+    $quizdateschanged = $oldquiz->timelimit   != $quiz->timelimit
+                     || $oldquiz->timeclose   != $quiz->timeclose
+                     || $oldquiz->graceperiod != $quiz->graceperiod;
+    if ($quizdateschanged) {
+        quiz_update_open_attempts(array('quizid' => $quiz->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // Delete any previous preview attempts.
@@ -717,6 +745,21 @@ function quiz_grade_item_update($quiz, $grades = null) {
         $params['hidden'] = 0;
     }
 
+<<<<<<< HEAD
+=======
+    if (!$params['hidden']) {
+        // If the grade item is not hidden by the quiz logic, then we need to
+        // hide it if the quiz is hidden from students.
+        if (property_exists($quiz, 'visible')) {
+            // Saving the quiz form, and cm not yet updated in the database.
+            $params['hidden'] = !$quiz->visible;
+        } else {
+            $cm = get_coursemodule_from_instance('quiz', $quiz->id);
+            $params['hidden'] = !$cm->visible;
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($grades  === 'reset') {
         $params['reset'] = true;
         $grades = null;
@@ -848,7 +891,11 @@ function quiz_get_recent_mod_activity(&$activities, &$index, $timestart,
         return;
     }
 
+<<<<<<< HEAD
     $context         = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context         = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $accessallgroups = has_capability('moodle/site:accessallgroups', $context);
     $viewfullnames   = has_capability('moodle/site:viewfullnames', $context);
     $grader          = has_capability('mod/quiz:viewreports', $context);
@@ -894,6 +941,10 @@ function quiz_get_recent_mod_activity(&$activities, &$index, $timestart,
         $tmpactivity->sectionnum = $cm->sectionnum;
         $tmpactivity->timestamp  = $attempt->timefinish;
 
+<<<<<<< HEAD
+=======
+        $tmpactivity->content = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $tmpactivity->content->attemptid = $attempt->id;
         $tmpactivity->content->attempt   = $attempt->attempt;
         if (quiz_has_grades($quiz) && $options->marks >= question_display_options::MARK_AND_MAX) {
@@ -904,6 +955,10 @@ function quiz_get_recent_mod_activity(&$activities, &$index, $timestart,
             $tmpactivity->content->maxgrade  = null;
         }
 
+<<<<<<< HEAD
+=======
+        $tmpactivity->user = new stdClass();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $tmpactivity->user->id        = $attempt->userid;
         $tmpactivity->user->firstname = $attempt->firstname;
         $tmpactivity->user->lastname  = $attempt->lastname;
@@ -1086,7 +1141,11 @@ function quiz_after_add_or_update($quiz) {
 
     // We need to use context now, so we need to make sure all needed info is already in db.
     $DB->set_field('course_modules', 'instance', $quiz->id, array('id'=>$cmid));
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Save the feedback.
     $DB->delete_records('quiz_feedback', array('quizid' => $quiz->id));
@@ -1380,6 +1439,7 @@ function quiz_reset_userdata($data) {
 }
 
 /**
+<<<<<<< HEAD
  * Checks whether the current user is allowed to view a file uploaded in a quiz.
  * Teachers can view any from their courses, students can only view their own.
  *
@@ -1428,6 +1488,8 @@ function quiz_check_file_access($attemptuniqueid, $questionid, $context = null) 
 }
 
 /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Prints quiz summaries on MyMoodle Page
  * @param arry $courses
  * @param array $htmlarray
@@ -1463,7 +1525,11 @@ function quiz_print_overview($courses, &$htmlarray) {
                     userdate($quiz->timeclose)) . '</div>';
 
             // Now provide more information depending on the uers's role.
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_MODULE, $quiz->coursemodule);
+=======
+            $context = context_module::instance($quiz->coursemodule);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (has_capability('mod/quiz:viewreports', $context)) {
                 // For teacher-like people, show a summary of the number of student attempts.
                 // The $quiz objects returned by get_all_instances_in_course have the necessary $cm
@@ -1614,7 +1680,11 @@ function quiz_get_extra_capabilities() {
 function quiz_extend_navigation($quiznode, $course, $module, $cm) {
     global $CFG;
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (has_capability('mod/quiz:view', $context)) {
         $url = new moodle_url('/mod/quiz/view.php', array('id'=>$cm->id));
@@ -1695,7 +1765,11 @@ function quiz_extend_settings_navigation($settings, $quiznode) {
                 array('cmid'=>$PAGE->cm->id, 'sesskey'=>sesskey()));
         $node = navigation_node::create(get_string('preview', 'quiz'), $url,
                 navigation_node::TYPE_SETTING, null, 'mod_quiz_preview',
+<<<<<<< HEAD
                 new pix_icon('t/preview', ''));
+=======
+                new pix_icon('i/preview', ''));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $quiznode->add_node($node, $beforekey);
     }
 

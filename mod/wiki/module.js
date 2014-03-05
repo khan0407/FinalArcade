@@ -47,7 +47,13 @@ M.mod_wiki.renew_lock = function(Y, args) {
             args['section'] = wiki.section;
         }
         var callback = {};
+<<<<<<< HEAD
         YAHOO.util.Connect.asyncRequest('GET', 'lock.php?' + build_querystring(args), callback);
+=======
+        Y.use('yui2-connection', function(Y) {
+            Y.YUI2.util.Connect.asyncRequest('GET', 'lock.php?' + build_querystring(args), callback);
+        });
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     setInterval(renewLock, wiki.renew_lock_timeout * 1000);
 }
@@ -115,7 +121,11 @@ M.mod_wiki.deleteversion = function(Y, args) {
 
 M.mod_wiki.init_tree = function(Y, expand_all, htmlid) {
     Y.use('yui2-treeview', function(Y) {
+<<<<<<< HEAD
         var tree = new YAHOO.widget.TreeView(htmlid);
+=======
+        var tree = new Y.YUI2.widget.TreeView(htmlid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         tree.subscribe("clickEvent", function(node, event) {
             // we want normal clicking which redirects to url

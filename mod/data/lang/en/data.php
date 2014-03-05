@@ -80,6 +80,10 @@ $string['data:comment'] = 'Write comments';
 $string['data:exportallentries'] = 'Export all database entries';
 $string['data:exportentry'] = 'Export a database entry';
 $string['data:exportownentry'] = 'Export own database entry';
+<<<<<<< HEAD
+=======
+$string['data:exportuserinfo'] = 'Export user information';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['data:managecomments'] = 'Manage comments';
 $string['data:manageentries'] = 'Manage entries';
 $string['data:managetemplates'] = 'Manage templates';
@@ -177,6 +181,12 @@ $string['chooseorupload'] = 'Choose file';
 $string['expired'] = 'Sorry, this activity closed on {$a} and is no longer available';
 $string['importentries'] = 'Import entries';
 $string['importsuccess'] = 'The preset has been successfully applied.';
+<<<<<<< HEAD
+=======
+$string['includeapproval'] = 'Include approval status';
+$string['includetime'] = 'Include time added/modified';
+$string['includeuserdetails'] = 'Include user details';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['insufficiententries'] = 'more entries needed to view this database';
 $string['intro'] = 'Description';
 $string['invalidaccess'] = 'This page was not accessed correctly';

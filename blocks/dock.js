@@ -506,13 +506,18 @@ M.core_dock.fixTitleOrientation = function(item, title, text) {
     }
 
     if (Y.UA.ie == 8) {
+<<<<<<< HEAD
         // IE8 can flip the text via CSS but not handle SVG
+=======
+        // IE8 can flip the text via CSS but not handle transform. IE9+ can handle the CSS3 transform attribute.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         title.setContent(text);
         title.setAttribute('style', 'writing-mode: tb-rl; filter: flipV flipH;display:inline;');
         title.addClass('filterrotate');
         return title;
     }
 
+<<<<<<< HEAD
     // Cool, we can use SVG!
     var test = Y.Node.create('<h2><span style="font-size:10px;">'+text+'</span></h2>');
     this.nodes.body.append(test);
@@ -544,6 +549,51 @@ M.core_dock.fixTitleOrientation = function(item, title, text) {
     item.on('dockeditem:drawcomplete', function(txt, title){
         txt.setAttribute('fill', Y.one(title).getStyle('color'));
     }, item, txt, title);
+=======
+    // We need to fix a font-size - sorry theme designers.
+    var fontsize = '11px';
+    var transform = (clockwise) ? 'rotate(90deg)' : 'rotate(270deg)';
+    var test = Y.Node.create('<h2><span class="transform-test-node" style="font-size:'+fontsize+';">'+text+'</span></h2>');
+    this.nodes.body.insert(test, 0);
+    var width = test.one('span').get('offsetWidth') * 1.2;
+    var height = test.one('span').get('offsetHeight');
+    test.remove();
+
+    title.setContent(text);
+    title.addClass('css3transform');
+
+    // Move the title into position
+    title.setStyles({
+        'margin' : '0',
+        'padding' : '0',
+        'position' : 'relative',
+        'fontSize' : fontsize,
+        'width' : width,
+        'top' : width/2
+    });
+
+    // Positioning is different when in RTL mode.
+    if (right_to_left()) {
+        title.setStyle('left', width/2 - height);
+    } else {
+        title.setStyle('right', width/2 - height);
+    }
+
+    // Rotate the text
+    title.setStyles({
+        'transform' : transform,
+        '-ms-transform' : transform,
+        '-moz-transform' : transform,
+        '-webkit-transform' : transform,
+        '-o-transform' : transform
+    });
+
+    var container = Y.Node.create('<div></div>');
+    container.append(title);
+    container.setStyle('height', width + (width / 4));
+    container.setStyle('position', 'relative');
+    return container;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     return title;
 };
@@ -825,7 +875,15 @@ M.core_dock.genericblock.prototype = {
 
         // Must set the image src seperatly of we get an error with XML strict headers
         var moveto = Y.Node.create('<input type="image" class="moveto customcommand requiresjs" alt="'+M.str.block.addtodock+'" title="'+M.str.block.addtodock+'" />');
+<<<<<<< HEAD
         moveto.setAttribute('src', M.util.image_url('t/block_to_dock', 'moodle'));
+=======
+        var icon = 't/block_to_dock';
+        if (right_to_left()) {
+            icon = 't/block_to_dock_rtl';
+        }
+        moveto.setAttribute('src', M.util.image_url(icon, 'moodle'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         moveto.on('movetodock|click', this.move_to_dock, this, commands);
 
         var blockaction = node.one('.block_action');
@@ -891,7 +949,15 @@ M.core_dock.genericblock.prototype = {
 
         // Must set the image src seperatly of we get an error with XML strict headers
         var movetoimg = Y.Node.create('<img alt="'+M.str.block.undockitem+'" title="'+M.str.block.undockitem+'" />');
+<<<<<<< HEAD
         movetoimg.setAttribute('src', M.util.image_url('t/dock_to_block', 'moodle'));
+=======
+        var icon = 't/dock_to_block';
+        if (right_to_left()) {
+            icon = 't/dock_to_block_rtl';
+        }
+        movetoimg.setAttribute('src', M.util.image_url(icon, 'moodle'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         var moveto = Y.Node.create('<a class="moveto customcommand requiresjs"></a>').append(movetoimg);
         if (location.href.match(/\?/)) {
             moveto.set('href', location.href+'&dock='+this.id);
@@ -916,7 +982,11 @@ M.core_dock.genericblock.prototype = {
             }, this);
             // Add a close icon
             // Must set the image src seperatly of we get an error with XML strict headers
+<<<<<<< HEAD
             var closeicon = Y.Node.create('<span class="hidepanelicon" tabindex="0"><img alt="'+M.str.block.hidepanel+'" title="'+M.str.block.hidedockpanel+'" style="width:11px;height:11px;cursor:pointer;"/></span>');
+=======
+            var closeicon = Y.Node.create('<span class="hidepanelicon" tabindex="0"><img alt="'+M.str.block.hidepanel+'" title="'+M.str.block.hidedockpanel+'" /></span>');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             closeicon.one('img').setAttribute('src', M.util.image_url('t/dockclose', 'moodle'));
             closeicon.on('forceclose|click', this.hide, this);
             closeicon.on('dock:actionkey',this.hide, this, {actions:{enter:true,toggle:true}});
@@ -998,7 +1068,11 @@ M.core_dock.item = function(Y, uid, title, contents, commands, blockclass){
     if (title && this.title==null) {
         this.titlestring = title.cloneNode(true);
         this.title = document.createElement(title.nodeName);
+<<<<<<< HEAD
         M.core_dock.fixTitleOrientation(this, this.title, this.titlestring.firstChild.nodeValue);
+=======
+        this.title = M.core_dock.fixTitleOrientation(this, this.title, this.titlestring.firstChild.nodeValue);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     if (contents && this.contents==null) {
         this.contents = contents;

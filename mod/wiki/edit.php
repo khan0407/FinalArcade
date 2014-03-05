@@ -74,7 +74,11 @@ if (!empty($section) && !$sectioncontent = wiki_get_section_page($page, $section
 
 require_login($course, true, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/wiki:editpage', $context);
 
 if ($option == get_string('save', 'wiki')) {

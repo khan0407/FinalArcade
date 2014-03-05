@@ -26,6 +26,32 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
+<<<<<<< HEAD
+=======
+    'block/rss_client:myaddinstance' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/my:manageblocks'
+    ),
+
+    'block/rss_client:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     'block/rss_client:manageownfeeds' => array(
 
         'captype' => 'write',

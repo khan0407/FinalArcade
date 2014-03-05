@@ -1576,7 +1576,11 @@ function quiz_attempt_submitted_handler($event) {
     }
 
     return quiz_send_notification_messages($course, $quiz, $attempt,
+<<<<<<< HEAD
             get_context_instance(CONTEXT_MODULE, $cm->id), $cm);
+=======
+            context_module::instance($cm->id), $cm);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -1602,7 +1606,11 @@ function quiz_attempt_overdue_handler($event) {
     }
 
     return quiz_send_overdue_message($course, $quiz, $attempt,
+<<<<<<< HEAD
             get_context_instance(CONTEXT_MODULE, $cm->id), $cm);
+=======
+            context_module::instance($cm->id), $cm);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**

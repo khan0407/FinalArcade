@@ -44,7 +44,11 @@ $sm = get_string_manager();
 
 $PAGE->set_url('/help.php');
 $PAGE->set_pagelayout('popup');
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($ajax) {
     @header('Content-Type: text/plain; charset=utf-8');

@@ -49,7 +49,11 @@ $string['displayselect_help'] = 'This setting, together with the file type and w
 * Force download - The user is prompted to download the file
 * Open - Only the file is displayed in the browser window
 * In pop-up - The file is displayed in a new browser window without menus or an address bar
+<<<<<<< HEAD
 * In frame - The file is displayed within a frame below the the navigation bar and file description
+=======
+* In frame - The file is displayed within a frame below the navigation bar and file description
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 * New window - The file is displayed in a new browser window with menus and an address bar';
 $string['displayselect_link'] = 'mod/file/mod';
 $string['displayselectexplain'] = 'Choose display type, unfortunately not all types are suitable for all files.';

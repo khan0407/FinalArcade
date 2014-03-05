@@ -56,7 +56,11 @@ class qbehaviour_manualgraded_walkthrough_test extends qbehaviour_walkthrough_te
                 $this->get_does_not_contain_feedback_expectation());
 
         // Simulate some data submitted by the student.
+<<<<<<< HEAD
         $this->process_submission(array('answer' => 'This is my wonderful essay!'));
+=======
+        $this->process_submission(array('answer' => 'This is my wonderful essay!', 'answerformat' => FORMAT_PLAIN));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Verify.
         $this->check_current_state(question_state::$complete);
@@ -68,7 +72,11 @@ class qbehaviour_manualgraded_walkthrough_test extends qbehaviour_walkthrough_te
 
         // Process the same data again, check it does not create a new step.
         $numsteps = $this->get_step_count();
+<<<<<<< HEAD
         $this->process_submission(array('answer' => 'This is my wonderful essay!'));
+=======
+        $this->process_submission(array('answer' => 'This is my wonderful essay!', 'answerformat' => FORMAT_PLAIN));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->check_step_count($numsteps);
 
         // Process different data, check it creates a new step.
@@ -77,7 +85,11 @@ class qbehaviour_manualgraded_walkthrough_test extends qbehaviour_walkthrough_te
         $this->check_current_state(question_state::$todo);
 
         // Change back, check it creates a new step.
+<<<<<<< HEAD
         $this->process_submission(array('answer' => 'This is my wonderful essay!'));
+=======
+        $this->process_submission(array('answer' => 'This is my wonderful essay!', 'answerformat' => FORMAT_PLAIN));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->check_step_count($numsteps + 2);
 
         // Finish the attempt.
@@ -164,7 +176,11 @@ class qbehaviour_manualgraded_walkthrough_test extends qbehaviour_walkthrough_te
         $this->check_current_mark(null);
 
         // Simulate some data submitted by the student.
+<<<<<<< HEAD
         $this->process_submission(array('answer' => 'This is my wonderful essay!'));
+=======
+        $this->process_submission(array('answer' => 'This is my wonderful essay!', 'answerformat' => FORMAT_PLAIN));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Verify.
         $this->check_current_state(question_state::$complete);
@@ -241,7 +257,11 @@ class qbehaviour_manualgraded_walkthrough_test extends qbehaviour_walkthrough_te
                 $this->get_does_not_contain_feedback_expectation());
 
         // Simulate some data submitted by the student.
+<<<<<<< HEAD
         $this->process_submission(array('answer' => 'This is my wonderful essay!'));
+=======
+        $this->process_submission(array('answer' => 'This is my wonderful essay!', 'answerformat' => FORMAT_PLAIN));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Verify.
         $this->check_current_state(question_state::$complete);

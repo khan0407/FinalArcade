@@ -35,7 +35,11 @@ if ($courseid) {
         print_error('nocourseid');
     }
     require_login($course);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+    $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('moodle/grade:manage', $context);
 
     if (empty($CFG->enableoutcomes)) {
@@ -49,10 +53,13 @@ if ($courseid) {
 
 require_sesskey();
 
+<<<<<<< HEAD
 // $outcome = grade_outcome::fetch(array('id'=>$outcomeid));
 
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 header("Content-Type: text/csv; charset=utf-8");
 // TODO: make the filename more useful, include a date, a specific name, something...
 header('Content-Disposition: attachment; filename=outcomes.csv');

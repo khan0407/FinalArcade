@@ -49,7 +49,10 @@ $string['createservicedescription'] = 'A service is a set of web service functio
 $string['createserviceforusersdescription'] = 'A service is a set of web service functions. You will allow users to access to a new service. On the <strong>Add service</strong> page check \'Enable\' and uncheck \'Authorised users\' options. Select \'No required capability\'.';
 $string['createtoken'] = 'Create token';
 $string['createtokenforuser'] = 'Create a token for a user';
+<<<<<<< HEAD
 $string['createtokenforuserauto'] = 'Create a token for a user automatically';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['createtokenforuserdescription'] = 'Create a token for the web services user.';
 $string['createuser'] = 'Create a specific user';
 $string['createuserdescription'] = 'A web services user is required to represent the system controlling Moodle.';
@@ -181,6 +184,10 @@ $string['tokenauthlog'] = 'Token authentication';
 $string['tokencreatedbyadmin'] = 'Can only be reset by administrator (*)';
 $string['tokencreator'] = 'Creator';
 $string['unknownoptionkey'] = 'Unknown option key ({$a})';
+<<<<<<< HEAD
+=======
+$string['unnamedstringparam'] = 'A string parameter is unnamed.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['updateusersettings'] = 'Update';
 $string['userasclients'] = 'Users as clients with token';
 $string['userasclientsdescription'] = 'The following steps help you to set up the Moodle web service for users as clients. These steps also help to set up the recommended token (security keys) authentication method. In this use case, the user will generate his token from the security keys page via My profile settings.';

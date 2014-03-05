@@ -41,7 +41,11 @@ class block_news_items extends block_base {
                 return '';
             }
 
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+            $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         /// User must have perms to view discussions in that forum
             if (!has_capability('mod/forum:viewdiscussion', $context)) {
@@ -84,9 +88,13 @@ class block_news_items extends block_base {
                          '<div class="head clearfix">'.
                          '<div class="date">'.userdate($discussion->modified, $strftimerecent).'</div>'.
                          '<div class="name">'.fullname($discussion).'</div></div>'.
+<<<<<<< HEAD
                          '<div class="info">'.$discussion->subject.' '.
                          '<a href="'.$CFG->wwwroot.'/mod/forum/discuss.php?d='.$discussion->discussion.'">'.
                          $strmore.'...</a></div>'.
+=======
+                         '<div class="info"><a href="'.$CFG->wwwroot.'/mod/forum/discuss.php?d='.$discussion->discussion.'">'.$discussion->subject.'</a></div>'.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                          "</li>\n";
             }
             $text .= "</ul>\n";

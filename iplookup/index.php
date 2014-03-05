@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -20,8 +23,12 @@
  *
  * This script is not compatible with IPv6.
  *
+<<<<<<< HEAD
  * @package    core
  * @subpackage iplookup
+=======
+ * @package    core_iplookup
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,13 +42,21 @@ $ip   = optional_param('ip', getremoteaddr(), PARAM_HOST);
 $user = optional_param('user', 0, PARAM_INT);
 
 if (isset($CFG->iplookup)) {
+<<<<<<< HEAD
     //clean up of old settings
+=======
+    // Clean up of old settings.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     set_config('iplookup', NULL);
 }
 
 $PAGE->set_url('/iplookup/index.php', array('id'=>$ip, 'user'=>$user));
 $PAGE->set_pagelayout('popup');
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+$PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $info = array($ip);
 $note = array();
@@ -61,14 +76,22 @@ if ($match[1] == '127' or $match[1] == '10' or ($match[1] == '172' and $match[2]
 $info = iplookup_find_location($ip);
 
 if ($info['error']) {
+<<<<<<< HEAD
     // can not display
+=======
+    // Can not display.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     notice($info['error']);
 }
 
 if ($user) {
     if ($user = $DB->get_record('user', array('id'=>$user, 'deleted'=>0))) {
         // note: better not show full names to everybody
+<<<<<<< HEAD
         if (has_capability('moodle/user:viewdetails', get_context_instance(CONTEXT_USER, $user->id))) {
+=======
+        if (has_capability('moodle/user:viewdetails', context_user::instance($user->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             array_unshift($info['title'], fullname($user));
         }
     }
@@ -80,7 +103,11 @@ $PAGE->set_title(get_string('iplookup', 'admin').': '.$title);
 $PAGE->set_heading($title);
 echo $OUTPUT->header();
 
+<<<<<<< HEAD
 if (empty($CFG->googlemapkey) and empty($CFG->googlemapkey3)) {
+=======
+if (empty($CFG->googlemapkey3)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $imgwidth  = 620;
     $imgheight = 310;
     $dotwidth  = 18;
@@ -95,6 +122,7 @@ if (empty($CFG->googlemapkey) and empty($CFG->googlemapkey3)) {
     echo '</div>';
     echo '<div id="note">'.$info['note'].'</div>';
 
+<<<<<<< HEAD
 } else if (empty($CFG->googlemapkey3)) {
     $PAGE->requires->js(new moodle_url("http://maps.google.com/maps?file=api&v=2&key=$CFG->googlemapkey"));
     $module = array('name'=>'core_iplookup', 'fullpath'=>'/iplookup/module.js');
@@ -103,6 +131,8 @@ if (empty($CFG->googlemapkey) and empty($CFG->googlemapkey3)) {
     echo '<div id="map" style="width: 650px; height: 360px"></div>';
     echo '<div id="note">'.$info['note'].'</div>';
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 } else {
     if (strpos($CFG->wwwroot, 'https:') === 0) {
         $PAGE->requires->js(new moodle_url('https://maps.googleapis.com/maps/api/js', array('key'=>$CFG->googlemapkey3, 'sensor'=>'false')));

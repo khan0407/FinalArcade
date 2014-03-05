@@ -44,7 +44,11 @@ class question_attempt_iterator_test extends advanced_testcase {
 
     protected function setUp() {
         $this->quba = question_engine::make_questions_usage_by_activity('unit_test',
+<<<<<<< HEAD
                 get_context_instance(CONTEXT_SYSTEM));
+=======
+                context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->quba->set_preferred_behaviour('deferredfeedback');
 
         $slot = $this->quba->add_question(test_question_maker::make_question('description'));

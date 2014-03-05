@@ -30,7 +30,11 @@ require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->dirroot . '/repository/lib.php');
 
 $edit    = optional_param('edit', 0, PARAM_INT);
+<<<<<<< HEAD
 $new     = optional_param('new', '', PARAM_FORMAT);
+=======
+$new     = optional_param('new', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $delete  = optional_param('delete', 0, PARAM_INT);
 $sure    = optional_param('sure', '', PARAM_ALPHA);
 $contextid = optional_param('contextid', 0, PARAM_INT);
@@ -65,7 +69,11 @@ if ($usercourseid != SITEID) {
     $url->param('usercourseid', $usercourseid);
 }
 
+<<<<<<< HEAD
 $context = get_context_instance_by_id($contextid);
+=======
+$context = context::instance_by_id($contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_url($url);
 $PAGE->set_context($context);
@@ -190,7 +198,11 @@ if (!empty($edit) || !empty($new)) {
             }
             $success = $instance->set_option($settings);
         } else {
+<<<<<<< HEAD
             $success = repository::static_function($plugin, 'create', $plugin, 0, get_context_instance_by_id($contextid), $fromform);
+=======
+            $success = repository::static_function($plugin, 'create', $plugin, 0, context::instance_by_id($contextid), $fromform);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $data = data_submitted();
         }
         if ($success) {

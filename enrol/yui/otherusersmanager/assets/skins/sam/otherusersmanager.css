@@ -16,7 +16,11 @@ Structure of the other user role assignment panel
                                 .oump-user-picture
                                 .oump-user-specifics
                                     .oump-user-fullname
+<<<<<<< HEAD
                                     .oump-user-email
+=======
+                                    .oump-user-extrafields
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                 .oump-role-options
                                     .label
                                     .oump-assignable-role

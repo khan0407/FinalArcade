@@ -23,7 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 $string['addfields'] = 'Add {$a} fields to form';
+=======
+$string['addfields'] = 'Add {$a} field(s) to form';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['advancedelement'] = 'Advanced element';
 $string['close'] = 'Close';
 $string['day'] = 'Day';

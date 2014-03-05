@@ -41,8 +41,12 @@ if (!$course = $DB->get_record('course', array('id'=>$courseid))) {
 // Make sure that the user has permissions to manage groups.
 require_login($course);
 
+<<<<<<< HEAD
 $context       = get_context_instance(CONTEXT_COURSE, $courseid);
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$context       = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/course:managegroups', $context);
 
 $returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id;
@@ -55,6 +59,7 @@ $strautocreategroups = get_string('autocreategroups', 'group');
 $preview = '';
 $error = '';
 
+<<<<<<< HEAD
 /// Get applicable roles
 $rolenames = array();
 if ($roles = get_profile_roles($context)) {
@@ -62,6 +67,10 @@ if ($roles = get_profile_roles($context)) {
         $rolenames[$role->id] = strip_tags(role_get_name($role, $context));   // Used in menus etc later on
     }
 }
+=======
+/// Get applicable roles - used in menus etc later on
+$rolenames = role_fix_names(get_profile_roles($context), $context, ROLENAME_ALIAS, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /// Create the form
 $editform = new autogroup_form(null, array('roles' => $rolenames));

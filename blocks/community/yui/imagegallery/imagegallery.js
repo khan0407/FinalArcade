@@ -11,8 +11,13 @@ YUI.add('moodle-block_community-imagegallery', function(Y) {
         event:null,
         previousevent:null,
         nextevent:null,
+<<<<<<< HEAD
         panelevent: null,
         panel: null, //all the images boxes
+=======
+        panelevent:null,
+        panel:null, //all the images boxes
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         imageidnumbers: [],
         imageloadingevent: null,
         loadingimage: null,
@@ -150,9 +155,15 @@ YUI.add('moodle-block_community-imagegallery', function(Y) {
             Y.one('#nextarrow').on('click', this.show, this, imageid, nextnumber);
             Y.one('#imagenumber').on('click', this.show, this, imageid, nextnumber);
 
+<<<<<<< HEAD
             //we add a new event on the body in order to hide the panel for the next click
             this.event = Y.one(document.body).on('click', this.hide, this);
             //we add a new event on the panel in order to hide the panel for the next click (touch device)
+=======
+            // We add a new event on the body in order to hide the panel for the next click.
+            this.event = Y.one(document.body).on('click', this.hide, this);
+            // We add a new event on the panel in order to hide the panel for the next click (touch device).
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             this.panelevent = Y.one("#imageoverlay").on('click', this.hide, this);
 
             this.panel.on('visibleChange',function(e){
@@ -202,5 +213,9 @@ YUI.add('moodle-block_community-imagegallery', function(Y) {
     }
 
 }, '@VERSION@', {
+<<<<<<< HEAD
     requires:['base','node', 'moodle-enrol-notification']
+=======
+    requires:['base','node', 'moodle-core-notification']
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 });

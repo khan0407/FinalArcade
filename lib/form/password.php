@@ -51,6 +51,7 @@ class MoodleQuickForm_password extends HTML_QuickForm_password{
      */
     function MoodleQuickForm_password($elementName=null, $elementLabel=null, $attributes=null) {
         global $CFG;
+<<<<<<< HEAD
         if (empty($CFG->xmlstrictheaders)) {
             // no standard mform in moodle should allow autocomplete of passwords
             // this is valid attribute in html5, sorry, we have to ignore validation errors in legacy xhtml 1.0
@@ -62,6 +63,16 @@ class MoodleQuickForm_password extends HTML_QuickForm_password{
                 if (strpos($attributes, 'autocomplete') === false) {
                     $attributes .= ' autocomplete="off" ';
                 }
+=======
+        // no standard mform in moodle should allow autocomplete of passwords
+        if (empty($attributes)) {
+            $attributes = array('autocomplete'=>'off');
+        } else if (is_array($attributes)) {
+            $attributes['autocomplete'] = 'off';
+        } else {
+            if (strpos($attributes, 'autocomplete') === false) {
+                $attributes .= ' autocomplete="off" ';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
 
@@ -69,6 +80,7 @@ class MoodleQuickForm_password extends HTML_QuickForm_password{
     }
 
     /**
+<<<<<<< HEAD
      * set html for help button
      *
      * @param array $helpbuttonargs array of arguments to make a help button
@@ -82,6 +94,8 @@ class MoodleQuickForm_password extends HTML_QuickForm_password{
     }
 
     /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * get html for help button
      *
      * @return string html for help button

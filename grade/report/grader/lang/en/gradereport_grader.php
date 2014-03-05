@@ -32,3 +32,8 @@ $string['grader:manage'] = 'Manage the grader report';
 $string['grader:view'] = 'View the grader report';
 $string['pluginname'] = 'Grader report';
 $string['preferences'] = 'Grader report preferences';
+<<<<<<< HEAD
+=======
+$string['useractivitygrade'] = '{$a} grade';
+$string['useractivityfeedback'] = '{$a} feedback';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

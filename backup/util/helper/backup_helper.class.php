@@ -226,19 +226,31 @@ abstract class backup_helper {
         $itemid    = 0;
         switch ($backuptype) {
             case backup::TYPE_1ACTIVITY:
+<<<<<<< HEAD
                 $ctxid     = get_context_instance(CONTEXT_MODULE, $id)->id;
+=======
+                $ctxid     = context_module::instance($id)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $component = 'backup';
                 $filearea  = 'activity';
                 $itemid    = 0;
                 break;
             case backup::TYPE_1SECTION:
+<<<<<<< HEAD
                 $ctxid     = get_context_instance(CONTEXT_COURSE, $courseid)->id;
+=======
+                $ctxid     = context_course::instance($courseid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $component = 'backup';
                 $filearea  = 'section';
                 $itemid    = $id;
                 break;
             case backup::TYPE_1COURSE:
+<<<<<<< HEAD
                 $ctxid     = get_context_instance(CONTEXT_COURSE, $courseid)->id;
+=======
+                $ctxid     = context_course::instance($courseid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $component = 'backup';
                 $filearea  = 'course';
                 $itemid    = 0;
@@ -273,7 +285,11 @@ abstract class backup_helper {
         // are sent to user's "user_tohub" file area. The upload process
         // will be responsible for cleaning that filearea once finished
         if ($backupmode == backup::MODE_HUB) {
+<<<<<<< HEAD
             $ctxid     = get_context_instance(CONTEXT_USER, $userid)->id;
+=======
+            $ctxid     = context_user::instance($userid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $component = 'user';
             $filearea  = 'tohub';
             $itemid    = 0;
@@ -284,7 +300,11 @@ abstract class backup_helper {
         // file area. Maintenance of such area is responsibility of
         // the user via corresponding file manager frontend
         if ($backupmode == backup::MODE_GENERAL && (!$hasusers || $isannon)) {
+<<<<<<< HEAD
             $ctxid     = get_context_instance(CONTEXT_USER, $userid)->id;
+=======
+            $ctxid     = context_user::instance($userid)->id;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $component = 'user';
             $filearea  = 'backup';
             $itemid    = 0;

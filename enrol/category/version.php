@@ -17,15 +17,24 @@
 /**
  * Category enrolment plugin version specification.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage category
+=======
+ * @package    enrol_category
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
 $plugin->version   = 2012081800;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012062501;        // Requires this Moodle version
+=======
+$plugin->version   = 2012112900;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2012112900;        // Requires this Moodle version
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $plugin->component = 'enrol_category';  // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 60;

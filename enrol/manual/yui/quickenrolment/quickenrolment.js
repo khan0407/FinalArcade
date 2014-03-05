@@ -5,6 +5,10 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
         /** Properties **/
         BASE : 'base',
         SEARCH : 'search',
+<<<<<<< HEAD
+=======
+        SEARCHBTN : 'searchbtn',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         PARAMS : 'params',
         URL : 'url',
         AJAXURL : 'ajaxurl',
@@ -64,6 +68,10 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
         DURATION : 'duration',
         ACTIVE : 'active',
         SEARCH : 'uep-search',
+<<<<<<< HEAD
+=======
+        SEARCHBTN : 'uep-search-btn',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         CLOSE : 'close',
         CLOSEBTN : 'close-button'
     };
@@ -111,8 +119,14 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
                                 .setAttribute('src', M.util.image_url('i/loading', 'moodle')))
                             .setStyle('opacity', 0.5)))
                     .append(create('<div class="'+CSS.FOOTER+'"></div>')
+<<<<<<< HEAD
                         .append(create('<div class="'+CSS.SEARCH+'"><label>'+M.str.enrol.usersearch+'</label></div>')
                             .append(create('<input type="text" id="enrolusersearch" value="" />'))
+=======
+                        .append(create('<div class="'+CSS.SEARCH+'"><label for="enrolusersearch" class="accesshide">'+M.str.enrol.usersearch+'</label></div>')
+                            .append(create('<input type="text" id="enrolusersearch" value="" />'))
+                                .append(create('<input type="button" id="searchbtn" class="'+CSS.SEARCHBTN+'" value="'+M.str.enrol.usersearch+'" />'))
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         )
                         .append(create('<div class="'+CSS.CLOSEBTN+'"></div>')
                             .append(create('<input type="button" value="'+M.str.enrol.finishenrollingusers+'" />'))
@@ -122,6 +136,10 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             );
 
             this.set(UEP.SEARCH, this.get(UEP.BASE).one('#enrolusersearch'));
+<<<<<<< HEAD
+=======
+            this.set(UEP.SEARCHBTN, this.get(UEP.BASE).one('#searchbtn'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             Y.all('.enrol_manual_plugin input').each(function(node){
                 if (node.getAttribute('type', 'submit')) {
                     node.on('click', this.show, this);
@@ -135,6 +153,10 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             this.set(UEP.PARAMS, params);
 
             Y.on('key', this.preSearch, this.get(UEP.SEARCH), 'down:13', this);
+<<<<<<< HEAD
+=======
+            this.get(UEP.SEARCHBTN).on('click', this.preSearch, this);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             Y.one(document.body).append(this.get(UEP.BASE));
 
@@ -151,11 +173,16 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             }
 
             this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url(collapsedimage, 'moodle'));
+<<<<<<< HEAD
             this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).once('click', function() {
                 // We want to do this just once, the first time the controls are shown.
                 this.populateStartDates();
                 this.populateDuration();
             }, this);
+=======
+            this.populateStartDates();
+            this.populateDuration();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).on('click', function(){
                 this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).toggleClass(CSS.ACTIVE);
                 this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEAREA).toggleClass(CSS.HIDDEN);
@@ -554,4 +581,8 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
         }
     }
 
+<<<<<<< HEAD
 }, '@VERSION@', {requires:['base','node', 'overlay', 'io-base', 'test', 'json-parse', 'event-delegate', 'dd-plugin', 'event-key', 'moodle-enrol-notification']});
+=======
+}, '@VERSION@', {requires:['base','node', 'overlay', 'io-base', 'test', 'json-parse', 'event-delegate', 'dd-plugin', 'event-key', 'moodle-core-notification']});
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

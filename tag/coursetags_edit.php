@@ -59,7 +59,11 @@ if ($courseid != SITEID) {
 }
 
 // Permissions
+<<<<<<< HEAD
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_login($course);
 $canedit = has_capability('moodle/tag:create', $sitecontext);
 
@@ -85,7 +89,11 @@ if ($data = data_submitted()) {
 // The title and breadcrumb
 $title = get_string('edittitle', $tagslang);
 $coursefullname = format_string($course->fullname);
+<<<<<<< HEAD
 $courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+$courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->navbar->add($title);
 $PAGE->set_title($title);
 $PAGE->set_heading($course->fullname);
@@ -96,7 +104,11 @@ echo $OUTPUT->header();
     $title = get_string('edittitle', $tagslang);
     echo $OUTPUT->heading($title, 2, 'mdl-align');
 
+<<<<<<< HEAD
     $mytags = coursetag_print_cloud(coursetag_get_tags(0, $USER->id, 'default'), true);
+=======
+    $mytags = tag_print_cloud(coursetag_get_tags(0, $USER->id, 'default'), 150, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $outstr = '
         <div class="coursetag_edit_centered">
             <div>
@@ -160,7 +172,11 @@ echo $OUTPUT->header();
                 <div class="coursetag_edit_centered">
                     <div class="coursetag_edit_row">
                         <div class="coursetag_edit_left">
+<<<<<<< HEAD
                             <label for="coursetag_sug_tag">$suggestedtagthisunit</label>
+=======
+                            <label class="accesshide" for="coursetag_sug_keyword">$suggestedtagthisunit</label>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         </div>
                         <div class="coursetag_edit_right">
                             <div class="coursetag_form_input1">

@@ -52,7 +52,10 @@ foreach ($allmodules as $key=>$module) {
 }
 
 $strresources    = get_string('resources');
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname         = get_string('name');
 $strintro        = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
@@ -65,9 +68,12 @@ echo $OUTPUT->header();
 
 $modinfo = get_fast_modinfo($course);
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $cms = array();
 $resources = array();
 foreach ($modinfo->cms as $cm) {
@@ -103,6 +109,10 @@ $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname, $strintro);
     $table->align = array ('center', 'left', 'left');
 } else {
@@ -120,7 +130,11 @@ foreach ($cms as $cm) {
     if ($usesections) {
         if ($cm->sectionnum !== $currentsection) {
             if ($cm->sectionnum) {
+<<<<<<< HEAD
                 $printsection = get_section_name($course, $sections[$cm->sectionnum]);
+=======
+                $printsection = get_section_name($course, $cm->sectionnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';

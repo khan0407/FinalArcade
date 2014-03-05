@@ -34,7 +34,11 @@ if ($hassiteconfig
     $temp = new admin_settingpage('userpolicies', new lang_string('userpolicies', 'admin'));
     if ($ADMIN->fulltree) {
         if (!during_initial_install()) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $otherroles      = array();
             $guestroles      = array();
@@ -45,8 +49,14 @@ if ($hassiteconfig
             $defaultuserid    = null;
             $defaultguestid   = null;
 
+<<<<<<< HEAD
             foreach (get_all_roles() as $role) {
                 $rolename = strip_tags(format_string($role->name)) . ' ('. $role->shortname . ')';
+=======
+            $roles = role_fix_names(get_all_roles(), null, ROLENAME_ORIGINALANDSHORT);
+            foreach ($roles as $role) {
+                $rolename = $role->localname;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 switch ($role->archetype) {
                     case 'manager':
                         $creatornewroles[$role->id] = $rolename;

@@ -36,7 +36,11 @@ require_once($CFG->dirroot . '/mod/wiki/locallib.php');
 require_once($CFG->dirroot . '/mod/wiki/pagelib.php');
 
 $pageid = required_param('pageid', PARAM_INT);
+<<<<<<< HEAD
 $action = optional_param('action', '', PARAM_ACTION);
+=======
+$action = optional_param('action', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $commentid = optional_param('commentid', 0, PARAM_INT);
 
 if (!$page = wiki_get_page($pageid)) {

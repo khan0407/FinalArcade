@@ -24,7 +24,11 @@ if ($CFG->mnet_dispatcher_mode === 'off') {
 require_login();
 admin_externalpage_setup('mnettestclient');
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+$context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/site:config', $context);
 
 error_reporting(DEBUG_ALL);

@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * External course participation api.
  *
@@ -32,7 +35,11 @@ defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/externallib.php");
 
 /**
+<<<<<<< HEAD
  * Manual enrolment external functions
+=======
+ * Manual enrolment external functions.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * @package    enrol_manual
  * @category   external
@@ -43,7 +50,11 @@ require_once("$CFG->libdir/externallib.php");
 class enrol_manual_external extends external_api {
 
     /**
+<<<<<<< HEAD
      * Returns description of method parameters
+=======
+     * Returns description of method parameters.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @return external_function_parameters
      * @since Moodle 2.2
@@ -68,7 +79,11 @@ class enrol_manual_external extends external_api {
     }
 
     /**
+<<<<<<< HEAD
      * Enrolment of users
+=======
+     * Enrolment of users.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * Function throw an exception at the first error encountered.
      * @param array $enrolments  An array of user enrolment
@@ -82,16 +97,24 @@ class enrol_manual_external extends external_api {
         $params = self::validate_parameters(self::enrol_users_parameters(),
                 array('enrolments' => $enrolments));
 
+<<<<<<< HEAD
         $transaction = $DB->start_delegated_transaction(); //rollback all enrolment if an error occurs
                                                            //(except if the DB doesn't support it)
 
         //retrieve the manual enrolment plugin
+=======
+        $transaction = $DB->start_delegated_transaction(); // Rollback all enrolment if an error occurs
+                                                           // (except if the DB doesn't support it).
+
+        // Retrieve the manual enrolment plugin.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $enrol = enrol_get_plugin('manual');
         if (empty($enrol)) {
             throw new moodle_exception('manualpluginnotinstalled', 'enrol_manual');
         }
 
         foreach ($params['enrolments'] as $enrolment) {
+<<<<<<< HEAD
             // Ensure the current user is allowed to run this function in the enrolment context
             $context = get_context_instance(CONTEXT_COURSE, $enrolment['courseid']);
             self::validate_context($context);
@@ -100,6 +123,16 @@ class enrol_manual_external extends external_api {
             require_capability('enrol/manual:enrol', $context);
 
             //throw an exception if user is not able to assign the role
+=======
+            // Ensure the current user is allowed to run this function in the enrolment context.
+            $context = context_course::instance($enrolment['courseid'], IGNORE_MISSING);
+            self::validate_context($context);
+
+            // Check that the user has the permission to manual enrol.
+            require_capability('enrol/manual:enrol', $context);
+
+            // Throw an exception if user is not able to assign the role.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $roles = get_assignable_roles($context);
             if (!array_key_exists($enrolment['roleid'], $roles)) {
                 $errorparams = new stdClass();
@@ -109,7 +142,11 @@ class enrol_manual_external extends external_api {
                 throw new moodle_exception('wsusercannotassign', 'enrol_manual', '', $errorparams);
             }
 
+<<<<<<< HEAD
             //check manual enrolment plugin instance is enabled/exist
+=======
+            // Check manual enrolment plugin instance is enabled/exist.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $enrolinstances = enrol_get_instances($enrolment['courseid'], true);
             foreach ($enrolinstances as $courseenrolinstance) {
               if ($courseenrolinstance->enrol == "manual") {
@@ -123,7 +160,11 @@ class enrol_manual_external extends external_api {
               throw new moodle_exception('wsnoinstance', 'enrol_manual', $errorparams);
             }
 
+<<<<<<< HEAD
             //check that the plugin accept enrolment (it should always the case, it's hard coded in the plugin)
+=======
+            // Check that the plugin accept enrolment (it should always the case, it's hard coded in the plugin).
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!$enrol->allow_enrol($instance)) {
                 $errorparams = new stdClass();
                 $errorparams->roleid = $enrolment['roleid'];
@@ -132,7 +173,11 @@ class enrol_manual_external extends external_api {
                 throw new moodle_exception('wscannotenrol', 'enrol_manual', '', $errorparams);
             }
 
+<<<<<<< HEAD
             //finally proceed the enrolment
+=======
+            // Finally proceed the enrolment.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $enrolment['timestart'] = isset($enrolment['timestart']) ? $enrolment['timestart'] : 0;
             $enrolment['timeend'] = isset($enrolment['timeend']) ? $enrolment['timeend'] : 0;
             $enrolment['status'] = (isset($enrolment['suspend']) && !empty($enrolment['suspend'])) ?
@@ -147,7 +192,11 @@ class enrol_manual_external extends external_api {
     }
 
     /**
+<<<<<<< HEAD
      * Returns description of method result value
+=======
+     * Returns description of method result value.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @return null
      * @since Moodle 2.2
@@ -159,7 +208,11 @@ class enrol_manual_external extends external_api {
 }
 
 /**
+<<<<<<< HEAD
  * Deprecated manual enrolment external functions
+=======
+ * Deprecated manual enrolment external functions.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * @package    enrol_manual
  * @copyright  2011 Jerome Mouneyrac
@@ -172,7 +225,11 @@ class enrol_manual_external extends external_api {
 class moodle_enrol_manual_external extends external_api {
 
     /**
+<<<<<<< HEAD
      * Returns description of method parameters
+=======
+     * Returns description of method parameters.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @return external_function_parameters
      * @since Moodle 2.0
@@ -199,7 +256,11 @@ class moodle_enrol_manual_external extends external_api {
     }
 
     /**
+<<<<<<< HEAD
      * Returns description of method result value
+=======
+     * Returns description of method result value.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @return nul
      * @since Moodle 2.0

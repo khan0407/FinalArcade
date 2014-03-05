@@ -67,7 +67,11 @@ class profile_field_base {
     function edit_field($mform) {
 
         if ($this->field->visible != PROFILE_VISIBLE_NONE
+<<<<<<< HEAD
           or has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+          or has_capability('moodle/user:update', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $this->edit_field_add($mform);
             $this->edit_field_set_default($mform);
@@ -85,7 +89,11 @@ class profile_field_base {
     function edit_after_data($mform) {
 
         if ($this->field->visible != PROFILE_VISIBLE_NONE
+<<<<<<< HEAD
           or has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+          or has_capability('moodle/user:update', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->edit_field_set_locked($mform);
             return true;
         }
@@ -193,7 +201,11 @@ class profile_field_base {
         if (!$mform->elementExists($this->inputname)) {
             return;
         }
+<<<<<<< HEAD
         if ($this->is_locked() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if ($this->is_locked() and !has_capability('moodle/user:update', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $mform->hardFreeze($this->inputname);
             $mform->setConstant($this->inputname, $this->data);
         }
@@ -293,11 +305,19 @@ class profile_field_base {
                     return true;
                 } else {
                     return has_capability('moodle/user:viewalldetails',
+<<<<<<< HEAD
                             get_context_instance(CONTEXT_USER, $this->userid));
                 }
             default:
                 return has_capability('moodle/user:viewalldetails',
                         get_context_instance(CONTEXT_USER, $this->userid));
+=======
+                            context_user::instance($this->userid));
+                }
+            default:
+                return has_capability('moodle/user:viewalldetails',
+                        context_user::instance($this->userid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -369,7 +389,11 @@ function profile_definition($mform, $userid = 0) {
     global $CFG, $DB;
 
     // if user is "admin" fields are displayed regardless
+<<<<<<< HEAD
     $update = has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+=======
+    $update = has_capability('moodle/user:update', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ($categories = $DB->get_records('user_info_category', null, 'sortorder ASC')) {
         foreach ($categories as $category) {

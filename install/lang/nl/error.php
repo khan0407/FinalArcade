@@ -30,6 +30,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
+=======
+$string['cannotcreatedboninstall'] = '<p>Kan databank niet maken.</p>
+<p>De opgegeven databank bestaat niet en de opgegeven gebruiker heeft onvoldoende rechten om de databank te maken.</p>
+<p>De site-beheerder moet de databankconfiguratie controleren.</p>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['cannotcreatelangdir'] = 'Kan lang map niet maken';
 $string['cannotcreatetempdir'] = 'Kan tijdelijke map niet maken.';
 $string['cannotdownloadcomponents'] = 'Kan componenten niet downloaden.';
@@ -39,6 +45,10 @@ $string['cannotsavemd5file'] = 'Kan md5-bestand niet bewaren.';
 $string['cannotsavezipfile'] = 'Kan ZIP-bestand niet bewaren.';
 $string['cannotunzipfile'] = 'Kon bestand niet unzippen';
 $string['componentisuptodate'] = 'Component is up-to-date';
+<<<<<<< HEAD
+=======
+$string['dmlexceptiononinstall'] = '<p>Databankfout [{$a->errorcode}].<br />{$a->debuginfo}</p>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['downloadedfilecheckfailed'] = 'Controle van het gedownloade bestand mislukt';
 $string['invalidmd5'] = 'De controlevariable was fout - probeer nog eens';
 $string['missingrequiredfield'] = 'Vereist veld ontbreekt';

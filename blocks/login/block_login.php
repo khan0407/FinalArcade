@@ -35,7 +35,11 @@ class block_login extends block_base {
         // TODO: now that we have multiauth it is hard to find out if there is a way to change password
         $forgot = $wwwroot . '/login/forgot_password.php';
 
+<<<<<<< HEAD
         if (empty($CFG->xmlstrictheaders) and !empty($CFG->loginpasswordautocomplete)) {
+=======
+        if (!empty($CFG->loginpasswordautocomplete)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $autocomplete = 'autocomplete="off"';
         } else {
             $autocomplete = '';

@@ -210,6 +210,10 @@ $string['restoretonewcourse'] = 'Restore as a new course';
 $string['restoringcourse'] = 'Course restoration in progress';
 $string['restoringcourseshortname'] = 'restoring';
 $string['restorerolemappings'] = 'Restore role mappings';
+<<<<<<< HEAD
+=======
+$string['rootenrolmanual'] = 'Restore as manual enrolments';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['rootsettings'] = 'Backup settings';
 $string['rootsettingusers'] = 'Include enrolled users';
 $string['rootsettinganonymize'] = 'Anonymize user information';
@@ -238,6 +242,21 @@ $string['setting_course_shortname'] = 'Course short name';
 $string['setting_course_startdate'] = 'Course start date';
 $string['setting_keep_roles_and_enrolments'] = 'Keep current roles and enrolments';
 $string['setting_keep_groups_and_groupings'] = 'Keep current groups and groupings';
+<<<<<<< HEAD
 $string['totalcategorysearchresults'] = 'Total categories: {$a}';
 $string['totalcoursesearchresults'] = 'Total courses: {$a}';
+=======
+$string['skiphidden'] = 'Skip hidden courses';
+$string['skiphiddenhelp'] = 'Choose whether or not to skip hidden courses';
+$string['skipmodifdays'] = 'Skip courses not modified since';
+$string['skipmodifdayshelp'] = 'Choose to skip courses that have not been modified since a number of days';
+$string['skipmodifprev'] = 'Skip courses not modified since previous backup';
+$string['skipmodifprevhelp'] = 'Choose whether or not to skip courses that have not been modified since previous backup';
+$string['title'] = 'Title';
+$string['totalcategorysearchresults'] = 'Total categories: {$a}';
+$string['totalcoursesearchresults'] = 'Total courses: {$a}';
+$string['unnamedsection'] = 'Unnamed section';
+$string['userinfo'] = 'Userinfo';
+$string['module'] = 'Module';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['morecoursesearchresults'] = 'More than {$a} courses found, showing first {$a} results';

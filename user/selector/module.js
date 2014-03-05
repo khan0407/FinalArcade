@@ -261,12 +261,24 @@ M.core_user.init_user_selector = function (Y, name, hash, extrafields, lastsearc
                     option.set('selected', false);
                 }
                 optgroup.append(option);
+<<<<<<< HEAD
+=======
+                if (user.infobelow) {
+                    extraoption = Y.Node.create('<option disabled="disabled" class="userselector-infobelow"/>');
+                    extraoption.appendChild(document.createTextNode(user.infobelow));
+                    optgroup.append(extraoption);
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 count++;
             }
 
             if (count > 0) {
                 optgroup.set('label', groupname+' ('+count+')');
+<<<<<<< HEAD
                 if (processsingle && count===1 && this.get_option('autoselectunique') && option.get('disabled')) {
+=======
+                if (processsingle && count===1 && this.get_option('autoselectunique') && option.get('disabled') == false) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     option.set('selected', true);
                 }
             } else {

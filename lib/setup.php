@@ -138,6 +138,25 @@ if (!defined('PHPUNIT_TEST')) {
     define('PHPUNIT_TEST', false);
 }
 
+<<<<<<< HEAD
+=======
+// When set to true MUC (Moodle caching) will be disabled as much as possible.
+// A special cache factory will be used to handle this situation and will use special "disabled" equivalents objects.
+// This ensure we don't attempt to read or create the config file, don't use stores, don't provide persistence or
+// storage of any kind.
+if (!defined('CACHE_DISABLE_ALL')) {
+    define('CACHE_DISABLE_ALL', false);
+}
+
+// When set to true MUC (Moodle caching) will not use any of the defined or default stores.
+// The Cache API will continue to function however this will force the use of the cachestore_dummy so all requests
+// will be interacting with a static property and will never go to the proper cache stores.
+// Useful if you need to avoid the stores for one reason or another.
+if (!defined('CACHE_DISABLE_STORES')) {
+    define('CACHE_DISABLE_STORES', false);
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Servers should define a default timezone in php.ini, but if they don't then make sure something is defined.
 // This is a quick hack.  Ideally we should ask the admin for a value.  See MDL-22625 for more on this.
 if (function_exists('date_default_timezone_set') and function_exists('date_default_timezone_get')) {
@@ -174,6 +193,10 @@ if (defined('WEB_CRON_EMULATED_CLI')) {
 if (file_exists("$CFG->dataroot/climaintenance.html")) {
     if (!CLI_SCRIPT) {
         header('Content-type: text/html; charset=utf-8');
+<<<<<<< HEAD
+=======
+        header('X-UA-Compatible: IE=edge');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         /// Headers to make it not cacheable and json
         header('Cache-Control: no-store, no-cache, must-revalidate');
         header('Cache-Control: post-check=0, pre-check=0', false);
@@ -222,7 +245,11 @@ umask(0000);
 
 // exact version of currently used yui2 and 3 library
 $CFG->yui2version = '2.9.0';
+<<<<<<< HEAD
 $CFG->yui3version = '3.5.1';
+=======
+$CFG->yui3version = '3.7.3';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 
 // special support for highly optimised scripts that do not need libraries and DB connection
@@ -336,6 +363,7 @@ global $COURSE;
 global $OUTPUT;
 
 /**
+<<<<<<< HEAD
  * Shared memory cache.
  * @global object $MCACHE
  * @name $MCACHE
@@ -343,6 +371,8 @@ global $OUTPUT;
 global $MCACHE;
 
 /**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Cache used within grouplib to cache data within current request only.
  *
  * @global object $GROUPLLIB_CACHE
@@ -468,6 +498,10 @@ require_once($CFG->libdir .'/sessionlib.php');      // All session and cookie re
 require_once($CFG->libdir .'/editorlib.php');       // All text editor related functions and classes
 require_once($CFG->libdir .'/messagelib.php');      // Messagelib functions
 require_once($CFG->libdir .'/modinfolib.php');      // Cached information on course-module instances
+<<<<<<< HEAD
+=======
+require_once($CFG->dirroot.'/cache/lib.php');       // Cache API
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // make sure PHP is not severly misconfigured
 setup_validate_php_configuration();
@@ -582,6 +616,7 @@ if (!empty($CFG->version) and $CFG->version < 2007101509) {
     die;
 }
 
+<<<<<<< HEAD
 // Shared-Memory cache init -- will set $MCACHE
 // $MCACHE is a global object that offers at least add(), set() and delete()
 // with similar semantics to the memcached PHP API http://php.net/memcache
@@ -618,6 +653,8 @@ if (!empty($CFG->cachetype)) {
     $CFG->rcache    = false;
 }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Calculate and set $CFG->ostype to be used everywhere. Possible values are:
 // - WINDOWS: for any Windows flavour.
 // - UNIX: for the rest
@@ -737,6 +774,13 @@ if (!empty($CFG->profilingenabled)) {
     }
 }
 
+<<<<<<< HEAD
+=======
+// Hack to get around max_input_vars restrictions,
+// we need to do this after session init to have some basic DDoS protection.
+workaround_max_input_vars();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Process theme change in the URL.
 if (!empty($CFG->allowthemechangeonurl) and !empty($_GET['theme'])) {
     // we have to use _GET directly because we do not want this to interfere with _POST
@@ -791,6 +835,12 @@ moodle_setlocale();
 
 // Create the $PAGE global - this marks the PAGE and OUTPUT fully initialised, this MUST be done at the end of setup!
 if (!empty($CFG->moodlepageclass)) {
+<<<<<<< HEAD
+=======
+    if (!empty($CFG->moodlepageclassfile)) {
+        require_once($CFG->moodlepageclassfile);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $classname = $CFG->moodlepageclass;
 } else {
     $classname = 'moodle_page';

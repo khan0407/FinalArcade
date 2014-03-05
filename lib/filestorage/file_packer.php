@@ -63,9 +63,16 @@ abstract class file_packer {
      *
      * @param stored_file|string $archivefile full pathname of zip file or stored_file instance
      * @param string $pathname target directory
+<<<<<<< HEAD
      * @return array|bool list of processed files; false if error
      */
     public abstract function extract_to_pathname($archivefile, $pathname);
+=======
+     * @param array $onlyfiles only extract files present in the array
+     * @return array|bool list of processed files; false if error
+     */
+    public abstract function extract_to_pathname($archivefile, $pathname, array $onlyfiles = NULL);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * Extract file to given file path (real OS filesystem), existing files are overwrited
@@ -84,7 +91,11 @@ abstract class file_packer {
     /**
      * Returns array of info about all files in archive
      *
+<<<<<<< HEAD
      * @param file_archive $archivefile
+=======
+     * @param string|file_archive $archivefile
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @return array of file infos
      */
     public abstract function list_files($archivefile);

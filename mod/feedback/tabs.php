@@ -35,10 +35,14 @@ if (isset($cmid) AND intval($cmid) AND $cmid > 0) {
     $usedid = $id;
 }
 
+<<<<<<< HEAD
 if (!$context = get_context_instance(CONTEXT_MODULE, $usedid)) {
         print_error('badcontext');
 }
 
+=======
+$context = context_module::instance($usedid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $courseid = optional_param('courseid', false, PARAM_INT);
 // $current_tab = $SESSION->feedback->current_tab;

@@ -77,16 +77,24 @@ if (! $basicltis = get_all_instances_in_course("lti", $course)) {
 // Print the list of instances (your module will probably extend this)
 $timenow = time();
 $strname = get_string("name");
+<<<<<<< HEAD
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
 $usesections = course_format_uses_sections($course->format);
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
+=======
+$usesections = course_format_uses_sections($course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname);
     $table->align = array ("center", "left");
 } else {
@@ -102,8 +110,13 @@ foreach ($basicltis as $basiclti) {
         $link = "<a href=\"view.php?id=$basiclti->coursemodule\">$basiclti->name</a>";
     }
 
+<<<<<<< HEAD
     if ($course->format == "weeks" or $course->format == "topics") {
         $table->data[] = array ($basiclti->section, $link);
+=======
+    if ($usesections) {
+        $table->data[] = array (get_section_name($course, $basiclti->section), $link);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $table->data[] = array ($link);
     }

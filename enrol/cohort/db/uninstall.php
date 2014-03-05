@@ -17,8 +17,12 @@
 /**
  * Meta link enrolment plugin uninstallation.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage cohort
+=======
+ * @package    enrol_cohort
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -38,4 +42,8 @@ function xmldb_enrol_cohort_uninstall() {
     role_unassign_all(array('component'=>'enrol_cohort'));
 
     return true;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

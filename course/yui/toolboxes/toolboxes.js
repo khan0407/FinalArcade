@@ -64,7 +64,11 @@ YUI.add('moodle-course-toolboxes', function(Y) {
             var toggle_class;
             if (this.is_label(element)) {
                 toggle_class = CSS.DIMMEDTEXT;
+<<<<<<< HEAD
                 dimarea = element.one(CSS.MODINDENTDIV + ' div');
+=======
+                dimarea = element.all(CSS.MODINDENTDIV + ' > div').item(1);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             } else {
                 toggle_class = CSS.DIMCLASS;
                 dimarea = element.one('a');
@@ -478,6 +482,10 @@ YUI.add('moodle-course-toolboxes', function(Y) {
         edit_resource_title : function(e) {
             // Get the element we're working on
             var element = e.target.ancestor(CSS.ACTIVITYLI);
+<<<<<<< HEAD
+=======
+            var elementdiv = element.one('div');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             var instancename  = element.one(CSS.INSTANCENAME);
             var currenttitle = instancename.get('firstChild');
             var oldtitle = currenttitle.get('data');
@@ -514,20 +522,36 @@ YUI.add('moodle-course-toolboxes', function(Y) {
                 })
                 .addClass('titleeditor');
             var editform = Y.Node.create('<form />')
+<<<<<<< HEAD
                 .setStyle('padding', '0')
                 .setStyle('display', 'inline')
                 .setAttribute('action', '#');
 
+=======
+                .addClass('activityinstance')
+                .setAttribute('action', '#');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             var editinstructions = Y.Node.create('<span />')
                 .addClass('editinstructions')
                 .setAttrs({'id' : 'id_editinstructions'})
                 .set('innerHTML', M.util.get_string('edittitleinstructions', 'moodle'));
+<<<<<<< HEAD
 
             // Clear the existing content and put the editor in
             currenttitle.set('data', '');
             editform.appendChild(editor);
             anchor.replace(editform);
             element.appendChild(editinstructions);
+=======
+            var activityicon = element.one('img.activityicon').cloneNode();
+
+            // Clear the existing content and put the editor in
+            currenttitle.set('data', '');
+            editform.appendChild(activityicon);
+            editform.appendChild(editor);
+            anchor.replace(editform);
+            elementdiv.appendChild(editinstructions);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             e.preventDefault();
 
             // Focus and select the editor text

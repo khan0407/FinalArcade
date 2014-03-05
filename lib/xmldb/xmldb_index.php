@@ -34,6 +34,12 @@ class xmldb_index extends xmldb_object {
     /** @var array index fields */
     protected $fields;
 
+<<<<<<< HEAD
+=======
+    /** @var array index hints */
+    protected $hints;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Note:
      *  - MySQL: MyISAM has a limit of 1000 bytes for any key including composed, InnoDB has limit 3500 bytes.
@@ -54,6 +60,7 @@ class xmldb_index extends xmldb_object {
      * Creates one new xmldb_index
      *
      * @param string $name
+<<<<<<< HEAD
      * @param string type XMLDB_INDEX_UNIQUE, XMLDB_INDEX_NOTUNIQUE
      * @param array fields an array of fieldnames to build the index over
      */
@@ -62,6 +69,18 @@ class xmldb_index extends xmldb_object {
         $this->fields = array();
         parent::__construct($name);
         $this->set_attributes($type, $fields);
+=======
+     * @param string $type XMLDB_INDEX_UNIQUE, XMLDB_INDEX_NOTUNIQUE
+     * @param array $fields an array of fieldnames to build the index over
+     * @param array $hints an array of optional hints
+     */
+    public function __construct($name, $type=null, $fields=array(), $hints=array()) {
+        $this->unique = false;
+        $this->fields = array();
+        $this->hints = array();
+        parent::__construct($name);
+        $this->set_attributes($type, $fields, $hints);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -69,10 +88,19 @@ class xmldb_index extends xmldb_object {
      *
      * @param string type XMLDB_INDEX_UNIQUE, XMLDB_INDEX_NOTUNIQUE
      * @param array fields an array of fieldnames to build the index over
+<<<<<<< HEAD
      */
     public function set_attributes($type, $fields) {
         $this->unique = !empty($type) ? true : false;
         $this->fields = $fields;
+=======
+     * @param array $hints array of optional hints
+     */
+    public function set_attributes($type, $fields, $hints = array()) {
+        $this->unique = !empty($type) ? true : false;
+        $this->fields = $fields;
+        $this->hints = $hints;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -108,6 +136,25 @@ class xmldb_index extends xmldb_object {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Set optional index hints.
+     * @param array $hints
+     */
+    public function setHints($hints) {
+        $this->hints = $hints;
+    }
+
+    /**
+     * Returns optional index hints.
+     * @return array
+     */
+    public function getHints() {
+        return $this->hints;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Load data from XML to the index
      * @param $xmlarr array
      * @return bool
@@ -173,6 +220,18 @@ class xmldb_index extends xmldb_object {
         // Finally, set the array of fields
         $this->fields = $fieldsarr;
 
+<<<<<<< HEAD
+=======
+        if (isset($xmlarr['@']['HINTS'])) {
+            $this->hints = array();
+            $hints = strtolower(trim($xmlarr['@']['HINTS']));
+            if ($hints !== '') {
+                $hints = explode(',', $hints);
+                $this->hints = array_map('trim', $hints);
+            }
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (isset($xmlarr['@']['COMMENT'])) {
             $this->comment = trim($xmlarr['@']['COMMENT']);
         }
@@ -201,7 +260,11 @@ class xmldb_index extends xmldb_object {
         if (!$this->loaded) {
             $this->hash = null;
         } else {
+<<<<<<< HEAD
             $key = $this->unique . implode (', ', $this->fields);
+=======
+            $key = $this->unique . implode (', ', $this->fields) . implode (', ', $this->hints);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->hash = md5($key);
         }
     }
@@ -220,6 +283,12 @@ class xmldb_index extends xmldb_object {
         }
         $o.= ' UNIQUE="' . $unique . '"';
         $o.= ' FIELDS="' . implode(', ', $this->fields) . '"';
+<<<<<<< HEAD
+=======
+        if ($this->hints) {
+            $o.= ' HINTS="' . implode(', ', $this->hints) . '"';
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($this->comment) {
             $o.= ' COMMENT="' . htmlspecialchars($this->comment) . '"';
         }
@@ -274,6 +343,15 @@ class xmldb_index extends xmldb_object {
         } else {
             $result .= 'null';
         }
+<<<<<<< HEAD
+=======
+        // Hints
+        $hints = $this->getHints();
+        if (!empty($hints)) {
+            $result .= ', array(' . "'".  implode("', '", $hints) . "')";
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Return result
         return $result;
     }
@@ -293,6 +371,13 @@ class xmldb_index extends xmldb_object {
         // fields
         $o .= ' (' . implode(', ', $this->fields) . ')';
 
+<<<<<<< HEAD
+=======
+        if ($this->hints) {
+            $o .= ' [' . implode(', ', $this->hints) . ']';
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $o;
     }
 

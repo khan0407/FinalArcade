@@ -23,5 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 $string['pluginname'] = 'behaviour for information items';
+=======
+$string['pluginname'] = 'Behaviour for information items';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['seen'] = 'Seen';

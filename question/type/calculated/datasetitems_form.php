@@ -79,7 +79,11 @@ class question_dataset_dependent_items_form extends question_wizard_form {
             print_error('categorydoesnotexist', 'question', $returnurl);
         }
         $this->category = $category;
+<<<<<<< HEAD
         $this->categorycontext = get_context_instance_by_id($category->contextid);
+=======
+        $this->categorycontext = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         //get the dataset defintions for this question
         if (empty($question->id)) {
             $this->datasetdefs = $this->qtypeobj->get_dataset_definitions(
@@ -138,7 +142,11 @@ class question_dataset_dependent_items_form extends question_wizard_form {
                 $name = get_string('wildcard', 'qtype_calculated', $datasetdef->name);
             }
             $mform->addElement('text', "number[$j]", $name);
+<<<<<<< HEAD
             $mform->setType("number[$j]", PARAM_NUMBER);
+=======
+            $mform->setType("number[$j]", PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->qtypeobj->custom_generator_tools_part($mform, $idx, $j);
             $idx++;
             $mform->addElement('hidden', "definition[$j]");
@@ -288,7 +296,11 @@ class question_dataset_dependent_items_form extends question_wizard_form {
                 } else {
                     $mform->addElement('hidden', "number[$j]" , '');
                 }
+<<<<<<< HEAD
                 $mform->setType("number[$j]", PARAM_NUMBER);
+=======
+                $mform->setType("number[$j]", PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $mform->addElement('hidden', "itemid[$j]");
                 $mform->setType("itemid[$j]", PARAM_INT);
 

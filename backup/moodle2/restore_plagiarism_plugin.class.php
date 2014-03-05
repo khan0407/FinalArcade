@@ -44,7 +44,11 @@ abstract class restore_plagiarism_plugin extends restore_plugin {
         require_once($CFG->libdir . '/plagiarismlib.php');
         $enabledplugins = plagiarism_load_available_plugins();
         if (!array_key_exists($this->pluginname, $enabledplugins)) {
+<<<<<<< HEAD
             return;
+=======
+            return array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return parent::define_plugin_structure($connectionpoint);
     }

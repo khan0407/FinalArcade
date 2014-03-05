@@ -32,7 +32,10 @@ echo $OUTPUT->header();
           onsubmit="return empty_field_and_submit();">
         <label class="accesshide" for="chat_message"><?php print_string('entermessage', 'chat'); ?></label>
         <input type="text" name="chat_message" id="chat_message" size="60" value="" />
+<<<<<<< HEAD
         <?php echo $OUTPUT->help_icon('usingchat', 'chat'); ?>
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     </form>
 
     <form action="<?php echo "http://$CFG->chat_serverhost:$CFG->chat_serverport/"; ?>" method="get" target="empty" id="sendform">

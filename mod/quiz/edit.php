@@ -73,7 +73,11 @@ function module_specific_buttons($cmid, $cmoptions) {
 function module_specific_controls($totalnumber, $recurse, $category, $cmid, $cmoptions) {
     global $OUTPUT;
     $out = '';
+<<<<<<< HEAD
     $catcontext = get_context_instance_by_id($category->contextid);
+=======
+    $catcontext = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (has_capability('moodle/question:useall', $catcontext)) {
         if ($cmoptions->hasattempts) {
             $disabled = ' disabled="disabled"';
@@ -327,7 +331,11 @@ if (optional_param('savechanges', false, PARAM_BOOL) && confirm_sesskey()) {
             $questionid = $matches[2];
             // Make sure two questions don't overwrite each other. If we get a second
             // question with the same position, shift the second one along to the next gap.
+<<<<<<< HEAD
             $value = clean_param($value, PARAM_INTEGER);
+=======
+            $value = clean_param($value, PARAM_INT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             while (array_key_exists($value, $questions)) {
                 $value++;
             }
@@ -405,8 +413,11 @@ $questionbank->process_actions($thispageurl, $cm);
 
 // End of process commands =====================================================
 
+<<<<<<< HEAD
 $PAGE->requires->yui2_lib('container');
 $PAGE->requires->yui2_lib('dragdrop');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->requires->skip_link_to('questionbank',
         get_string('skipto', 'access', get_string('questionbank', 'question')));
 $PAGE->requires->skip_link_to('quizcontentsblock',
@@ -429,8 +440,19 @@ for ($pageiter = 1; $pageiter <= $numberoflisteners; $pageiter++) {
 }
 $PAGE->requires->data_for_js('quiz_edit_config', $quizeditconfig);
 $PAGE->requires->js('/question/qengine.js');
+<<<<<<< HEAD
 $PAGE->requires->js('/mod/quiz/edit.js');
 $PAGE->requires->js_init_call('quiz_edit_init');
+=======
+$module = array(
+    'name'      => 'mod_quiz_edit',
+    'fullpath'  => '/mod/quiz/edit.js',
+    'requires'  => array('yui2-dom', 'yui2-event', 'yui2-container'),
+    'strings'   => array(),
+    'async'     => false,
+);
+$PAGE->requires->js_init_call('quiz_edit_init', null, false, $module);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Print the tabs to switch mode.
 if ($quiz_reordertool) {

@@ -120,4 +120,22 @@ class restore_data_activity_task extends restore_activity_task {
 
         return $rules;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Given a commment area, return the itemname that contains the itemid mappings.
+     *
+     * @param string $commentarea Comment area name e.g. database_entry.
+     * @return string name of the mapping used to determine the itemid.
+     */
+    public function get_comment_mapping_itemname($commentarea) {
+        if ($commentarea == 'database_entry') {
+            $itemname = 'data_record';
+        } else {
+            $itemname = parent::get_comment_mapping_itemname($commentarea);
+        }
+        return $itemname;
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

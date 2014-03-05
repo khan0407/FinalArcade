@@ -88,7 +88,11 @@ if ($id) {
 
 require_login($course, true, $cm);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/data:managetemplates', $context);
 
 /************************************
@@ -305,10 +309,16 @@ if (($mode == 'new') && (!empty($newtype)) && confirm_sesskey()) {          /// 
 
 
     echo '<div class="fieldadd">';
+<<<<<<< HEAD
     echo '<label for="fieldform_jump">'.get_string('newfield','data').'</label>';
     $popupurl = $CFG->wwwroot.'/mod/data/field.php?d='.$data->id.'&mode=new&sesskey='.  sesskey();
     echo $OUTPUT->single_select(new moodle_url($popupurl), 'newtype', $menufield, null, array(''=>'choosedots'), 'fieldform');
     echo $OUTPUT->help_icon('newfield', 'data');
+=======
+    echo '<label for="fieldform_jump">'.get_string('newfield','data').$OUTPUT->help_icon('newfield', 'data').'</label>';
+    $popupurl = $CFG->wwwroot.'/mod/data/field.php?d='.$data->id.'&mode=new&sesskey='.  sesskey();
+    echo $OUTPUT->single_select(new moodle_url($popupurl), 'newtype', $menufield, null, array(''=>'choosedots'), 'fieldform');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo '</div>';
 
     echo '<div class="sortdefault">';

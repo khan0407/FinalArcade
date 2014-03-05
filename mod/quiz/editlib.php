@@ -183,7 +183,11 @@ function quiz_add_random_questions($quiz, $addonpage, $categoryid, $number,
         print_error('invalidcategoryid', 'error');
     }
 
+<<<<<<< HEAD
     $catcontext = get_context_instance_by_id($category->contextid);
+=======
+    $catcontext = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     require_capability('moodle/question:useall', $catcontext);
 
     // Find existing random questions in this category that are
@@ -433,7 +437,11 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
         $pagingdisabled . ' />';
 
     $reordercontrols2top = '<div class="moveselectedonpage">' .
+<<<<<<< HEAD
         get_string('moveselectedonpage', 'quiz', $a) .
+=======
+        '<label>' . get_string('moveselectedonpage', 'quiz', $a) . '</label>' .
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         '<input type="submit" name="savechanges" value="' .
         $strmove . '"  ' . $pagingdisabled . ' />' . '
         <br /><input type="submit" name="savechanges" value="' .
@@ -441,7 +449,11 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
     $reordercontrols2bottom = '<div class="moveselectedonpage">' .
         '<input type="submit" name="savechanges" value="' .
         $strreorderquestions . '" /><br />' .
+<<<<<<< HEAD
         get_string('moveselectedonpage', 'quiz', $b) .
+=======
+        '<label>' . get_string('moveselectedonpage', 'quiz', $b) . '</label>' .
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         '<input type="submit" name="savechanges" value="' .
         $strmove . '"  ' . $pagingdisabled . ' /> ' . '</div>';
 
@@ -650,7 +662,14 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
                         ?>
 <div class="qorder">
                         <?php
+<<<<<<< HEAD
                         echo '<input type="text" name="o' . $question->id .
+=======
+                        echo '<label class="accesshide" for="o' . $question->id . '">' .
+                                get_string('questionposition', 'quiz', $qnodisplay) . '</label>';
+                        echo '<input type="text" name="o' . $question->id .
+                                '" id="o' . $question->id . '"' .
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                 '" size="2" value="' . (10*$count + 10) .
                                 '" tabindex="' . ($lastindex + $qno) . '" />';
                         ?>
@@ -744,7 +763,11 @@ function quiz_print_pagecontrols($quiz, $pageurl, $page, $hasattempts,
     echo '<div class="pagecontrols">';
 
     // Get the current context.
+<<<<<<< HEAD
     $thiscontext = get_context_instance(CONTEXT_COURSE, $quiz->course);
+=======
+    $thiscontext = context_course::instance($quiz->course);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $contexts = new question_edit_contexts($thiscontext);
 
     // Get the default category.
@@ -1010,12 +1033,17 @@ function quiz_question_tostring($question, $showicon = false,
     }
     $result .= shorten_text(format_string($question->name), 200) . '</span>';
     if ($showquestiontext) {
+<<<<<<< HEAD
         $formatoptions = new stdClass();
         $formatoptions->noclean = true;
         $formatoptions->para = false;
         $questiontext = strip_tags(format_text($question->questiontext,
                 $question->questiontextformat,
                 $formatoptions, $COURSE->id));
+=======
+        $questiontext = question_utils::to_plain_text($question->questiontext,
+                $question->questiontextformat, array('noclean' => true, 'para' => false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $questiontext = shorten_text($questiontext, 200);
         $result .= '<span class="questiontext">';
         if (!empty($questiontext)) {

@@ -80,7 +80,11 @@ class profile_field_menu extends profile_field_base {
         if (!$mform->elementExists($this->inputname)) {
             return;
         }
+<<<<<<< HEAD
         if ($this->is_locked() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+        if ($this->is_locked() and !has_capability('moodle/user:update', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $mform->hardFreeze($this->inputname);
             $mform->setConstant($this->inputname, $this->datakey);
         }

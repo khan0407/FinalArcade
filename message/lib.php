@@ -26,12 +26,15 @@ require_once($CFG->libdir.'/eventslib.php');
 
 define ('MESSAGE_SHORTLENGTH', 300);
 
+<<<<<<< HEAD
 //$PAGE isnt set if we're being loaded by cron which doesnt display popups anyway
 if (isset($PAGE)) {
     //TODO: this is a mega crazy hack - it is not acceptable to call anything when including lib!!! (skodak)
     $PAGE->set_popup_notification_allowed(false); // We are in a message window (so don't pop up a new one)
 }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 define ('MESSAGE_DISCUSSION_WIDTH',600);
 define ('MESSAGE_DISCUSSION_HEIGHT',500);
 
@@ -544,7 +547,11 @@ function message_get_course_contexts($courses) {
     $coursecontexts = array();
 
     foreach($courses as $course) {
+<<<<<<< HEAD
         $coursecontexts[$course->id] = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $coursecontexts[$course->id] = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return $coursecontexts;
@@ -850,7 +857,11 @@ function message_print_recent_notifications($user=null) {
 
     $showicontext = false;
     $showotheruser = false;
+<<<<<<< HEAD
     message_print_recent_messages_table($notifications, $user, $showotheruser, $showicontext);
+=======
+    message_print_recent_messages_table($notifications, $user, $showotheruser, $showicontext, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -860,6 +871,10 @@ function message_print_recent_notifications($user=null) {
  * @param object $user the current user
  * @param bool $showotheruser display information on the other user?
  * @param bool $showicontext show text next to the action icons?
+<<<<<<< HEAD
+=======
+ * @param bool $forcetexttohtml Force text to go through @see text_to_html() via @see format_text()
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @return void
  */
 function message_print_recent_messages_table($messages, $user = null, $showotheruser = true, $showicontext = false, $forcetexttohtml = false, $showactionlinks = true) {
@@ -925,7 +940,11 @@ function message_print_recent_messages_table($messages, $user = null, $showother
         }
 
         echo html_writer::tag('span', userdate($message->timecreated, $dateformat), array('class' => 'messagedate'));
+<<<<<<< HEAD
         echo html_writer::tag('span', format_text($messagetoprint, FORMAT_HTML), array('class' => 'themessage'));
+=======
+        echo html_writer::tag('span', format_text($messagetoprint, $forcetexttohtml?FORMAT_MOODLE:FORMAT_HTML), array('class' => 'themessage'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo message_format_contexturl($message);
         echo html_writer::end_tag('div');//end singlemessage
     }
@@ -1300,7 +1319,14 @@ function message_print_user ($user=false, $iscontact=false, $isblocked=false, $i
         echo $OUTPUT->user_picture($USER, array('size' => 20, 'courseid' => SITEID));
     } else {
         echo $OUTPUT->user_picture($user, array('size' => 20, 'courseid' => SITEID));
+<<<<<<< HEAD
         echo '&nbsp;';
+=======
+
+        $link = new moodle_url("/message/index.php?id=$user->id");
+        echo $OUTPUT->action_link($link, fullname($user), null, array('title' =>
+                get_string('sendmessageto', 'message', fullname($user))));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $return = false;
         $script = null;
@@ -1309,12 +1335,17 @@ function message_print_user ($user=false, $iscontact=false, $isblocked=false, $i
         } else {
             message_contact_link($user->id, 'add', $return, $script, $includeicontext);
         }
+<<<<<<< HEAD
         echo '&nbsp;';
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($isblocked) {
             message_contact_link($user->id, 'unblock', $return, $script, $includeicontext);
         } else {
             message_contact_link($user->id, 'block', $return, $script, $includeicontext);
         }
+<<<<<<< HEAD
 
         $popupoptions = array(
                 'height' => MESSAGE_DISCUSSION_HEIGHT,
@@ -1330,6 +1361,8 @@ function message_print_user ($user=false, $iscontact=false, $isblocked=false, $i
         $action = null;
         echo $OUTPUT->action_link($link, fullname($user), $action, array('title' => get_string('sendmessageto', 'message', fullname($user))));
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 
@@ -1381,6 +1414,7 @@ function message_contact_link($userid, $linktype='add', $return=false, $script=n
                 $iconpath = 't/block';
                 break;
             case 'unblock':
+<<<<<<< HEAD
                 $iconpath = 't/userblue';
                 break;
             case 'remove':
@@ -1389,6 +1423,16 @@ function message_contact_link($userid, $linktype='add', $return=false, $script=n
             case 'add':
             default:
                 $iconpath = 't/addgreen';
+=======
+                $iconpath = 't/unblock';
+                break;
+            case 'remove':
+                $iconpath = 't/removecontact';
+                break;
+            case 'add':
+            default:
+                $iconpath = 't/addcontact';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $img = '<img src="'.$OUTPUT->pix_url($iconpath).'" class="iconsmall" alt="'.$safealttext.'" />';
@@ -1435,9 +1479,15 @@ function message_history_link($userid1, $userid2, $return=false, $keywords='', $
     }
 
     if ($linktext == 'icon') {  // Icon only
+<<<<<<< HEAD
         $fulllink = '<img src="'.$OUTPUT->pix_url('t/log') . '" class="iconsmall" alt="'.$strmessagehistory.'" />';
     } else if ($linktext == 'both') {  // Icon and standard name
         $fulllink = '<img src="'.$OUTPUT->pix_url('t/log') . '" class="iconsmall" alt="" />';
+=======
+        $fulllink = '<img src="'.$OUTPUT->pix_url('t/messages') . '" class="iconsmall" alt="'.$strmessagehistory.'" />';
+    } else if ($linktext == 'both') {  // Icon and standard name
+        $fulllink = '<img src="'.$OUTPUT->pix_url('t/messages') . '" class="iconsmall" alt="" />';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $fulllink .= '&nbsp;'.$strmessagehistory;
     } else if ($linktext) {    // Custom name
         $fulllink = $linktext;
@@ -1510,7 +1560,11 @@ function message_search_users($courseid, $searchtext, $sort='', $exceptions='') 
                                      $order", $params);
     } else {
 //TODO: add enabled enrolment join here (skodak)
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+        $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $contextlists = get_related_contexts_string($context);
 
         // everyone who has a role assignment in this course or higher
@@ -1546,8 +1600,13 @@ function message_search_users($courseid, $searchtext, $sort='', $exceptions='') 
 function message_search($searchterms, $fromme=true, $tome=true, $courseid='none', $userid=0) {
     global $CFG, $USER, $DB;
 
+<<<<<<< HEAD
     // If user is searching all messages check they are allowed to before doing anything else
     if ($courseid == SITEID && !has_capability('moodle/site:readallmessages', get_context_instance(CONTEXT_SYSTEM))) {
+=======
+    // If user is searching all messages check they are allowed to before doing anything else.
+    if ($courseid == SITEID && !has_capability('moodle/site:readallmessages', context_system::instance())) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         print_error('accessdenied','admin');
     }
 
@@ -1860,8 +1919,12 @@ function message_print_message_history($user1, $user2 ,$search = '', $messagelim
     echo html_writer::end_tag('td');
 
     echo html_writer::start_tag('td', array('align' => 'center'));
+<<<<<<< HEAD
     echo html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/left'), 'alt' => get_string('from')));
     echo html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/right'), 'alt' => get_string('to')));
+=======
+    echo html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('i/twoway'), 'alt' => ''));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     echo html_writer::end_tag('td');
 
     echo html_writer::start_tag('td', array('align' => 'center', 'id' => 'user2'));
@@ -1981,7 +2044,16 @@ function message_format_message($message, $format='', $keywords='', $class='othe
 
     $messagetext = clean_text($messagetext, FORMAT_HTML);
 
+<<<<<<< HEAD
     return '<div class="message '.$class.'"><a name="m'.$message->id.'"></a> <span class="time">'.$time.'</span>: <span class="content">'.$messagetext.'</span></div>';
+=======
+    return <<<TEMPLATE
+<div class='message $class'>
+    <a name="m'.{$message->id}.'"></a>
+    <span class="message-meta"><span class="time">$time</span></span>: <span class="text">$messagetext</span>
+</div>
+TEMPLATE;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -2043,7 +2115,11 @@ function message_post_message($userfrom, $userto, $message, $format) {
     $eventdata->smallmessage     = $message;//store the message unfiltered. Clean up on output.
 
     $s = new stdClass();
+<<<<<<< HEAD
     $s->sitename = format_string($SITE->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+=======
+    $s->sitename = format_string($SITE->shortname, true, array('context' => context_course::instance(SITEID)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $s->url = $CFG->wwwroot.'/message/index.php?user='.$userto->id.'&id='.$userfrom->id;
 
     $emailtagline = get_string_manager()->get_string('emailtagline', 'message', $s, $userto->lang);

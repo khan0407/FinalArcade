@@ -258,28 +258,48 @@ define('PARAM_CLEAN',    'clean');
 
 /**
  * PARAM_INTEGER - deprecated alias for PARAM_INT
+<<<<<<< HEAD
+=======
+ * @deprecated since 2.0
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 define('PARAM_INTEGER',  'int');
 
 /**
  * PARAM_NUMBER - deprecated alias of PARAM_FLOAT
+<<<<<<< HEAD
+=======
+ * @deprecated since 2.0
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 define('PARAM_NUMBER',  'float');
 
 /**
  * PARAM_ACTION - deprecated alias for PARAM_ALPHANUMEXT, use for various actions in forms and urls
  * NOTE: originally alias for PARAM_APLHA
+<<<<<<< HEAD
+=======
+ * @deprecated since 2.0
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 define('PARAM_ACTION',   'alphanumext');
 
 /**
  * PARAM_FORMAT - deprecated alias for PARAM_ALPHANUMEXT, use for names of plugins, formats, etc.
  * NOTE: originally alias for PARAM_APLHA
+<<<<<<< HEAD
+=======
+ * @deprecated since 2.0
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 define('PARAM_FORMAT',   'alphanumext');
 
 /**
  * PARAM_MULTILANG - deprecated alias of PARAM_TEXT.
+<<<<<<< HEAD
+=======
+ * @deprecated since 2.0
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 define('PARAM_MULTILANG',  'text');
 
@@ -391,6 +411,11 @@ define('FEATURE_GRADE_OUTCOMES', 'outcomes');
 define('FEATURE_ADVANCED_GRADING', 'grade_advanced_grading');
 /** True if module controls the grade visibility over the gradebook */
 define('FEATURE_CONTROLS_GRADE_VISIBILITY', 'controlsgradevisbility');
+<<<<<<< HEAD
+=======
+/** True if module supports plagiarism plugins */
+define('FEATURE_PLAGIARISM', 'plagiarism');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 /** True if module has code to track whether somebody viewed it */
 define('FEATURE_COMPLETION_TRACKS_VIEWS', 'completion_tracks_views');
@@ -784,7 +809,10 @@ function clean_param($param, $type) {
             return (int)$param;  // Convert to integer
 
         case PARAM_FLOAT:
+<<<<<<< HEAD
         case PARAM_NUMBER:
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return (float)$param;  // Convert to float
 
         case PARAM_ALPHA:        // Remove everything not a-z
@@ -1457,7 +1485,11 @@ function get_users_from_config($value, $capability, $includeadmins = true) {
     // we have to make sure that users still have the necessary capability,
     // it should be faster to fetch them all first and then test if they are present
     // instead of validating them one-by-one
+<<<<<<< HEAD
     $users = get_users_by_capability(get_context_instance(CONTEXT_SYSTEM), $capability);
+=======
+    $users = get_users_by_capability(context_system::instance(), $capability);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($includeadmins) {
         $admins = get_admins();
         foreach ($admins as $admin) {
@@ -1484,6 +1516,13 @@ function get_users_from_config($value, $capability, $includeadmins = true) {
 
 /**
  * Invalidates browser caches and cached data in temp
+<<<<<<< HEAD
+=======
+ *
+ * IMPORTANT - If you are adding anything here to do with the cache directory you should also have a look at
+ * {@see phpunit_util::reset_dataroot()}
+ *
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @return void
  */
 function purge_all_caches() {
@@ -1495,6 +1534,11 @@ function purge_all_caches() {
     get_string_manager()->reset_caches();
     textlib::reset_caches();
 
+<<<<<<< HEAD
+=======
+    cache_helper::purge_all();
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // purge all other caches: rss, simplepie, etc.
     remove_dir($CFG->cachedir.'', true);
 
@@ -1580,7 +1624,11 @@ function set_cache_flag($type, $name, $value, $expiry=NULL) {
 
     if ($f = $DB->get_record('cache_flags', array('name'=>$name, 'flagtype'=>$type), '*', IGNORE_MULTIPLE)) { // this is a potential problem in DEBUG_DEVELOPER
         if ($f->value == $value and $f->expiry == $expiry and $f->timemodified == $timemodified) {
+<<<<<<< HEAD
             return true; //no need to update; helps rcache too
+=======
+            return true; //no need to update
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $f->value        = $value;
         $f->expiry       = $expiry;
@@ -2800,6 +2848,17 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
         $setwantsurltome = false;
     }
 
+<<<<<<< HEAD
+=======
+    // Redirect to the login page if session has expired, only with dbsessions enabled (MDL-35029) to maintain current behaviour.
+    if ((!isloggedin() or isguestuser()) && !empty($SESSION->has_timed_out) && !$preventredirect && !empty($CFG->dbsessions)) {
+        if ($setwantsurltome) {
+            $SESSION->wantsurl = qualified_me();
+        }
+        redirect(get_login_url());
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // If the user is not even logged in yet then make sure they are
     if (!isloggedin()) {
         if ($autologinguest and !empty($CFG->guestloginbutton) and !empty($CFG->autologinguests)) {
@@ -2906,10 +2965,17 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
     }
 
     // Fetch the system context, the course context, and prefetch its child contexts
+<<<<<<< HEAD
     $sysctx = get_context_instance(CONTEXT_SYSTEM);
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
     if ($cm) {
         $cmcontext = get_context_instance(CONTEXT_MODULE, $cm->id, MUST_EXIST);
+=======
+    $sysctx = context_system::instance();
+    $coursecontext = context_course::instance($course->id, MUST_EXIST);
+    if ($cm) {
+        $cmcontext = context_module::instance($cm->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $cmcontext = null;
     }
@@ -3065,7 +3131,16 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
         if ($preventredirect) {
             throw new require_login_exception('Activity is hidden');
         }
+<<<<<<< HEAD
         redirect($CFG->wwwroot, get_string('activityiscurrentlyhidden'));
+=======
+        if ($course->id != SITEID) {
+            $url = new moodle_url('/course/view.php', array('id'=>$course->id));
+        } else {
+            $url = new moodle_url('/');
+        }
+        redirect($url, get_string('activityiscurrentlyhidden'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     // Finally access granted, update lastaccess times
@@ -3647,6 +3722,15 @@ function get_user_field_name($field) {
     // Some fields have language strings which are not the same as field name
     switch ($field) {
         case 'phone1' : return get_string('phone');
+<<<<<<< HEAD
+=======
+        case 'url' : return get_string('webpage');
+        case 'icq' : return get_string('icqnumber');
+        case 'skype' : return get_string('skypeid');
+        case 'aim' : return get_string('aimid');
+        case 'yahoo' : return get_string('yahooid');
+        case 'msn' : return get_string('msnid');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
     // Otherwise just use the same lang string
     return get_string($field);
@@ -4136,12 +4220,27 @@ function authenticate_user_login($username, $password) {
         $auths = array($auth);
 
     } else {
+<<<<<<< HEAD
         // check if there's a deleted record (cheaply)
         if ($DB->get_field('user', 'id', array('username'=>$username, 'deleted'=>1))) {
+=======
+        // Check if there's a deleted record (cheaply), this should not happen because we mangle usernames in delete_user().
+        if ($DB->get_field('user', 'id', array('username'=>$username, 'mnethostid'=>$CFG->mnet_localhost_id,  'deleted'=>1))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             error_log('[client '.getremoteaddr()."]  $CFG->wwwroot  Deleted Login:  $username  ".$_SERVER['HTTP_USER_AGENT']);
             return false;
         }
 
+<<<<<<< HEAD
+=======
+        // Do not try to authenticate non-existent accounts when user creation is not disabled.
+        if (!empty($CFG->authpreventaccountcreation)) {
+            add_to_log(SITEID, 'login', 'error', 'index.php', $username);
+            error_log('[client '.getremoteaddr()."]  $CFG->wwwroot  Unknown user, can not create new accounts:  $username  ".$_SERVER['HTTP_USER_AGENT']);
+            return false;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // User does not exist
         $auths = $authsenabled;
         $user = new stdClass();
@@ -4169,12 +4268,17 @@ function authenticate_user_login($username, $password) {
                 $user = update_user_record($username);
             }
         } else {
+<<<<<<< HEAD
             // if user not found and user creation is not disabled, create it
             if (empty($CFG->authpreventaccountcreation)) {
                 $user = create_user_record($username, $password, $auth);
             } else {
                 continue;
             }
+=======
+            // Create account, we verified above that user creation is allowed.
+            $user = create_user_record($username, $password, $auth);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $authplugin->sync_roles($user);
@@ -4348,6 +4452,12 @@ function update_internal_user_password($user, $password) {
     if ($user->password !== $hashedpassword) {
         $DB->set_field('user', 'password',  $hashedpassword, array('id'=>$user->id));
         $user->password = $hashedpassword;
+<<<<<<< HEAD
+=======
+
+        // Trigger user updated event
+        events_trigger('user_updated', $user);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     return true;
@@ -4532,7 +4642,11 @@ function delete_course($courseorid, $showfeedback = true) {
             return false;
         }
     }
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+    $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // frontpage course can not be deleted!!
     if ($courseid == SITEID) {
@@ -4549,7 +4663,12 @@ function delete_course($courseorid, $showfeedback = true) {
     // which should know about this updated property, as this event is meant to pass the full course record
     $course->timemodified = time();
 
+<<<<<<< HEAD
     $DB->delete_records("course", array("id"=>$courseid));
+=======
+    $DB->delete_records("course", array("id" => $courseid));
+    $DB->delete_records("course_format_options", array("courseid" => $courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     //trigger events
     $course->context = $context; // you can not fetch context in the event because it was already deleted
@@ -4586,6 +4705,10 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
     require_once($CFG->dirroot.'/tag/coursetagslib.php');
     require_once($CFG->dirroot.'/comment/lib.php');
     require_once($CFG->dirroot.'/rating/lib.php');
+<<<<<<< HEAD
+=======
+    require_once($CFG->dirroot.'/notes/lib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // NOTE: these concatenated strings are suboptimal, but it is just extra info...
     $strdeleted = get_string('deleted').' - ';
@@ -4679,6 +4802,12 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
     $DB->delete_records_select('course_modules_availability',
            'coursemoduleid IN (SELECT id from {course_modules} WHERE course=?)',
            array($courseid));
+<<<<<<< HEAD
+=======
+    $DB->delete_records_select('course_modules_avail_fields',
+           'coursemoduleid IN (SELECT id from {course_modules} WHERE course=?)',
+           array($courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Remove course-module data.
     $cms = $DB->get_records('course_modules', array('course'=>$course->id));
@@ -4742,6 +4871,12 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
     // filters be gone!
     filter_delete_all_for_context($coursecontext->id);
 
+<<<<<<< HEAD
+=======
+    // Notes, you shall not pass!
+    note_delete_all($course->id);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // die comments!
     comment::delete_comments($coursecontext->id);
 
@@ -4789,6 +4924,12 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
     $DB->delete_records_select('course_sections_availability',
            'coursesectionid IN (SELECT id from {course_sections} WHERE course=?)',
            array($course->id));
+<<<<<<< HEAD
+=======
+    $DB->delete_records_select('course_sections_avail_fields',
+           'coursesectionid IN (SELECT id from {course_sections} WHERE course=?)',
+           array($course->id));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $DB->delete_records('course_sections', array('course'=>$course->id));
 
     // delete legacy, section and any other course files
@@ -4862,7 +5003,11 @@ function reset_course_userdata($data) {
     require_once($CFG->dirroot.'/group/lib.php');
 
     $data->courseid = $data->id;
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_COURSE, $data->courseid);
+=======
+    $context = context_course::instance($data->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // calculate the time shift of dates
     if (!empty($data->reset_start_date)) {
@@ -5557,6 +5702,14 @@ function setnew_password_and_mail($user) {
 
     $DB->set_field('user', 'password', hash_internal_user_password($newpassword), array('id'=>$user->id));
 
+<<<<<<< HEAD
+=======
+    $user->password = $hashedpassword;
+
+    // Trigger user updated event
+    events_trigger('user_updated', $user);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $a = new stdClass();
     $a->firstname   = fullname($user, true);
     $a->sitename    = format_string($site->fullname);
@@ -5691,7 +5844,11 @@ function send_password_change_info($user) {
 
     $site = get_site();
     $supportuser = generate_email_supportuser();
+<<<<<<< HEAD
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $data = new stdClass();
     $data->firstname = $user->firstname;
@@ -6279,12 +6436,15 @@ function get_string_manager($forcereload=false) {
     if ($singleton === null) {
         if (empty($CFG->early_install_lang)) {
 
+<<<<<<< HEAD
             if (empty($CFG->langcacheroot)) {
                 $langcacheroot = $CFG->cachedir . '/lang';
             } else {
                 $langcacheroot = $CFG->langcacheroot;
             }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (empty($CFG->langlist)) {
                  $translist = array();
             } else {
@@ -6297,7 +6457,11 @@ function get_string_manager($forcereload=false) {
                 $langmenucache = $CFG->langmenucachefile;
             }
 
+<<<<<<< HEAD
             $singleton = new core_string_manager($CFG->langotherroot, $CFG->langlocalroot, $langcacheroot,
+=======
+            $singleton = new core_string_manager($CFG->langotherroot, $CFG->langlocalroot,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                                  !empty($CFG->langstringcache), $translist, $langmenucache);
 
         } else {
@@ -6400,8 +6564,21 @@ interface string_manager {
 
     /**
      * Invalidates all caches, should the implementation use any
+<<<<<<< HEAD
      */
     public function reset_caches();
+=======
+     * @param bool $phpunitreset true means called from our PHPUnit integration test reset
+     */
+    public function reset_caches($phpunitreset = false);
+
+    /**
+     * Returns string revision counter, this is incremented after any
+     * string cache reset.
+     * @return int lang string revision counter, -1 if unknown
+     */
+    public function get_revision();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -6420,10 +6597,15 @@ class core_string_manager implements string_manager {
     protected $otherroot;
     /** @var string location of all lang pack local modifications */
     protected $localroot;
+<<<<<<< HEAD
     /** @var string location of on-disk cache of merged strings */
     protected $cacheroot;
     /** @var array lang string cache - it will be optimised more later */
     protected $cache = array();
+=======
+    /** @var cache lang string cache - it will be optimised more later */
+    protected $cache;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var int get_string() counter */
     protected $countgetstring = 0;
     /** @var int in-memory cache hits counter */
@@ -6431,7 +6613,11 @@ class core_string_manager implements string_manager {
     /** @var int on-disk cache hits counter */
     protected $countdiskcache = 0;
     /** @var bool use disk cache */
+<<<<<<< HEAD
     protected $usediskcache;
+=======
+    protected $usecache;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var array limit list of translations */
     protected $translist;
     /** @var string location of a file that caches the list of available translations */
@@ -6442,6 +6628,7 @@ class core_string_manager implements string_manager {
      *
      * @param string $otherroot location of downlaoded lang packs - usually $CFG->dataroot/lang
      * @param string $localroot usually the same as $otherroot
+<<<<<<< HEAD
      * @param string $cacheroot usually lang dir in cache folder
      * @param bool $usediskcache use disk cache
      * @param array $translist limit list of visible translations
@@ -6454,6 +6641,30 @@ class core_string_manager implements string_manager {
         $this->usediskcache = $usediskcache;
         $this->translist    = $translist;
         $this->menucache    = $menucache;
+=======
+     * @param bool $usecache use disk cache
+     * @param array $translist limit list of visible translations
+     * @param string $menucache the location of a file that caches the list of available translations
+     */
+    public function __construct($otherroot, $localroot, $usecache, $translist, $menucache) {
+        $this->otherroot    = $otherroot;
+        $this->localroot    = $localroot;
+        $this->usecache     = $usecache;
+        $this->translist    = $translist;
+        $this->menucache    = $menucache;
+
+        if ($this->usecache) {
+            // We can use a proper cache, establish the cache using the 'String cache' definition.
+            $this->cache = cache::make('core', 'string');
+        } else {
+            // We only want a cache for the length of the request, create a static cache.
+            $options = array(
+                'simplekeys' => true,
+                'simpledata' => true
+            );
+            $this->cache = cache::make_from_params(cache_store::MODE_REQUEST, 'core', 'string', array(), $options);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -6490,6 +6701,7 @@ class core_string_manager implements string_manager {
             $component = $plugintype . '_' . $pluginname;
         }
 
+<<<<<<< HEAD
         if (!$disablecache and !$disablelocal) {
             // try in-memory cache first
             if (isset($this->cache[$lang][$component])) {
@@ -6502,6 +6714,15 @@ class core_string_manager implements string_manager {
                 $this->countdiskcache++;
                 include($this->cacheroot . "/$lang/$component.php");
                 return $this->cache[$lang][$component];
+=======
+        $cachekey = $lang.'_'.$component;
+
+        if (!$disablecache and !$disablelocal) {
+            $string = $this->cache->get($cachekey);
+            if ($string) {
+                $this->countdiskcache++;
+                return $string;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
 
@@ -6584,11 +6805,15 @@ class core_string_manager implements string_manager {
         if (!$disablelocal) {
             // now we have a list of strings from all possible sources. put it into both in-memory and on-disk
             // caches so we do not need to do all this merging and dependencies resolving again
+<<<<<<< HEAD
             $this->cache[$lang][$component] = $string;
             if ($this->usediskcache) {
                 check_dir_exists("$this->cacheroot/$lang");
                 file_put_contents("$this->cacheroot/$lang/$component.php", "<?php \$this->cache['$lang']['$component'] = ".var_export($string, true).";");
             }
+=======
+            $this->cache->set($cachekey, $string);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return $string;
     }
@@ -6663,12 +6888,21 @@ class core_string_manager implements string_manager {
                 // parentlanguage is a special string, undefined means use English if not defined
                 return 'en';
             }
+<<<<<<< HEAD
             if ($this->usediskcache) {
                 // maybe the on-disk cache is dirty - let the last attempt be to find the string in original sources,
                 // do NOT write the results to disk cache because it may end up in race conditions see MDL-31904
                 $this->usediskcache = false;
                 $string = $this->load_component_strings($component, $lang, true);
                 $this->usediskcache = true;
+=======
+            if ($this->usecache) {
+                // maybe the on-disk cache is dirty - let the last attempt be to find the string in original sources,
+                // do NOT write the results to disk cache because it may end up in race conditions see MDL-31904
+                $this->usecache = false;
+                $string = $this->load_component_strings($component, $lang, true);
+                $this->usecache = true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
             if (!isset($string[$identifier])) {
                 // the string is still missing - should be fixed by developer
@@ -6953,16 +7187,39 @@ class core_string_manager implements string_manager {
 
     /**
      * Clears both in-memory and on-disk caches
+<<<<<<< HEAD
      */
     public function reset_caches() {
+=======
+     * @param bool $phpunitreset true means called from our PHPUnit integration test reset
+     */
+    public function reset_caches($phpunitreset = false) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $CFG;
         require_once("$CFG->libdir/filelib.php");
 
         // clear the on-disk disk with aggregated string files
+<<<<<<< HEAD
         fulldelete($this->cacheroot);
 
         // clear the in-memory cache of loaded strings
         $this->cache = array();
+=======
+        $this->cache->purge();
+
+        if (!$phpunitreset) {
+            // Increment the revision counter.
+            $langrev = get_config('core', 'langrev');
+            $next = time();
+            if ($langrev !== false and $next <= $langrev and $langrev - $next < 60*60) {
+                // This resolves problems when reset is requested repeatedly within 1s,
+                // the < 1h condition prevents accidental switching to future dates
+                // because we might not recover from it.
+                $next = $langrev+1;
+            }
+            set_config('langrev', $next);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // clear the cache containing the list of available translations
         // and re-populate it again
@@ -6970,6 +7227,23 @@ class core_string_manager implements string_manager {
         $this->get_list_of_translations(true);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Returns string revision counter, this is incremented after any
+     * string cache reset.
+     * @return int lang string revision counter, -1 if unknown
+     */
+    public function get_revision() {
+        global $CFG;
+        if (isset($CFG->langrev)) {
+            return (int)$CFG->langrev;
+        } else {
+            return -1;
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /// End of external API ////////////////////////////////////////////////////
 
     /**
@@ -7219,8 +7493,25 @@ class install_string_manager implements string_manager {
 
     /**
      * This implementation does not use any caches
+<<<<<<< HEAD
      */
     public function reset_caches() {}
+=======
+     * @param bool $phpunitreset true means called from our PHPUnit integration test reset
+     */
+    public function reset_caches($phpunitreset = false) {
+        // Nothing to do.
+    }
+
+    /**
+     * Returns string revision counter, this is incremented after any
+     * string cache reset.
+     * @return int lang string revision counter, -1 if unknown
+     */
+    public function get_revision() {
+        return -1;
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 
@@ -7887,6 +8178,10 @@ function get_core_subsystems() {
             'block'       => 'blocks',
             'blog'        => 'blog',
             'bulkusers'   => NULL,
+<<<<<<< HEAD
+=======
+            'cache'       => 'cache',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             'calendar'    => 'calendar',
             'cohort'      => 'cohort',
             'condition'   => NULL,
@@ -7985,6 +8280,7 @@ function get_plugin_types($fullpaths=true) {
                       'qformat'       => 'question/format',
                       'plagiarism'    => 'plagiarism',
                       'tool'          => $CFG->admin.'/tool',
+<<<<<<< HEAD
                       'theme'         => 'theme',  // this is a bit hacky, themes may be in $CFG->themedir too
         );
 
@@ -7993,6 +8289,19 @@ function get_plugin_types($fullpaths=true) {
             if (file_exists("$moddir/db/subplugins.php")) {
                 $subplugins = array();
                 include("$moddir/db/subplugins.php");
+=======
+                      'cachestore'    => 'cache/stores',
+                      'cachelock'     => 'cache/locks',
+                      'theme'         => 'theme',  // this is a bit hacky, themes may be in $CFG->themedir too
+        );
+
+        $subpluginowners = array_merge(array_values(get_plugin_list('mod')),
+                array_values(get_plugin_list('editor')));
+        foreach ($subpluginowners as $ownerdir) {
+            if (file_exists("$ownerdir/db/subplugins.php")) {
+                $subplugins = array();
+                include("$ownerdir/db/subplugins.php");
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 foreach ($subplugins as $subtype=>$dir) {
                     $info[$subtype] = $dir;
                 }
@@ -8047,6 +8356,13 @@ function get_plugin_list($plugintype) {
         // mod is an exception because we have to call this function from get_plugin_types()
         $fulldirs[] = $CFG->dirroot.'/mod';
 
+<<<<<<< HEAD
+=======
+    } else if ($plugintype === 'editor') {
+        // Exception also needed for editor for same reason.
+        $fulldirs[] = $CFG->dirroot . '/lib/editor';
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else if ($plugintype === 'theme') {
         $fulldirs[] = $CFG->dirroot.'/theme';
         // themes are special because they may be stored also in separate directory
@@ -8065,7 +8381,10 @@ function get_plugin_list($plugintype) {
         }
         $fulldirs[] = $fulldir;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $result = array();
 
     foreach ($fulldirs as $fulldir) {
@@ -8500,6 +8819,7 @@ function check_php_version($version='5.2.4') {
           if (strpos($agent, 'Opera') !== false) {     // Reject Opera
               return false;
           }
+<<<<<<< HEAD
           // in case of IE we have to deal with BC of the version parameter
           if (is_null($version)) {
               $version = 5.5; // anything older is not considered a browser at all!
@@ -8511,6 +8831,30 @@ function check_php_version($version='5.2.4') {
                   return true;
               }
           }
+=======
+          // In case of IE we have to deal with BC of the version parameter.
+          if (is_null($version)) {
+              $version = 5.5; // Anything older is not considered a browser at all!
+          }
+          // IE uses simple versions, let's cast it to float to simplify the logic here.
+          $version = round($version, 1);
+          // See: http://www.useragentstring.com/pages/Internet%20Explorer/
+          if (preg_match("/MSIE ([0-9\.]+)/", $agent, $match)) {
+              $browser = $match[1];
+          // See: http://msdn.microsoft.com/en-us/library/ie/bg182625%28v=vs.85%29.aspx for IE11+ useragent details.
+          } else if (preg_match("/Trident\/[0-9\.]+/", $agent) && preg_match("/rv:([0-9\.]+)/", $agent, $match)) {
+              $browser = $match[1];
+          } else {
+              return false;
+          }
+          // IE8 and later versions may pretend to be IE7 for intranet sites, use Trident version instead,
+          // the Trident should always describe the capabilities of IE in any emulation mode.
+          if ($browser === '7.0' and preg_match("/Trident\/([0-9\.]+)/", $agent, $match)) {
+              $browser = $match[1] + 4; // NOTE: Hopefully this will work also for future IE versions.
+          }
+          $browser = round($browser, 1);
+          return ($browser >= $version);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
           break;
 
 
@@ -8788,6 +9132,7 @@ function get_browser_version_classes() {
 
     if (check_browser_version("MSIE", "0")) {
         $classes[] = 'ie';
+<<<<<<< HEAD
         if (check_browser_version("MSIE", 9)) {
             $classes[] = 'ie9';
         } else if (check_browser_version("MSIE", 8)) {
@@ -8796,6 +9141,13 @@ function get_browser_version_classes() {
             $classes[] = 'ie7';
         } elseif (check_browser_version("MSIE", 6)) {
             $classes[] = 'ie6';
+=======
+        for($i=12; $i>=6; $i--) {
+            if (check_browser_version("MSIE", $i)) {
+                $classes[] = 'ie'.$i;
+                break;
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
     } else if (check_browser_version("Firefox") || check_browser_version("Gecko") || check_browser_version("Camino")) {
@@ -8827,11 +9179,17 @@ function get_browser_version_classes() {
  * @return bool True for yes, false for no
  */
 function can_use_rotated_text() {
+<<<<<<< HEAD
     global $USER;
     return (check_browser_version('MSIE', 9) || check_browser_version('Firefox', 2) ||
             check_browser_version('Chrome', 21) || check_browser_version('Safari', 536.25) ||
             check_browser_version('Opera', 12) || check_browser_version('Safari iOS', 533)) &&
             !$USER->screenreader;
+=======
+    return check_browser_version('MSIE', 9) || check_browser_version('Firefox', 2) ||
+            check_browser_version('Chrome', 21) || check_browser_version('Safari', 536.25) ||
+            check_browser_version('Opera', 12) || check_browser_version('Safari iOS', 533);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**
@@ -9109,7 +9467,10 @@ function random_string ($length=15) {
     $pool .= 'abcdefghijklmnopqrstuvwxyz';
     $pool .= '0123456789';
     $poollen = strlen($pool);
+<<<<<<< HEAD
     mt_srand ((double) microtime() * 1000000);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $string = '';
     for ($i = 0; $i < $length; $i++) {
         $string .= substr($pool, (mt_rand()%($poollen)), 1);
@@ -9130,7 +9491,10 @@ function complex_random_string($length=null) {
     $pool  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     $pool .= '`~!@#%^&*()_+-=[];,./<>?:{} ';
     $poollen = strlen($pool);
+<<<<<<< HEAD
     mt_srand ((double) microtime() * 1000000);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($length===null) {
         $length = floor(rand(24,32));
     }
@@ -9438,7 +9802,10 @@ function unformat_float($locale_float, $strict = false) {
  */
 function swapshuffle($array) {
 
+<<<<<<< HEAD
     srand ((double) microtime() * 10000000);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $last = count($array) - 1;
     for ($i=0;$i<=$last;$i++) {
         $from = rand(0,$last);
@@ -9478,7 +9845,10 @@ function swapshuffle_assoc($array) {
  * @return array
  */
 function draw_rand_array($array, $draws) {
+<<<<<<< HEAD
     srand ((double) microtime() * 10000000);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $return = array();
 
@@ -10254,15 +10624,37 @@ function message_popup_window() {
         $strgomessage = get_string('gotomessages', 'message');
         $strstaymessage = get_string('ignore','admin');
 
+<<<<<<< HEAD
+=======
+        $notificationsound = null;
+        $beep = get_user_preferences('message_beepnewmessage', '');
+        if (!empty($beep)) {
+            // Browsers will work down this list until they find something they support.
+            $sourcetags =  html_writer::empty_tag('source', array('src' => $CFG->wwwroot.'/message/bell.wav', 'type' => 'audio/wav'));
+            $sourcetags .= html_writer::empty_tag('source', array('src' => $CFG->wwwroot.'/message/bell.ogg', 'type' => 'audio/ogg'));
+            $sourcetags .= html_writer::empty_tag('source', array('src' => $CFG->wwwroot.'/message/bell.mp3', 'type' => 'audio/mpeg'));
+            $sourcetags .= html_writer::empty_tag('embed',  array('src' => $CFG->wwwroot.'/message/bell.wav', 'autostart' => 'true', 'hidden' => 'true'));
+
+            $notificationsound = html_writer::tag('audio', $sourcetags, array('preload' => 'auto', 'autoplay' => 'autoplay'));
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $url = $CFG->wwwroot.'/message/index.php';
         $content =  html_writer::start_tag('div', array('id'=>'newmessageoverlay','class'=>'mdl-align')).
                         html_writer::start_tag('div', array('id'=>'newmessagetext')).
                             $strmessages.
                         html_writer::end_tag('div').
 
+<<<<<<< HEAD
                         html_writer::start_tag('div', array('id'=>'newmessagelinks')).
                             html_writer::link($url, $strgomessage, array('id'=>'notificationyes')).'&nbsp;&nbsp;&nbsp;'.
                             html_writer::link('', $strstaymessage, array('id'=>'notificationno')).
+=======
+                        $notificationsound.
+                        html_writer::start_tag('div', array('id' => 'newmessagelinks')).
+                            html_writer::link($url, $strgomessage, array('id' => 'notificationyes')).'&nbsp;&nbsp;&nbsp;'.
+                            html_writer::link('', $strstaymessage, array('id' => 'notificationno')).
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         html_writer::end_tag('div');
                     html_writer::end_tag('div');
 
@@ -10449,6 +10841,7 @@ function get_performance_info() {
         $info['txt'] .= "Session: {$info['sessionsize']} ";
     }
 
+<<<<<<< HEAD
 /*    if (isset($rcache->hits) && isset($rcache->misses)) {
         $info['rcachehits'] = $rcache->hits;
         $info['rcachemisses'] = $rcache->misses;
@@ -10457,6 +10850,38 @@ function get_performance_info() {
         $info['txt'] .= 'rcache: '.
             "{$rcache->hits}/{$rcache->misses} ";
     }*/
+=======
+    if ($stats = cache_helper::get_stats()) {
+        $html = '<span class="cachesused">';
+        $html .= '<span class="cache-stats-heading">Caches interaction by definition then store</span>';
+        $text = 'Caches used (hits/misses/sets): ';
+        $hits = 0;
+        $misses = 0;
+        $sets = 0;
+        foreach ($stats as $definition => $stores) {
+            $html .= '<span class="cache-definition-stats">'.$definition.'</span>';
+            $text .= "$definition {";
+            foreach ($stores as $store => $data) {
+                $hits += $data['hits'];
+                $misses += $data['misses'];
+                $sets += $data['sets'];
+                $text .= "$store($data[hits]/$data[misses]/$data[sets]) ";
+                $html .= "<span class='cache-store-stats'>$store: $data[hits] / $data[misses] / $data[sets]</span>";
+            }
+            $text .= '} ';
+        }
+        $html .= "<span class='cache-total-stats'>Total Hits / Misses / Sets : $hits / $misses / $sets</span>";
+        $html .= '</span> ';
+        $info['cachesused'] = "$hits / $misses / $sets";
+        $info['html'] .= $html;
+        $info['txt'] .= $text.'. ';
+    } else {
+        $info['cachesused'] = '0 / 0 / 0';
+        $info['html'] .= '<span class="cachesused">Caches used (hits/misses/sets): 0/0/0</span>';
+        $info['txt'] .= 'Caches used (hits/misses/sets): 0/0/0 ';
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $info['html'] = '<div class="performanceinfo siteinfo">'.$info['html'].'</div>';
     return $info;
 }

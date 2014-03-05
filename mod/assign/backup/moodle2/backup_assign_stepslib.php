@@ -48,14 +48,31 @@ class backup_assign_activity_structure_step extends backup_activity_structure_st
                                                   'intro',
                                                   'introformat',
                                                   'alwaysshowdescription',
+<<<<<<< HEAD
                                                   'preventlatesubmissions',
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                                   'submissiondrafts',
                                                   'sendnotifications',
                                                   'sendlatenotifications',
                                                   'duedate',
+<<<<<<< HEAD
                                                   'allowsubmissionsfromdate',
                                                   'grade',
                                                   'timemodified'));
+=======
+                                                  'cutoffdate',
+                                                  'allowsubmissionsfromdate',
+                                                  'grade',
+                                                  'timemodified',
+                                                  'completionsubmit',
+                                                  'requiresubmissionstatement',
+                                                  'teamsubmission',
+                                                  'requireallteammemberssubmit',
+                                                  'teamsubmissiongroupingid',
+                                                  'blindmarking',
+                                                  'revealidentities'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $submissions = new backup_nested_element('submissions');
 
@@ -63,7 +80,12 @@ class backup_assign_activity_structure_step extends backup_activity_structure_st
                                                 array('userid',
                                                       'timecreated',
                                                       'timemodified',
+<<<<<<< HEAD
                                                       'status'));
+=======
+                                                      'status',
+                                                      'groupid'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $grades = new backup_nested_element('grades');
 
@@ -74,7 +96,12 @@ class backup_assign_activity_structure_step extends backup_activity_structure_st
                                                  'grader',
                                                  'grade',
                                                  'locked',
+<<<<<<< HEAD
                                                  'mailed'));
+=======
+                                                 'mailed',
+                                                 'extensionduedate'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $pluginconfigs = new backup_nested_element('plugin_configs');
 
@@ -112,8 +139,15 @@ class backup_assign_activity_structure_step extends backup_activity_structure_st
 
         // Define id annotations
         $submission->annotate_ids('user', 'userid');
+<<<<<<< HEAD
         $grade->annotate_ids('user', 'userid');
         $grade->annotate_ids('user', 'grader');
+=======
+        $submission->annotate_ids('group', 'groupid');
+        $grade->annotate_ids('user', 'userid');
+        $grade->annotate_ids('user', 'grader');
+        $assign->annotate_ids('grouping', 'teamsubmissiongroupingid');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // Define file annotations
         $assign->annotate_files('mod_assign', 'intro', null); // This file area hasn't itemid

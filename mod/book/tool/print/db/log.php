@@ -25,5 +25,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $logs = array(
+<<<<<<< HEAD
     array('module'=>'book', 'action'=>'print', 'mtable'=>'book', 'field'=>'name')
+=======
+    array('module' => 'book', 'action' => 'print', 'mtable' => 'book', 'field' => 'name'),
+    array('module' => 'book', 'action' => 'print chapter', 'mtable' => 'book_chapters', 'field' => 'title')
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 );

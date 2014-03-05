@@ -32,6 +32,10 @@ $url = new moodle_url('/message/edit.php');
 $url->param('id', $userid);
 
 $PAGE->set_url($url);
+<<<<<<< HEAD
+=======
+$PAGE->set_popup_notification_allowed(false); // We are within the messaging system so don't show message popups
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login();
 
@@ -43,8 +47,13 @@ if (!$user = $DB->get_record('user', array('id' => $userid))) {
     print_error('invaliduserid');
 }
 
+<<<<<<< HEAD
 $systemcontext   = get_context_instance(CONTEXT_SYSTEM);
 $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+=======
+$systemcontext   = context_system::instance();
+$personalcontext = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_context($personalcontext);
 $PAGE->set_pagelayout('course');
@@ -116,7 +125,11 @@ if (($form = data_submitted()) && confirm_sesskey()) {
 
     //process general messaging preferences
     $preferences['message_blocknoncontacts'] = !empty($form->blocknoncontacts)?1:0;
+<<<<<<< HEAD
     //$preferences['message_beepnewmessage']    = !empty($form->beepnewmessage)?1:0;
+=======
+    $preferences['message_beepnewmessage']   = !empty($form->beepnewmessage)?1:0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // Save all the new preferences to the database
     if (!set_user_preferences($preferences, $user->id)) {
@@ -154,12 +167,21 @@ foreach ($processors as $processor) {
 
 //load general messaging preferences
 $preferences->blocknoncontacts  =  get_user_preferences( 'message_blocknoncontacts', '', $user->id);
+<<<<<<< HEAD
 //$preferences->beepnewmessage    =  get_user_preferences( 'message_beepnewmessage', '', $user->id);
 
 /// Display page header
 $streditmymessage = get_string('editmymessage', 'message');
 $PAGE->set_title($streditmymessage);
 $PAGE->set_heading($streditmymessage);
+=======
+$preferences->beepnewmessage    =  get_user_preferences( 'message_beepnewmessage', '', $user->id);
+
+/// Display page header
+$strmessaging = get_string('messaging', 'message');
+$PAGE->set_title($strmessaging);
+$PAGE->set_heading($strmessaging);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Grab the renderer
 $renderer = $PAGE->get_renderer('core', 'message');

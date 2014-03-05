@@ -48,8 +48,23 @@ function textrotate_make_svg(el)
   el.parentNode.removeChild(el);
 }
 
+<<<<<<< HEAD
 function textrotate_init() {
   var elements=YAHOO.util.Dom.getElementsByClassName('completion-activityname', 'span');
+=======
+function browser_supports_svg() {
+    return document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
+}
+
+function textrotate_init() {
+    if (!browser_supports_svg()) {
+        // Feature detect, else bail.
+        return;
+    }
+
+YUI().use('yui2-dom', function(Y) {
+  var elements= Y.YUI2.util.Dom.getElementsByClassName('completion-activityname', 'span');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   for(var i=0;i<elements.length;i++)
   {
     var el=elements[i];
@@ -57,7 +72,11 @@ function textrotate_init() {
     textrotate_make_svg(el);
   }
 
+<<<<<<< HEAD
   elements=YAHOO.util.Dom.getElementsByClassName('completion-expected', 'div');
+=======
+  elements= Y.YUI2.util.Dom.getElementsByClassName('completion-expected', 'div');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
   for(var i=0;i<elements.length;i++)
   {
     var el=elements[i];
@@ -68,18 +87,32 @@ function textrotate_init() {
     textrotate_make_svg(el.firstChild);
   }
 
+<<<<<<< HEAD
   elements=YAHOO.util.Dom.getElementsByClassName('rotateheaders', 'table');
   for(var i=0;i<elements.length;i++)
   {
     var table=elements[i];
     var headercells = YAHOO.util.Dom.getElementsByClassName('header', 'th', table);
+=======
+  elements= Y.YUI2.util.Dom.getElementsByClassName('rotateheaders', 'table');
+  for(var i=0;i<elements.length;i++)
+  {
+    var table=elements[i];
+    var headercells = Y.YUI2.util.Dom.getElementsByClassName('header', 'th', table);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     for(var j=0;j<headercells.length;j++)
     {
       var el=headercells[j];
       textrotate_make_svg(el.firstChild);
     }
   }
+<<<<<<< HEAD
 }
 
 YAHOO.util.Event.onDOMReady(textrotate_init);
 
+=======
+});
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

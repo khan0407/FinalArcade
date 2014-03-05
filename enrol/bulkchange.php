@@ -32,11 +32,19 @@ require_once("$CFG->dirroot/group/lib.php");
 $id         = required_param('id', PARAM_INT); // course id
 $bulkuserop = required_param('bulkuserop', PARAM_ALPHANUMEXT);
 $userids    = required_param_array('bulkuser', PARAM_INT);
+<<<<<<< HEAD
 $action     = optional_param('action', '', PARAM_ACTION);
 $filter     = optional_param('ifilter', 0, PARAM_INT);
 
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+=======
+$action     = optional_param('action', '', PARAM_ALPHANUMEXT);
+$filter     = optional_param('ifilter', 0, PARAM_INT);
+
+$course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+$context = context_course::instance($course->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 if ($course->id == SITEID) {
     redirect(new moodle_url('/'));

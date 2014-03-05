@@ -74,7 +74,10 @@ $string['deleteexternalblog'] = 'Unregister this external blog';
 $string['deleteotagswarn'] = 'Are you sure you want to remove these tags from all blog posts and remove it from the system?';
 $string['description'] = 'Description';
 $string['description_help'] = 'Enter a sentence or two summarising the contents of your external blog. (If no description is supplied, the description recorded in your external blog will be used).';
+<<<<<<< HEAD
 $string['disableblogs'] = 'Disable blog system completely';
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['donothaveblog'] = 'You do not have your own blog, sorry.';
 $string['editentry'] = 'Edit a blog entry';
 $string['editexternalblog'] = 'Edit this external blog';

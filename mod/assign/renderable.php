@@ -35,15 +35,27 @@ class assign_submit_for_grading_page implements renderable {
     var $notifications = array();
     /** @var int $coursemoduleid */
     var $coursemoduleid = 0;
+<<<<<<< HEAD
+=======
+    /** @var moodleform $confirmform */
+    var $confirmform = null;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * Constructor
      * @param string $notifications - Any mesages to display
      * @param int $coursemoduleid
      */
+<<<<<<< HEAD
     public function __construct($notifications, $coursemoduleid) {
         $this->notifications = $notifications;
         $this->coursemoduleid = $coursemoduleid;
+=======
+    public function __construct($notifications, $coursemoduleid, $confirmform) {
+        $this->notifications = $notifications;
+        $this->coursemoduleid = $coursemoduleid;
+        $this->confirmform = $confirmform;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
 }
@@ -113,6 +125,13 @@ class assign_user_summary implements renderable {
     public $courseid;
     /** @var bool $viewfullnames */
     public $viewfullnames = false;
+<<<<<<< HEAD
+=======
+    /** @var bool $blindmarking */
+    public $blindmarking = false;
+    /** @var int $uniqueidforuser */
+    public $uniqueidforuser;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var array $extrauserfields */
     public $extrauserfields;
 
@@ -121,12 +140,30 @@ class assign_user_summary implements renderable {
      * @param stdClass $user
      * @param int $courseid
      * @param bool $viewfullnames
+<<<<<<< HEAD
      * @param array $extrauserfield
      */
     public function __construct(stdClass $user, $courseid, $viewfullnames, $extrauserfields) {
         $this->user = $user;
         $this->courseid = $courseid;
         $this->viewfullnames = $viewfullnames;
+=======
+     * @param bool $blindmarking
+     * @param int $uniqueidforuser
+     * @param array $extrauserfields
+     */
+    public function __construct(stdClass $user,
+                                $courseid,
+                                $viewfullnames,
+                                $blindmarking,
+                                $uniqueidforuser,
+                                $extrauserfields) {
+        $this->user = $user;
+        $this->courseid = $courseid;
+        $this->viewfullnames = $viewfullnames;
+        $this->blindmarking = $blindmarking;
+        $this->uniqueidforuser = $uniqueidforuser;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->extrauserfields = $extrauserfields;
     }
 }
@@ -290,6 +327,17 @@ class assign_submission_status implements renderable {
     var $alwaysshowdescription = false;
     /** @var stdClass the submission info (may be null) */
     var $submission = null;
+<<<<<<< HEAD
+=======
+    /** @var boolean teamsubmissionenabled - true or false */
+    public $teamsubmissionenabled = false;
+    /** @var stdClass teamsubmission the team submission info (may be null) */
+    public $teamsubmission = null;
+    /** @var stdClass submissiongroup the submission group info (may be null) */
+    public $submissiongroup = null;
+    /** @var array submissiongroupmemberswhoneedtosubmit list of users who still need to submit */
+    public $submissiongroupmemberswhoneedtosubmit = array();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var bool submissionsenabled */
     var $submissionsenabled = false;
     /** @var bool locked */
@@ -298,20 +346,47 @@ class assign_submission_status implements renderable {
     var $graded = false;
     /** @var int duedate */
     var $duedate = 0;
+<<<<<<< HEAD
+=======
+    /** @var int cutoffdate */
+    public $cutoffdate = 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var array submissionplugins - the list of submission plugins */
     var $submissionplugins = array();
     /** @var string returnaction */
     var $returnaction = '';
     /** @var string returnparams */
     var $returnparams = array();
+<<<<<<< HEAD
+=======
+    /** @var int courseid */
+    public $courseid = 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var int coursemoduleid */
     var $coursemoduleid = 0;
     /** @var int the view (assign_submission_status::STUDENT_VIEW OR assign_submission_status::GRADER_VIEW) */
     var $view = self::STUDENT_VIEW;
+<<<<<<< HEAD
+=======
+    /** @var bool canviewfullnames */
+    public $canviewfullnames = false;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /** @var bool canedit */
     var $canedit = false;
     /** @var bool cansubmit */
     var $cansubmit = false;
+<<<<<<< HEAD
+=======
+    /** @var int extensionduedate */
+    public $extensionduedate = 0;
+    /** @var context context */
+    public $context = 0;
+    /** @var bool blindmarking - Should we hide student identities from graders? */
+    public $blindmarking = false;
+
+    /** @var string gradingcontrollerpreview */
+    public $gradingcontrollerpreview = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * constructor
@@ -319,14 +394,26 @@ class assign_submission_status implements renderable {
      * @param int $allowsubmissionsfromdate
      * @param bool $alwaysshowdescription
      * @param stdClass $submission
+<<<<<<< HEAD
+=======
+     * @param bool $teamsubmissionenabled
+     * @param stdClass $teamsubmission
+     * @param int $submissiongroup
+     * @param array $submissiongroupmemberswhoneedtosubmit
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param bool $submissionsenabled
      * @param bool $locked
      * @param bool $graded
      * @param int $duedate
+<<<<<<< HEAD
+=======
+     * @param int $cutoffdate
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @param array $submissionplugins
      * @param string $returnaction
      * @param array $returnparams
      * @param int $coursemoduleid
+<<<<<<< HEAD
      * @param string $view
      * @param bool $canedit
      * @param bool $cansubmit
@@ -337,17 +424,57 @@ class assign_submission_status implements renderable {
         $this->allowsubmissionsfromdate = $allowsubmissionsfromdate;
         $this->alwaysshowdescription = $alwaysshowdescription;
         $this->submission = $submission;
+=======
+     * @param int $courseid
+     * @param string $view
+     * @param bool $canedit
+     * @param bool $cansubmit
+     * @param bool $canviewfullnames
+     * @param int $extensionduedate - Any extension to the due date granted for this user
+     * @param context $context - Any extension to the due date granted for this user
+     * @param blindmarking $blindmarking - Should we hide student identities from graders?
+     */
+    public function __construct($allowsubmissionsfromdate, $alwaysshowdescription, $submission,
+                                $teamsubmissionenabled, $teamsubmission, $submissiongroup,
+                                $submissiongroupmemberswhoneedtosubmit, $submissionsenabled,
+                                $locked, $graded, $duedate, $cutoffdate, $submissionplugins, $returnaction, $returnparams,
+                                $coursemoduleid, $courseid, $view, $canedit, $cansubmit, $canviewfullnames, $extensionduedate,
+                                $context, $blindmarking, $gradingcontrollerpreview) {
+        $this->allowsubmissionsfromdate = $allowsubmissionsfromdate;
+        $this->alwaysshowdescription = $alwaysshowdescription;
+        $this->submission = $submission;
+        $this->teamsubmissionenabled = $teamsubmissionenabled;
+        $this->teamsubmission = $teamsubmission;
+        $this->submissiongroup = $submissiongroup;
+        $this->submissiongroupmemberswhoneedtosubmit = $submissiongroupmemberswhoneedtosubmit;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->submissionsenabled = $submissionsenabled;
         $this->locked = $locked;
         $this->graded = $graded;
         $this->duedate = $duedate;
+<<<<<<< HEAD
+=======
+        $this->cutoffdate = $cutoffdate;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->submissionplugins = $submissionplugins;
         $this->returnaction = $returnaction;
         $this->returnparams = $returnparams;
         $this->coursemoduleid = $coursemoduleid;
+<<<<<<< HEAD
         $this->view = $view;
         $this->canedit = $canedit;
         $this->cansubmit = $cansubmit;
+=======
+        $this->courseid = $courseid;
+        $this->view = $view;
+        $this->canedit = $canedit;
+        $this->cansubmit = $cansubmit;
+        $this->canviewfullnames = $canviewfullnames;
+        $this->extensionduedate = $extensionduedate;
+        $this->context = $context;
+        $this->blindmarking = $blindmarking;
+        $this->gradingcontrollerpreview = $gradingcontrollerpreview;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
 }
@@ -413,8 +540,17 @@ class assign_grading_summary implements renderable {
     var $submissionsneedgradingcount = 0;
     /** @var int duedate - The assignment due date (if one is set) */
     var $duedate = 0;
+<<<<<<< HEAD
     /** @var int coursemoduleid - The assignment course module id */
     var $coursemoduleid = 0;
+=======
+    /** @var int cutoffdate - The assignment cut off date (if one is set) */
+    var $cutoffdate = 0;
+    /** @var int coursemoduleid - The assignment course module id */
+    var $coursemoduleid = 0;
+    /** @var boolean teamsubmission - Are team submissions enabled for this assignment */
+    public $teamsubmission = false;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * constructor
@@ -424,25 +560,96 @@ class assign_grading_summary implements renderable {
      * @param int $submissiondraftscount
      * @param bool $submissionsenabled
      * @param int $submissionssubmittedcount
+<<<<<<< HEAD
      * @param int $duedate
      * @param int $coursemoduleid
      */
     public function __construct($participantcount, $submissiondraftsenabled, $submissiondraftscount,
                                 $submissionsenabled, $submissionssubmittedcount,
                                 $duedate, $coursemoduleid, $submissionsneedgradingcount) {
+=======
+     * @param int $cutoffdate
+     * @param int $duedate
+     * @param int $coursemoduleid
+     * @param int $submissionsneedgradingcount
+     * @param bool $teamsubmission
+     */
+    public function __construct($participantcount, $submissiondraftsenabled,
+                                $submissiondraftscount, $submissionsenabled,
+                                $submissionssubmittedcount, $cutoffdate, $duedate,
+                                $coursemoduleid, $submissionsneedgradingcount, $teamsubmission) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->participantcount = $participantcount;
         $this->submissiondraftsenabled = $submissiondraftsenabled;
         $this->submissiondraftscount = $submissiondraftscount;
         $this->submissionsenabled = $submissionsenabled;
         $this->submissionssubmittedcount = $submissionssubmittedcount;
         $this->duedate = $duedate;
+<<<<<<< HEAD
         $this->coursemoduleid = $coursemoduleid;
         $this->submissionsneedgradingcount = $submissionsneedgradingcount;
+=======
+        $this->cutoffdate = $cutoffdate;
+        $this->coursemoduleid = $coursemoduleid;
+        $this->submissionsneedgradingcount = $submissionsneedgradingcount;
+        $this->teamsubmission = $teamsubmission;
+    }
+
+}
+
+/**
+ * Renderable course index summary
+ * @package   mod_assign
+ * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class assign_course_index_summary implements renderable {
+    /** @var array assignments - A list of course module info and submission counts or statuses */
+    public $assignments = array();
+    /** @var boolean usesections - Does this course format support sections? */
+    public $usesections = false;
+    /** @var string courseformat - The current course format name */
+    public $courseformatname = '';
+
+    /**
+     * constructor
+     *
+     * @param $usesections boolean - True if this course format uses sections
+     * @param $courseformatname string - The id of this course format
+     */
+    public function __construct($usesections, $courseformatname) {
+        $this->usesections = $usesections;
+        $this->courseformatname = $courseformatname;
+    }
+
+    /**
+     * Add a row of data to display on the course index page
+     *
+     * @param int $cmid - The course module id for generating a link
+     * @param string $cmname - The course module name for generating a link
+     * @param string $sectionname - The name of the course section (only if $usesections is true)
+     * @param int $timedue - The due date for the assignment - may be 0 if no duedate
+     * @param string $submissioninfo - A string with either the number of submitted assignments, or the
+     *                                 status of the current users submission depending on capabilities.
+     * @param string $gradeinfo - The current users grade if they have been graded and it is not hidden.
+     */
+    public function add_assign_info($cmid, $cmname, $sectionname, $timedue, $submissioninfo, $gradeinfo) {
+        $this->assignments[] = array('cmid'=>$cmid,
+                               'cmname'=>$cmname,
+                               'sectionname'=>$sectionname,
+                               'timedue'=>$timedue,
+                               'submissioninfo'=>$submissioninfo,
+                               'gradeinfo'=>$gradeinfo);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
 
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * An assign file class that extends rendererable class and is used by the assign module.
  *
@@ -486,7 +693,16 @@ class assign_files implements renderable {
             require_once($CFG->libdir . '/portfoliolib.php');
             if (count($files) >= 1 && has_capability('mod/assign:exportownsubmission', $this->context)) {
                 $button = new portfolio_add_button();
+<<<<<<< HEAD
                 $button->set_callback_options('assign_portfolio_caller', array('cmid' => $this->cm->id, 'sid'=>$sid, 'area'=>$filearea, 'component'=>$component), '/mod/assign/portfolio_callback.php');
+=======
+                $button->set_callback_options('assign_portfolio_caller',
+                                              array('cmid' => $this->cm->id,
+                                                    'sid' => $sid,
+                                                    'area' => $filearea,
+                                                    'component' => $component),
+                                              'mod_assign');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $button->reset_formats();
                 $this->portfolioform = $button->to_html(PORTFOLIO_ADD_TEXT_LINK);
             }
@@ -533,7 +749,13 @@ class assign_files implements renderable {
             if (!empty($CFG->enableportfolios)) {
                 $button = new portfolio_add_button();
                 if (has_capability('mod/assign:exportownsubmission', $this->context)) {
+<<<<<<< HEAD
                     $button->set_callback_options('assign_portfolio_caller', array('cmid' => $this->cm->id, 'fileid' => $file->get_id()), '/mod/assign/portfolio_callback.php');
+=======
+                    $button->set_callback_options('assign_portfolio_caller',
+                                                  array('cmid' => $this->cm->id, 'fileid' => $file->get_id()),
+                                                  'mod_assign');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $button->set_format_by_file($file);
                     $file->portfoliobutton = $button->to_html(PORTFOLIO_ADD_ICON_LINK);
                 }

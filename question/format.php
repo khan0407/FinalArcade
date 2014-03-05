@@ -27,6 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 
+<<<<<<< HEAD
 /**#@+
  * The core question types.
  *
@@ -50,6 +51,8 @@ if (!defined('SHORTANSWER')) {
 /**#@-*/
 
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Base class for question import and export formats.
  *
@@ -128,7 +131,11 @@ class qformat_default {
             debugging('You shouldn\'t call setCategory after setQuestions');
         }
         $this->category = $category;
+<<<<<<< HEAD
         $this->importcontext = get_context_instance_by_id($this->category->contextid);
+=======
+        $this->importcontext = context::instance_by_id($this->category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -516,10 +523,17 @@ class qformat_default {
         }
 
         if ($this->contextfromfile && $contextid !== false) {
+<<<<<<< HEAD
             $context = get_context_instance_by_id($contextid);
             require_capability('moodle/question:add', $context);
         } else {
             $context = get_context_instance_by_id($this->category->contextid);
+=======
+            $context = context::instance_by_id($contextid);
+            require_capability('moodle/question:add', $context);
+        } else {
+            $context = context::instance_by_id($this->category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $this->importcontext = $context;
 
@@ -914,7 +928,11 @@ class qformat_default {
      * Convert a string, as returned by {@link assemble_category_path()},
      * back into an array of category names.
      *
+<<<<<<< HEAD
      * Each category name is cleaned by a call to clean_param(, PARAM_MULTILANG),
+=======
+     * Each category name is cleaned by a call to clean_param(, PARAM_TEXT),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * which matches the cleaning in question/category_form.php.
      *
      * @param string $path
@@ -924,7 +942,11 @@ class qformat_default {
         $rawnames = preg_split('~(?<!/)/(?!/)~', $path);
         $names = array();
         foreach ($rawnames as $rawname) {
+<<<<<<< HEAD
             $names[] = clean_param(trim(str_replace('//', '/', $rawname)), PARAM_MULTILANG);
+=======
+            $names[] = clean_param(trim(str_replace('//', '/', $rawname)), PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return $names;
     }
@@ -956,11 +978,16 @@ class qformat_default {
      * during import to let the user see roughly what is going on.
      */
     protected function format_question_text($question) {
+<<<<<<< HEAD
         global $DB;
         $formatoptions = new stdClass();
         $formatoptions->noclean = true;
         return html_to_text(format_text($question->questiontext,
                 $question->questiontextformat, $formatoptions), 0, false);
+=======
+        return question_utils::to_plain_text($question->questiontext,
+                $question->questiontextformat);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }
 

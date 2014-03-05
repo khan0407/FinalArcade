@@ -48,8 +48,13 @@ if ($userid) {
 // Check permissions
 require_login($course);
 
+<<<<<<< HEAD
 $coursecontext   = get_context_instance(CONTEXT_COURSE, $course->id);
 $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+=======
+$coursecontext   = context_course::instance($course->id);
+$personalcontext = context_user::instance($user->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $can_view = false;
 
@@ -216,12 +221,21 @@ if (empty($completions)) {
                 echo '(<i>';
 
                 if ($agg == COMPLETION_AGGREGATION_ALL) {
+<<<<<<< HEAD
                     echo strtolower(get_string('all', 'completion'));
                 } else {
                     echo strtolower(get_string('any', 'completion'));
                 }
 
                 echo '</i> '.strtolower(get_string('required')).')';
+=======
+                    echo textlib::strtolower(get_string('all', 'completion'));
+                } else {
+                    echo textlib::strtolower(get_string('any', 'completion'));
+                }
+
+                echo '</i> '.textlib::strtolower(get_string('required')).')';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $agg_type = false;
             }
         }

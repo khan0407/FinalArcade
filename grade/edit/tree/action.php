@@ -36,7 +36,11 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 require_login($course);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+$context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // default return url
 $gpr = new grade_plugin_return();
@@ -62,6 +66,12 @@ switch ($action) {
             if ($type == 'grade' and empty($object->id)) {
                 $object->insert();
             }
+<<<<<<< HEAD
+=======
+            if (!$object->can_control_visibility()) {
+                print_error('componentcontrolsvisibility', 'grades', $returnurl);
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $object->set_hidden(1, true);
         }
         break;
@@ -74,6 +84,12 @@ switch ($action) {
             if ($type == 'grade' and empty($object->id)) {
                 $object->insert();
             }
+<<<<<<< HEAD
+=======
+            if (!$object->can_control_visibility()) {
+                print_error('componentcontrolsvisibility', 'grades', $returnurl);
+            }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $object->set_hidden(0, true);
         }
         break;

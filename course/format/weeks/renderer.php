@@ -59,6 +59,7 @@ class format_weeks_renderer extends format_section_renderer_base {
     protected function page_title() {
         return get_string('weeklyoutline');
     }
+<<<<<<< HEAD
 
     /**
      * Is the section passed in the current section?
@@ -77,4 +78,6 @@ class format_weeks_renderer extends format_section_renderer_base {
 
         return (($timenow >= $dates->start) && ($timenow < $dates->end));
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

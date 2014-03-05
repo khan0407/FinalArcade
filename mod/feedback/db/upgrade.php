@@ -47,6 +47,13 @@ function xmldb_feedback_upgrade($oldversion) {
     // Put any upgrade step following this
 
 
+<<<<<<< HEAD
+=======
+    // Moodle v2.4.0 release upgrade line
+    // Put any upgrade step following this
+
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     return true;
 }
 

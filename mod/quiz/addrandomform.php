@@ -60,7 +60,11 @@ class quiz_add_random_form extends moodleform {
                 get_string('randomquestionusinganewcategory', 'quiz'));
 
         $mform->addElement('text', 'name', get_string('name'), 'maxlength="254" size="50"');
+<<<<<<< HEAD
         $mform->setType('name', PARAM_MULTILANG);
+=======
+        $mform->setType('name', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $mform->addElement('questioncategory', 'parent', get_string('parentcategory', 'question'),
                 array('contexts' => $usablecontexts, 'top' => true));

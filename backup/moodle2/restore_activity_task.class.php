@@ -278,7 +278,12 @@ abstract class restore_activity_task extends restore_task {
         // - section_included setting (if exists)
         $settingname = $settingprefix . 'included';
         $activity_included = new restore_activity_generic_setting($settingname, base_setting::IS_BOOLEAN, true);
+<<<<<<< HEAD
         $activity_included->get_ui()->set_icon(new pix_icon('icon', get_string('pluginname', $this->modulename), $this->modulename));
+=======
+        $activity_included->get_ui()->set_icon(new pix_icon('icon', get_string('pluginname', $this->modulename),
+            $this->modulename, array('class' => 'iconlarge icon-post')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->add_setting($activity_included);
         // Look for "activities" root setting
         $activities = $this->plan->get_setting('activities');

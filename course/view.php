@@ -117,10 +117,15 @@
     }
     add_to_log($course->id, 'course', $loglabel, "view.php?". $logparam, $infoid);
 
+<<<<<<< HEAD
     $course->format = clean_param($course->format, PARAM_ALPHA);
     if (!file_exists($CFG->dirroot.'/course/format/'.$course->format.'/format.php')) {
         $course->format = 'weeks';  // Default format is weeks
     }
+=======
+    // Fix course format if it is no longer installed
+    $course->format = course_get_format($course)->get_format();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $PAGE->set_pagelayout('course');
     $PAGE->set_pagetype('course-view-' . $course->format);
@@ -129,6 +134,22 @@
     $PAGE->set_other_editing_capability('moodle/course:activityvisibility');
     if (course_format_uses_sections($course->format)) {
         $PAGE->set_other_editing_capability('moodle/course:sectionvisibility');
+<<<<<<< HEAD
+=======
+        $PAGE->set_other_editing_capability('moodle/course:movesections');
+    }
+
+    // Preload course format renderer before output starts.
+    // This is a little hacky but necessary since
+    // format.php is not included until after output starts
+    if (file_exists($CFG->dirroot.'/course/format/'.$course->format.'/renderer.php')) {
+        require_once($CFG->dirroot.'/course/format/'.$course->format.'/renderer.php');
+        if (class_exists('format_'.$course->format.'_renderer')) {
+            // call get_renderer only if renderer is defined in format plugin
+            // otherwise an exception would be thrown
+            $PAGE->get_renderer('format_'. $course->format);
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     if ($reset_user_allowed_editing) {
@@ -184,6 +205,7 @@
             }
         }
 
+<<<<<<< HEAD
         if (has_capability('moodle/course:update', $context)) {
             if (!empty($section)) {
                 if (!empty($move) and confirm_sesskey()) {
@@ -200,6 +222,19 @@
                         echo $OUTPUT->notification('An error occurred while moving a section');
                     }
                 }
+=======
+        if (!empty($section) && !empty($move) &&
+                has_capability('moodle/course:movesections', $context) && confirm_sesskey()) {
+            $destsection = $section + $move;
+            if (move_section_to($course, $section, $destsection)) {
+                if ($course->id == SITEID) {
+                    redirect($CFG->wwwroot . '/?redirect=0');
+                } else {
+                    redirect(course_get_url($course));
+                }
+            } else {
+                echo $OUTPUT->notification('An error occurred while moving a section');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
     } else {
@@ -233,6 +268,17 @@
     }
 
     $PAGE->set_title(get_string('course') . ': ' . $course->fullname);
+<<<<<<< HEAD
+=======
+    // If viewing a section, make the title more specific
+    if ($section and $section > 0 and course_format_uses_sections($course->format)) {
+        // Get section details and check it exists.
+        $newtitle = $PAGE->title.', '.get_string('sectionname', "format_$course->format").': '.
+            get_section_name($course, $section);
+        $PAGE->set_title($newtitle);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
 
@@ -252,6 +298,7 @@
     // Course wrapper start.
     echo html_writer::start_tag('div', array('class'=>'course-content'));
 
+<<<<<<< HEAD
     $modinfo = get_fast_modinfo($COURSE);
     get_all_mods($course->id, $mods, $modnames, $modnamesplural, $modnamesused);
     foreach($mods as $modid=>$unused) {
@@ -276,6 +323,19 @@
             print_error('cannotcreateorfindstructs', 'error');
         }
     }
+=======
+    // make sure that section 0 exists (this function will create one if it is missing)
+    course_create_sections_if_missing($course, 0);
+
+    // get information about course modules and existing module types
+    // format.php in course formats may rely on presence of these variables
+    $modinfo = get_fast_modinfo($course);
+    $modnames = get_module_types_names();
+    $modnamesplural = get_module_types_names(true);
+    $modnamesused = $modinfo->get_used_module_names();
+    $mods = $modinfo->get_cms();
+    $sections = $modinfo->get_section_info_all();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // CAUTION, hacky fundamental variable defintion to follow!
     // Note that because of the way course fromats are constructed though

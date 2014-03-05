@@ -72,7 +72,17 @@ class block_section_links extends block_base {
         }
 
         $course = $this->page->course;
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $courseformatoptions = course_get_format($course)->get_format_options();
+        $context = context_course::instance($course->id);
+
+        // Course format options 'numsections' is required to display the block.
+        if (empty($courseformatoptions['numsections'])) {
+            return $this->content;
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($course->format == 'weeks' or $course->format == 'weekscss') {
             $highlight = ceil((time()-$course->startdate)/604800);
@@ -86,18 +96,32 @@ class block_section_links extends block_base {
         }
         $inc = 1;
 
+<<<<<<< HEAD
         if(!empty($config->numsections1) and ($course->numsections > $config->numsections1)) {
             $inc = $config->incby1;
         } else {
             if ($course->numsections > 22) {
+=======
+        if(!empty($config->numsections1) and ($courseformatoptions['numsections'] > $config->numsections1)) {
+            $inc = $config->incby1;
+        } else {
+            if ($courseformatoptions['numsections'] > 22) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $inc = 2;
             }
         }
 
+<<<<<<< HEAD
         if(!empty($config->numsections2) and ($course->numsections > $config->numsections2)) {
             $inc = $config->incby2;
         } else {
             if ($course->numsections > 40) {
+=======
+        if(!empty($config->numsections2) and ($courseformatoptions['numsections'] > $config->numsections2)) {
+            $inc = $config->incby2;
+        } else {
+            if ($courseformatoptions['numsections'] > 40) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $inc = 5;
             }
         }
@@ -105,12 +129,20 @@ class block_section_links extends block_base {
         $sql = "SELECT section, visible
                   FROM {course_sections}
                  WHERE course = ? AND
+<<<<<<< HEAD
                        section < ".($course->numsections+1)."
+=======
+                       section < ".($courseformatoptions['numsections']+1)."
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
               ORDER BY section";
 
         if ($sections = $DB->get_records_sql($sql, array($course->id))) {
             $text = '<ol class="inline-list">';
+<<<<<<< HEAD
             for ($i = $inc; $i <= $course->numsections; $i += $inc) {
+=======
+            for ($i = $inc; $i <= $courseformatoptions['numsections']; $i += $inc) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 if (!isset($sections[$i])) {
                     continue;
                 }

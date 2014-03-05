@@ -24,3 +24,7 @@
 
 $string['pluginname'] = 'User report';
 $string['user:view'] = 'View your own grade report';
+<<<<<<< HEAD
+=======
+$string['tablesummary'] = 'The table is arranged as a list of graded items including categories of graded items. When items are in a category they will be indicated as such.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

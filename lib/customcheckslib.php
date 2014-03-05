@@ -15,15 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+<<<<<<< HEAD
  * This is a one-line short description of the file
+=======
+ * This is a place to put custom environment checks, if there is not a better place.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *
  * This library contains a collection of functions able to perform
  * some custom checks executed by environmental tests (automatically
  * executed on install & upgrade and under petition in the admin block).
  *
+<<<<<<< HEAD
  * Any function in this library must return:
  * - null: if the test isn't relevant and must not be showed (ignored)
  * - environment_results object with the status set to:
+=======
+ * Any function in this library gets a environment_results object passed in.
+ * It must return:
+ * - null: if the test isn't relevant and must not be showed (ignored)
+ * - the environment_results object that was passed in, with the status set to:
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  *     - true: if passed
  *     - false: if failed
  *

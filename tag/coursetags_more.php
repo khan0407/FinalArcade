@@ -65,7 +65,11 @@ if ($courseid) {
 }
 
 if ($courseid) {
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_COURSE, $courseid));
+=======
+    $PAGE->set_context(context_course::instance($courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 } else {
     $PAGE->set_context(get_system_context());
 }
@@ -86,7 +90,11 @@ $welcome = get_string('morewelcome', $tagslang);
 
 // The title and breadcrumb
 if ($courseid) {
+<<<<<<< HEAD
     $courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $courseid)));
+=======
+    $courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($courseid)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->navbar->add($courseshortname, new moodle_url('/course/view.php', array('id'=>$courseid)));
 }
 $PAGE->navbar->add($title);
@@ -97,6 +105,7 @@ echo $OUTPUT->heading($title, 2, 'centre');
 
 // Prepare data for tags
 $courselink = '';
+<<<<<<< HEAD
 if ($courseid) { $courselink = '&amp;courseid='.$courseid; }
 $myurl = $CFG->wwwroot.'/tag/coursetags_more.php';
 $myurl2 = $CFG->wwwroot.'/tag/coursetags_more.php?show='.$show;
@@ -157,6 +166,26 @@ if ($show == 'course' and $courseid) {
         $tags = coursetag_print_cloud(coursetag_get_all_tags('name'), true, 200, 90);
     }
 
+=======
+if ($courseid) {
+    $courselink = '&amp;courseid='.$courseid;
+}
+$myurl = $CFG->wwwroot.'/tag/coursetags_more.php';
+$myurl2 = $CFG->wwwroot.'/tag/coursetags_more.php?show='.$show;
+
+if ($show == 'course' and $courseid) { // Course tags.
+    $tags = tag_print_cloud(coursetag_get_tags($courseid, 0, ''), 150, true, $sort);
+} else if ($show == 'my' and $loggedin) { // My tags.
+    $tags = tag_print_cloud(coursetag_get_tags(0, $USER->id, 'default'), 150, true, $sort);
+} else if ($show == 'official') { // Official course tags.
+    $tags = tag_print_cloud(coursetag_get_tags(0, 0, 'official'), 150, true, $sort);
+} else if ($show == 'community') { // Community (official and personal together) also called user tags.
+    $tags = tag_print_cloud(coursetag_get_tags(0, 0, 'default'), 150, true, $sort);
+} else {
+    // All tags for courses and blogs and any thing else tagged - the fallback default ($show == all).
+    $subtitle = $showalltags;
+    $tags = tag_print_cloud(coursetag_get_all_tags(), 150, true, $sort);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 // Prepare the links for the show and order lines
@@ -183,7 +212,11 @@ if ($loggedin) {
     }
 }
 if ($courseid) {
+<<<<<<< HEAD
     $fullname = format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+    $fullname = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($show == 'course') {
         $link1 .= ' | <b>'.get_string('moreshowcoursetags', $tagslang, $fullname).'</b>';
     } else {
@@ -209,6 +242,7 @@ if ($sort == 'date') {
 // Prepare output
 $fclass = '';
 // make the tags larger when there are not so many
+<<<<<<< HEAD
 if (strlen($tags) < 10000) { $fclass = 'coursetag_more_large'; }
 $outstr = '
     <div class="coursetag_more_title">
@@ -219,6 +253,20 @@ $outstr = '
     <div class="coursetag_more_tags '.$fclass.'">'.
         $tags.'
     </div>';
+=======
+if (strlen($tags) < 10000) {
+    $fclass = 'coursetag_more_large';
+}
+$outstr = '
+<div class="coursetag_more_title">
+<div style="padding-bottom:5px">'.$welcome.'</div>
+<div class="coursetag_more_link">'.$link1.'</div>
+<div class="coursetag_more_link">'.$link2.'</div>
+</div>
+<div class="coursetag_more_tags '.$fclass.'">'.
+$tags.'
+</div>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 echo $outstr;
 
 echo $OUTPUT->footer();

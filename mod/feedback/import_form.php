@@ -42,10 +42,15 @@ class feedback_import_form extends moodleform {
         $strnodeleteolditmes = get_string('append_new_items', 'feedback').
                                ' ('.get_string('oldvaluespreserved', 'feedback').')';
 
+<<<<<<< HEAD
         $deleteolditemsarray = array();
         $mform->addElement('radio', 'deleteolditems', '', $strdeleteolditmes, true);
         $mform->addElement('radio', 'deleteolditems', '', $strnodeleteolditmes);
         $mform->addGroup($deleteolditemsarray, 'deleteolditemsarray', '', array(''), false);
+=======
+        $mform->addElement('radio', 'deleteolditems', '', $strdeleteolditmes, true);
+        $mform->addElement('radio', 'deleteolditems', '', $strnodeleteolditmes);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         // hidden elements
         $mform->addElement('hidden', 'id');

@@ -117,4 +117,25 @@ class restore_assign_activity_task extends restore_activity_task {
         return $rules;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Given a comment area, return the itemname that contains the itemid mappings.
+     *
+     * @param string $commentarea
+     * @return string
+     */
+    public function get_comment_mapping_itemname($commentarea) {
+        switch ($commentarea) {
+            case 'submission_comments':
+                $itemname = 'submission';
+                break;
+            default:
+                $itemname = parent::get_comment_mapping_itemname($commentarea);
+                break;
+        }
+
+        return $itemname;
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

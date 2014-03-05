@@ -82,17 +82,30 @@ abstract class phpunit_module_generator {
         require_once("$CFG->dirroot/course/lib.php");
 
         $modulename = $this->get_modulename();
+<<<<<<< HEAD
+=======
+        $sectionnum = isset($options['section']) ? $options['section'] : 0;
+        unset($options['section']); // Prevent confusion, it would be overridden later in course_add_cm_to_section() anyway.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $cm = new stdClass();
         $cm->course             = $courseid;
         $cm->module             = $DB->get_field('modules', 'id', array('name'=>$modulename));
         $cm->instance           = 0;
+<<<<<<< HEAD
+=======
+        $cm->section            = 0;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $cm->idnumber           = isset($options['idnumber']) ? $options['idnumber'] : 0;
         $cm->added              = time();
 
         $columns = $DB->get_columns('course_modules');
         foreach ($options as $key=>$value) {
+<<<<<<< HEAD
             if ($key === 'id' or !isset($columns[$key]) or $key === 'section') {
+=======
+            if ($key === 'id' or !isset($columns[$key])) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 continue;
             }
             if (property_exists($cm, $key)) {
@@ -102,6 +115,7 @@ abstract class phpunit_module_generator {
         }
 
         $cm->id = $DB->insert_record('course_modules', $cm);
+<<<<<<< HEAD
         $cm->coursemodule = $cm->id;
 
         // add_mod_to_section() expects sectionnum, not id, crazy!
@@ -109,6 +123,10 @@ abstract class phpunit_module_generator {
         $sectionid = add_mod_to_section($cm);
         // Store the real section id.
         $DB->set_field('course_modules', 'section', $sectionid, array('id'=>$cm->id));
+=======
+
+        course_add_cm_to_section($courseid, $cm->id, $sectionnum);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         return $cm->id;
     }

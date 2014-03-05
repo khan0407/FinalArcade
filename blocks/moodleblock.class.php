@@ -240,6 +240,12 @@ class block_base {
         if (!$this->hide_header()) {
             $bc->title = $this->title;
         }
+<<<<<<< HEAD
+=======
+        if (empty($bc->title)) {
+            $bc->arialabel = new lang_string('pluginname', get_class($this));
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($this->page->user_is_editing()) {
             $bc->controls = $this->page->blocks->edit_controls($this);
@@ -398,7 +404,12 @@ class block_base {
     function html_attributes() {
         $attributes = array(
             'id' => 'inst' . $this->instance->id,
+<<<<<<< HEAD
             'class' => 'block_' . $this->name(). '  block'
+=======
+            'class' => 'block_' . $this->name(). '  block',
+            'role' => $this->get_aria_role()
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         );
         if ($this->instance_can_be_docked() && get_user_preferences('docked_block_instance_'.$this->instance->id, 0)) {
             $attributes['class'] .= ' dock_on_load';
@@ -418,7 +429,11 @@ class block_base {
             $this->config = unserialize(base64_decode($instance->configdata));
         }
         $this->instance = $instance;
+<<<<<<< HEAD
         $this->context = get_context_instance(CONTEXT_BLOCK, $instance->id);
+=======
+        $this->context = context_block::instance($instance->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->page = $page;
         $this->specialization();
     }
@@ -558,6 +573,7 @@ class block_base {
     function user_can_addto($page) {
         global $USER;
 
+<<<<<<< HEAD
         if (has_capability('moodle/block:edit', $page->context)) {
             return true;
         }
@@ -567,11 +583,54 @@ class block_base {
             && $page->context->contextlevel == CONTEXT_USER             // Page belongs to a user
             && $page->context->instanceid == $USER->id) {               // Page belongs to this user
             return has_capability('moodle/my:manageblocks', $page->context);
+=======
+        // The blocks in My Moodle are a special case and use a different capability.
+        if (!empty($USER->id)
+            && $page->context->contextlevel == CONTEXT_USER // Page belongs to a user
+            && $page->context->instanceid == $USER->id // Page belongs to this user
+            && $page->pagetype == 'my-index') { // Ensure we are on the My Moodle page
+            $capability = 'block/' . $this->name() . ':myaddinstance';
+            return $this->has_add_block_capability($page, $capability)
+                    && has_capability('moodle/my:manageblocks', $page->context);
+        }
+
+        $capability = 'block/' . $this->name() . ':addinstance';
+        if ($this->has_add_block_capability($page, $capability)
+                && has_capability('moodle/block:edit', $page->context)) {
+            return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Returns true if the user can add a block to a page.
+     *
+     * @param moodle_page $page
+     * @param string $capability the capability to check
+     * @return boolean true if user can add a block, false otherwise.
+     */
+    private function has_add_block_capability($page, $capability) {
+        // Check if the capability exists.
+        if (!get_capability_info($capability)) {
+            // Debug warning that the capability does not exist, but no more than once per page.
+            static $warned = array();
+            if (!isset($warned[$this->name()])) {
+                debugging('The block ' .$this->name() . ' does not define the standard capability ' .
+                        $capability , DEBUG_DEVELOPER);
+                $warned[$this->name()] = 1;
+            }
+            // If the capability does not exist, the block can always be added.
+            return true;
+        } else {
+            return has_capability($capability, $page->context);
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     static function get_extra_capabilities() {
         return array('moodle/block:view', 'moodle/block:edit');
     }
@@ -672,6 +731,32 @@ EOD;
     public static function comment_add(&$comments, $options) {
         return true;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns the aria role attribute that best describes this block.
+     *
+     * Region is the default, but this should be overridden by a block is there is a region child, or even better
+     * a landmark child.
+     *
+     * Options are as follows:
+     *    - landmark
+     *      - application
+     *      - banner
+     *      - complementary
+     *      - contentinfo
+     *      - form
+     *      - main
+     *      - navigation
+     *      - search
+     *
+     * @return string
+     */
+    public function get_aria_role() {
+        return 'complementary';
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 /**

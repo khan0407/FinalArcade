@@ -143,29 +143,49 @@ $THEME->layouts = array(
     'popup' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+=======
+        'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'frametop' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nocoursefooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'maintenance' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'embedded' => array(
         'theme' => 'canvas',
         'file' => 'embedded.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+=======
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     // Should display the content and basic headers only.
     'print' => array(
         'file' => 'general.php',
         'regions' => array(),
+<<<<<<< HEAD
         'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>false, 'nocustommenu'=>true),
+=======
+        'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>false, 'nocustommenu'=>true, 'nocourseheaderfooter'=>true),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     ),
     'report' => array(
         'file' => 'report.php',

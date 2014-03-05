@@ -17,15 +17,26 @@
 /**
  * Cohort enrolment plugin version specification.
  *
+<<<<<<< HEAD
  * @package    enrol
  * @subpackage cohort
+=======
+ * @package    enrol_cohort
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+<<<<<<< HEAD
 $plugin->version   = 2012061700;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2012061700;        // Requires this Moodle version
 $plugin->component = 'enrol_cohort';    // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 60*60;             // run cron every hour by default, it is not out-of-sync often
+=======
+$plugin->version   = 2012112900;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2012112900;        // Requires this Moodle version
+$plugin->component = 'enrol_cohort';    // Full name of the plugin (used for diagnostics)
+$plugin->cron      = 60*60;             // run cron every hour by default, it is not out-of-sync often
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

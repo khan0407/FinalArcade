@@ -49,7 +49,11 @@ while(!feof($fd)) {
     $a->date = userdate($log->time);
 
     $a->action = $action;
+<<<<<<< HEAD
     $a->course = format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+=======
+    $a->course = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $a->user = fullname($user);
 
     notify_user($user,$subject,$a);
@@ -86,7 +90,11 @@ function notify_admins($user,$subject,$a) {
     foreach ($admins as $admin) {
         $eventdata = new stdClass();
         $eventdata->modulename        = 'moodle';
+<<<<<<< HEAD
         $eventdata->userfrom          = $admin;
+=======
+        $eventdata->userfrom          = get_admin();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $eventdata->userto            = $admin;
         $eventdata->subject           = $subject;
         $eventdata->fullmessage       = $body;
@@ -107,7 +115,11 @@ function notify_admins_unknown($file,$a) {
     foreach ($admins as $admin) {
         $eventdata = new stdClass();
         $eventdata->modulename        = 'moodle';
+<<<<<<< HEAD
         $eventdata->userfrom          = $admin;
+=======
+        $eventdata->userfrom          = get_admin();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $eventdata->userto            = $admin;
         $eventdata->subject           = $subject;
         $eventdata->fullmessage       = $body;

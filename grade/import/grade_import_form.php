@@ -86,17 +86,35 @@ class grade_import_mapping_form extends moodleform {
         }
         $mform->addElement('select', 'mapfrom', get_string('mapfrom', 'grades'), $mapfromoptions);
 
+<<<<<<< HEAD
         $maptooptions = array('userid'=>'userid', 'username'=>'username', 'useridnumber'=>'useridnumber', 'useremail'=>'useremail', '0'=>'ignore');
+=======
+        $maptooptions = array(
+            'userid'       => get_string('userid', 'grades'),
+            'username'     => get_string('username'),
+            'useridnumber' => get_string('idnumber'),
+            'useremail'    => get_string('email'),
+            '0'            => get_string('ignore', 'grades')
+        );
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->addElement('select', 'mapto', get_string('mapto', 'grades'), $maptooptions);
 
         $mform->addElement('header', 'general', get_string('mappings', 'grades'));
 
+<<<<<<< HEAD
         // add a comment option
 
         $comments = array();
         if ($gradeitems = $this->_customdata['gradeitems']) {
             foreach ($gradeitems as $itemid => $itemname) {
                 $comments['feedback_'.$itemid] = 'comments for '.$itemname;
+=======
+        // Add a feedback option.
+        $feedbacks = array();
+        if ($gradeitems = $this->_customdata['gradeitems']) {
+            foreach ($gradeitems as $itemid => $itemname) {
+                $feedbacks['feedback_'.$itemid] = get_string('feedbackforgradeitems', 'grades', $itemname);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
 
@@ -104,11 +122,24 @@ class grade_import_mapping_form extends moodleform {
             $i = 0; // index
             foreach ($header as $h) {
                 $h = trim($h);
+<<<<<<< HEAD
                 // this is what each header maps to
                 $mform->addElement('selectgroups', 'mapping_'.$i, s($h),
                     array('others'=>array('0'=>'ignore', 'new'=>'new gradeitem'),
                     'gradeitems'=>$gradeitems,
                     'comments'=>$comments));
+=======
+                // This is what each header maps to.
+                $headermapsto = array(
+                    get_string('others', 'grades')     => array(
+                        '0'   => get_string('ignore', 'grades'),
+                        'new' => get_string('newitem', 'grades')
+                    ),
+                    get_string('gradeitems', 'grades') => $gradeitems,
+                    get_string('feedbacks', 'grades')  => $feedbacks
+                );
+                $mform->addElement('selectgroups', 'mapping_'.$i, s($h), $headermapsto);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $i++;
             }
         }
@@ -118,11 +149,19 @@ class grade_import_mapping_form extends moodleform {
         $mform->setType('map', PARAM_INT);
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
+<<<<<<< HEAD
         $mform->addElement('hidden', 'importcode');
         $mform->setType('importcode', PARAM_FILE);
         $mform->addElement('hidden', 'verbosescales', 1);
         $mform->setType('separator', PARAM_ALPHA);
         $mform->addElement('hidden', 'separator', 'comma');
+=======
+        $mform->addElement('hidden', 'iid');
+        $mform->setType('iid', PARAM_INT);
+        $mform->addElement('hidden', 'importcode');
+        $mform->setType('importcode', PARAM_FILE);
+        $mform->addElement('hidden', 'verbosescales', 1);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $mform->setType('verbosescales', PARAM_INT);
         $mform->addElement('hidden', 'groupid', groups_get_course_group($COURSE));
         $mform->setType('groupid', PARAM_INT);

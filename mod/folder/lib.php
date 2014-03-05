@@ -98,7 +98,11 @@ function folder_add_instance($data, $mform) {
 
     // we need to use context now, so we need to make sure all needed info is already in db
     $DB->set_field('course_modules', 'instance', $data->id, array('id'=>$cmid));
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if ($draftitemid) {
         file_save_draft_area_files($draftitemid, $context->id, 'mod_folder', 'content', 0, array('subdirs'=>true));
@@ -125,7 +129,11 @@ function folder_update_instance($data, $mform) {
 
     $DB->update_record('folder', $data);
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+    $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if ($draftitemid = file_get_submitted_draft_itemid('files')) {
         file_save_draft_area_files($draftitemid, $context->id, 'mod_folder', 'content', 0, array('subdirs'=>true));
     }
@@ -334,7 +342,11 @@ function folder_page_type_list($pagetype, $parentcontext, $currentcontext) {
 function folder_export_contents($cm, $baseurl) {
     global $CFG, $DB;
     $contents = array();
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $folder = $DB->get_record('folder', array('id'=>$cm->instance), '*', MUST_EXIST);
 
     $fs = get_file_storage();

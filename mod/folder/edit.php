@@ -32,7 +32,11 @@ require_once("$CFG->dirroot/repository/lib.php");
 $id = required_param('id', PARAM_INT);  // Course module ID
 
 $cm = get_coursemodule_from_id('folder', $id, 0, false, MUST_EXIST);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id, MUST_EXIST);
+=======
+$context = context_module::instance($cm->id, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $folder = $DB->get_record('folder', array('id'=>$cm->instance), '*', MUST_EXIST);
 $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
 

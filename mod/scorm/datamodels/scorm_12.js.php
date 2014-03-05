@@ -42,7 +42,11 @@ function SCORMapi1_2() {
     CMITimespan = '^([0-9]{2,4}):([0-9]{2}):([0-9]{2})(\.[0-9]{1,2})?$';
     CMIInteger = '^\\d+$';
     CMISInteger = '^-?([0-9]+)$';
+<<<<<<< HEAD
     CMIDecimal = '^-?([0-9]{0,3})(\.[0-9]{1,2})?$';
+=======
+    CMIDecimal = '^-?([0-9]{0,3})(\.[0-9]*)?$';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     CMIIdentifier = '^[\\u0021-\\u007E]{0,255}$';
     CMIFeedback = CMIString256; // This must be redefined
     CMIIndex = '[._](\\d+).';
@@ -51,7 +55,11 @@ function SCORMapi1_2() {
     CMIStatus2 = '^passed$|^completed$|^failed$|^incomplete$|^browsed$|^not attempted$';
     CMIExit = '^time-out$|^suspend$|^logout$|^$';
     CMIType = '^true-false$|^choice$|^fill-in$|^matching$|^performance$|^sequencing$|^likert$|^numeric$';
+<<<<<<< HEAD
     CMIResult = '^correct$|^wrong$|^unanticipated$|^neutral$|^([0-9]{0,3})?(\.[0-9]{1,2})?$';
+=======
+    CMIResult = '^correct$|^wrong$|^unanticipated$|^neutral$|^([0-9]{0,3})?(\.[0-9]*)?$';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     NAVEvent = '^previous$|^continue$';
     // Children lists
     cmi_children = 'core,suspend_data,launch_data,comments,objectives,student_data,student_preference,interactions';
@@ -198,11 +206,14 @@ function SCORMapi1_2() {
         return "false";
     }
 
+<<<<<<< HEAD
 <?php
     // pull in the TOC callback
     require_once($CFG->dirroot.'/mod/scorm/datamodels/callback.js.php');
 ?>
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     function LMSFinish (param) {
         errorCode = "0";
         if (param == "") {
@@ -211,6 +222,7 @@ function SCORMapi1_2() {
                 result = StoreData(cmi,true);
                 if (nav.event != '') {
                     if (nav.event == 'continue') {
+<<<<<<< HEAD
                         setTimeout('scorm_get_next();',500);
                     } else {
                         setTimeout('scorm_get_prev();',500);
@@ -218,6 +230,15 @@ function SCORMapi1_2() {
                 } else {
                     if (<?php echo $scorm->auto ?> == 1) {
                         setTimeout('scorm_get_next();',500);
+=======
+                        setTimeout('mod_scorm_launch_next_sco();',500);
+                    } else {
+                        setTimeout('mod_scorm_launch_prev_sco();',500);
+                    }
+                } else {
+                    if (<?php echo $scorm->auto ?> == 1) {
+                        setTimeout('mod_scorm_launch_next_sco();',500);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     }
                 }
                 <?php
@@ -235,7 +256,14 @@ function SCORMapi1_2() {
                 ?>
                 // trigger TOC update
                 var sURL = "<?php echo $CFG->wwwroot; ?>" + "/mod/scorm/prereqs.php?a=<?php echo $scorm->id ?>&scoid=<?php echo $scoid ?>&attempt=<?php echo $attempt ?>&mode=<?php echo $mode ?>&currentorg=<?php echo $currentorg ?>&sesskey=<?php echo sesskey(); ?>";
+<<<<<<< HEAD
                 YAHOO.util.Connect.asyncRequest('GET', sURL, this.connectPrereqCallback, null);
+=======
+                var callback = M.mod_scorm.connectPrereqCallback;
+                YUI().use('yui2-connection', function(Y) {
+                    Y.YUI2.util.Connect.asyncRequest('GET', sURL, callback, null);
+                });
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 return result;
             } else {
                 errorCode = "301";
@@ -429,6 +457,15 @@ function SCORMapi1_2() {
         if (param == "") {
             if (Initialized) {
                 result = StoreData(cmi,false);
+<<<<<<< HEAD
+=======
+                // trigger TOC update
+                var sURL = "<?php echo $CFG->wwwroot; ?>" + "/mod/scorm/prereqs.php?a=<?php echo $scorm->id ?>&scoid=<?php echo $scoid ?>&attempt=<?php echo $attempt ?>&mode=<?php echo $mode ?>&currentorg=<?php echo $currentorg ?>&sesskey=<?php echo sesskey(); ?>";
+                var callback = M.mod_scorm.connectPrereqCallback;
+                YUI().use('yui2-connection', function(Y) {
+                    Y.YUI2.util.Connect.asyncRequest('GET', sURL, callback, null);
+                });
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 <?php
                     if (scorm_debugging($scorm)) {
                         echo 'LogAPICall("Commit", param, "", 0);';

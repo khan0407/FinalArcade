@@ -12,13 +12,21 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 require_login();
+<<<<<<< HEAD
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/site:config', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $returnurl = new moodle_url('/admin/settings.php', array('section'=>'manageauths'));
 
 $PAGE->set_url($returnurl);
 
+<<<<<<< HEAD
 $action = optional_param('action', '', PARAM_ACTION);
+=======
+$action = optional_param('action', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $auth   = optional_param('auth', '', PARAM_PLUGIN);
 
 get_enabled_auth_plugins(true); // fix the list of enabled auths

@@ -65,7 +65,11 @@ M.mod_quiz.timer = {
      */
     init: function(Y, start, preview) {
         M.mod_quiz.timer.Y = Y;
+<<<<<<< HEAD
         M.mod_quiz.timer.endtime = new Date().getTime() + start*1000;
+=======
+        M.mod_quiz.timer.endtime = M.pageloadstarttime.getTime() + start*1000;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         M.mod_quiz.timer.preview = preview;
         M.mod_quiz.timer.update();
         Y.one('#quiz-timer').setStyle('display', 'block');

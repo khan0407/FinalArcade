@@ -11,7 +11,11 @@ YUI.add('moodle-enrol-otherusersmanager', function(Y) {
         USERCOUNT = 'userCount',
         PICTURE = 'picture',
         FULLNAME = 'fullname',
+<<<<<<< HEAD
         EMAIL = 'email',
+=======
+        EXTRAFIELDS = 'extrafields',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         ASSIGNABLEROLES = 'assignableRoles',
         USERS = 'users',
         URL = 'url',
@@ -36,7 +40,11 @@ YUI.add('moodle-enrol-otherusersmanager', function(Y) {
         PICTURE : 'oump-user-picture',
         DETAILS : 'oump-user-specifics',
         FULLNAME : 'oump-user-fullname',
+<<<<<<< HEAD
         EMAIL : 'oump-user-email',
+=======
+        EXTRAFIELDS : 'oump-user-extrafields',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         OPTIONS : 'oump-role-options',
         ROLEOPTION : 'oump-assignable-role',
         ODD  : 'odd',
@@ -310,7 +318,11 @@ YUI.add('moodle-enrol-otherusersmanager', function(Y) {
                     )
                     .append(Y.Node.create('<div class="'+CSS.DETAILS+'"></div>')
                         .append(Y.Node.create('<div class="'+CSS.FULLNAME+'">'+this.get(FULLNAME)+'</div>'))
+<<<<<<< HEAD
                         .append(Y.Node.create('<div class="'+CSS.EMAIL+'">'+this.get(EMAIL)+'</div>'))
+=======
+                        .append(Y.Node.create('<div class="'+CSS.EXTRAFIELDS+'">'+this.get(EXTRAFIELDS)+'</div>'))
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     )
                     .append(Y.Node.create('<div class="'+CSS.OPTIONS+'"><span class="label">'+M.str.role.assignrole+': </span></div>'))
                 );
@@ -374,7 +386,11 @@ YUI.add('moodle-enrol-otherusersmanager', function(Y) {
             fullname : {
                 validator : Y.Lang.isString
             },
+<<<<<<< HEAD
             email : {
+=======
+            extrafields : {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 validator : Y.Lang.isString
             },
             picture : {
@@ -391,4 +407,8 @@ YUI.add('moodle-enrol-otherusersmanager', function(Y) {
         }
     }
 
+<<<<<<< HEAD
 }, '@VERSION@', {requires:['base','node', 'overlay', 'io-base', 'test', 'json-parse', 'event-delegate', 'dd-plugin', 'event-key', 'moodle-enrol-notification']});
+=======
+}, '@VERSION@', {requires:['base','node', 'overlay', 'io-base', 'test', 'json-parse', 'event-delegate', 'dd-plugin', 'event-key', 'moodle-core-notification']});
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

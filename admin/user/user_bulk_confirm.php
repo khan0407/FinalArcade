@@ -10,7 +10,11 @@ $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
 require_login();
 admin_externalpage_setup('userbulk');
+<<<<<<< HEAD
 require_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+=======
+require_capability('moodle/user:update', context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $return = $CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk.php';
 
@@ -23,6 +27,10 @@ echo $OUTPUT->header();
 //TODO: add support for large number of users
 
 if ($confirm and confirm_sesskey()) {
+<<<<<<< HEAD
+=======
+    $notifications = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     list($in, $params) = $DB->get_in_or_equal($SESSION->bulk_users);
     $rs = $DB->get_recordset_select('user', "id $in", $params, '', 'id, username, secret, confirmed, auth, firstname, lastname');
     foreach ($rs as $user) {
@@ -32,12 +40,28 @@ if ($confirm and confirm_sesskey()) {
         $auth = get_auth_plugin($user->auth);
         $result = $auth->user_confirm($user->username, $user->secret);
         if ($result != AUTH_CONFIRM_OK && $result != AUTH_CONFIRM_ALREADY) {
+<<<<<<< HEAD
             echo $OUTPUT->notification(get_string('usernotconfirmed', '', fullname($user, true)));
         }
     }
     $rs->close();
     redirect($return, get_string('changessaved'));
 
+=======
+            $notifications .= $OUTPUT->notification(get_string('usernotconfirmed', '', fullname($user, true)));
+        }
+    }
+    $rs->close();
+    echo $OUTPUT->box_start('generalbox', 'notice');
+    if (!empty($notifications)) {
+        echo $notifications;
+    } else {
+        echo $OUTPUT->notification(get_string('changessaved'), 'notifysuccess');
+    }
+    $continue = new single_button(new moodle_url($return), get_string('continue'), 'post');
+    echo $OUTPUT->render($continue);
+    echo $OUTPUT->box_end();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 } else {
     list($in, $params) = $DB->get_in_or_equal($SESSION->bulk_users);
     $userlist = $DB->get_records_select_menu('user', "id $in", $params, 'fullname', 'id,'.$DB->sql_fullname().' AS fullname');

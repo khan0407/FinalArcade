@@ -66,6 +66,7 @@ class qformat_xhtml extends qformat_default {
         // add header
         $expout .= "<h3>$question->name</h3>\n";
 
+<<<<<<< HEAD
         // Format and add the question text
         $expout .= '<p class="questiontext">' . format_text($question->questiontext,
                 $question->questiontextformat) . "</p>\n";
@@ -73,6 +74,17 @@ class qformat_xhtml extends qformat_default {
         // selection depends on question type
         switch($question->qtype) {
         case TRUEFALSE:
+=======
+        // Format and add the question text.
+        $text = question_rewrite_questiontext_preview_urls($question->questiontext,
+                $question->contextid, 'qformat_xhtml', $question->id);
+        $expout .= '<p class="questiontext">' . format_text($text,
+                $question->questiontextformat, array('noclean' => true)) . "</p>\n";
+
+        // selection depends on question type
+        switch($question->qtype) {
+        case 'truefalse':
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $st_true = get_string('true', 'qtype_truefalse');
             $st_false = get_string('false', 'qtype_truefalse');
             $expout .= "<ul class=\"truefalse\">\n";
@@ -80,7 +92,11 @@ class qformat_xhtml extends qformat_default {
             $expout .= "  <li><input name=\"quest_$id\" type=\"radio\" value=\"$st_false\" />$st_false</li>\n";
             $expout .= "</ul>\n";
             break;
+<<<<<<< HEAD
         case MULTICHOICE:
+=======
+        case 'multichoice':
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $expout .= "<ul class=\"multichoice\">\n";
             foreach($question->options->answers as $answer) {
                 $ans_text = $this->repchar( $answer->answer );
@@ -93,6 +109,7 @@ class qformat_xhtml extends qformat_default {
             }
             $expout .= "</ul>\n";
             break;
+<<<<<<< HEAD
         case SHORTANSWER:
             $expout .= "<ul class=\"shortanswer\">\n";
             $expout .= "  <li>" . html_writer::label(get_string('answer'), 'quest_'.$id, false, array('class' => 'accesshide'));
@@ -107,6 +124,26 @@ class qformat_xhtml extends qformat_default {
             break;
         case MATCH:
             $expout .= "<ul class=\"match\">\n";
+=======
+        case 'shortanswer':
+            $expout .= html_writer::start_tag('ul', array('class' => 'shortanswer'));
+            $expout .= html_writer::start_tag('li');
+            $expout .= html_writer::label(get_string('answer'), 'quest_'.$id, false, array('class' => 'accesshide'));
+            $expout .= html_writer::empty_tag('input', array('id' => "quest_$id", 'name' => "quest_$id", 'type' => 'text'));
+            $expout .= html_writer::end_tag('li');
+            $expout .= html_writer::end_tag('ul');
+            break;
+        case 'numerical':
+            $expout .= html_writer::start_tag('ul', array('class' => 'numerical'));
+            $expout .= html_writer::start_tag('li');
+            $expout .= html_writer::label(get_string('answer'), 'quest_'.$id, false, array('class' => 'accesshide'));
+            $expout .= html_writer::empty_tag('input', array('id' => "quest_$id", 'name' => "quest_$id", 'type' => 'text'));
+            $expout .= html_writer::end_tag('li');
+            $expout .= html_writer::end_tag('ul');
+            break;
+        case 'match':
+            $expout .= html_writer::start_tag('ul', array('class' => 'match'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             // build answer list
             $ans_list = array();
@@ -116,9 +153,15 @@ class qformat_xhtml extends qformat_default {
             shuffle( $ans_list ); // random display order
 
             // Build select options.
+<<<<<<< HEAD
             $selectoptions = '';
             foreach($ans_list as $ans) {
                 $selectoptions .= "<option value=\"" . s($ans) . "\">" . s($ans) . "</option>\n";
+=======
+            $selectoptions = array();
+            foreach($ans_list as $ans) {
+                $selectoptions[s($ans)] = s($ans);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
 
             // display
@@ -128,17 +171,30 @@ class qformat_xhtml extends qformat_default {
                 $quest_text = $this->repchar( $subquestion->questiontext );
                 if ($quest_text != '') {
                     $dropdown = html_writer::label(get_string('answer', 'qtype_match', $option+1), 'quest_'.$id.'_'.$option, false, array('class' => 'accesshide'));
+<<<<<<< HEAD
                     $dropdown .= "<select id=\"quest_{$id}_{$option}\" name=\"quest_{$id}_{$option}\">\n".$selectoptions."</select>\n";
                     $expout .= "  <li>$quest_text</li>\n";
+=======
+                    $dropdown .= html_writer::select($selectoptions, "quest_{$id}_{$option}", '', false, array('id' => "quest_{$id}_{$option}"));
+                    $expout .= html_writer::tag('li', $quest_text);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $expout .= $dropdown;
                     $option++;
                 }
             }
+<<<<<<< HEAD
             $expout .= "</ul>\n";
             break;
         case DESCRIPTION:
             break;
         case MULTIANSWER:
+=======
+            $expout .= html_writer::end_tag('ul');
+            break;
+        case 'description':
+            break;
+        case 'multianswer':
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         default:
             $expout .= "<!-- export of $question->qtype type is not supported  -->\n";
         }

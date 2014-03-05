@@ -105,6 +105,11 @@ class moodle1_mod_workshop_handler extends moodle1_mod_handler {
         $this->currentworkshop['instructreviewers']         = '';
         $this->currentworkshop['instructreviewersformat']   = FORMAT_HTML;
         $this->currentworkshop['latesubmissions']           = 0;
+<<<<<<< HEAD
+=======
+        $this->currentworkshop['conclusion']                = '';
+        $this->currentworkshop['conclusionformat']          = FORMAT_HTML;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         foreach (array('submissionend', 'submissionstart', 'assessmentend', 'assessmentstart') as $field) {
             if (!array_key_exists($field, $this->currentworkshop)) {

@@ -26,3 +26,8 @@
 
 $string['enabledock'] = 'Allow the user to dock this block';
 $string['pluginname'] = 'Settings';
+<<<<<<< HEAD
+=======
+$string['settings:addinstance'] = 'Add a new settings block';
+$string['settings:myaddinstance'] = 'Add a new settings block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

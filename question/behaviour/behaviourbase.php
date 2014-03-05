@@ -232,7 +232,11 @@ abstract class question_behaviour {
         $vars = array('comment' => PARAM_RAW);
         if ($this->qa->get_max_mark()) {
             $vars['mark'] = question_attempt::PARAM_MARK;
+<<<<<<< HEAD
             $vars['maxmark'] = PARAM_NUMBER;
+=======
+            $vars['maxmark'] = PARAM_FLOAT;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return $vars;
     }
@@ -347,8 +351,13 @@ abstract class question_behaviour {
      * Initialise the first step in a question attempt when a new
      * {@link question_attempt} is being started.
      *
+<<<<<<< HEAD
      * This method must call $this->question->start_attempt($step), and may
      * perform additional processing if the model requries it.
+=======
+     * This method must call $this->question->start_attempt($step, $variant), and may
+     * perform additional processing if the behaviour requries it.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *
      * @param question_attempt_step $step the first step of the
      *      question_attempt being started.
@@ -356,6 +365,26 @@ abstract class question_behaviour {
      */
     public function init_first_step(question_attempt_step $step, $variant) {
         $this->question->start_attempt($step, $variant);
+<<<<<<< HEAD
+=======
+        $step->set_state(question_state::$todo);
+    }
+
+    /**
+     * When an attempt is started based on a previous attempt (see
+     * {@link question_attempt::start_based_on}) this method is called to setup
+     * the new attempt.
+     *
+     * This method must call $this->question->apply_attempt_state($step), and may
+     * perform additional processing if the behaviour requries it.
+     *
+     * @param question_attempt_step The first step of the {@link question_attempt}
+     *      being loaded.
+     */
+    public function apply_attempt_state(question_attempt_step $step) {
+        $this->question->apply_attempt_state($step);
+        $step->set_state(question_state::$todo);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -458,7 +487,11 @@ abstract class question_behaviour {
                 $fraction = null;
             } else if ($fraction > 1 || $fraction < $this->qa->get_min_fraction()) {
                 throw new coding_exception('Score out of range when processing ' .
+<<<<<<< HEAD
                         'a manual grading action.', 'Question ' . $this->qa->get_question()->id .
+=======
+                        'a manual grading action.', 'Question ' . $this->question->id .
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                                 ', slot ' . $this->qa->get_slot() . ', fraction ' . $fraction);
             }
             $pendingstep->set_fraction($fraction);
@@ -546,6 +579,16 @@ abstract class question_behaviour_with_save extends question_behaviour {
         return 'question_manually_gradable';
     }
 
+<<<<<<< HEAD
+=======
+    public function apply_attempt_state(question_attempt_step $step) {
+        parent::apply_attempt_state($step);
+        if ($this->question->is_complete_response($step->get_qt_data())) {
+            $step->set_state(question_state::$complete);
+        }
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Work out whether the response in $pendingstep are significantly different
      * from the last set of responses we have stored.

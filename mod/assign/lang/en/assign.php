@@ -22,6 +22,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
+=======
+$string['activityoverview'] = 'You have assignments that need attention';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['addsubmission'] = 'Add submission';
 $string['allowsubmissions'] = 'Allow the user to continue making submissions to this assignment.';
 $string['allowsubmissionsshort'] = 'Allow submission changes';
@@ -31,9 +35,18 @@ $string['allowsubmissionsfromdatesummary'] = 'This assignment will accept submis
 $string['allowsubmissionsanddescriptionfromdatesummary'] = 'The assignment details and submission form will be available from <strong>{$a}</strong>';
 $string['alwaysshowdescription'] = 'Always show description';
 $string['alwaysshowdescription_help'] = 'If disabled, the Assignment Description above will only become visible to students at the "Allow submissions from" date.';
+<<<<<<< HEAD
 $string['assign:addinstance'] = 'Add a new assignment';
 $string['assign:exportownsubmission'] = 'Export own submission';
 $string['assign:grade'] = 'Grade assignment';
+=======
+$string['applytoteam'] = 'Apply grades and feedback to entire group';
+$string['assign:addinstance'] = 'Add a new assignment';
+$string['assign:exportownsubmission'] = 'Export own submission';
+$string['assign:grade'] = 'Grade assignment';
+$string['assign:grantextension'] = 'Grant extension';
+$string['assign:revealidentities'] = 'Reveal student identities';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['assign:submit'] = 'Submit assignment';
 $string['assign:view'] = 'View assignment';
 $string['assignfeedback'] = 'Feedback plugin';
@@ -59,15 +72,28 @@ $string['availability'] = 'Availability';
 $string['backtoassignment'] = 'Back to assignment';
 $string['batchoperationsdescription'] = 'With selected...';
 $string['batchoperationconfirmlock'] = 'Lock all selected submissions?';
+<<<<<<< HEAD
+=======
+$string['batchoperationconfirmgrantextension'] = 'Grant an extension to all selected submissions?';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['batchoperationconfirmunlock'] = 'Unlock all selected submissions?';
 $string['batchoperationconfirmreverttodraft'] = 'Revert selected submissions to draft?';
 $string['batchoperationlock'] = 'lock submissions';
 $string['batchoperationunlock'] = 'unlock submissions';
 $string['batchoperationreverttodraft'] = 'revert submissions to draft';
+<<<<<<< HEAD
+=======
+$string['blindmarking'] = 'Blind marking';
+$string['blindmarking_help'] = 'Blind marking hides the identity of students to markers. Blind marking settings will be locked once a submission or grade has been made in relation to this assignment.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['changegradewarning'] = 'This assignment has graded submissions and changing the grade will not automatically re-calculate existing submission grades. You must re-grade all existing submissions, if you wish to change the grade.';
 $string['choosegradingaction'] = 'Grading action';
 $string['chooseoperation'] = 'Choose operation';
 $string['comment'] = 'Comment';
+<<<<<<< HEAD
+=======
+$string['completionsubmit'] = 'Student must submit to this activity to complete it';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['conversionexception'] = 'Could not convert assignment. Exception was: {$a}.';
 $string['configshowrecentsubmissions'] = 'Everyone can see notifications of submissions in recent activity reports.';
 $string['confirmsubmission'] = 'Are you sure you want to submit your work for grading? You will not be able to make any more changes';
@@ -78,8 +104,18 @@ $string['couldnotcreatecoursemodule'] = 'Could not create course module.';
 $string['couldnotcreatenewassignmentinstance'] = 'Could not create new assignment instance.';
 $string['couldnotfindassignmenttoupgrade'] = 'Could not find old assignment instance to upgrade.';
 $string['currentgrade'] = 'Current grade in gradebook';
+<<<<<<< HEAD
 $string['defaultplugins'] = 'Default assignment settings';
 $string['defaultplugins_help'] = 'These settings define the defaults for all new assignments.';
+=======
+$string['cutoffdate'] = 'Cut-off date';
+$string['cutoffdate_help'] = 'If set, the assignment will not accept submissions after this date without an extension.';
+$string['cutoffdatevalidation'] = 'The cut-off date cannot be earlier than the due date.';
+$string['cutoffdatefromdatevalidation'] = 'Cut-off date must be after the allow submissions from date.';
+$string['defaultplugins'] = 'Default assignment settings';
+$string['defaultplugins_help'] = 'These settings define the defaults for all new assignments.';
+$string['defaultteam'] = 'Default group';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['deleteallsubmissions'] = 'Delete all submissions';
 $string['deletepluginareyousure'] = 'Delete assignment plugin {$a}: are you sure?';
 $string['deletepluginareyousuremessage'] = 'You are about to completely delete the assignment plugin {$a}. This will completely delete everything in the database associated with this assignment plugin. Are you SURE you want to continue?';
@@ -88,13 +124,25 @@ $string['description'] = 'Description';
 $string['downloadall'] = 'Download all submissions';
 $string['download all submissions'] = 'Download all submissions in a zip file.';
 $string['duedate'] = 'Due date';
+<<<<<<< HEAD
 $string['duedate_help'] = 'This is when the assignment is due. If late submissions are allowed, any assignments submitted after this date are marked as late.';
+=======
+$string['duedate_help'] = 'This is when the assignment is due. Submissions will still be allowed after this date but any assignments submitted after this date are marked as late. To prevent submissions after a certain date - set the assignment cut off date.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['duedateno'] = 'No due date';
 $string['submissionempty'] = 'Nothing was submitted';
 $string['duedatereached'] = 'The due date for this assignment has now passed';
 $string['duedatevalidation'] = 'Due date must be after the allow submissions from date.';
 $string['editsubmission'] = 'Edit my submission';
+<<<<<<< HEAD
 $string['editaction'] = 'Actions...';
+=======
+$string['editingstatus'] = 'Editing status';
+$string['editaction'] = 'Actions...';
+$string['extensionduedate'] = 'Extension due date';
+$string['extensionnotafterduedate'] = 'Extension date must be after the due date';
+$string['extensionnotafterfromdate'] = 'Extension date must be after the allow submissions from date';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['gradersubmissionupdatedtext'] = '{$a->username} has updated their assignment submission
 for \'{$a->assignment}\' at {$a->timeupdated}
 
@@ -106,6 +154,11 @@ for <i>\'{$a->assignment}\'  at {$a->timeupdated}</i><br /><br />
 It is <a href="{$a->url}">available on the web site</a>.';
 $string['gradersubmissionupdatedsmall'] = '{$a->username} has updated their submission for assignment {$a->assignment}.';
 $string['gradeuser'] = 'Grade {$a}';
+<<<<<<< HEAD
+=======
+$string['grantextension'] = 'Grant extension';
+$string['grantextensionforusers'] = 'Grant extension for {$a} students';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['enabled'] = 'Enabled';
 $string['errornosubmissions'] = 'There are no submissions to download';
 $string['errorquickgradingvsadvancedgrading'] = 'The grades were not saved because this assignment is currently using advanced grading';
@@ -136,25 +189,46 @@ $string['graded'] = 'Graded';
 $string['gradedon'] = 'Graded on';
 $string['gradebelowzero'] = 'Grade must be greater than or equal to zero.';
 $string['gradeabovemaximum'] = 'Grade must be less than or equal to {$a}.';
+<<<<<<< HEAD
+=======
+$string['gradelocked'] = 'This grade is locked or overridden in the gradebook.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['gradeoutof'] = 'Grade out of {$a}';
 $string['gradeoutofhelp'] = 'Grade';
 $string['gradeoutofhelp_help'] = 'Enter the grade for the student\'s submission here. You may include decimals.';
 $string['gradestudent'] = 'Grade student: (id={$a->id}, fullname={$a->fullname}). ';
 $string['grading'] = 'Grading';
+<<<<<<< HEAD
+=======
+$string['gradingmethodpreview'] = 'Grading criteria';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['gradingoptions'] = 'Options';
 $string['gradingstatus'] = 'Grading status';
 $string['gradingstudentprogress'] = 'Grading student {$a->index} of {$a->count}';
 $string['gradingsummary'] = 'Grading summary';
 $string['hideshow'] = 'Hide/Show';
+<<<<<<< HEAD
+=======
+$string['hiddenuser'] = 'Participant ';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['instructionfiles'] = 'Instruction files';
 $string['invalidgradeforscale'] = 'The grade supplied was not valid for the current scale';
 $string['invalidfloatforgrade'] = 'The grade provided could not be understood: {$a}';
 $string['lastmodifiedsubmission'] = 'Last modified (submission)';
 $string['lastmodifiedgrade'] = 'Last modified (grade)';
+<<<<<<< HEAD
+=======
+$string['latesubmissions'] = 'Late submissions';
+$string['latesubmissionsaccepted'] = 'Only student(s) having been granted extension can still submit the assignment';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['locksubmissionforstudent'] = 'Prevent any more submissions for student: (id={$a->id}, fullname={$a->fullname}).';
 $string['locksubmissions'] = 'Lock submissions';
 $string['manageassignfeedbackplugins'] = 'Manage assignment feedback plugins';
 $string['manageassignsubmissionplugins'] = 'Manage assignment submission plugins';
+<<<<<<< HEAD
+=======
+$string['maxgrade'] = 'Maximum Grade';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['messageprovider:assign_notification'] = 'Assignment notifications';
 $string['modulename'] = 'Assignment';
 $string['modulename_help'] = 'The assignment activity module enables a teacher to communicate tasks, collect work and provide grades and feedback.
@@ -168,9 +242,18 @@ $string['mysubmission'] = 'My submission: ';
 $string['newsubmissions'] = 'Assignments submitted';
 $string['nofiles'] = 'No files. ';
 $string['nograde'] = 'No grade. ';
+<<<<<<< HEAD
 $string['noonlinesubmissions'] = 'This assignment does not require you to submit anything online';
 $string['nosavebutnext'] = 'Next';
 $string['nosubmission'] = 'Nothing has been submitted for this assignment';
+=======
+$string['nolatesubmissions'] = 'No late submissions accepted. ';
+$string['noonlinesubmissions'] = 'This assignment does not require you to submit anything online';
+$string['nosavebutnext'] = 'Next';
+$string['nosubmission'] = 'Nothing has been submitted for this assignment';
+$string['nosubmissionsacceptedafter'] = 'No submissions accepted after ';
+$string['nomoresubmissionsaccepted'] = 'No more submissions accepted';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['notgraded'] = 'Not graded';
 $string['notgradedyet'] = 'Not graded yet';
 $string['notsubmittedyet'] = 'Not submitted yet';
@@ -180,15 +263,27 @@ $string['numberofdraftsubmissions'] = 'Drafts';
 $string['numberofparticipants'] = 'Participants';
 $string['numberofsubmittedassignments'] = 'Submitted';
 $string['numberofsubmissionsneedgrading'] = 'Needs grading';
+<<<<<<< HEAD
 $string['offline'] = 'No online submissions required';
+=======
+$string['numberofteams'] = 'Groups';
+$string['offline'] = 'No online submissions required';
+$string['open'] = 'Open';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['overdue'] = '<font color="red">Assignment is overdue by: {$a}</font>';
 $string['outlinegrade'] = 'Grade: {$a}';
 $string['page-mod-assign-x'] = 'Any assignment module page';
 $string['page-mod-assign-view'] = 'Assignment module main and submission page';
+<<<<<<< HEAD
 $string['pluginadministration'] = 'Assignment administration';
 $string['pluginname'] = 'Assignment';
 $string['preventlatesubmissions'] = 'Prevent late submissions';
 $string['preventlatesubmissions_help'] = 'If enabled, students will not be able submit after the Due Date. If disabled, students will be able to submit assignments after the due date.';
+=======
+$string['participant'] = 'Participant';
+$string['pluginadministration'] = 'Assignment administration';
+$string['pluginname'] = 'Assignment';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['preventsubmissions'] = 'Prevent the user from making any more submissions to this assignment.';
 $string['preventsubmissionsshort'] = 'Prevent submission changes';
 $string['previous'] = 'Previous';
@@ -196,6 +291,18 @@ $string['quickgrading'] = 'Quick grading';
 $string['quickgradingresult'] = 'Quick grading';
 $string['quickgradingchangessaved'] = 'The grade changes were saved';
 $string['quickgrading_help'] = 'Quick grading allows you to assign grades (and outcomes) directly in the submissions table. Quick grading is not compatible with advanced grading and is not recommended when there are multiple markers.';
+<<<<<<< HEAD
+=======
+$string['requiresubmissionstatement'] = 'Require that students accept the submission statement';
+$string['requiresubmissionstatement_help'] = 'Require that students accept the submission statement for all assignment submissions for this entire Moodle installation. If this setting is not enabled, then submission statements can be enabled or disabled in the settings for each assignment.';
+$string['requiresubmissionstatementassignment'] = 'Require that students accept the submission statement';
+$string['requiresubmissionstatementassignment_help'] = 'Require that students accept the submission statement for all submissions to this assignment.';
+$string['requireallteammemberssubmit'] = 'Require all group members submit';
+$string['requireallteammemberssubmit_help'] = 'If enabled, all members of the student group must click the submit button for this assignment before the group submission will be considered as submitted. If disabled, the group submission will be considered as submitted as soon as any member of the student group clicks the submit button.';
+$string['recordid'] = 'Identifier';
+$string['revealidentities'] = 'Reveal student identities';
+$string['revealidentitiesconfirm'] = 'Are you sure you want to reveal student identities for this assignment. This operation cannot be undone. Once the student identities have been revealed, the marks will be released to the gradebook.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['reverttodraftforstudent'] = 'Revert submission to draft for student: (id={$a->id}, fullname={$a->fullname}).';
 $string['reverttodraft'] = 'Revert the submission to draft status.';
 $string['reverttodraftshort'] = 'Revert the submission to draft';
@@ -203,9 +310,17 @@ $string['reviewed'] = 'Reviewed';
 $string['savechanges'] = 'Save changes';
 $string['saveallquickgradingchanges'] = 'Save all quick grading changes';
 $string['savenext'] = 'Save and show next';
+<<<<<<< HEAD
 $string['sendnotifications'] = 'Notify graders about submissions';
 $string['sendnotifications_help'] = 'If enabled, graders (usually teachers) receive a message whenever a student submits an assignment, early, on time and late. Message methods are configurable.';
 $string['selectlink'] = 'Select...';
+=======
+$string['scale'] = 'Scale';
+$string['sendnotifications'] = 'Notify graders about submissions';
+$string['sendnotifications_help'] = 'If enabled, graders (usually teachers) receive a message whenever a student submits an assignment, early, on time and late. Message methods are configurable.';
+$string['selectlink'] = 'Select...';
+$string['selectuser'] = 'Select {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['sendlatenotifications'] = 'Notify graders about late submissions';
 $string['sendlatenotifications_help'] = 'If enabled, graders (usually teachers) receive a message whenever a student submits an assignment late. Message methods are configurable.';
 $string['sendsubmissionreceipts'] = 'Send submission receipt to students';
@@ -214,6 +329,11 @@ $string['settings'] = 'Assignment settings';
 $string['showrecentsubmissions'] = 'Show recent submissions';
 $string['submissiondrafts'] = 'Require students click submit button';
 $string['submissiondrafts_help'] = 'If enabled, students will have to click a Submit button to declare their submission as final. This allows students to keep a draft version of the submission on the system. If this setting is changed from "No" to "Yes" after students have already submitted those submissions will be regarded as final.';
+<<<<<<< HEAD
+=======
+$string['submissioneditable'] = 'Student can edit this submission';
+$string['submissionnoteditable'] = 'Student cannot edit this submission';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['submissionnotready'] = 'This assignment is not ready to submit:';
 $string['submissionplugins'] = 'Submission plugins';
 $string['submissionreceipts'] = 'Send submission receipts';
@@ -233,6 +353,13 @@ $string['submissions'] = 'Submissions';
 $string['submissionsnotgraded'] = 'Submissions not graded: {$a}';
 $string['submissionsclosed'] = 'Submissions closed';
 $string['submissionsettings'] = 'Submission settings';
+<<<<<<< HEAD
+=======
+$string['submissionstatement'] = 'Submission statement';
+$string['submissionstatement_help'] = 'Assignment submission confirmation statement';
+$string['submissionstatementdefault'] = 'This assignment is my own work, except where I have acknowledged the use of the works of other people.';
+$string['submissionstatementacceptedlog'] = 'Submission statement accepted by user {$a}';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['submissionstatus_draft'] = 'Draft (not submitted)';
 $string['submissionstatusheading'] = 'Submission status';
 $string['submissionstatus_marked'] = 'Graded';
@@ -240,6 +367,10 @@ $string['submissionstatus_new'] = 'New submission';
 $string['submissionstatus_'] = 'No submission';
 $string['submissionstatus'] = 'Submission status';
 $string['submissionstatus_submitted'] = 'Submitted for grading';
+<<<<<<< HEAD
+=======
+$string['submissionteam'] = 'Group';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['submission'] = 'Submission';
 $string['submitaction'] = 'Submit';
 $string['submitassignment_help'] = 'Once this assignment is submitted you will not be able to make any more changes';
@@ -248,6 +379,14 @@ $string['submittedearly'] = 'Assignment was submitted {$a} early';
 $string['submittedlate'] = 'Assignment was submitted {$a} late';
 $string['submittedlateshort'] = '{$a} late';
 $string['submitted'] = 'Submitted';
+<<<<<<< HEAD
+=======
+$string['teamsubmission'] = 'Students submit in groups';
+$string['teamsubmission_help'] = 'If enabled students will be divided into groups based on the default set of groups or a custom grouping. A group submission will be shared among group members and all members of the group will see each others changes to the submission.';
+$string['teamsubmissiongroupingid'] = 'Grouping for student groups';
+$string['teamsubmissiongroupingid_help'] = 'This is the grouping that the assignment will use to find groups for student groups. If not set - the default set of groups will be used.';
+$string['teamsubmissionstatus'] = 'Group submission status';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['textinstructions'] = 'Assignment instructions';
 $string['timemodified'] = 'Last modified';
 $string['timeremaining'] = 'Time remaining';
@@ -256,6 +395,12 @@ $string['unlocksubmissions'] = 'Unlock submissions';
 $string['updategrade'] = 'Update grade';
 $string['updatetable'] = 'Save and update table';
 $string['upgradenotimplemented'] = 'Upgrade not implemented in plugin ({$a->type} {$a->subtype})';
+<<<<<<< HEAD
+=======
+$string['userextensiondate'] = 'Extension granted until: {$a}';
+$string['userswhoneedtosubmit'] = 'Users who need to submit: {$a}';
+$string['usergrade'] = 'User grade';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['viewfeedback'] = 'View feedback';
 $string['viewfeedbackforuser'] = 'View feedback for user: {$a}';
 $string['viewfullgradingpage'] = 'Open the full grading page to provide feedback';
@@ -266,4 +411,12 @@ $string['viewownsubmissionform'] = 'View own submit assignment page.';
 $string['viewownsubmissionstatus'] = 'View own submission status page.';
 $string['viewsubmissionforuser'] = 'View submission for user: {$a}';
 $string['viewsubmission'] = 'View submission';
+<<<<<<< HEAD
 $string['viewsubmissiongradingtable'] = 'View submission grading table.';
+=======
+$string['viewfull'] = 'View full';
+$string['viewsummary'] = 'View summary';
+$string['viewsubmissiongradingtable'] = 'View submission grading table.';
+$string['viewrevealidentitiesconfirm'] = 'View reveal student identities confirmation page.';
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

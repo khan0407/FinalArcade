@@ -316,8 +316,16 @@ class feedback_item_multichoice extends feedback_item_base {
 
         //print the question and label
         echo '<div class="feedback_item_label_'.$align.'">';
+<<<<<<< HEAD
         echo '('.$item->label.') ';
         echo format_text($item->name.$requiredmark, true, false, false);
+=======
+        if ($info->subtype == 'd') {
+            echo '<label for="'. $item->typ . '_' . $item->id .'">';
+        }
+        echo '('.$item->label.') ';
+        echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('feedback_item', array('id'=>$item->dependitem))) {
                 echo ' <span class="feedback_depend">';
@@ -325,6 +333,12 @@ class feedback_item_multichoice extends feedback_item_base {
                 echo '</span>';
             }
         }
+<<<<<<< HEAD
+=======
+        if ($info->subtype == 'd') {
+            echo '</label>';
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
 
         //print the presentation
@@ -420,7 +434,17 @@ class feedback_item_multichoice extends feedback_item_base {
 
         //print the question and label
         echo '<div class="feedback_item_label_'.$align.$highlight.'">';
+<<<<<<< HEAD
             echo format_text($item->name.$requiredmark, true, false, false);
+=======
+        if ($info->subtype == 'd') {
+            echo '<label for="'. $item->typ . '_' . $item->id .'">';
+            echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
+            echo '</label>';
+        } else {
+            echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
 
         //print the presentation
@@ -511,7 +535,11 @@ class feedback_item_multichoice extends feedback_item_base {
         //print the question and label
         echo '<div class="feedback_item_label_'.$align.'">';
         echo '('.$item->label.') ';
+<<<<<<< HEAD
         echo format_text($item->name . $requiredmark, true, false, false);
+=======
+        echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '</div>';
 
         //print the presentation
@@ -523,7 +551,11 @@ class feedback_item_multichoice extends feedback_item_base {
                 foreach ($values as $val) {
                     if ($val == $index) {
                         echo '<div class="feedback_item_multianswer">';
+<<<<<<< HEAD
                         echo text_to_html($pres, true, false, false);
+=======
+                        echo format_text($pres, FORMAT_HTML, array('noclean' => true, 'para' => false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         echo '</div>';
                         break;
                     }
@@ -535,7 +567,11 @@ class feedback_item_multichoice extends feedback_item_base {
             foreach ($presentation as $pres) {
                 if ($value == $index) {
                     echo $OUTPUT->box_start('generalbox boxalign'.$align);
+<<<<<<< HEAD
                     echo text_to_html($pres, true, false, false);
+=======
+                    echo format_text($pres, FORMAT_HTML, array('noclean' => true, 'para' => false));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     echo $OUTPUT->box_end();
                     break;
                 }
@@ -691,7 +727,11 @@ class feedback_item_multichoice extends feedback_item_base {
                 </span>
                 <span class="feedback_item_radiolabel_<?php echo $hv.'_'.$align;?>">
                     <label for="<?php echo $inputid;?>">
+<<<<<<< HEAD
                         <?php echo text_to_html($radio, true, false, false);?>&nbsp;
+=======
+                        <?php echo format_text($radio, FORMAT_HTML, array('noclean' => true, 'para' => false));?>&nbsp;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     </label>
                 </span>
             </li>
@@ -739,7 +779,11 @@ class feedback_item_multichoice extends feedback_item_base {
                 </span>
                 <span class="feedback_item_radiolabel_<?php echo $hv.'_'.$align;?>">
                     <label for="<?php echo $inputid;?>">
+<<<<<<< HEAD
                         <?php echo text_to_html($check, true, false, false);?>&nbsp;
+=======
+                        <?php echo format_text($check, FORMAT_HTML, array('noclean' => true, 'para' => false));?>&nbsp;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     </label>
                 </span>
             </li>
@@ -780,7 +824,11 @@ class feedback_item_multichoice extends feedback_item_base {
                     }
                 ?>
                     <option value="<?php echo $index;?>" <?php echo $selected;?>>
+<<<<<<< HEAD
                         <?php echo text_to_html($dropdown, true, false, false);?>
+=======
+                        <?php echo format_text($dropdown, FORMAT_HTML, array('noclean' => true, 'para' => false));?>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     </option>
                 <?php
                     $index++;

@@ -634,7 +634,11 @@ abstract class qbehaviour_walkthrough_test_base extends question_testcase {
 
         $this->displayoptions = new question_display_options();
         $this->quba = question_engine::make_questions_usage_by_activity('unit_test',
+<<<<<<< HEAD
             get_context_instance(CONTEXT_SYSTEM));
+=======
+            context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function tearDown() {
@@ -684,6 +688,16 @@ abstract class qbehaviour_walkthrough_test_base extends question_testcase {
         $this->currentoutput = $this->quba->render_question($this->slot, $this->displayoptions);
     }
 
+<<<<<<< HEAD
+=======
+    protected function check_output_contains_lang_string($identifier, $component = '', $a = null) {
+        $this->render();
+        $string = get_string($identifier, $component, $a);
+        $this->assertContains($string, $this->currentoutput,
+                'Expected string ' . $string . ' not found in ' . $this->currentoutput);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * @param $condition one or more Expectations. (users varargs).
      */

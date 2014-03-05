@@ -213,8 +213,13 @@ $string['serviceswesubscribeto'] = 'Services on {$a} that we subscribe to.';
 $string['settings'] = 'Settings';
 $string['showlocal'] = 'Show local users';
 $string['showremote'] = 'Show remote users';
+<<<<<<< HEAD
 $string['ssl_acl_allow'] = 'SSO ACL: Allow user {$a->user} from {$a->host}';
 $string['ssl_acl_deny'] = 'SSO ACL: Deny user {$a->user} from {$a->host}';
+=======
+$string['ssl_acl_allow'] = 'SSO ACL: Allow user \'{$a->user}\' from \'{$a->host}\'';
+$string['ssl_acl_deny'] = 'SSO ACL: Deny user \'{$a->user}\' from \'{$a->host}\'';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['ssoaccesscontrol'] = 'SSO access control';
 $string['ssoacldescr'] = 'Use this page to grant/deny access to specific users from remote MNet hosts. This is functional when you are offering SSO services to remote users. To control your <em>local</em> users\' ability to roam to other MNet hosts, use the roles system to grant them the <em>mnetlogintoremote</em> capability.';
 $string['ssoaclneeds'] = 'For this functionality to work, you must have Networking on, plus the MNet authentication plugin enabled.';

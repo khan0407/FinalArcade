@@ -23,6 +23,13 @@
  * @package calendar
  */
 
+<<<<<<< HEAD
+=======
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * The primary renderer for the calendar.
  */
@@ -276,6 +283,10 @@ class core_calendar_renderer extends plugin_renderer_base {
      */
     public function event(calendar_event $event, $showactions=true) {
         $event = calendar_add_event_metadata($event);
+<<<<<<< HEAD
+=======
+        $context = $event->context;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $anchor  = html_writer::tag('a', '', array('name'=>'event_'.$event->id));
 
@@ -298,7 +309,11 @@ class core_calendar_renderer extends plugin_renderer_base {
         if (!empty($event->referer)) {
             $table->data[0]->cells[1]->text .= html_writer::tag('div', $event->referer, array('class'=>'referer'));
         } else {
+<<<<<<< HEAD
             $table->data[0]->cells[1]->text .= html_writer::tag('div', $event->name, array('class'=>'name'));
+=======
+            $table->data[0]->cells[1]->text .= html_writer::tag('div', format_string($event->name, false, array('context' => $context)), array('class'=>'name'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         if (!empty($event->courselink)) {
             $table->data[0]->cells[1]->text .= html_writer::tag('div', $event->courselink, array('class'=>'course'));
@@ -312,7 +327,11 @@ class core_calendar_renderer extends plugin_renderer_base {
         $table->data[1]->cells[0] = new html_table_cell('&nbsp;');
         $table->data[1]->cells[0]->attributes['class'] .= 'side';
 
+<<<<<<< HEAD
         $table->data[1]->cells[1] = new html_table_cell($event->description);
+=======
+        $table->data[1]->cells[1] = new html_table_cell(format_text($event->description, $event->format, array('context' => $context)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $table->data[1]->cells[1]->attributes['class'] .= ' description';
         if (isset($event->cssclass)) {
             $table->data[1]->cells[1]->attributes['class'] .= ' '.$event->cssclass;
@@ -559,8 +578,11 @@ class core_calendar_renderer extends plugin_renderer_base {
         $table->data[] = $row;
         $output .= html_writer::table($table);
 
+<<<<<<< HEAD
         // OK, now for the filtering display
         $output .= $this->filter_selection_table($calendar);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $output;
     }
 
@@ -569,9 +591,19 @@ class core_calendar_renderer extends plugin_renderer_base {
      *
      * @param calendar_information $calendar
      * @return string
+<<<<<<< HEAD
      */
     protected function filter_selection_table(calendar_information $calendar, moodle_url $returnurl = null) {
         global $SESSION;
+=======
+     * @deprecated since Moodle 2.4 MDL-32309
+     * @see calendar_filter_controls()
+     */
+    protected function filter_selection_table(calendar_information $calendar, moodle_url $returnurl = null) {
+        global $SESSION;
+        debugging('Method core_calendar_renderer::filter_selection_table() is deprecated, please use '.
+                'calendar_filter_controls() instead', DEBUG_DEVELOPER);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if ($returnurl === null) {
             $returnurl = $this->page->url;
@@ -687,7 +719,11 @@ class core_calendar_renderer extends plugin_renderer_base {
             return '';
         }
 
+<<<<<<< HEAD
         if (has_capability('moodle/calendar:manageentries', get_context_instance(CONTEXT_SYSTEM)) && !empty($CFG->calendar_adminseesall)) {
+=======
+        if (has_capability('moodle/calendar:manageentries', context_system::instance()) && !empty($CFG->calendar_adminseesall)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $courses = get_courses('all', 'c.shortname','c.id,c.shortname');
         } else {
             $courses = enrol_get_my_courses();
@@ -698,7 +734,11 @@ class core_calendar_renderer extends plugin_renderer_base {
         $courseoptions = array();
         $courseoptions[SITEID] = get_string('fulllistofcourses');
         foreach ($courses as $course) {
+<<<<<<< HEAD
             $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+            $coursecontext = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $courseoptions[$course->id] = format_string($course->shortname, true, array('context' => $coursecontext));
         }
 
@@ -716,4 +756,108 @@ class core_calendar_renderer extends plugin_renderer_base {
         }
         return $this->output->render($select);
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Renders a table containing information about calendar subscriptions.
+     *
+     * @param int $courseid
+     * @param array $subscriptions
+     * @param string $importresults
+     * @return string
+     */
+    public function subscription_details($courseid, $subscriptions, $importresults = '') {
+        $table = new html_table();
+        $table->head  = array(
+            get_string('colcalendar', 'calendar'),
+            get_string('collastupdated', 'calendar'),
+            get_string('eventkind', 'calendar'),
+            get_string('colpoll', 'calendar'),
+            get_string('colactions', 'calendar')
+        );
+        $table->align = array('left', 'left', 'left', 'center');
+        $table->width = '100%';
+        $table->data  = array();
+
+        if (empty($subscriptions)) {
+            $cell = new html_table_cell(get_string('nocalendarsubscriptions', 'calendar'));
+            $cell->colspan = 4;
+            $table->data[] = new html_table_row(array($cell));
+        }
+        $strnever = new lang_string('never', 'calendar');
+        foreach ($subscriptions as $sub) {
+            $label = $sub->name;
+            if (!empty($sub->url)) {
+                $label = html_writer::link($sub->url, $label);
+            }
+            if (empty($sub->lastupdated)) {
+                $lastupdated = $strnever->out();
+            } else {
+                $lastupdated = userdate($sub->lastupdated, get_string('strftimedatetimeshort', 'langconfig'));
+            }
+
+            $cell = new html_table_cell($this->subscription_action_form($sub, $courseid));
+            $cell->colspan = 2;
+            $type = $sub->eventtype . 'events';
+
+            $table->data[] = new html_table_row(array(
+                new html_table_cell($label),
+                new html_table_cell($lastupdated),
+                new html_table_cell(get_string($type, 'calendar')),
+                $cell
+            ));
+        }
+
+        $out  = $this->output->box_start('generalbox calendarsubs');
+
+        $out .= $importresults;
+        $out .= html_writer::table($table);
+        $out .= $this->output->box_end();
+        return $out;
+    }
+
+    /**
+     * Creates a form to perform actions on a given subscription.
+     *
+     * @param stdClass $subscription
+     * @param int $courseid
+     * @return string
+     */
+    protected function subscription_action_form($subscription, $courseid) {
+        // Assemble form for the subscription row.
+        $html = html_writer::start_tag('form', array('action' => new moodle_url('/calendar/managesubscriptions.php'), 'method' => 'post'));
+        if (empty($subscription->url)) {
+            // Don't update an iCal file, which has no URL.
+            $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'pollinterval', 'value' => '0'));
+        } else {
+            // Assemble pollinterval control.
+            $html .= html_writer::start_tag('div', array('style' => 'float:left;'));
+            $html .= html_writer::start_tag('select', array('name' => 'pollinterval'));
+            foreach (calendar_get_pollinterval_choices() as $k => $v) {
+                $attributes = array();
+                if ($k == $subscription->pollinterval) {
+                    $attributes['selected'] = 'selected';
+                }
+                $attributes['value'] = $k;
+                $html .= html_writer::tag('option', $v, $attributes);
+            }
+            $html .= html_writer::end_tag('select');
+            $html .= html_writer::end_tag('div');
+        }
+        $html .= html_writer::start_tag('div', array('style' => 'float:right;'));
+        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
+        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'course', 'value' => $courseid));
+        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $subscription->id));
+        if (!empty($subscription->url)) {
+            $html .= html_writer::tag('button', get_string('update'), array('type'  => 'submit', 'name' => 'action',
+                                                                            'value' => CALENDAR_SUBSCRIPTION_UPDATE));
+        }
+        $html .= html_writer::tag('button', get_string('remove'), array('type'  => 'submit', 'name' => 'action',
+                                                                        'value' => CALENDAR_SUBSCRIPTION_REMOVE));
+        $html .= html_writer::end_tag('div');
+        $html .= html_writer::end_tag('form');
+        return $html;
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

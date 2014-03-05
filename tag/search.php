@@ -47,10 +47,17 @@ if ($perpage !== 18) {
     $params['perpage'] = $perpage;
 }
 $PAGE->set_url(new moodle_url('/tag/search.php', $params));
+<<<<<<< HEAD
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
 $PAGE->set_pagelayout('standard');
 
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('standard');
+
+$systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $manage_link = '&nbsp;';
 
 $PAGE->set_title(get_string('tags', 'tag'));
@@ -72,7 +79,11 @@ if(!empty($query)) {
 echo '<br/><br/>';
 
 echo $OUTPUT->box_start('generalbox', 'big-tag-cloud-box');
+<<<<<<< HEAD
 tag_print_cloud(150);
+=======
+tag_print_cloud(null, 150);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 echo $OUTPUT->box_end();
 
 echo $OUTPUT->footer();

@@ -128,6 +128,10 @@ $string['course:managegrades'] = 'Manage grades';
 $string['course:managegroups'] = 'Manage groups';
 $string['course:managescales'] = 'Manage scales';
 $string['course:markcomplete'] = 'Mark users as complete in course completion';
+<<<<<<< HEAD
+=======
+$string['course:movesections'] = 'Move sections';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['course:publish'] = 'Publish a course into hub';
 $string['course:request'] = 'Request new courses';
 $string['course:reset'] = 'Reset course';
@@ -148,6 +152,13 @@ $string['createrolebycopying'] = 'Create a new role by copying {$a}';
 $string['createthisrole'] = 'Create this role';
 $string['currentcontext'] = 'Current context';
 $string['currentrole'] = 'Current role';
+<<<<<<< HEAD
+=======
+$string['customroledescription'] = 'Custom description';
+$string['customroledescription_help'] = 'Descriptions of standard roles are localised automatically if the custom description is empty.';
+$string['customrolename'] = 'Custom full name';
+$string['customrolename_help'] = 'Names of standard roles are localised automatically if the custom name is empty. You must provide a full name for all custom roles.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['defaultrole'] = 'Default role';
 $string['defaultx'] = 'Default: {$a}';
 $string['defineroles'] = 'Define roles';
@@ -193,7 +204,11 @@ $string['grade:view'] = 'View own grades';
 $string['grade:viewall'] = 'View grades of other users';
 $string['grade:viewhidden'] = 'View hidden grades for owner';
 $string['hidden'] = 'Hidden';
+<<<<<<< HEAD
 $string['highlightedcellsshowdefault'] = 'The permissions selected in the table below are the defaults for the role archetype selected above.';
+=======
+$string['highlightedcellsshowdefault'] = 'The permissions highlighted in the table below are the defaults for the role archetype currently selected above.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['highlightedcellsshowinherit'] = 'The highlighted cells in the table below show the permission (if any) that will be inherited. Apart from the capabilities whose permission you actually want to alter, you should leave everything set to Inherit.';
 $string['checkglobalpermissions'] = 'Check system permissions';
 $string['checkpermissions'] = 'Check permissions';
@@ -315,6 +330,10 @@ $string['role:safeoverride'] = 'Override safe permissions for others';
 $string['roleselect'] = 'Select role';
 $string['rolesforuser'] = 'Roles for user {$a}';
 $string['roleshortname'] = 'Short name';
+<<<<<<< HEAD
+=======
+$string['roleshortname_help'] = 'Role short name is a low level role identifier in which only ASCII alphanumeric characters are allowed. Do not change short names of standard roles.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['role:switchroles'] = 'Switch to other roles';
 $string['roletoassign'] = 'Role to assign';
 $string['roletooverride'] = 'Role to override';
@@ -348,6 +367,10 @@ $string['tag:create'] = 'Create new tags';
 $string['tag:edit'] = 'Edit existing tags';
 $string['tag:editblocks'] = 'Edit blocks in tags pages';
 $string['tag:manage'] = 'Manage all tags';
+<<<<<<< HEAD
+=======
+$string['tag:flag'] = 'Flag tags as inappropriate';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['thisusersroles'] = 'This user\'s role assignments';
 $string['unassignarole'] = 'Unassign role {$a}';
 $string['unassignerror'] = 'Error while unassigning the role {$a->role} from user {$a->user}.';
@@ -359,6 +382,10 @@ $string['user:editmessageprofile'] = 'Edit user messaging profile';
 $string['user:editownmessageprofile'] = 'Edit own user messaging profile';
 $string['user:editownprofile'] = 'Edit own user profile';
 $string['user:editprofile'] = 'Edit user profile';
+<<<<<<< HEAD
+=======
+$string['user:ignoreuserquota'] = 'Ignore user quota limit';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['user:loginas'] = 'Login as other users';
 $string['user:manageblocks'] = 'Manage blocks on user profile of other users';
 $string['user:manageownblocks'] = 'Manage blocks on own public user profile';

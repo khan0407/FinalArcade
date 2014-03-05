@@ -13,7 +13,10 @@ if (empty($CFG->enableportfolios)) {
 require_once($CFG->libdir.'/portfoliolib.php');
 require_once($CFG->libdir.'/portfolio/exporter.php');
 
+<<<<<<< HEAD
 $PAGE->requires->yui2_lib('dom');
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $id = required_param('id', PARAM_INT);
 
 $PAGE->set_url('/portfolio/download/file.php', array('id' => $id));

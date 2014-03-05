@@ -17,7 +17,10 @@
     add_to_log($course->id, "survey", "view all", "index.php?id=$course->id", "");
 
     $strsurveys = get_string("modulenameplural", "survey");
+<<<<<<< HEAD
     $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $strname = get_string("name");
     $strstatus = get_string("status");
     $strdone  = get_string("done", "survey");
@@ -33,14 +36,21 @@
     }
 
     $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
     if ($usesections) {
         $sections = get_all_sections($course->id);
     }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $table = new html_table();
     $table->width = '100%';
 
     if ($usesections) {
+<<<<<<< HEAD
+=======
+        $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $table->head  = array ($strsectionname, $strname, $strstatus);
     } else {
         $table->head  = array ($strname, $strstatus);
@@ -58,7 +68,11 @@
         if ($usesections) {
             if ($survey->section !== $currentsection) {
                 if ($survey->section) {
+<<<<<<< HEAD
                     $printsection = get_section_name($course, $sections[$survey->section]);
+=======
+                    $printsection = get_section_name($course, $survey->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
                 if ($currentsection !== "") {
                     $table->data[] = 'hr';

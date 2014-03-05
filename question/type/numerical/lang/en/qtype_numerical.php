@@ -54,7 +54,11 @@ The first unit (Unit 1) has a default multiplier of 1. Thus if the correct numer
 If you add the unit kW with a multiplier of 0.001, this will add a correct response of 5.5 kW. This means that the answers 5500W or 5.5kW would be marked correct.
 
 Note that the accepted error is also multiplied, so an allowed error of 100W would become an error of 0.1kW.';
+<<<<<<< HEAD
 $string['manynumerical'] = 'Units are optional. If a unit is entered, it is used to convert the reponse to Unit 1 before grading.';
+=======
+$string['manynumerical'] = 'Units are optional. If a unit is entered, it is used to convert the response to Unit 1 before grading.';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['nominal'] = 'Nominal';
 $string['onlynumerical'] = 'Units are not used at all. Only the numerical value is graded.';
 $string['oneunitshown'] = 'Unit 1 is automatically displayed beside the answer box.';
@@ -104,6 +108,7 @@ $string['unitpenalty_help'] = 'The penalty is applied if
 $string['unitposition'] = 'Units go';
 $string['unitselect'] = 'a drop-down menu';
 $string['validnumberformats'] = 'Valid number formats';
+<<<<<<< HEAD
 $string['validnumberformats_help'] = '
 * regular numbers 13500.67, 13 500.67, 13500,67 or 13 500,67
 
@@ -112,5 +117,12 @@ $string['validnumberformats_help'] = '
 
 * for exponent form, say 1.350067 * 10<sup>4</sup>, use
  1.350067 E4 : 1.350067 E04 ';
+=======
+$string['validnumberformats_help'] = '* regular numbers 13500.67, 13 500.67, 13500,67 or 13 500,67
+
+* if your language pack settings (langconfig.php file) uses a comma (,) as thousand separator *always* put the decimal point (.) as in 13,500.67 : 13,500.
+
+* for exponent form, say 1.350067 * 10<sup>4</sup>, use 1.350067 E4 : 1.350067 E04';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $string['validnumbers'] = '13500.67, 13 500.67, 13,500.67, 13500,67, 13 500,67, 1.350067 E4 or 1.350067 E04';

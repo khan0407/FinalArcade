@@ -53,7 +53,11 @@ require_login($course, false, $cm);
 if (confirm_sesskey() && (!empty($scoid))) {
     $result = true;
     $request = null;
+<<<<<<< HEAD
     if (has_capability('mod/scorm:savetrack', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+=======
+    if (has_capability('mod/scorm:savetrack', context_module::instance($cm->id))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach (data_submitted() as $element => $value) {
             $element = str_replace('__', '.', $element);
             if (substr($element, 0, 3) == 'cmi') {
@@ -62,7 +66,11 @@ if (confirm_sesskey() && (!empty($scoid))) {
             }
             if (substr($element, 0, 15) == 'adl.nav.request') {
                 // SCORM 2004 Sequencing Request
+<<<<<<< HEAD
                 require_once($CFG->dirroot.'/mod/scorm/datamodels/sequencinglib.php');
+=======
+                require_once($CFG->dirroot.'/mod/scorm/datamodels/scorm_13lib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                 $search = array('@continue@', '@previous@', '@\{target=(\S+)\}choice@', '@exit@', '@exitAll@', '@abandon@', '@abandonAll@');
                 $replace = array('continue_', 'previous_', '\1', 'exit_', 'exitall_', 'abandon_', 'abandonall');
@@ -82,12 +90,15 @@ if (confirm_sesskey() && (!empty($scoid))) {
                     }
                 }
             }
+<<<<<<< HEAD
             // Log every datamodel update requested
             if (substr($element, 0, 15) == 'adl.nav.request' || substr($element, 0, 3) == 'cmi') {
                 if (scorm_debugging($scorm)) {
                     add_to_log($course->id, 'scorm', 'trk: scoid/'.$scoid.' at: '.$attempt, 'view.php?id='.$cm->id, "$element => $value", $cm->id);
                 }
             }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
     if ($result) {

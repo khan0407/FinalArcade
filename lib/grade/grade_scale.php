@@ -142,7 +142,11 @@ class grade_scale extends grade_object {
     public function delete($source=null) {
         global $DB;
         if (parent::delete($source)) {
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+            $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $fs = get_file_storage();
             $files = $fs->get_area_files($context->id, 'grade', 'scale', $this->id);
             foreach ($files as $file) {
@@ -337,7 +341,11 @@ class grade_scale extends grade_object {
         global $CFG;
         require_once($CFG->libdir . '/filelib.php');
 
+<<<<<<< HEAD
         $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $options = new stdClass;
         $options->noclean = true;
         $description = file_rewrite_pluginfile_urls($this->description, 'pluginfile.php', $systemcontext->id, 'grade', 'scale', $this->id);

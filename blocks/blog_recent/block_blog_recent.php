@@ -52,7 +52,11 @@ class block_blog_recent extends block_base {
         }
 
         // verify blog is enabled
+<<<<<<< HEAD
         if (empty($CFG->bloglevel)) {
+=======
+        if (empty($CFG->enableblogs)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->content = new stdClass();
             $this->content->text = '';
             if ($this->page->user_is_editing()) {
@@ -83,6 +87,10 @@ class block_blog_recent extends block_base {
 
         $this->content = new stdClass();
         $this->content->footer = '';
+<<<<<<< HEAD
+=======
+        $this->content->text = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $context = $this->page->context;
 

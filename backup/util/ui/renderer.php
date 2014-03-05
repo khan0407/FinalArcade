@@ -72,8 +72,13 @@ class core_backup_renderer extends plugin_renderer_base {
      * @return string
      */
     public function backup_details($details, $nextstageurl) {
+<<<<<<< HEAD
         $yestick = $this->output->pix_icon('i/tick_green_big', get_string('yes'));
         $notick = $this->output->pix_icon('i/cross_red_big', get_string('no'));
+=======
+        $yestick = $this->output->pix_icon('i/valid', get_string('yes'));
+        $notick = $this->output->pix_icon('i/invalid', get_string('no'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $html  = html_writer::start_tag('div', array('class'=>'backup-restore'));
 
@@ -140,16 +145,26 @@ class core_backup_renderer extends plugin_renderer_base {
                     }
                     if (empty($table)) {
                         $table = new html_table();
+<<<<<<< HEAD
                         $table->head = array('Module', 'Title', 'Userinfo');
+=======
+                        $table->head = array(get_string('module','backup'), get_string('title','backup'), get_string('userinfo','backup'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $table->colclasses = array('modulename', 'moduletitle', 'userinfoincluded');
                         $table->align = array('left','left', 'center');
                         $table->attributes = array('class'=>'activitytable generaltable');
                         $table->data = array();
                     }
                     $name = get_string('pluginname', $activity->modulename);
+<<<<<<< HEAD
                     $icon = new pix_icon('icon', $name, $activity->modulename);
                     $table->data[] = array(
                         $this->output->render($icon).'&nbsp;'.$name,
+=======
+                    $icon = new pix_icon('icon', $name, $activity->modulename, array('class' => 'iconlarge icon-pre'));
+                    $table->data[] = array(
+                        $this->output->render($icon).$name,
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                         $activity->title,
                         ($activity->settings[$activitykey.'_userinfo'])?$yestick:$notick,
                     );
@@ -544,8 +559,13 @@ class core_backup_renderer extends plugin_renderer_base {
                 }
                 $row->cells = array(
                     html_writer::empty_tag('input', array('type'=>'radio', 'name'=>'targetid', 'value'=>$course->id)),
+<<<<<<< HEAD
                     format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id))),
                     format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)))
+=======
+                    format_string($course->shortname, true, array('context' => context_course::instance($course->id))),
+                    format_string($course->fullname, true, array('context' => context_course::instance($course->id)))
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 );
                 $table->data[] = $row;
             }
@@ -620,8 +640,13 @@ class core_backup_renderer extends plugin_renderer_base {
             }
             $row->cells = array(
                 html_writer::empty_tag('input', array('type'=>'radio', 'name'=>'importid', 'value'=>$course->id)),
+<<<<<<< HEAD
                 format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id))),
                 format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)))
+=======
+                format_string($course->shortname, true, array('context' => context_course::instance($course->id))),
+                format_string($course->fullname, true, array('context' => context_course::instance($course->id)))
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             );
             $table->data[] = $row;
         }
@@ -670,7 +695,11 @@ class core_backup_renderer extends plugin_renderer_base {
                 }
                 $row->cells = array(
                     html_writer::empty_tag('input', array('type'=>'radio', 'name'=>'targetid', 'value'=>$category->id)),
+<<<<<<< HEAD
                     format_string($category->name, true, array('context' => get_context_instance(CONTEXT_COURSECAT, $category->id))),
+=======
+                    format_string($category->name, true, array('context' => context_coursecat::instance($category->id))),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     format_text($category->description, $category->descriptionformat, array('overflowdiv'=>true))
                 );
                 $table->data[] = $row;

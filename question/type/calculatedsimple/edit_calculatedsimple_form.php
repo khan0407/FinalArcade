@@ -146,9 +146,15 @@ class qtype_calculatedsimple_edit_form extends qtype_calculated_edit_form {
 
                 if ($dummyform->answer = optional_param_array('answer', '', PARAM_NOTAGS)) {
                     // there is always at least one answer...
+<<<<<<< HEAD
                     $fraction = optional_param_array('fraction', '', PARAM_NUMBER);
                     $tolerance = optional_param_array('tolerance', '', PARAM_NUMBER);
                     $tolerancetype = optional_param_array('tolerancetype', '', PARAM_NUMBER);
+=======
+                    $fraction = optional_param_array('fraction', '', PARAM_FLOAT);
+                    $tolerance = optional_param_array('tolerance', '', PARAM_FLOAT);
+                    $tolerancetype = optional_param_array('tolerancetype', '', PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $correctanswerlength = optional_param_array('correctanswerlength', '', PARAM_INT);
                     $correctanswerformat = optional_param_array('correctanswerformat', '', PARAM_INT);
 
@@ -169,9 +175,15 @@ class qtype_calculatedsimple_edit_form extends qtype_calculated_edit_form {
                 $this->datasetdefs = array();
                 // rebuild datasetdefs from old values
                 if ($olddef = optional_param_array('datasetdef', '', PARAM_RAW)) {
+<<<<<<< HEAD
                     $calcmin = optional_param_array('calcmin', '', PARAM_NUMBER);
                     $calclength = optional_param_array('calclength', '', PARAM_INT);
                     $calcmax = optional_param_array('calcmax', '', PARAM_NUMBER);
+=======
+                    $calcmin = optional_param_array('calcmin', '', PARAM_FLOAT);
+                    $calclength = optional_param_array('calclength', '', PARAM_INT);
+                    $calcmax = optional_param_array('calcmax', '', PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $oldoptions  = optional_param_array('defoptions', '', PARAM_RAW);
                     $newdatasetvalues = false;
                     $sizeofolddef = count($olddef);
@@ -507,7 +519,11 @@ class qtype_calculatedsimple_edit_form extends qtype_calculated_edit_form {
                             $mform->addElement('hidden', "number[$j]", get_string(
                                     'wildcard', 'qtype_calculatedsimple', $datasetdef->name));
                         }
+<<<<<<< HEAD
                         $mform->setType("number[$j]", PARAM_NUMBER);
+=======
+                        $mform->setType("number[$j]", PARAM_FLOAT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
                         $mform->addElement('hidden', "itemid[$j]");
                         $mform->setType("itemid[$j]", PARAM_INT);

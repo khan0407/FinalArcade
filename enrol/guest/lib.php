@@ -45,9 +45,15 @@ class enrol_guest_plugin extends enrol_plugin {
     public function get_info_icons(array $instances) {
         foreach ($instances as $instance) {
             if ($instance->password !== '') {
+<<<<<<< HEAD
                 return array(new pix_icon('withpassword', get_string('pluginname', 'enrol_guest'), 'enrol_guest'));
             } else {
                 return array(new pix_icon('withoutpassword', get_string('pluginname', 'enrol_guest'), 'enrol_guest'));
+=======
+                return array(new pix_icon('withpassword', get_string('guestaccess_withpassword', 'enrol_guest'), 'enrol_guest'));
+            } else {
+                return array(new pix_icon('withoutpassword', get_string('guestaccess_withoutpassword', 'enrol_guest'), 'enrol_guest'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
     }
@@ -85,7 +91,11 @@ class enrol_guest_plugin extends enrol_plugin {
 
         if ($allow) {
             // Temporarily assign them some guest role for this context
+<<<<<<< HEAD
             $context = get_context_instance(CONTEXT_COURSE, $instance->courseid);
+=======
+            $context = context_course::instance($instance->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             load_temp_course_role($context, $CFG->guestroleid);
             return ENROL_MAX_TIMESTAMP;
         }
@@ -101,7 +111,11 @@ class enrol_guest_plugin extends enrol_plugin {
     public function get_newinstance_link($courseid) {
         global $DB;
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $courseid, MUST_EXIST);
+=======
+        $context = context_course::instance($courseid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/guest:config', $context)) {
             return NULL;
@@ -140,7 +154,11 @@ class enrol_guest_plugin extends enrol_plugin {
         if ($instance->id == $instanceid) {
             if ($data = $form->get_data()) {
                 // add guest role
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $instance->courseid);
+=======
+                $context = context_course::instance($instance->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $USER->enrol_guest_passwords[$instance->id] = $data->guestpassword; // this is a hack, ideally we should not add stuff to $USER...
                 if (isset($USER->enrol['tempguest'][$instance->courseid])) {
                     remove_temp_course_roles($context);
@@ -280,7 +298,11 @@ class enrol_guest_plugin extends enrol_plugin {
     public function course_updated($inserted, $course, $data) {
         global $DB;
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (has_capability('enrol/guest:config', $context)) {
             if ($inserted) {
@@ -366,6 +388,7 @@ class enrol_guest_plugin extends enrol_plugin {
         return $this->add_instance($course, $fields);
     }
 
+<<<<<<< HEAD
 }
 
 /**
@@ -379,5 +402,24 @@ function enrol_guest_supports($feature) {
         case ENROL_RESTORE_TYPE: return ENROL_RESTORE_NOUSERS;
 
         default: return null;
+=======
+    /**
+     * Restore instance and map settings.
+     *
+     * @param restore_enrolments_structure_step $step
+     * @param stdClass $data
+     * @param stdClass $course
+     * @param int $oldid
+     */
+    public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid) {
+        global $DB;
+
+        if (!$DB->record_exists('enrol', array('courseid' => $data->courseid, 'enrol' => $this->get_name()))) {
+            $this->add_instance($course, (array)$data);
+        }
+
+        // No need to set mapping, we do not restore users or roles here.
+        $step->set_mapping('enrol', $oldid, 0);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }

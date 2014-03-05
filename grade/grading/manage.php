@@ -57,7 +57,11 @@ if (!is_null($areaid)) {
     if (is_null($contextid) or is_null($component) or is_null($area)) {
         throw new coding_exception('The caller script must identify the gradable area.');
     }
+<<<<<<< HEAD
     $context = get_context_instance_by_id($contextid, MUST_EXIST);
+=======
+    $context = context::instance_by_id($contextid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $manager = get_grading_manager($context, $component, $area);
 }
 
@@ -233,7 +237,10 @@ if (!empty($method)) {
             $tag = html_writer::tag('span', get_string('statusdraft', 'core_grading'), array('class' => 'status draft'));
         }
         echo $output->heading(s($definition->name) . ' ' . $tag, 3, 'definition-name');
+<<<<<<< HEAD
         echo $output->box($controller->get_formatted_description());
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo $output->box($controller->render_preview($PAGE), 'definition-preview');
     }
 }

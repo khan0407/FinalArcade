@@ -45,7 +45,11 @@ require_login($course, false, $cm);
 $url = new moodle_url('/mod/lesson/lesson.php', array('id'=>$id,'action'=>$action));
 $PAGE->set_url($url);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('mod/lesson:edit', $context);
 require_sesskey();
 
@@ -58,7 +62,11 @@ switch ($action) {
 
         $thispage = $lesson->load_page($pageid);
 
+<<<<<<< HEAD
         echo $lessonoutput->header($lesson, $cm);
+=======
+        echo $lessonoutput->header($lesson, $cm, '', false, null, get_string('deletingpage', 'lesson', format_string($thispage->title)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo $OUTPUT->heading(get_string("deletingpage", "lesson", format_string($thispage->title)));
         // print the jumps to this page
         $params = array("lessonid" => $lesson->id, "pageid" => $pageid);
@@ -80,7 +88,11 @@ switch ($action) {
 
         $title = $DB->get_field("lesson_pages", "title", array("id" => $pageid));
 
+<<<<<<< HEAD
         echo $lessonoutput->header($lesson, $cm);
+=======
+        echo $lessonoutput->header($lesson, $cm, '', false, null, get_string('moving', 'lesson', format_String($title)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo $OUTPUT->heading(get_string("moving", "lesson", format_string($title)));
 
         $params = array ("lessonid" => $lesson->id, "prevpageid" => 0);

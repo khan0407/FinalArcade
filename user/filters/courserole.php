@@ -21,7 +21,11 @@ class user_filter_courserole extends user_filter_type {
      * @return array of availble roles
      */
     function get_roles() {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $context = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $roles = array(0=> get_string('anyrole','filters')) + get_default_enrol_roles($context);
         return $roles;
     }
@@ -132,8 +136,13 @@ class user_filter_courserole extends user_filter_type {
         $a->label = $this->_label;
 
         if ($roleid) {
+<<<<<<< HEAD
             $rolename = $DB->get_field('role', 'name', array('id'=>$roleid));
             $a->rolename = '"'.format_string($rolename).'"';
+=======
+            $role = $DB->get_record('role', array('id'=>$roleid));
+            $a->rolename = '"'.role_get_name($role).'"';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         } else {
             $a->rolename = get_string('anyrole', 'filters');
         }

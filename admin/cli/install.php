@@ -127,6 +127,12 @@ if (function_exists('date_default_timezone_set') and function_exists('date_defau
 /** Used by library scripts to check they are being called by Moodle */
 define('MOODLE_INTERNAL', true);
 
+<<<<<<< HEAD
+=======
+// Disables caching.. just in case.
+define('CACHE_DISABLE_ALL', true);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 // Check that PHP is of a sufficient version
 if (version_compare(phpversion(), "5.3.2") < 0) {
     $phpversion = phpversion();
@@ -164,6 +170,10 @@ require_once($CFG->libdir.'/moodlelib.php');
 require_once($CFG->libdir.'/deprecatedlib.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/componentlib.class.php');
+<<<<<<< HEAD
+=======
+require_once($CFG->dirroot.'/cache/lib.php');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require($CFG->dirroot.'/version.php');
 $CFG->target_release = $release;

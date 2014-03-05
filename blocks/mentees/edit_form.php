@@ -35,6 +35,10 @@ class block_mentees_edit_form extends block_edit_form {
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
         $mform->addElement('text', 'config_title', get_string('configtitleblankhides', 'block_mentees'));
+<<<<<<< HEAD
         $mform->setType('config_title', PARAM_MULTILANG);
+=======
+        $mform->setType('config_title', PARAM_TEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }

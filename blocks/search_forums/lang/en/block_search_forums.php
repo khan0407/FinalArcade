@@ -25,3 +25,7 @@
 
 $string['advancedsearch'] = 'Advanced search';
 $string['pluginname'] = 'Search forums';
+<<<<<<< HEAD
+=======
+$string['search_forums:addinstance'] = 'Add a new search forums block';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

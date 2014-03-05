@@ -243,7 +243,11 @@ function url_user_complete($course, $user, $mod, $url) {
  * See {@link get_array_of_activities()} in course/lib.php
  *
  * @param object $coursemodule
+<<<<<<< HEAD
  * @return object info
+=======
+ * @return cached_cm_info info
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  */
 function url_get_coursemodule_info($coursemodule) {
     global $CFG, $DB;
@@ -258,7 +262,11 @@ function url_get_coursemodule_info($coursemodule) {
     $info->name = $url->name;
 
     //note: there should be a way to differentiate links from normal resources
+<<<<<<< HEAD
     $info->icon = url_guess_icon($url->externalurl);
+=======
+    $info->icon = url_guess_icon($url->externalurl, 24);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $display = url_get_final_display_type($url);
 
@@ -304,7 +312,11 @@ function url_export_contents($cm, $baseurl) {
     global $CFG, $DB;
     require_once("$CFG->dirroot/mod/url/locallib.php");
     $contents = array();
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
     $url = $DB->get_record('url', array('id'=>$cm->instance), '*', MUST_EXIST);

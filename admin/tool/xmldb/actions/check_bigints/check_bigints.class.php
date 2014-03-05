@@ -29,9 +29,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class check_bigints extends XMLDBCheckAction {
+<<<<<<< HEAD
     private $correct_type;
     private $dbfamily;
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     /**
      * Init method, every subclass will have its own
      */
@@ -51,6 +54,7 @@ class check_bigints extends XMLDBCheckAction {
             'nowrongintsfound' => 'tool_xmldb',
             'yeswrongintsfound' => 'tool_xmldb',
         ));
+<<<<<<< HEAD
 
         // Correct fields must be type bigint for MySQL and int8 for PostgreSQL
         $this->dbfamily = $DB->get_dbfamily();
@@ -64,6 +68,8 @@ class check_bigints extends XMLDBCheckAction {
             default:
                 $this->correct_type = NULL;
         }
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function check_table(xmldb_table $xmldb_table, array $metacolumns) {
@@ -75,19 +81,35 @@ class check_bigints extends XMLDBCheckAction {
             $o.='        <ul>';
             foreach ($xmldb_fields as $xmldb_field) {
                 // If the field isn't integer(10), skip
+<<<<<<< HEAD
                 if ($xmldb_field->getType() != XMLDB_TYPE_INTEGER || $xmldb_field->getLength() != 10) {
+=======
+                if ($xmldb_field->getType() != XMLDB_TYPE_INTEGER) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     continue;
                 }
                 // If the metadata for that column doesn't exist, skip
                 if (!isset($metacolumns[$xmldb_field->getName()])) {
                     continue;
                 }
+<<<<<<< HEAD
+=======
+                $minlength = $xmldb_field->getLength();
+                if ($minlength > 18) {
+                    // Anything above 18 is borked, just ignore it here.
+                    $minlength = 18;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 // To variable for better handling
                 $metacolumn = $metacolumns[$xmldb_field->getName()];
                 // Going to check this field in DB
                 $o.='            <li>' . $this->str['field'] . ': ' . $xmldb_field->getName() . ' ';
                 // Detect if the physical field is wrong
+<<<<<<< HEAD
                 if ($metacolumn->type != $this->correct_type) {
+=======
+                if (($metacolumn->meta_type != 'I' and $metacolumn->meta_type != 'R') or $metacolumn->max_length < $minlength) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     $o.='<font color="red">' . $this->str['wrong'] . '</font>';
                     // Add the wrong field to the list
                     $obj = new stdClass();
@@ -124,6 +146,7 @@ class check_bigints extends XMLDBCheckAction {
             foreach ($wrong_fields as $obj) {
                 $xmldb_table = $obj->table;
                 $xmldb_field = $obj->field;
+<<<<<<< HEAD
                 // MySQL directly supports this
 
 // TODO: move this hack to generators!!
@@ -135,6 +158,9 @@ class check_bigints extends XMLDBCheckAction {
                     $sqlarr = array('ALTER TABLE ' . $DB->get_prefix() . $xmldb_table->getName() .
                               ' ALTER COLUMN ' . $xmldb_field->getName() . ' TYPE BIGINT;');
                 }
+=======
+                $sqlarr = $dbman->generator->getAlterFieldSQL($xmldb_table, $xmldb_field);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $r.= '            <li>' . $this->str['table'] . ': ' . $xmldb_table->getName() . '. ' .
                                           $this->str['field'] . ': ' . $xmldb_field->getName() . '</li>';
                 // Add to output if we have sentences

@@ -38,8 +38,15 @@ defined('MOODLE_INTERNAL') || die;
 function report_loglive_extend_navigation_course($navigation, $course, $context) {
     global $CFG, $OUTPUT;
     if (has_capability('report/loglive:view', $context)) {
+<<<<<<< HEAD
         $url = new moodle_url('/report/loglive/index.php', array('id'=>$course->id, 'inpopup'=>1));
         $action = new action_link($url, get_string('pluginname', 'report_loglive'), new popup_action('click', $url));
         $navigation->add('', $action, navigation_node::TYPE_SETTING, null, null, new pix_icon('i/report', ''));
+=======
+        $nodename = get_string('pluginname', 'report_loglive');
+        $url = new moodle_url('/report/loglive/index.php', array('id'=>$course->id, 'inpopup'=>1));
+        $action = new action_link($url, $nodename, new popup_action('click', $url));
+        $navigation->add($nodename, $action, navigation_node::TYPE_SETTING, null, null, new pix_icon('i/report', ''));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 }

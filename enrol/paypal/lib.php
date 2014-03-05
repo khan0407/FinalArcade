@@ -80,7 +80,11 @@ class enrol_paypal_plugin extends enrol_plugin {
              throw new coding_exception('Invalid enrol instance type!');
         }
 
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $instance->courseid);
+=======
+        $context = context_course::instance($instance->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (has_capability('enrol/paypal:config', $context)) {
             $managelink = new moodle_url('/enrol/paypal/edit.php', array('courseid'=>$instance->courseid, 'id'=>$instance->id));
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
@@ -98,13 +102,22 @@ class enrol_paypal_plugin extends enrol_plugin {
         if ($instance->enrol !== 'paypal') {
             throw new coding_exception('invalid enrol instance!');
         }
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $instance->courseid);
+=======
+        $context = context_course::instance($instance->courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $icons = array();
 
         if (has_capability('enrol/paypal:config', $context)) {
             $editlink = new moodle_url("/enrol/paypal/edit.php", array('courseid'=>$instance->courseid, 'id'=>$instance->id));
+<<<<<<< HEAD
             $icons[] = $OUTPUT->action_icon($editlink, new pix_icon('i/edit', get_string('edit'), 'core', array('class'=>'icon')));
+=======
+            $icons[] = $OUTPUT->action_icon($editlink, new pix_icon('t/edit', get_string('edit'), 'core',
+                    array('class' => 'smallicon')));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return $icons;
@@ -116,7 +129,11 @@ class enrol_paypal_plugin extends enrol_plugin {
      * @return moodle_url page url
      */
     public function get_newinstance_link($courseid) {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $courseid, MUST_EXIST);
+=======
+        $context = context_course::instance($courseid, MUST_EXIST);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/paypal:config', $context)) {
             return NULL;
@@ -151,7 +168,11 @@ class enrol_paypal_plugin extends enrol_plugin {
         }
 
         $course = $DB->get_record('course', array('id'=>$instance->courseid));
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
+=======
+        $context = context_course::instance($course->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $shortname = format_string($course->shortname, true, array('context' => $context));
         $strloginto = get_string("loginto", "", $shortname);

@@ -119,6 +119,40 @@ class postgres_sql_generator extends sql_generator {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Given one correct xmldb_index, returns the SQL statements
+     * needed to create it (in array).
+     *
+     * @param xmldb_table $xmldb_table The xmldb_table instance to create the index on.
+     * @param xmldb_index $xmldb_index The xmldb_index to create.
+     * @return array An array of SQL statements to create the index.
+     * @throws coding_exception Thrown if the xmldb_index does not validate with the xmldb_table.
+     */
+    public function getCreateIndexSQL($xmldb_table, $xmldb_index) {
+        $sqls = parent::getCreateIndexSQL($xmldb_table, $xmldb_index);
+
+        $hints = $xmldb_index->getHints();
+        $fields = $xmldb_index->getFields();
+        if (in_array('varchar_pattern_ops', $hints) and count($fields) == 1) {
+            // Add the pattern index and keep the normal one, keep unique only the standard index to improve perf.
+            foreach ($sqls as $sql) {
+                $field = reset($fields);
+                $count = 0;
+                $newindex = preg_replace("/^CREATE( UNIQUE)? INDEX ([a-z0-9_]+) ON ([a-z0-9_]+) \($field\)$/", "CREATE INDEX \\2_pattern ON \\3 USING btree ($field varchar_pattern_ops)", $sql, -1, $count);
+                if ($count != 1) {
+                    debugging('Unexpected getCreateIndexSQL() structure.');
+                    continue;
+                }
+                $sqls[] = $newindex;
+            }
+        }
+
+        return $sqls;
+    }
+
+    /**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * Given one XMLDB Type, length and decimals, returns the DB proper SQL type.
      *
      * @param int $xmldb_type The xmldb_type defined constant. XMLDB_TYPE_INTEGER and other XMLDB_TYPE_* constants.
@@ -306,7 +340,11 @@ class postgres_sql_generator extends sql_generator {
                 $results[] = 'ALTER TABLE ' . $tablename . ' ALTER COLUMN ' . $fieldname . ' DROP DEFAULT';     // Drop default clause
             }
             $alterstmt = 'ALTER TABLE ' . $tablename . ' ALTER COLUMN ' . $this->getEncQuoted($xmldb_field->getName()) .
+<<<<<<< HEAD
                          ' TYPE' . $this->getFieldSQL($xmldb_table, $xmldb_field, null, true, true, null, false);
+=======
+                ' TYPE' . $this->getFieldSQL($xmldb_table, $xmldb_field, null, true, true, null, false);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // Some castings must be performed explicitly (mainly from text|char to numeric|integer)
             if (($oldmetatype == 'C' || $oldmetatype == 'X') &&
                 ($xmldb_field->getType() == XMLDB_TYPE_NUMBER || $xmldb_field->getType() == XMLDB_TYPE_FLOAT)) {
@@ -419,7 +457,11 @@ class postgres_sql_generator extends sql_generator {
                                            JOIN pg_catalog.pg_namespace as ns ON ns.oid = c.relnamespace
                                           WHERE c.relname = ? AND c.relkind = 'S'
                                                 AND (ns.nspname = current_schema() OR ns.oid = pg_my_temp_schema())",
+<<<<<<< HEAD
                                         array($sequencename))) {
+=======
+            array($sequencename))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $sequencename = false;
         }
 
@@ -445,10 +487,17 @@ class postgres_sql_generator extends sql_generator {
             case 'uix':
             case 'seq':
                 if ($check = $this->mdb->get_records_sql("SELECT c.relname
+<<<<<<< HEAD
                                                                 FROM pg_class c
                                                                 JOIN pg_catalog.pg_namespace as ns ON ns.oid = c.relnamespace
                                                                WHERE lower(c.relname) = ?
                                                                      AND (ns.nspname = current_schema() OR ns.oid = pg_my_temp_schema())", array(strtolower($object_name)))) {
+=======
+                                                            FROM pg_class c
+                                                            JOIN pg_catalog.pg_namespace as ns ON ns.oid = c.relnamespace
+                                                           WHERE lower(c.relname) = ?
+                                                                 AND (ns.nspname = current_schema() OR ns.oid = pg_my_temp_schema())", array(strtolower($object_name)))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     return true;
                 }
                 break;
@@ -457,10 +506,17 @@ class postgres_sql_generator extends sql_generator {
             case 'fk':
             case 'ck':
                 if ($check = $this->mdb->get_records_sql("SELECT c.conname
+<<<<<<< HEAD
                                                                 FROM pg_constraint c
                                                                 JOIN pg_catalog.pg_namespace as ns ON ns.oid = c.connamespace
                                                                WHERE lower(c.conname) = ?
                                                                      AND (ns.nspname = current_schema() OR ns.oid = pg_my_temp_schema())", array(strtolower($object_name)))) {
+=======
+                                                            FROM pg_constraint c
+                                                            JOIN pg_catalog.pg_namespace as ns ON ns.oid = c.connamespace
+                                                           WHERE lower(c.conname) = ?
+                                                                 AND (ns.nspname = current_schema() OR ns.oid = pg_my_temp_schema())", array(strtolower($object_name)))) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                     return true;
                 }
                 break;
@@ -481,6 +537,10 @@ class postgres_sql_generator extends sql_generator {
      */
     public static function getReservedWords() {
         // This file contains the reserved words for PostgreSQL databases
+<<<<<<< HEAD
+=======
+                // This file contains the reserved words for PostgreSQL databases
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // http://www.postgresql.org/docs/current/static/sql-keywords-appendix.html
         $reserved_words = array (
             'all', 'analyse', 'analyze', 'and', 'any', 'array', 'as', 'asc',

@@ -78,6 +78,11 @@ class moodle1_mod_assignment_handler extends moodle1_mod_handler {
      * data available
      */
     public function process_assignment($data) {
+<<<<<<< HEAD
+=======
+        global $CFG;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // get the course module id and context id
         $instanceid     = $data['id'];
         $cminfo         = $this->get_cminfo($instanceid);
@@ -95,6 +100,15 @@ class moodle1_mod_assignment_handler extends moodle1_mod_handler {
         $this->fileman->itemid   = 0;
         $data['intro'] = moodle1_converter::migrate_referenced_files($data['intro'], $this->fileman);
 
+<<<<<<< HEAD
+=======
+        // convert the introformat if necessary
+        if ($CFG->texteditors !== 'textarea') {
+            $data['intro'] = text_to_html($data['intro'], false, false, true);
+            $data['introformat'] = FORMAT_HTML;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // start writing assignment.xml
         $this->open_xml_writer("activities/assignment_{$this->moduleid}/assignment.xml");
         $this->xmlwriter->begin_tag('activity', array('id' => $instanceid, 'moduleid' => $this->moduleid,
@@ -194,7 +208,12 @@ class moodle1_mod_assignment_handler extends moodle1_mod_handler {
         }
 
         if (!isset($this->subpluginhandlers[$subplugin])) {
+<<<<<<< HEAD
             throw new moodle1_convert_exception('unsupported_subplugin', 'assignment_'.$subplugin);
+=======
+            // Generic handling, prevents breaking conversion process...
+            $this->subpluginhandlers[$subplugin] = new moodle1_assignment_unsupported_subplugin_handler($this, $subplugin);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         return $this->subpluginhandlers[$subplugin];
@@ -236,4 +255,14 @@ abstract class moodle1_assignment_subplugin_handler extends moodle1_submod_handl
 
         //you will probably want to do stuff with $this->xmlwriter here (within your overridden method) to write plugin specific data.
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+/**
+ * This class handles subplugins that do not exist or that are not supported
+ */
+class moodle1_assignment_unsupported_subplugin_handler extends moodle1_assignment_subplugin_handler {
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

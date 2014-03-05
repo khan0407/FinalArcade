@@ -63,7 +63,11 @@ if ($mode !== '') {
 $PAGE->set_url($url);
 
 require_login($course, false, $cm);
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $PAGE->set_pagelayout('report');
 
 $reportlist = quiz_report_list($context);

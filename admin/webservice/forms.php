@@ -82,7 +82,11 @@ class external_service_form extends moodleform {
         }
 
         // Prepare the list of capabilities to choose from
+<<<<<<< HEAD
         $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $allcapabilities = fetch_context_capabilities($systemcontext);
         $capabilitychoices = array();
         $capabilitychoices['norequiredcapability'] = get_string('norequiredcapability',
@@ -169,7 +173,11 @@ class external_service_functions_form extends moodleform {
         $mform->setType('id', PARAM_INT);
 
         $mform->addElement('hidden', 'action');
+<<<<<<< HEAD
         $mform->setType('action', PARAM_ACTION);
+=======
+        $mform->setType('action', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $this->add_action_buttons(true, get_string('addfunctions', 'webservice'));
 
@@ -195,16 +203,30 @@ class web_service_token_form extends moodleform {
                     array('deleted' => 0, 'suspended' => 0, 'confirmed' => 1));
 
             if ($usertotal < 500) {
+<<<<<<< HEAD
+=======
+                list($sort, $params) = users_order_by_sql('u');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 //user searchable selector - get all users (admin and guest included)
                 //user must be confirmed, not deleted, not suspended, not guest
                 $sql = "SELECT u.id, u.firstname, u.lastname
                             FROM {user} u
+<<<<<<< HEAD
                             WHERE u.deleted = 0 AND u.confirmed = 1 AND u.suspended = 0 AND u.id != ?
                             ORDER BY u.lastname";
                 $users = $DB->get_records_sql($sql, array($CFG->siteguest));
                 $options = array();
                 foreach ($users as $userid => $user) {
                     $options[$userid] = $user->firstname . " " . $user->lastname;
+=======
+                            WHERE u.deleted = 0 AND u.confirmed = 1 AND u.suspended = 0 AND u.id != :siteguestid
+                            ORDER BY $sort";
+                $params['siteguestid'] = $CFG->siteguest;
+                $users = $DB->get_records_sql($sql, $params);
+                $options = array();
+                foreach ($users as $userid => $user) {
+                    $options[$userid] = fullname($user);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 }
                 $mform->addElement('searchableselector', 'user', get_string('user'), $options);
             } else {
@@ -217,7 +239,11 @@ class web_service_token_form extends moodleform {
         //service selector
         $services = $DB->get_records('external_services');
         $options = array();
+<<<<<<< HEAD
         $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+        $systemcontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($services as $serviceid => $service) {
             //check that the user has the required capability
             //(only for generation by the profile page)
@@ -237,7 +263,11 @@ class web_service_token_form extends moodleform {
                 get_string('validuntil', 'webservice'), array('optional' => true));
 
         $mform->addElement('hidden', 'action');
+<<<<<<< HEAD
         $mform->setType('action', PARAM_ACTION);
+=======
+        $mform->setType('action', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $this->add_action_buttons(true);
 

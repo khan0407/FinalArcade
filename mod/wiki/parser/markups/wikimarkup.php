@@ -24,6 +24,10 @@ abstract class wiki_markup_parser extends generic_parser {
 
     //header & ToC
     protected $toc = array();
+<<<<<<< HEAD
+=======
+    protected $maxheaderdepth = 3;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /**
      * function wiki_parser_link_callback($link = "")
@@ -183,7 +187,11 @@ abstract class wiki_markup_parser extends generic_parser {
             $text .= parser_utils::h('a', '['.get_string('editsection', 'wiki').']', array('href' => "edit.php?pageid={$this->wiki_page_id}&section=" . urlencode($text), 'class' => 'wiki_edit_section'));
         }
 
+<<<<<<< HEAD
         if ($level < 4) {
+=======
+        if ($level <= $this->maxheaderdepth) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $this->toc[] = array($level, $text);
             $num = count($this->toc);
             $text = parser_utils::h('a', "", array('name' => "toc-$num")) . $text;

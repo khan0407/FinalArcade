@@ -44,9 +44,15 @@ a:active, a:hover, a:focus {
     border-right: 2px solid #5ea4dc;
     border-bottom: 2px solid #5ea4dc;
     filter:alpha(opacity=90);
+<<<<<<< HEAD
     -moz-opacity:0.9;
     -khtml-opacity: 0.9;
     opacity: 0.9;
+=======
+    -khtml-opacity: 0.9;
+      -moz-opacity: 0.9;
+           opacity: 0.9;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 #newmessageoverlay #newmessagelinks {
     border-top: 1px dashed #ccc;
@@ -66,6 +72,15 @@ a:active, a:hover, a:focus {
     margin-bottom: 0px;
     height: 80px;
     border-bottom: 1px solid #fff;
+<<<<<<< HEAD
+=======
+    width: 100%;
+}
+.dir-rtl #page-header {
+    background-image: url([[pix:theme|header-rtl]]);
+    background-repeat: no-repeat;
+    background-position: left top;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 .logo {
     height: 50px;
@@ -273,6 +288,14 @@ body.has_dock {
     height: 75px;
     text-align: left;
 }
+<<<<<<< HEAD
+=======
+.dir-rtl #page-footer-inner {
+    background-image: url([[pix:theme|footer-rtl]]);
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 #page-footer .footnote {
     float: left;
     padding-top: 80px;

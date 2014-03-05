@@ -117,6 +117,12 @@ class outputcomponents_testcase extends advanced_testcase {
 
         $this->resetAfterTest();
 
+<<<<<<< HEAD
+=======
+        // Force SVG on so that we have predictable URL's.
+        $CFG->svgicons = true;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // verify new install contains expected defaults
         $this->assertEquals('standard', $CFG->theme);
         $this->assertEquals(1, $CFG->slasharguments);

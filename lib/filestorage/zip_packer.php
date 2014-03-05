@@ -100,11 +100,17 @@ class zip_packer extends file_packer {
             return false;
         }
 
+<<<<<<< HEAD
+=======
+        $result = false; // One processed file or dir means success here.
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ($files as $archivepath => $file) {
             $archivepath = trim($archivepath, '/');
 
             if (is_null($file)) {
                 // empty directories have null as content
+<<<<<<< HEAD
                 $ziparch->add_directory($archivepath.'/');
 
             } else if (is_string($file)) {
@@ -120,6 +126,39 @@ class zip_packer extends file_packer {
         }
 
         return $ziparch->close();
+=======
+                if ($ziparch->add_directory($archivepath.'/')) {
+                    $result = true;
+                } else {
+                    debugging("Can not zip '$archivepath' directory", DEBUG_DEVELOPER);
+                }
+
+            } else if (is_string($file)) {
+                if ($this->archive_pathname($ziparch, $archivepath, $file)) {
+                    $result = true;
+                } else {
+                    debugging("Can not zip '$archivepath' file", DEBUG_DEVELOPER);
+                }
+
+            } else if (is_array($file)) {
+                $content = reset($file);
+                if ($ziparch->add_file_from_string($archivepath, $content)) {
+                    $result = true;
+                } else {
+                    debugging("Can not zip '$archivepath' file", DEBUG_DEVELOPER);
+                }
+
+            } else {
+                if ($this->archive_stored($ziparch, $archivepath, $file)) {
+                    $result = true;
+                } else {
+                    debugging("Can not zip '$archivepath' file", DEBUG_DEVELOPER);
+                }
+            }
+        }
+
+        return ($ziparch->close() && $result);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -128,12 +167,25 @@ class zip_packer extends file_packer {
      * @param zip_archive $ziparch zip archive instance
      * @param string $archivepath file path to archive
      * @param stored_file $file stored_file object
+<<<<<<< HEAD
      */
     private function archive_stored($ziparch, $archivepath, $file) {
         $file->archive_file($ziparch, $archivepath);
 
         if (!$file->is_directory()) {
             return;
+=======
+     * @return bool success
+     */
+    private function archive_stored($ziparch, $archivepath, $file) {
+        $result = $file->archive_file($ziparch, $archivepath);
+        if (!$result) {
+            return false;
+        }
+
+        if (!$file->is_directory()) {
+            return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         $baselength = strlen($file->get_filepath());
@@ -147,8 +199,16 @@ class zip_packer extends file_packer {
             if (!$file->is_directory()) {
                 $path = $path.$file->get_filename();
             }
+<<<<<<< HEAD
             $file->archive_file($ziparch, $path);
         }
+=======
+            // Ignore result here, partial zipping is ok for now.
+            $file->archive_file($ziparch, $path);
+        }
+
+        return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -157,18 +217,32 @@ class zip_packer extends file_packer {
      * @param zip_archive $ziparch zip archive instance
      * @param string $archivepath file path to archive
      * @param string $file path name of the file
+<<<<<<< HEAD
      */
     private function archive_pathname($ziparch, $archivepath, $file) {
         if (!file_exists($file)) {
             return;
+=======
+     * @return bool success
+     */
+    private function archive_pathname($ziparch, $archivepath, $file) {
+        if (!file_exists($file)) {
+            return false;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
 
         if (is_file($file)) {
             if (!is_readable($file)) {
+<<<<<<< HEAD
                 return;
             }
             $ziparch->add_file_from_pathname($archivepath, $file);
             return;
+=======
+                return false;
+            }
+            return $ziparch->add_file_from_pathname($archivepath, $file);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         if (is_dir($file)) {
             if ($archivepath !== '') {
@@ -183,7 +257,11 @@ class zip_packer extends file_packer {
                 $this->archive_pathname($ziparch, $newpath, $file->getPathname());
             }
             unset($files); //release file handles
+<<<<<<< HEAD
             return;
+=======
+            return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -193,9 +271,17 @@ class zip_packer extends file_packer {
      * @todo MDL-31048 localise messages
      * @param string|stored_file $archivefile full pathname of zip file or stored_file instance
      * @param string $pathname target directory
+<<<<<<< HEAD
      * @return bool|array list of processed files; false if error
      */
     public function extract_to_pathname($archivefile, $pathname) {
+=======
+     * @param array $onlyfiles only extract files present in the array. The path to files MUST NOT
+     *              start with a /. Example: array('myfile.txt', 'directory/anotherfile.txt')
+     * @return bool|array list of processed files; false if error
+     */
+    public function extract_to_pathname($archivefile, $pathname, array $onlyfiles = null) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         global $CFG;
 
         if (!is_string($archivefile)) {
@@ -208,7 +294,11 @@ class zip_packer extends file_packer {
         if (!is_readable($archivefile)) {
             return false;
         }
+<<<<<<< HEAD
        $ziparch = new zip_archive();
+=======
+        $ziparch = new zip_archive();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if (!$ziparch->open($archivefile, file_archive::OPEN)) {
             return false;
         }
@@ -218,7 +308,14 @@ class zip_packer extends file_packer {
             $name = $info->pathname;
 
             if ($name === '' or array_key_exists($name, $processed)) {
+<<<<<<< HEAD
                 //probably filename collisions caused by filename cleaning/conversion
+=======
+                // Probably filename collisions caused by filename cleaning/conversion.
+                continue;
+            } else if (is_array($onlyfiles) && !in_array($name, $onlyfiles)) {
+                // Skipping files which are not in the list.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 continue;
             }
 
@@ -435,7 +532,11 @@ class zip_packer extends file_packer {
     /**
      * Returns array of info about all files in archive
      *
+<<<<<<< HEAD
      * @param file_archive $archivefile
+=======
+     * @param string|file_archive $archivefile
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      * @return array of file infos
      */
     public function list_files($archivefile) {

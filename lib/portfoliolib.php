@@ -60,12 +60,21 @@ require_once($CFG->libdir . '/portfolio/caller.php');
  * This class can be used like this:
  * <code>
  * $button = new portfolio_add_button();
+<<<<<<< HEAD
  * $button->set_callback_options('name_of_caller_class', array('id' => 6), '/your/mod/lib.php');
  * $button->render(PORTFOLIO_ADD_FULL_FORM, get_string('addeverythingtoportfolio', 'yourmodule'));
  * </code>
  * or like this:
  * <code>
  * $button = new portfolio_add_button(array('callbackclass' => 'name_of_caller_class', 'callbackargs' => array('id' => 6), 'callbackfile' => '/your/mod/lib.php'));
+=======
+ * $button->set_callback_options('name_of_caller_class', array('id' => 6), 'yourcomponent'); eg. mod_forum
+ * $button->render(PORTFOLIO_ADD_FULL_FORM, get_string('addeverythingtoportfolio', 'yourcomponent'));
+ * </code>
+ * or like this:
+ * <code>
+ * $button = new portfolio_add_button(array('callbackclass' => 'name_of_caller_class', 'callbackargs' => array('id' => 6), 'callbackcomponent' => 'yourcomponent')); eg. mod_forum
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * $somehtml .= $button->to_html(PORTFOLIO_ADD_TEXT_LINK);
  * </code>
  *{@link http://docs.moodle.org/dev/Adding_a_Portfolio_Button_to_a_page} for more information
@@ -84,7 +93,11 @@ class portfolio_add_button {
     private $callbackargs;
 
     /** @var string caller file */
+<<<<<<< HEAD
     private $callbackfile;
+=======
+    private $callbackcomponent;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     /** @var array array of more specific formats (eg based on mime detection) */
     private $formats;
@@ -105,7 +118,11 @@ class portfolio_add_button {
      * @param array $options keyed array of options:
      *                       key 'callbackclass': name of the caller class (eg forum_portfolio_caller')
      *                       key 'callbackargs': the array of callback arguments your caller class wants passed to it in the constructor
+<<<<<<< HEAD
      *                       key 'callbackfile': the file containing the class definition of your caller class.
+=======
+     *                       key 'callbackcomponent': the file containing the class definition of your caller class.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
      *                       See set_callback_options for more information on these three.
      *                       key 'formats': an array of PORTFOLIO_FORMATS this caller will support
      *                       See set_formats or set_format_by_file for more information on this.
@@ -121,18 +138,29 @@ class portfolio_add_button {
         if (empty($options)) {
             return true;
         }
+<<<<<<< HEAD
         $constructoroptions = array('callbackclass', 'callbackargs', 'callbackfile', 'formats');
+=======
+        $constructoroptions = array('callbackclass', 'callbackargs', 'callbackcomponent');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         foreach ((array)$options as $key => $value) {
             if (!in_array($key, $constructoroptions)) {
                 throw new portfolio_button_exception('invalidbuttonproperty', 'portfolio', $key);
             }
+<<<<<<< HEAD
             $this->{$key} = $value;
         }
+=======
+        }
+
+        $this->set_callback_options($options['callbackclass'], $options['callbackargs'], $options['callbackcomponent']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
      * Function to set the callback options
      *
+<<<<<<< HEAD
      * @param string $class   Name of the class containing the callback functions
      *                        activity modules should ALWAYS use their name_portfolio_caller
      *                        other locations must use something unique
@@ -169,6 +197,31 @@ class portfolio_add_button {
         $test = new $class($argarray);
         unset($test);
 
+=======
+     * @param string $class Name of the class containing the callback functions
+     *      activity components should ALWAYS use their name_portfolio_caller
+     *      other locations must use something unique
+     * @param array $argarray This can be an array or hash of arguments to pass
+     *      back to the callback functions (passed by reference)
+     *      these MUST be primatives to be added as hidden form fields.
+     *      and the values get cleaned to PARAM_ALPHAEXT or PARAM_FLOAT or PARAM_PATH
+     * @param string $component This is the name of the component in Moodle, eg 'mod_forum'
+     */
+    public function set_callback_options($class, array $argarray, $component) {
+        global $CFG;
+
+        // Require the base class first before any other files.
+        require_once($CFG->libdir . '/portfolio/caller.php');
+
+        // Include any potential callback files and check for errors.
+        portfolio_include_callback_file($component, $class);
+
+        // This will throw exceptions but should not actually do anything other than verify callbackargs.
+        $test = new $class($argarray);
+        unset($test);
+
+        $this->callbackcomponent = $component;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $this->callbackclass = $class;
         $this->callbackargs = $argarray;
     }
@@ -278,7 +331,11 @@ class portfolio_add_button {
         if (!$this->is_renderable()) {
             return;
         }
+<<<<<<< HEAD
         if (empty($this->callbackclass) || empty($this->callbackfile)) {
+=======
+        if (empty($this->callbackclass) || empty($this->callbackcomponent)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             throw new portfolio_button_exception('mustsetcallbackoptions', 'portfolio');
         }
         if (empty($this->formats)) {
@@ -297,7 +354,11 @@ class portfolio_add_button {
             $url->param('ca_' . $key, $value);
         }
         $url->param('sesskey', sesskey());
+<<<<<<< HEAD
         $url->param('callbackfile', $this->callbackfile);
+=======
+        $url->param('callbackcomponent', $this->callbackcomponent);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $url->param('callbackclass', $this->callbackclass);
         $url->param('course', (!empty($COURSE)) ? $COURSE->id : 0);
         $url->param('callerformats', implode(',', $this->formats));
@@ -353,7 +414,11 @@ class portfolio_add_button {
 
         $formoutput = '<form method="post" action="' . $CFG->wwwroot . '/portfolio/add.php" id="portfolio-add-button">' . "\n";
         $formoutput .= html_writer::input_hidden_params($url);
+<<<<<<< HEAD
         $linkoutput = '<a class="portfolio-add-link" title="'.$addstr.'" href="' . $url->out();
+=======
+        $linkoutput = '';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         switch ($format) {
             case PORTFOLIO_ADD_FULL_FORM:
@@ -367,10 +432,19 @@ class portfolio_add_button {
                 $formoutput .= "\n" . '</form>';
             break;
             case PORTFOLIO_ADD_ICON_LINK:
+<<<<<<< HEAD
                 $linkoutput .= '"><img class="portfolio-add-icon iconsmall" src="' . $OUTPUT->pix_url('t/portfolioadd') . '" alt="' . $addstr .'" /></a>';
             break;
             case PORTFOLIO_ADD_TEXT_LINK:
                 $linkoutput .= '">' . $addstr .'</a>';
+=======
+                $linkoutput = $OUTPUT->action_icon($url, new pix_icon('t/portfolioadd', $addstr, '',
+                    array('class' => 'portfolio-add-icon smallicon')));
+            break;
+            case PORTFOLIO_ADD_TEXT_LINK:
+                $linkoutput = html_writer::link($url, $addstr, array('class' => 'portfolio-add-link',
+                    'title' => $addstr));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             break;
             default:
                 debugging(get_string('invalidaddformat', 'portfolio', $format));
@@ -421,12 +495,21 @@ class portfolio_add_button {
     }
 
     /**
+<<<<<<< HEAD
      * Getter for $callbackfile property
      *
      * @return string
      */
     public function get_callbackfile() {
         return $this->callbackfile;
+=======
+     * Getter for $callbackcomponent property
+     *
+     * @return string
+     */
+    public function get_callbackcomponent() {
+        return $this->callbackcomponent;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -1097,7 +1180,11 @@ function portfolio_insane_notify_admins($insane, $instances=false) {
     $site = get_site();
 
     $a = new StdClass;
+<<<<<<< HEAD
     $a->sitename = format_string($site->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+=======
+    $a->sitename = format_string($site->fullname, true, array('context' => context_course::instance(SITEID)));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $a->fixurl   = "$CFG->wwwroot/$CFG->admin/settings.php?section=manageportfolios";
     $a->htmllist = portfolio_report_insane($insane, $instances, true);
     $a->textlist = '';
@@ -1120,7 +1207,11 @@ function portfolio_insane_notify_admins($insane, $instances=false) {
         $eventdata->modulename = 'portfolio';
         $eventdata->component = 'portfolio';
         $eventdata->name = 'notices';
+<<<<<<< HEAD
         $eventdata->userfrom = $admin;
+=======
+        $eventdata->userfrom = get_admin();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $eventdata->userto = $admin;
         $eventdata->subject = $subject;
         $eventdata->fullmessage = $plainbody;
@@ -1272,6 +1363,7 @@ function portfolio_rewrite_pluginfile_url_callback($contextid, $component, $file
 }
 
 /**
+<<<<<<< HEAD
 * Function to require any potential callback files, throwing exceptions
 * if an issue occurs.
 *
@@ -1313,6 +1405,53 @@ function portfolio_include_callback_file($callbackfile, $class = null) {
     $component = str_replace($pluginpath, $plugintype, $component);
     // Ok, replace '/' with '_'.
     $component = str_replace('/', '_', $component);
+=======
+ * Function to require any potential callback files, throwing exceptions
+ * if an issue occurs.
+ *
+ * @param string $component This is the name of the component in Moodle, eg 'mod_forum'
+ * @param string $class Name of the class containing the callback functions
+ *     activity components should ALWAYS use their name_portfolio_caller
+ *     other locations must use something unique
+ */
+function portfolio_include_callback_file($component, $class = null) {
+    global $CFG;
+    require_once($CFG->libdir . '/adminlib.php');
+
+    // It's possible that they are passing a file path rather than passing a component.
+    // We want to try and convert this to a component name, eg. mod_forum.
+    $pos = strrpos($component, '/');
+    if ($pos !== false) {
+        // Get rid of the first slash (if it exists).
+        $component = ltrim($component, '/');
+        // Get a list of valid plugin types.
+        $plugintypes = get_plugin_types(false);
+        // Assume it is not valid for now.
+        $isvalid = false;
+        // Go through the plugin types.
+        foreach ($plugintypes as $type => $path) {
+            if (strrpos($component, $path) === 0) {
+                // Found the plugin type.
+                $isvalid = true;
+                $plugintype = $type;
+                $pluginpath = $path;
+            }
+        }
+        // Throw exception if not a valid component.
+        if (!$isvalid) {
+            throw new coding_exception('Somehow a non-valid plugin path was passed, could be a hackz0r attempt, exiting.');
+        }
+        // Remove the file name.
+        $component = trim(substr($component, 0, $pos), '/');
+        // Replace the path with the type.
+        $component = str_replace($pluginpath, $plugintype, $component);
+        // Ok, replace '/' with '_'.
+        $component = str_replace('/', '_', $component);
+        // Place a debug message saying the third parameter should be changed.
+        debugging('The third parameter sent to the function set_callback_options should be the component name, not a file path, please update this.', DEBUG_DEVELOPER);
+    }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     // Check that it is a valid component.
     if (!get_component_version($component)) {
         throw new portfolio_button_exception('nocallbackcomponent', 'portfolio', '', $component);
@@ -1323,6 +1462,7 @@ function portfolio_include_callback_file($callbackfile, $class = null) {
         throw new portfolio_button_exception('nocallbackcomponent', 'portfolio', '', $component);
     }
 
+<<<<<<< HEAD
     // Check if the filename does not meet any of the expected names.
     if (($filename != 'locallib.php') && ($filename != 'portfoliolib.php') && ($filename != 'portfolio_callback.php')) {
         debugging('Please standardise your plugin by keeping your portfolio callback functionality in the file locallib.php.', DEBUG_DEVELOPER);
@@ -1334,6 +1474,30 @@ function portfolio_include_callback_file($callbackfile, $class = null) {
     }
 
     require_once($componentloc . '/' . $filename);
+=======
+    // Check if the component contains the necessary file for the portfolio plugin.
+    // These are locallib.php, portfoliolib.php and portfolio_callback.php.
+    $filefound = false;
+    if (file_exists($componentloc . '/locallib.php')) {
+        $filefound = true;
+        require_once($componentloc . '/locallib.php');
+    }
+    if (file_exists($componentloc . '/portfoliolib.php')) {
+        $filefound = true;
+        debugging('Please standardise your plugin by renaming your portfolio callback file to locallib.php, or if that file already exists moving the portfolio functionality there.', DEBUG_DEVELOPER);
+        require_once($componentloc . '/portfoliolib.php');
+    }
+    if (file_exists($componentloc . '/portfolio_callback.php')) {
+        $filefound = true;
+        debugging('Please standardise your plugin by renaming your portfolio callback file to locallib.php, or if that file already exists moving the portfolio functionality there.', DEBUG_DEVELOPER);
+        require_once($componentloc . '/portfolio_callback.php');
+    }
+
+    // Ensure that we found a file we can use, if not throw an exception.
+    if (!$filefound) {
+        throw new portfolio_button_exception('nocallbackfile', 'portfolio', '', $component);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     if (!is_null($class) && !class_exists($class)) {
         throw new portfolio_button_exception('nocallbackclass', 'portfolio', '', $class);

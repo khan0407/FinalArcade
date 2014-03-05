@@ -50,17 +50,29 @@ $question = question_bank::load_question($id);
 if ($cmid = optional_param('cmid', 0, PARAM_INT)) {
     $cm = get_coursemodule_from_id(false, $cmid);
     require_login($cm->course, false, $cm);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cmid);
 
 } else if ($courseid = optional_param('courseid', 0, PARAM_INT)) {
     require_login($courseid);
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+    $context = context_module::instance($cmid);
+
+} else if ($courseid = optional_param('courseid', 0, PARAM_INT)) {
+    require_login($courseid);
+    $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 } else {
     require_login();
     $category = $DB->get_record('question_categories',
             array('id' => $question->category), '*', MUST_EXIST);
+<<<<<<< HEAD
     $context = get_context_instance_by_id($category->contextid);
+=======
+    $context = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_context($context);
     // Note that in the other cases, require_login will set the correct page context.
 }

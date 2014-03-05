@@ -93,7 +93,12 @@ class gradingform_guide_renderer extends plugin_renderer_base {
                 'name' => '{NAME}[criteria][{CRITERION-id}][sortorder]', 'value' => $criterion['sortorder']));
 
             $shortname = html_writer::empty_tag('input', array('type'=> 'text',
+<<<<<<< HEAD
                 'name' => '{NAME}[criteria][{CRITERION-id}][shortname]',  'value' => htmlspecialchars($criterion['shortname'])));
+=======
+                'name' => '{NAME}[criteria][{CRITERION-id}][shortname]',  'value' => htmlspecialchars($criterion['shortname']),
+                'id ' => '{NAME}[criteria][{CRITERION-id}][shortname]'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $shortname = html_writer::tag('div', $shortname, array('class'=>'criterionname'));
             $description = html_writer::tag('textarea', htmlspecialchars($criterion['description']),
                 array('name' => '{NAME}[criteria][{CRITERION-id}][description]', 'cols' => '65', 'rows' => '5'));
@@ -105,7 +110,12 @@ class gradingform_guide_renderer extends plugin_renderer_base {
 
             $maxscore = html_writer::empty_tag('input', array('type'=> 'text',
                 'name' => '{NAME}[criteria][{CRITERION-id}][maxscore]', 'size' => '3',
+<<<<<<< HEAD
                 'value' => htmlspecialchars($criterion['maxscore'])));
+=======
+                'value' => htmlspecialchars($criterion['maxscore']),
+                'id' => '{NAME}[criteria][{CRITERION-id}][maxscore]'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $maxscore = html_writer::tag('div', $maxscore, array('class'=>'criterionmaxscore'));
         } else {
             if ($mode == gradingform_guide_controller::DISPLAY_EDIT_FROZEN) {
@@ -194,6 +204,10 @@ class gradingform_guide_renderer extends plugin_renderer_base {
                 array('for'=>'{NAME}[criteria][{CRITERION-id}][score]', 'class' => $scoreclass));
             $score .= html_writer::empty_tag('input', array('type'=> 'text',
                 'name' => '{NAME}[criteria][{CRITERION-id}][score]', 'class' => $scoreclass,
+<<<<<<< HEAD
+=======
+                'id' => '{NAME}[criteria][{CRITERION-id}][score]',
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 'size' => '3', 'value' => htmlspecialchars($currentscore)));
             $score .= '/'.$maxscore;
 

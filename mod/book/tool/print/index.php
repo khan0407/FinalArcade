@@ -77,7 +77,11 @@ if ($chapter) {
         require_capability('mod/book:viewhiddenchapters', $context);
     }
 
+<<<<<<< HEAD
     add_to_log($course->id, 'book', 'print', 'tool/print/index.php?id='.$cm->id.'&chapterid='.$chapter->id, $book->id, $cm->id);
+=======
+    add_to_log($course->id, 'book', 'print chapter', 'tool/print/index.php?id='.$cm->id.'&chapterid='.$chapter->id, $chapter->id, $cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     // page header
     ?>

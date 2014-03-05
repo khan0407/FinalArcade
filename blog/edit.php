@@ -45,7 +45,11 @@ $returnurl = new moodle_url('/blog/index.php');
 
 if (!empty($courseid) && empty($modid)) {
     $returnurl->param('courseid', $courseid);
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_COURSE, $courseid));
+=======
+    $PAGE->set_context(context_course::instance($courseid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 // If a modid is given, guess courseid
@@ -53,12 +57,20 @@ if (!empty($modid)) {
     $returnurl->param('modid', $modid);
     $courseid = $DB->get_field('course_modules', 'course', array('id' => $modid));
     $returnurl->param('courseid', $courseid);
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_MODULE, $modid));
+=======
+    $PAGE->set_context(context_module::instance($modid));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 // If courseid is empty use the system context
 if (empty($courseid)) {
+<<<<<<< HEAD
     $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+=======
+    $PAGE->set_context(context_system::instance());
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }
 
 $blogheaders = blog_get_headers();
@@ -69,7 +81,11 @@ if ($action == 'edit') {
     $id = required_param('entryid', PARAM_INT);
 }
 
+<<<<<<< HEAD
 if (empty($CFG->bloglevel)) {
+=======
+if (empty($CFG->enableblogs)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     print_error('blogdisable', 'blog');
 }
 
@@ -77,7 +93,11 @@ if (isguestuser()) {
     print_error('noguestentry', 'blog');
 }
 
+<<<<<<< HEAD
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$sitecontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 if (!has_capability('moodle/blog:create', $sitecontext) && !has_capability('moodle/blog:manageentries', $sitecontext)) {
     print_error('cannoteditentryorblog');
 }
@@ -105,6 +125,12 @@ if ($id) {
 }
 $returnurl->param('userid', $userid);
 
+<<<<<<< HEAD
+=======
+// Blog renderer.
+$output = $PAGE->get_renderer('blog');
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strblogs = get_string('blogs','blog');
 
 if ($action === 'delete'){
@@ -117,6 +143,10 @@ if ($action === 'delete'){
             print_error('nopermissionstodeleteentry', 'blog');
         } else {
             $entry->delete();
+<<<<<<< HEAD
+=======
+            blog_rss_delete_file($userid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             redirect($returnurl);
         }
     } else if (blog_user_can_edit_entry($entry)) {
@@ -125,7 +155,15 @@ if ($action === 'delete'){
         $PAGE->set_title("$SITE->shortname: $strblogs");
         $PAGE->set_heading($SITE->fullname);
         echo $OUTPUT->header();
+<<<<<<< HEAD
         $entry->print_html();
+=======
+
+        // Output the entry.
+        $entry->prepare_render();
+        echo $output->render($entry);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         echo '<br />';
         echo $OUTPUT->confirm(get_string('blogdeleteconfirm', 'blog'), new moodle_url('edit.php', $optionsyes),new moodle_url( 'index.php', $optionsno));
         echo $OUTPUT->footer();
@@ -143,7 +181,11 @@ if (!empty($entry->id)) {
     if ($CFG->useblogassociations && ($blogassociations = $DB->get_records('blog_association', array('blogid' => $entry->id)))) {
 
         foreach ($blogassociations as $assocrec) {
+<<<<<<< HEAD
             $context = get_context_instance_by_id($assocrec->contextid);
+=======
+            $context = context::instance_by_id($assocrec->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             switch ($context->contextlevel) {
                 case CONTEXT_COURSE:
@@ -215,13 +257,21 @@ switch ($action) {
 
             //pre-select the course for associations
             if ($courseid) {
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+                $context = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $entry->courseassoc = $context->id;
             }
 
             //pre-select the mod for associations
             if ($modid) {
+<<<<<<< HEAD
                 $context = get_context_instance(CONTEXT_MODULE, $modid);
+=======
+                $context = context_module::instance($modid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $entry->modassoc = $context->id;
             }
         }

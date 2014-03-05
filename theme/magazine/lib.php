@@ -17,7 +17,11 @@ function magazine_process_css($css, $theme) {
     }
     $css = magazine_set_linkcolor($css, $linkcolor);
 
+<<<<<<< HEAD
 	// Set the link hover color
+=======
+    // Set the link hover color
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (!empty($theme->settings->linkhover)) {
         $linkhover = $theme->settings->linkhover;
     } else {
@@ -71,7 +75,11 @@ function magazine_process_css($css, $theme) {
     } else {
         $background = null;
     }
+<<<<<<< HEAD
     $css = magazine_set_background($css, $background);
+=======
+    $css = magazine_set_background($css, $background, $theme);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     
      // Set the logo image
     if (!empty($theme->settings->logo)) {
@@ -79,7 +87,11 @@ function magazine_process_css($css, $theme) {
     } else {
         $logo = null;
     }
+<<<<<<< HEAD
     $css = magazine_set_logo($css, $logo);
+=======
+    $css = magazine_set_logo($css, $logo, $theme);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     
 
     // Return the CSS
@@ -162,6 +174,7 @@ function magazine_set_forumback($css, $forumback) {
     return $css;
 }
 
+<<<<<<< HEAD
 function magazine_set_background($css, $background) {
 	global $OUTPUT;
 	$tag = '[[setting:background]]';
@@ -183,3 +196,32 @@ function magazine_set_logo($css, $logo) {
 	$css = str_replace($tag, $replacement, $css);
 	return $css;
 }
+=======
+function magazine_set_background($css, $background, $theme = null) {
+    global $OUTPUT;
+    if ($theme === null) {
+        $theme = $OUTPUT;
+    }
+    $tag = '[[setting:background]]';
+    $replacement = $background;
+    if (is_null($replacement)) {
+        $replacement = $theme->pix_url('bg4', 'theme');
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+function magazine_set_logo($css, $logo, $theme = null) {
+    global $OUTPUT;
+    if ($theme === null) {
+        $theme = $OUTPUT;
+    }
+    $tag = '[[setting:logo]]';
+    $replacement = $logo;
+    if (is_null($replacement)) {
+        $replacement = $theme->pix_url('logo', 'theme');
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

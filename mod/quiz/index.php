@@ -32,7 +32,11 @@ $PAGE->set_url('/mod/quiz/index.php', array('id'=>$id));
 if (!$course = $DB->get_record('course', array('id' => $id))) {
     print_error('invalidcourseid');
 }
+<<<<<<< HEAD
 $coursecontext = get_context_instance(CONTEXT_COURSE, $id);
+=======
+$coursecontext = context_course::instance($id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_login($course);
 $PAGE->set_pagelayout('incourse');
 
@@ -62,7 +66,10 @@ if (!$quizzes = get_all_instances_in_course("quiz", $course)) {
     notice(get_string('thereareno', 'moodle', $strquizzes), "../../course/view.php?id=$course->id");
     die;
 }
+<<<<<<< HEAD
 $sections = get_all_sections($course->id);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 // Check if we need the closing date header.
 $showclosingheader = false;
@@ -88,7 +95,15 @@ if ($showclosingheader) {
     array_push($align, 'left');
 }
 
+<<<<<<< HEAD
 array_unshift($headings, get_string('sectionname', 'format_'.$course->format));
+=======
+if (course_format_uses_sections($course->format)) {
+    array_unshift($headings, get_string('sectionname', 'format_'.$course->format));
+} else {
+    array_unshift($headings, '');
+}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 array_unshift($align, 'center');
 
 $showing = '';
@@ -124,7 +139,11 @@ $table->align = $align;
 $currentsection = '';
 foreach ($quizzes as $quiz) {
     $cm = get_coursemodule_from_instance('quiz', $quiz->id);
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $data = array();
 
     // Section number if necessary.
@@ -132,7 +151,11 @@ foreach ($quizzes as $quiz) {
     if ($quiz->section != $currentsection) {
         if ($quiz->section) {
             $strsection = $quiz->section;
+<<<<<<< HEAD
             $strsection = get_section_name($course, $sections[$quiz->section]);
+=======
+            $strsection = get_section_name($course, $quiz->section);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         if ($currentsection) {
             $learningtable->data[] = 'hr';

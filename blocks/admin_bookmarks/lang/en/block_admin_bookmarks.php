@@ -23,5 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+<<<<<<< HEAD
 $string['pluginname'] = 'Admin bookmarks';
 
+=======
+$string['admin_bookmarks:addinstance'] = 'Add a new admin bookmarks block';
+$string['admin_bookmarks:myaddinstance'] = 'Add a new admin bookmarks block to My home';
+$string['pluginname'] = 'Admin bookmarks';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

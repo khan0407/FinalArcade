@@ -176,6 +176,22 @@ function lti_view($instance) {
 
     if (!empty($key) && !empty($secret)) {
         $parms = lti_sign_parameters($requestparams, $endpoint, "POST", $key, $secret);
+<<<<<<< HEAD
+=======
+
+        $endpointurl = new moodle_url($endpoint);
+        $endpointparams = $endpointurl->params();
+
+        // Strip querystring params in endpoint url from $parms to avoid duplication.
+        if (!empty($endpointparams) && !empty($parms)) {
+            foreach (array_keys($endpointparams) as $paramname) {
+                if (isset($parms[$paramname])) {
+                    unset($parms[$paramname]);
+                }
+            }
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         //If no key and secret, do the launch unsigned.
         $parms = $requestparams;
@@ -320,7 +336,11 @@ function lti_build_request($instance, $typeconfig, $course) {
 }
 
 function lti_get_tool_table($tools, $id) {
+<<<<<<< HEAD
     global $CFG, $USER;
+=======
+    global $CFG, $OUTPUT, $USER;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $html = '';
 
     $typename = get_string('typename', 'lti');
@@ -352,11 +372,24 @@ function lti_get_tool_table($tools, $id) {
             $update = get_string('update', 'lti');
             $delete = get_string('delete', 'lti');
 
+<<<<<<< HEAD
             $accepthtml = "
                 <a class=\"editing_accept\" href=\"{$CFG->wwwroot}/mod/lti/typessettings.php?action=accept&amp;id={$type->id}&amp;sesskey={$USER->sesskey}&amp;tab={$id}\" title=\"{$accept}\">
                     <img class=\"iconsmall\" alt=\"{$accept}\" src=\"{$CFG->wwwroot}/pix/t/clear.gif\"/>
                 </a>
             ";
+=======
+            $baseurl = new moodle_url('/mod/lti/typessettings.php', array(
+                    'action' => 'accept',
+                    'id' => $type->id,
+                    'sesskey' => sesskey(),
+                    'tab' => $id
+                ));
+
+            $accepthtml = $OUTPUT->action_icon($baseurl,
+                    new pix_icon('t/check', $accept, '', array('class' => 'iconsmall')), null,
+                    array('title' => $accept, 'class' => 'editing_accept'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
             $deleteaction = 'delete';
 
@@ -369,6 +402,20 @@ function lti_get_tool_table($tools, $id) {
                 $delete = get_string('reject', 'lti');
             }
 
+<<<<<<< HEAD
+=======
+            $updateurl = clone($baseurl);
+            $updateurl->param('action', 'update');
+            $updatehtml = $OUTPUT->action_icon($updateurl,
+                    new pix_icon('t/edit', $update, '', array('class' => 'iconsmall')), null,
+                    array('title' => $update, 'class' => 'editing_update'));
+
+            $deleteurl = clone($baseurl);
+            $deleteurl->param('action', $deleteaction);
+            $deletehtml = $OUTPUT->action_icon($deleteurl,
+                    new pix_icon('t/delete', $delete, '', array('class' => 'iconsmall')), null,
+                    array('title' => $delete, 'class' => 'editing_delete'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $html .= "
             <tr>
                 <td>
@@ -381,6 +428,7 @@ function lti_get_tool_table($tools, $id) {
                     {$date}
                 </td>
                 <td align=\"center\">
+<<<<<<< HEAD
                     {$accepthtml}
                     <a class=\"editing_update\" href=\"{$CFG->wwwroot}/mod/lti/typessettings.php?action=update&amp;id={$type->id}&amp;sesskey={$USER->sesskey}&amp;tab={$id}\" title=\"{$update}\">
                         <img class=\"iconsmall\" alt=\"{$update}\" src=\"{$CFG->wwwroot}/pix/t/edit.gif\"/>
@@ -388,6 +436,9 @@ function lti_get_tool_table($tools, $id) {
                     <a class=\"editing_delete\" href=\"{$CFG->wwwroot}/mod/lti/typessettings.php?action={$deleteaction}&amp;id={$type->id}&amp;sesskey={$USER->sesskey}&amp;tab={$id}\" title=\"{$delete}\">
                         <img class=\"iconsmall\" alt=\"{$delete}\" src=\"{$CFG->wwwroot}/pix/t/delete.gif\"/>
                     </a>
+=======
+                    {$accepthtml}{$updatehtml}{$deletehtml}
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 </td>
             </tr>
             ";
@@ -457,7 +508,11 @@ function lti_get_ims_role($user, $cmid, $courseid) {
         //If no cmid is passed, check if the user is a teacher in the course
         //This allows other modules to programmatically "fake" a launch without
         //a real LTI instance
+<<<<<<< HEAD
         $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+=======
+        $coursecontext = context_course::instance($courseid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (has_capability('moodle/course:manageactivities', $coursecontext)) {
             array_push($roles, 'Instructor');
@@ -465,7 +520,11 @@ function lti_get_ims_role($user, $cmid, $courseid) {
             array_push($roles, 'Learner');
         }
     } else {
+<<<<<<< HEAD
         $context = get_context_instance(CONTEXT_MODULE, $cmid);
+=======
+        $context = context_module::instance($cmid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         if (has_capability('mod/lti:manage', $context)) {
             array_push($roles, 'Instructor');
@@ -495,7 +554,11 @@ function lti_get_type_config($typeid) {
                 FROM {lti_types_config}
                WHERE typeid = :typeid1
            UNION ALL
+<<<<<<< HEAD
               SELECT 'toolurl' AS name, baseurl AS value
+=======
+              SELECT 'toolurl' AS name, " . $DB->sql_compare_text('baseurl', 1333) . " AS value
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 FROM {lti_types}
                WHERE id = :typeid2";
 
@@ -1145,7 +1208,11 @@ function lti_ensure_url_is_https($url) {
     } else {
         //If the URL starts with http, replace with https
         if (stripos($url, 'http://') === 0) {
+<<<<<<< HEAD
             $url = 'https://' . substr($url, 8);
+=======
+            $url = 'https://' . substr($url, 7);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 

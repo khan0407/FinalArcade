@@ -31,6 +31,7 @@
     var javatime = javatimeDate.getTime();
     javatime = Math.floor(javatime/1000);
 
+<<<<<<< HEAD
     if (typeof(clocksettings)!='undefined') {
         if (clocksettings.starttime) {
             starttime = parseInt(clocksettings.starttime);
@@ -46,6 +47,8 @@
     difference = javatime - servertime;
     starttime = starttime + difference;
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     var dn = "";
     var old = "";
 
@@ -64,6 +67,24 @@
 
     function show_clock() {
 
+<<<<<<< HEAD
+=======
+        if (typeof(clocksettings) != 'undefined') {
+            if (clocksettings.starttime) {
+                starttime = parseInt(clocksettings.starttime);
+            }
+            if (clocksettings.servertime) {
+                servertime =  parseInt(clocksettings.servertime);
+            }
+            if (clocksettings.testlength) {
+                testlength =  parseInt(clocksettings.testlength);
+            }
+        }
+
+        difference = javatime - servertime;
+        starttime = starttime + difference;
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         //show clock in NS 4
         if (document.layers)
                 document.ClockPosNS.visibility="show";

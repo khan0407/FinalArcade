@@ -31,10 +31,17 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Include the required completion libraries
  */
+<<<<<<< HEAD
 require_once $CFG->libdir.'/completion/completion_aggregation.php';
 require_once $CFG->libdir.'/completion/completion_criteria.php';
 require_once $CFG->libdir.'/completion/completion_completion.php';
 require_once $CFG->libdir.'/completion/completion_criteria_completion.php';
+=======
+require_once $CFG->dirroot.'/completion/completion_aggregation.php';
+require_once $CFG->dirroot.'/completion/criteria/completion_criteria.php';
+require_once $CFG->dirroot.'/completion/completion_completion.php';
+require_once $CFG->dirroot.'/completion/completion_criteria_completion.php';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 
 /**
@@ -259,9 +266,15 @@ class completion_info {
         global $PAGE, $OUTPUT;
         $result = '';
         if ($this->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
+<<<<<<< HEAD
             $result .= '<span id = "completionprogressid" class="completionprogress">'.get_string('yourprogress','completion').' ';
             $result .= $OUTPUT->help_icon('completionicons', 'completion');
             $result .= '</span>';
+=======
+            $result .= html_writer::tag('div', get_string('yourprogress','completion') .
+                    $OUTPUT->help_icon('completionicons', 'completion'), array('id' => 'completionprogressid',
+                    'class' => 'completionprogress'));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         return $result;
     }
@@ -616,8 +629,13 @@ class completion_info {
      * @return void
      */
     public function set_module_viewed($cm, $userid=0) {
+<<<<<<< HEAD
         global $PAGE, $UNITTEST;
         if ($PAGE->headerprinted && empty($UNITTEST->running)) {
+=======
+        global $PAGE;
+        if ($PAGE->headerprinted) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             debugging('set_module_viewed must be called before header is printed',
                     DEBUG_DEVELOPER);
         }
@@ -971,8 +989,13 @@ class completion_info {
 
         if ($data->userid == $USER->id) {
             $SESSION->completioncache[$cm->course][$cm->id] = $data;
+<<<<<<< HEAD
             $reset = 'reset';
             get_fast_modinfo($reset);
+=======
+            // reset modinfo for user (no need to call rebuild_course_cache())
+            get_fast_modinfo($cm->course, 0, true);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
 
@@ -1195,9 +1218,18 @@ class completion_info {
      * @return int Completion state e.g. COMPLETION_INCOMPLETE
      */
     public static function internal_get_grade_state($item, $grade) {
+<<<<<<< HEAD
         if (!$grade) {
             return COMPLETION_INCOMPLETE;
         }
+=======
+        // If no grade is supplied or the grade doesn't have an actual value, then
+        // this is not complete.
+        if (!$grade || (is_null($grade->finalgrade) && is_null($grade->rawgrade))) {
+            return COMPLETION_INCOMPLETE;
+        }
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         // Conditions to show pass/fail:
         // a) Grade has pass mark (default is 0.00000 which is boolean true so be careful)
         // b) Grade is visible (neither hidden nor hidden-until)

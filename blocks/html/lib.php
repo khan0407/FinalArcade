@@ -70,7 +70,11 @@ function block_html_pluginfile($course, $birecord_or_cm, $context, $filearea, $a
         send_file_not_found();
     }
 
+<<<<<<< HEAD
     if ($parentcontext = get_context_instance_by_id($birecord_or_cm->parentcontextid)) {
+=======
+    if ($parentcontext = context::instance_by_id($birecord_or_cm->parentcontextid, IGNORE_MISSING)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         if ($parentcontext->contextlevel == CONTEXT_USER) {
             // force download on all personal pages including /my/
             //because we do not have reliable way to find out from where this is used

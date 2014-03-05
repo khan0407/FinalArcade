@@ -15,3 +15,7 @@ Changes:
  * Removed /builder/* - Not needed
  * Removed .htaccess - Not needed
  * Changed config.php - added moodle specific settings
+<<<<<<< HEAD
+=======
+ * Removed lib/JSMin.php which is not GNU GPL compatible.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0

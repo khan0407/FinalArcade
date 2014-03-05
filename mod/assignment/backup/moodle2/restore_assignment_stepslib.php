@@ -72,6 +72,14 @@ class restore_assignment_activity_structure_step extends restore_activity_struct
         $newitemid = $DB->insert_record('assignment', $data);
         // immediately after inserting "activity" record, call this
         $this->apply_activity_instance($newitemid);
+<<<<<<< HEAD
+=======
+
+        // Hide unsupported sub-plugins
+        if (!$this->is_valid_assignment_subplugin($data->assignmenttype)) {
+            $DB->set_field('course_modules', 'visible', 0, array('id' => $this->get_task()->get_moduleid()));
+        }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     protected function process_assignment_submission($data) {
@@ -100,4 +108,22 @@ class restore_assignment_activity_structure_step extends restore_activity_struct
         $this->add_related_files('mod_assignment', 'submission', 'assignment_submission');
         $this->add_related_files('mod_assignment', 'response', 'assignment_submission');
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Determine if a sub-plugin is supported or not
+     *
+     * @param string $type
+     * @return bool
+     */
+    protected function is_valid_assignment_subplugin($type) {
+        static $subplugins = null;
+
+        if (is_null($subplugins)) {
+            $subplugins = get_plugin_list('assignment');
+        }
+        return array_key_exists($type, $subplugins);
+    }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 }

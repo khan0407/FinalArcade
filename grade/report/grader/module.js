@@ -56,7 +56,11 @@ M.gradereport_grader = {
                     return;
                 }
 
+<<<<<<< HEAD
                 var content = '<div class="graderreportoverlay">';
+=======
+                var content = '<div class="graderreportoverlay" role="tooltip" aria-describedby="' + properties.id + '">';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 content += '<div class="fullname">'+properties.username+'</div><div class="itemname">'+properties.itemname+'</div>';
                 if (properties.feedback) {
                     content += '<div class="feedback">'+properties.feedback+'</div>';
@@ -241,6 +245,10 @@ M.gradereport_grader.classes.report.prototype.get_cell_info = function(arg) {
     }
 
     return {
+<<<<<<< HEAD
+=======
+        id : cell.getAttribute('id'),
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         userid : userid,
         username : this.users[userid],
         itemid : itemid,

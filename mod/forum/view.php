@@ -90,13 +90,21 @@
         $PAGE->set_button(forum_search_form($course, $search));
     }
 
+<<<<<<< HEAD
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+    $context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $PAGE->set_context($context);
 
     if (!empty($CFG->enablerssfeeds) && !empty($CFG->forum_enablerssfeeds) && $forum->rsstype && $forum->rssarticles) {
         require_once("$CFG->libdir/rsslib.php");
 
+<<<<<<< HEAD
         $rsstitle = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id))) . ': ' . format_string($forum->name);
+=======
+        $rsstitle = format_string($course->shortname, true, array('context' => context_course::instance($course->id))) . ': ' . format_string($forum->name);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         rss_add_http_header($context, 'mod_forum', $forum, $rsstitle);
     }
 

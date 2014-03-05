@@ -101,14 +101,22 @@ abstract class question_edit_form extends question_wizard_form {
 
         $record = $DB->get_record('question_categories',
                 array('id' => $question->category), 'contextid');
+<<<<<<< HEAD
         $this->context = get_context_instance_by_id($record->contextid);
+=======
+        $this->context = context::instance_by_id($record->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         $this->editoroptions = array('subdirs' => 1, 'maxfiles' => EDITOR_UNLIMITED_FILES,
                 'context' => $this->context);
         $this->fileoptions = array('subdirs' => 1, 'maxfiles' => -1, 'maxbytes' => -1);
 
         $this->category = $category;
+<<<<<<< HEAD
         $this->categorycontext = get_context_instance_by_id($category->contextid);
+=======
+        $this->categorycontext = context::instance_by_id($category->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
         parent::__construct($submiturl, null, 'post', '', null, $formeditable);
     }

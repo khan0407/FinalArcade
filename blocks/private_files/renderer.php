@@ -66,13 +66,21 @@ class block_private_files_renderer extends plugin_renderer_base {
         $result = '<ul>';
         foreach ($dir['subdirs'] as $subdir) {
             $image = $this->output->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class'=>'icon'));
+<<<<<<< HEAD
             $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.s($subdir['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir).'</li>';
+=======
+            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.s($subdir['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir).'</li>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         foreach ($dir['files'] as $file) {
             $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/user/private'.$file->get_filepath().$file->get_filename(), true);
             $filename = $file->get_filename();
             $image = $this->output->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
+<<<<<<< HEAD
             $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.'&nbsp;'.$filename).'</div></li>';
+=======
+            $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.html_writer::link($url, $image.$filename).'</div></li>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
         $result .= '</ul>';
 
@@ -85,7 +93,11 @@ class private_files_tree implements renderable {
     public $dir;
     public function __construct() {
         global $USER;
+<<<<<<< HEAD
         $this->context = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+        $this->context = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         $fs = get_file_storage();
         $this->dir = $fs->get_area_tree($this->context->id, 'user', 'private', 0);
     }

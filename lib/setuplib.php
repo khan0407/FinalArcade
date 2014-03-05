@@ -215,7 +215,11 @@ class required_capability_exception extends moodle_exception {
         $capabilityname = get_capability_string($capability);
         if ($context->contextlevel == CONTEXT_MODULE and preg_match('/:view$/', $capability)) {
             // we can not go to mod/xx/view.php because we most probably do not have cap to view it, let's go to course instead
+<<<<<<< HEAD
             $paranetcontext = get_context_instance_by_id(get_parent_contextid($context));
+=======
+            $paranetcontext = context::instance_by_id(get_parent_contextid($context));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $link = get_context_url($paranetcontext);
         } else {
             $link = get_context_url($context);
@@ -945,6 +949,111 @@ function setup_get_remote_url() {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * Try to work around the 'max_input_vars' restriction if necessary.
+ */
+function workaround_max_input_vars() {
+    // Make sure this gets executed only once from lib/setup.php!
+    static $executed = false;
+    if ($executed) {
+        debugging('workaround_max_input_vars() must be called only once!');
+        return;
+    }
+    $executed = true;
+
+    if (!isset($_SERVER["CONTENT_TYPE"]) or strpos($_SERVER["CONTENT_TYPE"], 'multipart/form-data') !== false) {
+        // Not a post or 'multipart/form-data' which is not compatible with "php://input" reading.
+        return;
+    }
+
+    if (!isloggedin() or isguestuser()) {
+        // Only real users post huge forms.
+        return;
+    }
+
+    $max = (int)ini_get('max_input_vars');
+
+    if ($max <= 0) {
+        // Most probably PHP < 5.3.9 that does not implement this limit.
+        return;
+    }
+
+    if ($max >= 200000) {
+        // This value should be ok for all our forms, by setting it in php.ini
+        // admins may prevent any unexpected regressions caused by this hack.
+
+        // Note there is no need to worry about DDoS caused by making this limit very high
+        // because there are very many easier ways to DDoS any Moodle server.
+        return;
+    }
+
+    if (count($_POST, COUNT_RECURSIVE) < $max) {
+        return;
+    }
+
+    // Large POST request with enctype supported by php://input.
+    // Parse php://input in chunks to bypass max_input_vars limit, which also applies to parse_str().
+    $str = file_get_contents("php://input");
+    if ($str === false or $str === '') {
+        // Some weird error.
+        return;
+    }
+
+    $delim = '&';
+    $fun = create_function('$p', 'return implode("'.$delim.'", $p);');
+    $chunks = array_map($fun, array_chunk(explode($delim, $str), $max));
+
+    foreach ($chunks as $chunk) {
+        $values = array();
+        parse_str($chunk, $values);
+
+        if (ini_get_bool('magic_quotes_gpc')) {
+            // Use the same logic as lib/setup.php to work around deprecated magic quotes.
+            $values = array_map('stripslashes_deep', $values);
+        }
+
+        merge_query_params($_POST, $values);
+        merge_query_params($_REQUEST, $values);
+    }
+}
+
+/**
+ * Merge parsed POST chunks.
+ *
+ * NOTE: this is not perfect, but it should work in most cases hopefully.
+ *
+ * @param array $target
+ * @param array $values
+ */
+function merge_query_params(array &$target, array $values) {
+    if (isset($values[0]) and isset($target[0])) {
+        // This looks like a split [] array, lets verify the keys are continuous starting with 0.
+        $keys1 = array_keys($values);
+        $keys2 = array_keys($target);
+        if ($keys1 === array_keys($keys1) and $keys2 === array_keys($keys2)) {
+            foreach ($values as $v) {
+                $target[] = $v;
+            }
+            return;
+        }
+    }
+    foreach ($values as $k => $v) {
+        if (!isset($target[$k])) {
+            $target[$k] = $v;
+            continue;
+        }
+        if (is_array($target[$k]) and is_array($v)) {
+            merge_query_params($target[$k], $v);
+            continue;
+        }
+        // We should not get here unless there are duplicates in params.
+        $target[$k] = $v;
+    }
+}
+
+/**
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
  * Initializes our performance info early.
  *
  * Pairs up with get_performance_info() which is actually
@@ -1165,7 +1274,11 @@ function disable_output_buffering() {
  */
 function redirect_if_major_upgrade_required() {
     global $CFG;
+<<<<<<< HEAD
     $lastmajordbchanges = 2012051700;
+=======
+    $lastmajordbchanges = 2012110201;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     if (empty($CFG->version) or (int)$CFG->version < $lastmajordbchanges or
             during_initial_install() or !empty($CFG->adminsetuppending)) {
         try {
@@ -1236,10 +1349,22 @@ function make_writable_directory($dir, $exceptiononerror = true) {
 
     if (!file_exists($dir)) {
         if (!mkdir($dir, $CFG->directorypermissions, true)) {
+<<<<<<< HEAD
             if ($exceptiononerror) {
                 throw new invalid_dataroot_permissions($dir.' can not be created, check permissions.');
             } else {
                 return false;
+=======
+            clearstatcache();
+            // There might be a race condition when creating directory.
+            if (!is_dir($dir)) {
+                if ($exceptiononerror) {
+                    throw new invalid_dataroot_permissions($dir.' can not be created, check permissions.');
+                } else {
+                    debugging('Can not create directory: '.$dir, DEBUG_DEVELOPER);
+                    return false;
+                }
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             }
         }
     }
@@ -1331,6 +1456,7 @@ function make_cache_directory($directory, $exceptiononerror = true) {
     return make_writable_directory("$CFG->cachedir/$directory", $exceptiononerror);
 }
 
+<<<<<<< HEAD
 
 /**
  * Initialises an Memcached instance
@@ -1366,6 +1492,8 @@ function init_eaccelerator() {
     return false;
 }
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 /**
  * Checks if current user is a web crawler.
  *
@@ -1388,12 +1516,25 @@ function is_web_crawler() {
             return true;
         } else if (strpos($_SERVER['HTTP_USER_AGENT'], '[ZSEBOT]') !== false ) {  // Zoomspider
             return true;
+<<<<<<< HEAD
         } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSNBOT') !== false ) {  // MSN Search
+=======
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], 'msnbot') !== false ) {  // MSN Search
+            return true;
+        } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'bingbot') !== false ) {  // Bing
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             return true;
         } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'Yandex') !== false ) {
             return true;
         } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'AltaVista') !== false ) {
             return true;
+<<<<<<< HEAD
+=======
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], 'baiduspider') !== false ) {  // Baidu
+            return true;
+        } else if (strpos($_SERVER['HTTP_USER_AGENT'], 'Teoma') !== false ) {  // Ask.com
+            return true;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         }
     }
     return false;
@@ -1512,7 +1653,16 @@ border-color:black; background-color:#ffffee; border-style:solid; border-radius:
 width: 80%; -moz-border-radius: 20px; padding: 15px">
 ' . $message . '
 </div>';
+<<<<<<< HEAD
         if (!empty($CFG->debug) && $CFG->debug >= DEBUG_DEVELOPER) {
+=======
+        // Check whether debug is set.
+        $debug = (!empty($CFG->debug) && $CFG->debug >= DEBUG_DEVELOPER);
+        // Also check we have it set in the config file. This occurs if the method to read the config table from the
+        // database fails, reading from the config table is the first database interaction we have.
+        $debug = $debug || (!empty($CFG->config_php_settings['debug'])  && $CFG->config_php_settings['debug'] >= DEBUG_DEVELOPER );
+        if ($debug) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             if (!empty($debuginfo)) {
                 $debuginfo = s($debuginfo); // removes all nasty JS
                 $debuginfo = str_replace("\n", '<br />', $debuginfo); // keep newlines
@@ -1580,6 +1730,10 @@ width: 80%; -moz-border-radius: 20px; padding: 15px">
 
         // better disable any caching
         @header('Content-Type: text/html; charset=utf-8');
+<<<<<<< HEAD
+=======
+        @header('X-UA-Compatible: IE=edge');
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         @header('Cache-Control: no-store, no-cache, must-revalidate');
         @header('Cache-Control: post-check=0, pre-check=0', false);
         @header('Pragma: no-cache');

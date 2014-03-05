@@ -55,16 +55,25 @@ if (! $workshops = get_all_instances_in_course('workshop', $course)) {
 }
 
 $usesections = course_format_uses_sections($course->format);
+<<<<<<< HEAD
 if ($usesections) {
     $sections = get_all_sections($course->id);
 }
 
 $timenow        = time();
 $strsectionname = get_string('sectionname', 'format_'.$course->format);
+=======
+
+$timenow        = time();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $strname        = get_string('name');
 $table          = new html_table();
 
 if ($usesections) {
+<<<<<<< HEAD
+=======
+    $strsectionname = get_string('sectionname', 'format_'.$course->format);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $table->head  = array ($strsectionname, $strname);
     $table->align = array ('center', 'left');
 } else {
@@ -82,7 +91,11 @@ foreach ($workshops as $workshop) {
     }
 
     if ($usesections) {
+<<<<<<< HEAD
         $table->data[] = array(get_section_name($course, $sections[$workshop->section]), $link);
+=======
+        $table->data[] = array(get_section_name($course, $workshop->section), $link);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     } else {
         $table->data[] = array($link);
     }

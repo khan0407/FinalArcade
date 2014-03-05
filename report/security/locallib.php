@@ -593,7 +593,11 @@ function report_security_check_defaultuserrole($detailed=false) {
 
     if ($riskycount or !$legacyok) {
         $result->status  = REPORT_SECURITY_CRITICAL;
+<<<<<<< HEAD
         $result->info    = get_string('check_defaultuserrole_error', 'report_security', format_string($default_role->name));
+=======
+        $result->info    = get_string('check_defaultuserrole_error', 'report_security', role_get_name($default_role));
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     } else {
         $result->status  = REPORT_SECURITY_OK;
@@ -781,7 +785,11 @@ function report_security_check_riskbackup($detailed=false) {
     $result->status  = null;
     $result->link    = null;
 
+<<<<<<< HEAD
     $syscontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+    $syscontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
     $params = array('capability'=>'moodle/backup:userinfo', 'permission'=>CAP_ALLOW, 'contextid'=>$syscontext->id);
     $sql = "SELECT DISTINCT r.id, r.name, r.shortname, r.sortorder, r.archetype
@@ -836,6 +844,10 @@ function report_security_check_riskbackup($detailed=false) {
         if ($systemroles) {
             $links = array();
             foreach ($systemroles as $role) {
+<<<<<<< HEAD
+=======
+                $role->name = role_get_name($role);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $role->url = "$CFG->wwwroot/$CFG->admin/roles/manage.php?action=edit&amp;roleid=$role->id";
                 $links[] = '<li>'.get_string('check_riskbackup_editrole', 'report_security', $role).'</li>';
             }
@@ -848,10 +860,16 @@ function report_security_check_riskbackup($detailed=false) {
         if ($overriddenroles) {
             $links = array();
             foreach ($overriddenroles as $role) {
+<<<<<<< HEAD
                 $context = get_context_instance_by_id($role->contextid);
                 if ($context->contextlevel == CONTEXT_COURSE) {
                     $role->name = role_get_name($role, $context);
                 }
+=======
+                $role->name = $role->localname;
+                $context = context::instance_by_id($role->contextid);
+                $role->name = role_get_name($role, $context, ROLENAME_BOTH);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
                 $role->contextname = print_context_name($context);
                 $role->url = "$CFG->wwwroot/$CFG->admin/roles/override.php?contextid=$role->contextid&amp;roleid=$role->id";
                 $links[] = '<li>'.get_string('check_riskbackup_editoverride', 'report_security', $role).'</li>';
@@ -863,11 +881,20 @@ function report_security_check_riskbackup($detailed=false) {
         // Get a list of affected users as well
         $users = array();
 
+<<<<<<< HEAD
         $rs = $DB->get_recordset_sql("SELECT DISTINCT u.id, u.firstname, u.lastname, u.picture, u.imagealt, u.email, ra.contextid, ra.roleid
             $sqluserinfo ORDER BY u.lastname, u.firstname", $params);
 
         foreach ($rs as $user) {
             $context = get_context_instance_by_id($user->contextid);
+=======
+        list($sort, $sortparams) = users_order_by_sql('u');
+        $rs = $DB->get_recordset_sql("SELECT DISTINCT u.id, u.firstname, u.lastname, u.picture, u.imagealt, u.email, ra.contextid, ra.roleid
+            $sqluserinfo ORDER BY $sort", array_merge($params, $sortparams));
+
+        foreach ($rs as $user) {
+            $context = context::instance_by_id($user->contextid);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             $url = "$CFG->wwwroot/$CFG->admin/roles/assign.php?contextid=$user->contextid&amp;roleid=$user->roleid";
             $a = (object)array('fullname'=>fullname($user), 'url'=>$url, 'email'=>$user->email,
                                'contextname'=>print_context_name($context));

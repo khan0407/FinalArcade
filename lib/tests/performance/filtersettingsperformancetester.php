@@ -31,7 +31,11 @@ require(dirname(__FILE__) . '/../../../config.php');
 require_once($CFG->libdir . '/ddllib.php');
 
 require_login();
+<<<<<<< HEAD
 $syscontext = get_context_instance(CONTEXT_SYSTEM);
+=======
+$syscontext = context_system::instance();
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 require_capability('moodle/site:config', $syscontext);
 
 $baseurl = new moodle_url('/lib/tests/performance/filtersettingsperformancetester.php');
@@ -62,7 +66,11 @@ foreach ($requiredtables as $table) {
     }
 }
 
+<<<<<<< HEAD
 switch (optional_param('action', '', PARAM_ACTION)) {
+=======
+switch (optional_param('action', '', PARAM_ALPHANUMEXT)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     case 'setup':
         require_sesskey();
         if ($issetup == 0) {

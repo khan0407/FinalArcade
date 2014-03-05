@@ -375,7 +375,11 @@ final class t3lib_div {
 		} else {
 				// this case should not happen
 			$csConvObj = self::makeInstance('t3lib_cs');
+<<<<<<< HEAD
 			return $csConvObj->crop('iso-8859-1', $string, $chars, $appendString);
+=======
+			return $csConvObj->crop('utf-8', $string, $chars, $appendString);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 		}
 	}
 
@@ -386,7 +390,11 @@ final class t3lib_div {
 	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
 	 * @param integer $lineWidth The line width
 	 * @return string reformatted text
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Mail::breakLinesForEmail()
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Mail::breakLinesForEmail()
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {
 		self::logDeprecatedFunction();
@@ -856,7 +864,11 @@ final class t3lib_div {
 	 * @param integer $max Higher limit
 	 * @param integer $zeroValue Default value if input is FALSE.
 	 * @return integer The input value forced into the boundaries of $min and $max
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::forceIntegerInRange() instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
 		self::logDeprecatedFunction();
@@ -868,7 +880,11 @@ final class t3lib_div {
 	 *
 	 * @param integer $theInt Integer string to process
 	 * @return integer
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::convertToPositiveInteger() instead
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::convertToPositiveInteger() instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function intval_positive($theInt) {
 		self::logDeprecatedFunction();
@@ -880,7 +896,11 @@ final class t3lib_div {
 	 *
 	 * @param string $verNumberStr Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.9 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.1 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function int_from_ver($verNumberStr) {
 			// Deprecation log is activated only for TYPO3 4.7 and above
@@ -1067,6 +1087,7 @@ final class t3lib_div {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Removes comma (if present) in the end of string
 	 *
 	 * @param string $string String from which the comma in the end (if any) will be removed.
@@ -1080,11 +1101,17 @@ final class t3lib_div {
 	}
 
 	/**
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 * Tests if the input can be interpreted as integer.
 	 *
 	 * @param mixed $var Any input variable to test
 	 * @return boolean Returns TRUE if string is an integer
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::canBeInterpretedAsInteger() instead
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::canBeInterpretedAsInteger() instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function testInt($var) {
 		self::logDeprecatedFunction();
@@ -1177,7 +1204,11 @@ final class t3lib_div {
 	 * @param string $string Input string, eg "123 + 456 / 789 - 4"
 	 * @return integer Calculated value. Or error string.
 	 * @see calcParenthesis()
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction() instead
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction() instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function calcPriority($string) {
 		self::logDeprecatedFunction();
@@ -1191,7 +1222,11 @@ final class t3lib_div {
 	 * @param string $string Input string, eg "(123 + 456) / 789 - 4"
 	 * @return integer Calculated value. Or error string.
 	 * @see calcPriority(), tslib_cObj::stdWrap()
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::calculateWithParentheses() instead
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::calculateWithParentheses() instead
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function calcParenthesis($string) {
 		self::logDeprecatedFunction();
@@ -1272,7 +1307,14 @@ final class t3lib_div {
 		if (strlen($email) > 320) {
 			return FALSE;
 		}
+<<<<<<< HEAD
 		return (filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE);
+=======
+		require_once(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
+		$IDN = new idna_convert(array('idn_version' => 2008));
+
+		return (filter_var($IDN->encode($email), FILTER_VALIDATE_EMAIL) !== FALSE);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 	/**
@@ -1522,7 +1564,14 @@ final class t3lib_div {
 	 * @return boolean Whether the given URL is valid
 	 */
 	public static function isValidUrl($url) {
+<<<<<<< HEAD
 		return (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== FALSE);
+=======
+		require_once(PATH_typo3 . 'contrib/idna/idna_convert.class.php');
+		$IDN = new idna_convert(array('idn_version' => 2008));
+
+		return (filter_var($IDN->encode($url), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== FALSE);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 
@@ -1862,6 +1911,7 @@ final class t3lib_div {
 	 * @param array $arr1 Second array, overruling the first array
 	 * @param boolean $notAddKeys If set, keys that are NOT found in $arr0 (first array) will not be set. Thus only existing value can/will be overruled from second array.
 	 * @param boolean $includeEmptyValues If set, values from $arr1 will overrule if they are empty or zero. Default: TRUE
+<<<<<<< HEAD
 	 * @return array Resulting array where $arr1 values has overruled $arr0 values
 	 */
 	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE) {
@@ -1884,6 +1934,32 @@ final class t3lib_div {
 				}
 			}
 		}
+=======
+	 * @param boolean $enableUnsetFeature If set, special values "__UNSET" can be used in the second array in order to unset array keys in the resulting array.
+	 * @return array Resulting array where $arr1 values has overruled $arr0 values
+	 */
+	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
+		foreach ($arr1 as $key => $val) {
+			if (is_array($arr0[$key])) {
+				if (is_array($arr1[$key])) {
+					$arr0[$key] = self::array_merge_recursive_overrule(
+						$arr0[$key],
+						$arr1[$key],
+						$notAddKeys,
+						$includeEmptyValues,
+						$enableUnsetFeature
+					);
+				}
+			} elseif (!$notAddKeys || isset($arr0[$key])) {
+				if ($enableUnsetFeature && $val === '__UNSET') {
+					unset($arr0[$key]);
+				} elseif ($includeEmptyValues || $val) {
+					$arr0[$key] = $val;
+				}
+			}
+		}
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 		reset($arr0);
 		return $arr0;
 	}
@@ -2198,6 +2274,7 @@ final class t3lib_div {
 	 */
 	public static function array2xml_cs(array $array, $docTag = 'phparray', array $options = array(), $charset = '') {
 
+<<<<<<< HEAD
 			// Figure out charset if not given explicitly:
 		if (!$charset) {
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) { // First priority: forceCharset! If set, this will be authoritative!
@@ -2208,6 +2285,10 @@ final class t3lib_div {
 				$charset = 'iso-8859-1'; // THIS is just a hopeful guess!
 			}
 		}
+=======
+			// Set default charset unless explicitly specified
+		$charset = $charset ? $charset : 'utf-8';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 			// Return XML:
 		return '<?xml version="1.0" encoding="' . htmlspecialchars($charset) . '" standalone="yes" ?>' . LF .
@@ -2406,7 +2487,11 @@ final class t3lib_div {
 			// default output charset is UTF-8, only ASCII, ISO-8859-1 and UTF-8 are supported!!!
 		$match = array();
 		preg_match('/^[[:space:]]*<\?xml[^>]*encoding[[:space:]]*=[[:space:]]*"([^"]*)"/', substr($string, 0, 200), $match);
+<<<<<<< HEAD
 		$theCharset = $match[1] ? $match[1] : ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1');
+=======
+		$theCharset = $match[1] ? $match[1] : 'utf-8';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset); // us-ascii / utf-8 / iso-8859-1
 
 			// Parse content:
@@ -2742,10 +2827,17 @@ final class t3lib_div {
 			)
 			);
 
+<<<<<<< HEAD
 			$content = file_get_contents($url, FALSE, $ctx);
 
 			if ($content === FALSE && isset($report)) {
 				$report['error']   = -1;
+=======
+			$content = @file_get_contents($url, FALSE, $ctx);
+
+			if ($content === FALSE && isset($report)) {
+				$report['error'] = -1;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
 			}
 		} else {
@@ -2753,10 +2845,17 @@ final class t3lib_div {
 				$report['lib'] = 'file';
 			}
 
+<<<<<<< HEAD
 			$content = file_get_contents($url);
 
 			if ($content === FALSE && isset($report)) {
 				$report['error']   = -1;
+=======
+			$content = @file_get_contents($url);
+
+			if ($content === FALSE && isset($report)) {
+				$report['error'] = -1;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
 			}
 		}
@@ -2989,7 +3088,11 @@ final class t3lib_div {
 
 			$result = @mkdir($fullDirectoryPath, $permissionMask, TRUE);
 			if (!$result) {
+<<<<<<< HEAD
 				throw new \RuntimeException('Could not create directory!', 1170251400);
+=======
+				throw new \RuntimeException('Could not create directory "' . $fullDirectoryPath . '"!', 1170251400);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			}
 		}
 		return $firstCreatedPath;
@@ -3090,7 +3193,11 @@ final class t3lib_div {
 								$sortarray[$key] = filemtime($path . '/' . $entry);
 							}
 							elseif ($order) {
+<<<<<<< HEAD
 								$sortarray[$key] = $entry;
+=======
+								$sortarray[$key] = strtolower($entry);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 							}
 						}
 					}
@@ -3341,6 +3448,7 @@ final class t3lib_div {
 		return $fullName;
 	}
 
+<<<<<<< HEAD
 
 	/*************************
 	 *
@@ -3434,6 +3542,8 @@ final class t3lib_div {
 	}
 
 
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	/*************************
 	 *
 	 * SYSTEM INFORMATION
@@ -3750,7 +3860,11 @@ final class t3lib_div {
 				if ($proxySSL == '*') {
 					$proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
 				}
+<<<<<<< HEAD
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL)) {
+=======
+				if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 					$retVal = TRUE;
 				} else {
 					$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE; // see http://bugs.typo3.org/view.php?id=3909
@@ -3959,7 +4073,11 @@ final class t3lib_div {
 	 * So it's compatible with the UNIX style path strings valid for TYPO3 internally.
 	 *
 	 * @param string $theFile File path to evaluate
+<<<<<<< HEAD
 	 * @return boolean TRUE, $theFile is allowed path string
+=======
+	 * @return boolean TRUE, $theFile is allowed path string, FALSE otherwise
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 * @see http://php.net/manual/en/security.filesystem.nullbytes.php
 	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
 	 */
@@ -3967,6 +4085,11 @@ final class t3lib_div {
 		if (strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE && !preg_match('#(?:^\.\.|/\.\./|[[:cntrl:]])#u', $theFile)) {
 			return TRUE;
 		}
+<<<<<<< HEAD
+=======
+
+		return FALSE;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 	/**
@@ -4175,6 +4298,7 @@ final class t3lib_div {
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
+<<<<<<< HEAD
 	 */
 	public static function cHashParams($addQueryParams) {
 		$params = explode('&', substr($addQueryParams, 1)); // Splitting parameters up
@@ -4187,6 +4311,17 @@ final class t3lib_div {
 				$pA[rawurldecode($pKV[0])] = (string) rawurldecode($pKV[1]);
 			}
 		}
+=======
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
+	 */
+	public static function cHashParams($addQueryParams) {
+		t3lib_div::logDeprecatedFunction();
+		$params = explode('&', substr($addQueryParams, 1)); // Splitting parameters up
+		/* @var $cacheHash t3lib_cacheHash */
+		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		$pA = $cacheHash->getRelevantParameters($addQueryParams);
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			// Hook: Allows to manipulate the parameters which are taken to build the chash:
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'])) {
 			$cHashParamsHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
@@ -4202,9 +4337,12 @@ final class t3lib_div {
 				}
 			}
 		}
+<<<<<<< HEAD
 			// Finish and sort parameters array by keys:
 		$pA['encryptionKey'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		ksort($pA);
+=======
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 		return $pA;
 	}
@@ -4215,11 +4353,21 @@ final class t3lib_div {
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return string Hash of all the values
 	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
+<<<<<<< HEAD
 	 */
 	public static function generateCHash($addQueryParams) {
 		$cHashParams = self::cHashParams($addQueryParams);
 		$cHash = self::calculateCHash($cHashParams);
 		return $cHash;
+=======
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
+	 */
+	public static function generateCHash($addQueryParams) {
+		t3lib_div::logDeprecatedFunction();
+		/* @var $cacheHash t3lib_cacheHash */
+		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		return $cacheHash->generateForParameters($addQueryParams);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 	/**
@@ -4227,10 +4375,20 @@ final class t3lib_div {
 	 *
 	 * @param array $params Array of key-value pairs
 	 * @return string Hash of all the values
+<<<<<<< HEAD
 	 */
 	public static function calculateCHash($params) {
 		$cHash = md5(serialize($params));
 		return $cHash;
+=======
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
+	 */
+	public static function calculateCHash($params) {
+		t3lib_div::logDeprecatedFunction();
+		/* @var $cacheHash t3lib_cacheHash */
+		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		return $cacheHash->calculateCacheHash($params);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 	/**
@@ -4282,7 +4440,11 @@ final class t3lib_div {
 	 * @param string $langKey TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param string $charset Character set (optional)
 	 * @return array LOCAL_LANG array in return.
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_parser_Llphp::getParsedData() from now on
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - use t3lib_l10n_parser_Llphp::getParsedData() from now on
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function readLLPHPfile($fileRef, $langKey, $charset = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -4298,6 +4460,7 @@ final class t3lib_div {
 		if (@is_file($fileRef) && $langKey) {
 
 				// Set charsets:
+<<<<<<< HEAD
 			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
 			if ($charset) {
 				$targetCharset = $csConvObj->parse_charset($charset);
@@ -4306,6 +4469,13 @@ final class t3lib_div {
 				$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 			} else {
 				$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+=======
+			$sourceCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'utf-8');
+			if ($charset) {
+				$targetCharset = $csConvObj->parse_charset($charset);
+			} else {
+				$targetCharset = 'utf-8';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			}
 
 				// Cache file name:
@@ -4328,9 +4498,15 @@ final class t3lib_div {
 
 					// converting the default language (English)
 					// this needs to be done for a few accented loan words and extension names
+<<<<<<< HEAD
 				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'iso-8859-1') {
 					foreach ($LOCAL_LANG['default'] as &$labelValue) {
 						$labelValue = $csConvObj->conv($labelValue, 'iso-8859-1', $targetCharset);
+=======
+				if (is_array($LOCAL_LANG['default']) && $targetCharset != 'utf-8') {
+					foreach ($LOCAL_LANG['default'] as &$labelValue) {
+						$labelValue = $csConvObj->conv($labelValue, 'utf-8', $targetCharset);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 					}
 					unset($labelValue);
 				}
@@ -4369,7 +4545,11 @@ final class t3lib_div {
 	 * @param string $langKey TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param string $charset Character set (optional)
 	 * @return array LOCAL_LANG array in return.
+<<<<<<< HEAD
 	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_parser_Llxml::getParsedData() from now on
+=======
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - use t3lib_l10n_parser_Llxml::getParsedData() from now on
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 */
 	public static function readLLXMLfile($fileRef, $langKey, $charset = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -4388,11 +4568,16 @@ final class t3lib_div {
 				// Set charset:
 			if ($charset) {
 				$targetCharset = $csConvObj->parse_charset($charset);
+<<<<<<< HEAD
 			} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
 					// when forceCharset is set, we store ALL labels in this charset!!!
 				$targetCharset = $csConvObj->parse_charset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 			} else {
 				$targetCharset = $csConvObj->parse_charset($csConvObj->charSetArray[$langKey] ? $csConvObj->charSetArray[$langKey] : 'iso-8859-1');
+=======
+			} else {
+				$targetCharset = 'utf-8';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			}
 
 				// Cache file name:
@@ -5177,7 +5362,11 @@ final class t3lib_div {
 	/**
 	 * Simple substitute for the PHP function mail() which allows you to specify encoding and character set
 	 * The fifth parameter ($encoding) will allow you to specify 'base64' encryption for the output (set $encoding=base64)
+<<<<<<< HEAD
 	 * Further the output has the charset set to ISO-8859-1 by default.
+=======
+	 * Further the output has the charset set to UTF-8 by default.
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 *
 	 * @param string $email Email address to send to. (see PHP function mail())
 	 * @param string $subject Subject line, non-encoded. (see PHP function mail())
@@ -5190,7 +5379,11 @@ final class t3lib_div {
 	 */
 	public static function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
 		if (!$charset) {
+<<<<<<< HEAD
 			$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'ISO-8859-1';
+=======
+			$charset = 'utf-8';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 		}
 
 		$email = self::normalizeMailAddress($email);
@@ -5305,7 +5498,11 @@ final class t3lib_div {
 	 * @param string $charset Charset used for encoding
 	 * @return string The encoded string
 	 */
+<<<<<<< HEAD
 	public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'iso-8859-1') {
+=======
+	public static function encodeHeader($line, $enc = 'quoted-printable', $charset = 'utf-8') {
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 			// Avoid problems if "###" is found in $line (would conflict with the placeholder which is used below)
 		if (strpos($line, '###') !== FALSE) {
 			return $line;
@@ -5361,6 +5558,7 @@ final class t3lib_div {
 	 * @see makeRedirectUrl()
 	 */
 	public static function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
+<<<<<<< HEAD
 			// Substitute URLs with shorter links:
 		foreach (array('http', 'https') as $protocol) {
 			$urlSplit = explode($protocol . '://', $message);
@@ -5385,6 +5583,34 @@ final class t3lib_div {
 		}
 
 		return $message;
+=======
+		$lengthLimit = FALSE;
+
+		switch ((string) $urlmode) {
+			case '':
+				$lengthLimit = FALSE;
+				break;
+			case 'all':
+				$lengthLimit = 0;
+				break;
+			case '76':
+			default:
+				$lengthLimit = (int) $urlmode;
+		}
+
+		if ($lengthLimit === FALSE) {
+				// no processing
+			$messageSubstituted = $message;
+		} else {
+			$messageSubstituted = preg_replace(
+				'/(http|https):\/\/.+(?=[\]\.\?]*([\! \'"()<>]+|$))/eiU',
+				'self::makeRedirectUrl("\\0",' . $lengthLimit . ',"' . $index_script_url . '")',
+				$message
+			);
+		}
+
+		return $messageSubstituted;
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	}
 
 	/**
@@ -5775,6 +6001,7 @@ final class t3lib_div {
 
 
 	/**
+<<<<<<< HEAD
 	 * Quotes a string for usage as JS parameter. Depends whether the value is
 	 * used in script tags (it doesn't need/must not get htmlspecialchar'ed in
 	 * this case).
@@ -5783,10 +6010,16 @@ final class t3lib_div {
 	 * @param boolean $withinCData
 	 *		whether the escaped data is expected to be used as CDATA and thus
 	 *		does not need to be htmlspecialchared
+=======
+	 * Quotes a string for usage as JS parameter.
+	 *
+	 * @param string $value the string to encode, may be empty
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 	 *
 	 * @return string the encoded value already quoted (with single quotes),
 	 *				will not be empty
 	 */
+<<<<<<< HEAD
 	static public function quoteJSvalue($value, $withinCData = FALSE) {
 		$escapedValue = addcslashes(
 			$value, '\'' . '"' . '\\' . TAB . LF . CR
@@ -5794,6 +6027,10 @@ final class t3lib_div {
 		if (!$withinCData) {
 			$escapedValue = htmlspecialchars($escapedValue);
 		}
+=======
+	public static function quoteJSvalue($value) {
+		$escapedValue = t3lib_div::makeInstance('t3lib_codec_JavaScriptEncoder')->encode($value);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 		return '\'' . $escapedValue . '\'';
 	}
 

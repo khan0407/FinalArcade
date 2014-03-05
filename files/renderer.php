@@ -114,7 +114,11 @@ class core_files_renderer extends plugin_renderer_base {
                 array('invalidjson', 'repository'), array('popupblockeddownload', 'repository'),
                 array('unknownoriginal', 'repository'), array('confirmdeletefolder', 'repository'),
                 array('confirmdeletefilewithhref', 'repository'), array('confirmrenamefolder', 'repository'),
+<<<<<<< HEAD
                 array('confirmrenamefile', 'repository')
+=======
+                array('confirmrenamefile', 'repository'), array('newfolder', 'repository'), array('edit', 'moodle')
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             )
         );
         if (empty($filemanagertemplateloaded)) {
@@ -201,9 +205,15 @@ class core_files_renderer extends plugin_renderer_base {
     <div class="fp-navbar">
         <div class="filemanager-toolbar">
             <div class="fp-toolbar">
+<<<<<<< HEAD
                 <div class="{!}fp-btn-add"><a href="#"><img src="'.$this->pix_url('a/add_file').'" /> '.$straddfile.'</a></div>
                 <div class="{!}fp-btn-mkdir"><a href="#"><img src="'.$this->pix_url('a/create_folder').'" /> '.$strmakedir.'</a></div>
                 <div class="{!}fp-btn-download"><a href="#"><img src="'.$this->pix_url('a/download_all').'" /> '.$strdownload.'</a></div>
+=======
+                <div class="{!}fp-btn-add"><a role="button" href="#"><img src="'.$this->pix_url('a/add_file').'" /> '.$straddfile.'</a></div>
+                <div class="{!}fp-btn-mkdir"><a role="button" href="#"><img src="'.$this->pix_url('a/create_folder').'" /> '.$strmakedir.'</a></div>
+                <div class="{!}fp-btn-download"><a role="button" href="#"><img src="'.$this->pix_url('a/download_all').'" /> '.$strdownload.'</a></div>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             </div>
             <div class="{!}fp-viewbar">
                 <a class="{!}fp-vb-icons" href="#"></a>
@@ -303,9 +313,15 @@ class core_files_renderer extends plugin_renderer_base {
      */
     private function fm_js_template_mkdir() {
         $rv = '
+<<<<<<< HEAD
 <div class="filemanager fp-mkdir-dlg">
     <div class="fp-mkdir-dlg-text">
         <label>' . get_string('newfoldername', 'repository') . '</label><br/>
+=======
+<div class="filemanager fp-mkdir-dlg" role="dialog" aria-live="assertive" aria-labelledby="fp-mkdir-dlg-title">
+    <div class="fp-mkdir-dlg-text">
+        <label id="fp-mkdir-dlg-title">' . get_string('newfoldername', 'repository') . '</label><br/>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <input type="text" />
     </div>
     <button class="{!}fp-dlg-butcreate">'.get_string('makeafolder').'</button>
@@ -399,7 +415,11 @@ class core_files_renderer extends plugin_renderer_base {
             <button class="{!}fp-file-cancel">'.get_string('cancel').'</button>
         </div>
     </form>
+<<<<<<< HEAD
     <div class="fp-info">
+=======
+    <div class="fp-info clearfix">
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <div class="fp-hr"></div>
         <p class="{!}fp-thumbnail"></p>
         <div class="fp-fileinfo">
@@ -457,6 +477,7 @@ class core_files_renderer extends plugin_renderer_base {
      */
     private function fm_print_restrictions($fm) {
         $maxbytes = display_size($fm->options->maxbytes);
+<<<<<<< HEAD
         if (empty($fm->options->maxfiles) || $fm->options->maxfiles == -1) {
             $maxsize = get_string('maxfilesize', 'moodle', $maxbytes);
         } else {
@@ -465,6 +486,23 @@ class core_files_renderer extends plugin_renderer_base {
         }
         // TODO MDL-32020 also should say about 'File types accepted'
         return '<span>'. $maxsize. '</span>';
+=======
+        $strparam = (object) array('size' => $maxbytes, 'attachments' => $fm->options->maxfiles,
+            'areasize' => display_size($fm->options->areamaxbytes));
+        $hasmaxfiles = !empty($fm->options->maxfiles) && $fm->options->maxfiles > 0;
+        $hasarealimit = !empty($fm->options->areamaxbytes) && $fm->options->areamaxbytes != -1;
+        if ($hasmaxfiles && $hasarealimit) {
+            $maxsize = get_string('maxsizeandattachmentsandareasize', 'moodle', $strparam);
+        } else if ($hasmaxfiles) {
+            $maxsize = get_string('maxsizeandattachments', 'moodle', $strparam);
+        } else if ($hasarealimit) {
+            $maxsize = get_string('maxsizeandareasize', 'moodle', $strparam);
+        } else {
+            $maxsize = get_string('maxfilesize', 'moodle', $maxbytes);
+        }
+        // TODO MDL-32020 also should say about 'File types accepted'
+        return '<span>'. $maxsize . '</span>';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     }
 
     /**
@@ -513,6 +551,7 @@ class core_files_renderer extends plugin_renderer_base {
      */
     private function fp_js_template_generallayout() {
         $rv = '
+<<<<<<< HEAD
 <div class="file-picker fp-generallayout">
     <div class="fp-repo-area">
         <ul class="fp-list">
@@ -520,6 +559,15 @@ class core_files_renderer extends plugin_renderer_base {
         </ul>
     </div>
     <div class="fp-repo-items">
+=======
+<div tabindex="0" class="file-picker fp-generallayout" role="dialog" aria-live="assertive">
+    <div class="fp-repo-area">
+        <ul class="fp-list">
+            <li class="{!}fp-repo"><a href="#"><img class="{!}fp-repo-icon" alt=" " width="16" height="16" />&nbsp;<span class="{!}fp-repo-name"></span></a></li>
+        </ul>
+    </div>
+    <div class="fp-repo-items" tabindex="0">
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <div class="fp-navbar">
             <div>
                 <div class="{!}fp-toolbar">
@@ -691,7 +739,11 @@ class core_files_renderer extends plugin_renderer_base {
             <button class="{!}fp-select-cancel">'.get_string('cancel').'</button>
         </div>
     </form>
+<<<<<<< HEAD
     <div class="fp-info">
+=======
+    <div class="fp-info clearfix">
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         <div class="fp-hr"></div>
         <p class="{!}fp-thumbnail"></p>
         <div class="fp-fileinfo">
@@ -795,8 +847,13 @@ class core_files_renderer extends plugin_renderer_base {
      */
     private function fp_js_template_message() {
         $rv = '
+<<<<<<< HEAD
 <div class="file-picker fp-msg">
     <p class="{!}fp-msg-text"></p>
+=======
+<div class="file-picker fp-msg" role="alertdialog" aria-live="assertive" aria-labelledby="fp-msg-labelledby">
+    <p class="{!}fp-msg-text" id="fp-msg-labelledby"></p>
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     <button class="{!}fp-msg-butok">'.get_string('ok').'</button>
 </div>';
         return preg_replace('/\{\!\}/', '', $rv);
@@ -932,7 +989,16 @@ class core_files_renderer extends plugin_renderer_base {
      * Default contents is one text input field with name="s"
      */
     public function repository_default_searchform() {
+<<<<<<< HEAD
         $str = '<div class="fp-def-search"><input name="s" value='.get_string('search', 'repository').' /></div>';
+=======
+        $searchinput = html_writer::label(get_string('searchrepo', 'repository'),
+            'reposearch', false, array('class' => 'accesshide'));
+        $searchinput .= html_writer::empty_tag('input', array('type' => 'text',
+            'id' => 'reposearch', 'name' => 's', 'value' => get_string('search', 'repository')));
+        $str = html_writer::tag('div', $searchinput, array('class' => "fp-def-search"));
+
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
         return $str;
     }
 }
@@ -969,7 +1035,11 @@ class files_tree_viewer implements renderable {
         $this->path = array();
         while ($level) {
             $params = $level->get_params();
+<<<<<<< HEAD
             $context = get_context_instance_by_id($params['contextid']);
+=======
+            $context = context::instance_by_id($params['contextid']);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
             // $this->context is current context
             if ($context->id != $this->context->id or empty($params['filearea'])) {
                 break;

@@ -29,7 +29,11 @@ require('../config.php');
 require_login();
 require_sesskey();
 
+<<<<<<< HEAD
 $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+=======
+$usercontext = context_user::instance($USER->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 $PAGE->set_context($usercontext);
 $PAGE->set_url('/user/managetoken.php');
@@ -44,7 +48,11 @@ if ( !is_siteadmin($USER->id)
     && has_capability('moodle/webservice:createtoken', $usercontext )) {
     require($CFG->dirroot.'/webservice/lib.php');
 
+<<<<<<< HEAD
     $action  = optional_param('action', '', PARAM_ACTION);
+=======
+    $action  = optional_param('action', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $tokenid = optional_param('tokenid', '', PARAM_SAFEDIR);
     $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -83,7 +91,11 @@ if ( !is_siteadmin($USER->id)
 if (!empty($CFG->enablerssfeeds)) {
     require_once($CFG->dirroot.'/lib/rsslib.php');
 
+<<<<<<< HEAD
     $action  = optional_param('action', '', PARAM_ACTION);
+=======
+    $action  = optional_param('action', '', PARAM_ALPHANUMEXT);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
     $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
     $rssrenderer = $PAGE->get_renderer('core', 'rss');

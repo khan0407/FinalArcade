@@ -27,6 +27,11 @@ $string['addentry'] = 'Add a new entry';
 $string['askaddentry'] = 'When users can add entries to the glossary, show a link with this text';
 $string['askinvisible'] = 'When users cannot edit or view the glossary, show this text (without link)';
 $string['askviewglossary'] = 'When users can view the glossary but not add entries, show a link with this text';
+<<<<<<< HEAD
+=======
+$string['glossary_random:addinstance'] = 'Add a new random glossary entry block';
+$string['glossary_random:myaddinstance'] = 'Add a new random glossary entry block to My home';
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 $string['intro'] = 'Make sure you have at least one glossary with at least one entry added to this course. Then you can adjust the following settings';
 $string['invisible'] = '(to be continued)';
 $string['lastmodified'] = 'Last modified entry';

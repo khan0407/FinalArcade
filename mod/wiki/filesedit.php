@@ -50,7 +50,11 @@ if (!$cm = get_coursemodule_from_instance("wiki", $subwiki->wikiid)) {
 // Checking course instance
 $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
+<<<<<<< HEAD
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+=======
+$context = context_module::instance($cm->id);
+>>>>>>> 230e37bfd87f00e0d010ed2ffd68ca84a53308d0
 
 require_login($course, true, $cm);
 require_capability('mod/wiki:managefiles', $context);
