@@ -65,11 +65,9 @@ class file_xml_database_exporter extends xml_database_exporter {
      * @param string $description a user description of the data.
      */
     public function export_database($description=null) {
-        global $CFG;
         // TODO: add exception if file creation fails
         $this->file = fopen($this->filepath, 'wb');
         parent::export_database($description);
         fclose($this->file);
-        @chmod($this->filepath, $CFG->filepermissions);
     }
 }

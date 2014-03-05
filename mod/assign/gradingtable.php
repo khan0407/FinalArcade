@@ -71,15 +71,9 @@ class assign_grading_table extends table_sql implements renderable {
      * @param string $filter The current filter
      * @param int $rowoffset For showing a subsequent page of results
      * @param bool $quickgrading Is this table wrapped in a quickgrading form?
-     * @param string $downloadfilename
      */
-    public function __construct(assign $assignment,
-                                $perpage,
-                                $filter,
-                                $rowoffset,
-                                $quickgrading,
-                                $downloadfilename = null) {
-        global $CFG, $PAGE, $DB, $USER;
+    public function __construct(assign $assignment, $perpage, $filter, $rowoffset, $quickgrading, $downloadfilename = null) {
+        global $CFG, $PAGE, $DB;
         parent::__construct('mod_assign_grading');
         $this->assignment = $assignment;
 
@@ -97,11 +91,10 @@ class assign_grading_table extends table_sql implements renderable {
         $this->quickgrading = $quickgrading;
         $this->output = $PAGE->get_renderer('mod_assign');
 
-        $urlparams = array('action'=>'grading', 'id'=>$assignment->get_course_module()->id);
-        $url = new moodle_url($CFG->wwwroot . '/mod/assign/view.php', $urlparams);
-        $this->define_baseurl($url);
+        $this->define_baseurl(new moodle_url($CFG->wwwroot . '/mod/assign/view.php', array('action'=>'grading', 'id'=>$assignment->get_course_module()->id)));
 
-        // Do some business - then set the sql.
+        // do some business - then set the sql
+
         $currentgroup = groups_get_activity_group($assignment->get_course_module(), true);
 
         if ($rowoffset) {
@@ -110,16 +103,13 @@ class assign_grading_table extends table_sql implements renderable {
 
         $users = array_keys( $assignment->list_participants($currentgroup, true));
         if (count($users) == 0) {
-            // Insert a record that will never match to the sql is still valid.
+            // insert a record that will never match to the sql is still valid.
             $users[] = -1;
         }
 
         $params = array();
         $params['assignmentid1'] = (int)$this->assignment->get_instance()->id;
         $params['assignmentid2'] = (int)$this->assignment->get_instance()->id;
-        $params['assignmentid3'] = (int)$this->assignment->get_instance()->id;
-        $params['assignmentid4'] = (int)$this->assignment->get_instance()->id;
-        $params['assignmentid5'] = (int)$this->assignment->get_instance()->id;
 
         $extrauserfields = get_extra_user_fields($this->assignment->get_context());
 
@@ -129,35 +119,15 @@ class assign_grading_table extends table_sql implements renderable {
         $fields .= 's.id as submissionid, ';
         $fields .= 's.timecreated as firstsubmission, ';
         $fields .= 's.timemodified as timesubmitted, ';
-        $fields .= 's.attemptnumber as attemptnumber, ';
         $fields .= 'g.id as gradeid, ';
         $fields .= 'g.grade as grade, ';
         $fields .= 'g.timemodified as timemarked, ';
         $fields .= 'g.timecreated as firstmarked, ';
-        $fields .= 'uf.mailed as mailed, ';
-        $fields .= 'uf.locked as locked, ';
-        $fields .= 'uf.extensionduedate as extensionduedate, ';
-        $fields .= 'uf.workflowstate as workflowstate, ';
-        $fields .= 'uf.allocatedmarker as allocatedmarker ';
-
-        $submissionmaxattempt = 'SELECT mxs.userid, MAX(mxs.attemptnumber) AS maxattempt
-                                 FROM {assign_submission} mxs
-                                 WHERE mxs.assignment = :assignmentid4 GROUP BY mxs.userid';
-        $grademaxattempt = 'SELECT mxg.userid, MAX(mxg.attemptnumber) AS maxattempt
-                            FROM {assign_grades} mxg
-                            WHERE mxg.assignment = :assignmentid5 GROUP BY mxg.userid';
-        $from = '{user} u
-                         LEFT JOIN ( ' . $submissionmaxattempt . ' ) smx ON u.id = smx.userid
-                         LEFT JOIN ( ' . $grademaxattempt . ' ) gmx ON u.id = gmx.userid
-                         LEFT JOIN {assign_submission} s ON
-                            u.id = s.userid AND
-                            s.assignment = :assignmentid1 AND
-                            s.attemptnumber = smx.maxattempt
-                         LEFT JOIN {assign_grades} g ON
-                            u.id = g.userid AND
-                            g.assignment = :assignmentid2 AND
-                            g.attemptnumber = gmx.maxattempt
-                         LEFT JOIN {assign_user_flags} uf ON u.id = uf.userid AND uf.assignment = :assignmentid3';
+        $fields .= 'g.mailed as mailed, ';
+        $fields .= 'g.locked as locked, ';
+        $fields .= 'g.extensionduedate as extensionduedate';
+        $from = '{user} u LEFT JOIN {assign_submission} s ON u.id = s.userid AND s.assignment = :assignmentid1' .
+                        ' LEFT JOIN {assign_grades} g ON u.id = g.userid AND g.assignment = :assignmentid2';
 
         $userparams = array();
         $userindex = 0;
@@ -169,52 +139,20 @@ class assign_grading_table extends table_sql implements renderable {
         // The filters do not make sense when there are no submissions, so do not apply them.
         if ($this->assignment->is_any_submission_plugin_enabled()) {
             if ($filter == ASSIGN_FILTER_SUBMITTED) {
-                $where .= ' AND (s.timemodified IS NOT NULL AND
-                                 s.status = :submitted) ';
-                $params['submitted'] = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
-
-            } else if ($filter == ASSIGN_FILTER_REQUIRE_GRADING) {
+                $where .= ' AND s.timecreated > 0 ';
+            }
+            if ($filter == ASSIGN_FILTER_REQUIRE_GRADING) {
                 $where .= ' AND (s.timemodified IS NOT NULL AND
                                  s.status = :submitted AND
                                  (s.timemodified > g.timemodified OR g.timemodified IS NULL))';
                 $params['submitted'] = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
-
-            } else if (strpos($filter, ASSIGN_FILTER_SINGLE_USER) === 0) {
+            }
+            if (strpos($filter, ASSIGN_FILTER_SINGLE_USER) === 0) {
                 $userfilter = (int) array_pop(explode('=', $filter));
                 $where .= ' AND (u.id = :userid)';
                 $params['userid'] = $userfilter;
             }
         }
-
-        if ($this->assignment->get_instance()->markingallocation) {
-            if (has_capability('mod/assign:manageallocations', $this->assignment->get_context())) {
-                // Check to see if marker filter is set.
-                $markerfilter = (int)get_user_preferences('assign_markerfilter', '');
-                if (!empty($markerfilter)) {
-                    $where .= ' AND uf.allocatedmarker = :markerid';
-                    $params['markerid'] = $markerfilter;
-                }
-            } else { // Only show users allocated to this marker.
-                $where .= ' AND uf.allocatedmarker = :markerid';
-                $params['markerid'] = $USER->id;
-            }
-        }
-
-        if ($this->assignment->get_instance()->markingworkflow) {
-            $workflowstates = $this->assignment->get_marking_workflow_states_for_current_user();
-            if (!empty($workflowstates)) {
-                $workflowfilter = get_user_preferences('assign_workflowfilter', '');
-                if ($workflowfilter == ASSIGN_MARKING_WORKFLOW_STATE_NOTMARKED) {
-                    $where .= ' AND (uf.workflowstate = :workflowstate OR uf.workflowstate IS NULL OR '.
-                        $DB->sql_isempty('assign_user_flags', 'workflowstate', true, true).')';
-                    $params['workflowstate'] = $workflowfilter;
-                } else if (array_key_exists($workflowfilter, $workflowstates)) {
-                    $where .= ' AND uf.workflowstate = :workflowstate';
-                    $params['workflowstate'] = $workflowfilter;
-                }
-            }
-        }
-
         $this->set_sql($fields, $from, $where, $params);
 
         if ($downloadfilename) {
@@ -256,16 +194,13 @@ class assign_grading_table extends table_sql implements renderable {
             $headers[] = get_string('recordid', 'assign');
         }
 
-        // Submission status.
+        // Submission status
         if ($assignment->is_any_submission_plugin_enabled()) {
             $columns[] = 'status';
-            $headers[] = get_string('status', 'assign');
-        } else if ($this->assignment->get_instance()->markingworkflow) {
-            $columns[] = 'workflowstatus';
-            $headers[] = get_string('status', 'assign');
+            $headers[] = get_string('status');
         }
 
-        // Team submission columns.
+        // Team submission columns
         if ($assignment->get_instance()->teamsubmission) {
             $columns[] = 'team';
             $headers[] = get_string('submissionteam', 'assign');
@@ -273,14 +208,8 @@ class assign_grading_table extends table_sql implements renderable {
             $columns[] = 'teamstatus';
             $headers[] = get_string('teamsubmissionstatus', 'assign');
         }
-        // Allocated marker.
-        if ($this->assignment->get_instance()->markingallocation &&
-            has_capability('mod/assign:manageallocations', $this->assignment->get_context())) {
-            // Add a column for the allocated marker.
-            $columns[] = 'allocatedmarker';
-            $headers[] = get_string('marker', 'assign');
-        }
-        // Grade.
+
+        // Grade
         $columns[] = 'grade';
         $headers[] = get_string('grade');
         if ($this->is_downloading()) {
@@ -292,15 +221,6 @@ class assign_grading_table extends table_sql implements renderable {
                 $columns[] = 'scale';
                 $headers[] = get_string('scale', 'assign');
             }
-
-            if ($this->assignment->get_instance()->markingworkflow) {
-                // Add a column for the marking workflow state.
-                $columns[] = 'workflowstate';
-                $headers[] = get_string('markingworkflowstate', 'assign');
-            }
-            // Add a column for the list of valid marking workflow states.
-            $columns[] = 'gradecanbechanged';
-            $headers[] = get_string('gradecanbechanged', 'assign');
         }
         if (!$this->is_downloading()) {
             // We have to call this column userid so we can use userid as a default sortable column.
@@ -308,7 +228,7 @@ class assign_grading_table extends table_sql implements renderable {
             $headers[] = get_string('edit');
         }
 
-        // Submission plugins.
+        // Submission plugins
         if ($assignment->is_any_submission_plugin_enabled()) {
             $columns[] = 'timesubmitted';
             $headers[] = get_string('lastmodifiedsubmission', 'assign');
@@ -334,11 +254,11 @@ class assign_grading_table extends table_sql implements renderable {
             }
         }
 
-        // Time marked.
+        // time marked
         $columns[] = 'timemarked';
         $headers[] = get_string('lastmodifiedgrade', 'assign');
 
-        // Feedback plugins.
+        // Feedback plugins
         foreach ($this->assignment->get_feedback_plugins() as $plugin) {
             if ($this->is_downloading()) {
                 if ($plugin->is_visible() && $plugin->is_enabled()) {
@@ -364,21 +284,17 @@ class assign_grading_table extends table_sql implements renderable {
             $headers[] = get_string('finalgrade', 'grades');
         }
 
-        // Load the grading info for all users.
-        $this->gradinginfo = grade_get_grades($this->assignment->get_course()->id,
-                                              'mod',
-                                              'assign',
-                                              $this->assignment->get_instance()->id,
-                                              $users);
-        $this->hasgrantextension = has_capability('mod/assign:grantextension',
-                                                  $this->assignment->get_context());
+        // load the grading info for all users
+        $this->gradinginfo = grade_get_grades($this->assignment->get_course()->id, 'mod', 'assign', $this->assignment->get_instance()->id, $users);
+        $this->hasgrantextension = has_capability('mod/assign:grantextension', $this->assignment->get_context());
 
         if (!empty($CFG->enableoutcomes) && !empty($this->gradinginfo->outcomes)) {
             $columns[] = 'outcomes';
             $headers[] = get_string('outcomes', 'grades');
         }
 
-        // Set the columns.
+
+        // set the columns
         $this->define_columns($columns);
         $this->define_headers($headers);
         foreach ($extrauserfields as $extrafield) {
@@ -418,12 +334,12 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Before adding each row to the table make sure rownum is incremented.
+     * Before adding each row to the table make sure rownum is incremented
      *
      * @param array $row row of data from db used to make one row of the table.
      * @return array one row for the table
      */
-    public function format_row($row) {
+    function format_row($row) {
         if ($this->rownum < 0) {
             $this->rownum = $this->currpage * $this->pagesize;
         } else {
@@ -434,126 +350,34 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Add a column with an ID that uniquely identifies this user in this assignment.
+     * Add a column with an ID that uniquely identifies this user in this assignment
      *
-     * @param stdClass $row
      * @return string
      */
-    public function col_recordid(stdClass $row) {
-        return get_string('hiddenuser', 'assign') .
-               $this->assignment->get_uniqueid_for_user($row->userid);
-    }
+     function col_recordid(stdClass $row) {
+         return get_string('hiddenuser', 'assign') . $this->assignment->get_uniqueid_for_user($row->userid);
+     }
 
 
     /**
-     * Add the userid to the row class so it can be updated via ajax.
+     * Add the userid to the row class so it can be updated via ajax
      *
      * @param stdClass $row The row of data
      * @return string The row class
      */
-    public function get_row_class($row) {
+    function get_row_class($row) {
         return 'user' . $row->userid;
     }
 
     /**
-     * Return the number of rows to display on a single page.
+     * Return the number of rows to display on a single page
      *
      * @return int The number of rows per page
      */
-    public function get_rows_per_page() {
+    function get_rows_per_page() {
         return $this->perpage;
     }
 
-    /**
-     * list current marking workflow state
-     *
-     * @param stdClass $row
-     * @return string
-     */
-    public function col_workflowstatus(stdClass $row) {
-        $o = '';
-
-        $gradingdisabled = $this->assignment->grading_disabled($row->id);
-        // The function in the assignment keeps a static cache of this list of states.
-        $workflowstates = $this->assignment->get_marking_workflow_states_for_current_user();
-        $workflowstate = $row->workflowstate;
-        if (empty($workflowstate)) {
-            $workflowstate = ASSIGN_MARKING_WORKFLOW_STATE_NOTMARKED;
-        }
-        if ($this->quickgrading && !$gradingdisabled) {
-            $notmarked = get_string('markingworkflowstatenotmarked', 'assign');
-            $name = 'quickgrade_' . $row->id . '_workflowstate';
-            $o .= html_writer::select($workflowstates, $name, $workflowstate, array('' => $notmarked));
-            // Check if this user is a marker that can't manage allocations and doesn't have the marker column added.
-            if ($this->assignment->get_instance()->markingallocation &&
-                !has_capability('mod/assign:manageallocations', $this->assignment->get_context())) {
-
-                $name = 'quickgrade_' . $row->id . '_allocatedmarker';
-                $o .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $name,
-                        'value' => $row->allocatedmarker));
-            }
-        } else {
-            $o .= $this->output->container(get_string('markingworkflowstate' . $workflowstate, 'assign'), $workflowstate);
-        }
-        return $o;
-    }
-
-    /**
-     * For download only - list current marking workflow state
-     *
-     * @param stdClass $row - The row of data
-     * @return string The current marking workflow state
-     */
-    public function col_workflowstate($row) {
-        $state = $row->workflowstate;
-        if (empty($state)) {
-            $state = ASSIGN_MARKING_WORKFLOW_STATE_NOTMARKED;
-        }
-
-        return get_string('markingworkflowstate' . $state, 'assign');
-    }
-
-    /**
-     * list current marker
-     *
-     * @param stdClass $row - The row of data
-     * @return id the user->id of the marker.
-     */
-    public function col_allocatedmarker(stdClass $row) {
-        static $markers = null;
-        static $markerlist = array();
-        if ($markers === null) {
-            $markers = get_users_by_capability($this->assignment->get_context(), 'mod/assign:grade');
-            $markerlist[0] = get_string('choosemarker', 'assign');
-            foreach ($markers as $marker) {
-                $markerlist[$marker->id] = fullname($marker);
-            }
-        }
-        if (empty($markerlist)) {
-            // TODO: add some form of notification here that no markers are available.
-            return '';
-        }
-        if ($this->is_downloading()) {
-            return $markers[$row->allocatedmarker];
-        }
-
-        if ($this->quickgrading && has_capability('mod/assign:manageallocations', $this->assignment->get_context()) &&
-            (empty($row->workflowstate) ||
-             $row->workflowstate == ASSIGN_MARKING_WORKFLOW_STATE_INMARKING ||
-             $row->workflowstate == ASSIGN_MARKING_WORKFLOW_STATE_NOTMARKED)) {
-
-            $name = 'quickgrade_' . $row->id . '_allocatedmarker';
-            return  html_writer::select($markerlist, $name, $row->allocatedmarker, false);
-        } else if (!empty($row->allocatedmarker)) {
-            $output = '';
-            if ($this->quickgrading) { // Add hidden field for quickgrading page.
-                $name = 'quickgrade_' . $row->id . '_allocatedmarker';
-                $output .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>$name, 'value'=>$row->allocatedmarker));
-            }
-            $output .= $markerlist[$row->allocatedmarker];
-            return $output;
-        }
-    }
     /**
      * For download only - list all the valid options for this custom scale.
      *
@@ -564,8 +388,7 @@ class assign_grading_table extends table_sql implements renderable {
         global $DB;
 
         if (empty($this->scale)) {
-            $dbparams = array('id'=>-($this->assignment->get_instance()->grade));
-            $this->scale = $DB->get_record('scale', $dbparams);
+            $this->scale = $DB->get_record('scale', array('id'=>-($this->assignment->get_instance()->grade)));
         }
 
         if (!empty($this->scale->scale)) {
@@ -583,7 +406,7 @@ class assign_grading_table extends table_sql implements renderable {
      * @param int $modified Timestamp showing when the grade was last modified
      * @return string The formatted grade
      */
-    public function display_grade($grade, $editable, $userid, $modified) {
+    function display_grade($grade, $editable, $userid, $modified) {
         if ($this->is_downloading()) {
             if ($this->assignment->get_instance()->grade >= 0) {
                 if ($grade == -1 || $grade === null) {
@@ -603,15 +426,15 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Get the team info for this user.
+     * Get the team info for this user
      *
      * @param stdClass $row
      * @return string The team name
      */
-    public function col_team(stdClass $row) {
+    function col_team(stdClass $row) {
         $submission = false;
         $group = false;
-        $this->get_group_and_submission($row->id, $group, $submission, -1);
+        $this->get_group_and_submission($row->id, $group, $submission);
         if ($group) {
             return $group->name;
         }
@@ -622,11 +445,10 @@ class assign_grading_table extends table_sql implements renderable {
      * Use a static cache to try and reduce DB calls.
      *
      * @param int $userid The user id for this submission
-     * @param int $group The groupid (returned)
-     * @param stdClass|false $submission The stdClass submission or false (returned)
-     * @param int $attemptnumber Return a specific attempt number (-1 for latest)
+     * @param int $groupid The groupid (returned)
+     * @param mixed $submission The stdClass submission or false (returned)
      */
-    protected function get_group_and_submission($userid, &$group, &$submission, $attemptnumber) {
+    function get_group_and_submission($userid, &$group, &$submission) {
         $group = false;
         if (isset($this->submissiongroups[$userid])) {
             $group = $this->submissiongroups[$userid];
@@ -640,27 +462,25 @@ class assign_grading_table extends table_sql implements renderable {
             $groupid = $group->id;
         }
 
-        // Static cache is keyed by groupid and attemptnumber.
-        // We may need both the latest and previous attempt in the same page.
-        if (isset($this->groupsubmissions[$groupid . ':' . $attemptnumber])) {
-            $submission = $this->groupsubmissions[$groupid . ':' . $attemptnumber];
+        if (isset($this->groupsubmissions[$groupid])) {
+            $submission = $this->groupsubmissions[$groupid];
         } else {
-            $submission = $this->assignment->get_group_submission($userid, $groupid, false, $attemptnumber);
-            $this->groupsubmissions[$groupid . ':' . $attemptnumber] = $submission;
+            $submission = $this->assignment->get_group_submission($userid, $groupid, false);
+            $this->groupsubmissions[$groupid] = $submission;
         }
     }
 
 
     /**
-     * Get the team status for this user.
+     * Get the team status for this user
      *
      * @param stdClass $row
      * @return string The team name
      */
-    public function col_teamstatus(stdClass $row) {
+    function col_teamstatus(stdClass $row) {
         $submission = false;
         $group = false;
-        $this->get_group_and_submission($row->id, $group, $submission, -1);
+        $this->get_group_and_submission($row->id, $group, $submission);
 
         $status = '';
         if ($submission) {
@@ -671,14 +491,14 @@ class assign_grading_table extends table_sql implements renderable {
 
 
     /**
-     * Format a list of outcomes.
+     * Format a list of outcomes
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_outcomes(stdClass $row) {
+    function col_outcomes(stdClass $row) {
         $outcomes = '';
-        foreach ($this->gradinginfo->outcomes as $index => $outcome) {
+        foreach($this->gradinginfo->outcomes as $index=>$outcome) {
             $options = make_grades_menu(-$outcome->scaleid);
 
             $options[0] = get_string('nooutcome', 'grades');
@@ -694,8 +514,7 @@ class assign_grading_table extends table_sql implements renderable {
                 $select .= '</select>';
                 $outcomes .= $this->output->container($outcome->name . ': ' . $select, 'outcome');
             } else {
-                $name = $outcome->name . ': ' . $options[$outcome->grades[$row->userid]->grade];
-                $outcomes .= $this->output->container($name, 'outcome');
+                $outcomes .= $this->output->container($outcome->name . ': ' . $options[$outcome->grades[$row->userid]->grade], 'outcome');
             }
         }
 
@@ -704,12 +523,12 @@ class assign_grading_table extends table_sql implements renderable {
 
 
     /**
-     * Format a user picture for display.
+     * Format a user picture for display
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_picture(stdClass $row) {
+    function col_picture(stdClass $row) {
         if ($row->picture) {
             return $this->output->user_picture($row);
         }
@@ -717,51 +536,35 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Format a user record for display (link to profile).
+     * Format a user record for display (link to profile)
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_fullname($row) {
+    function col_fullname($row) {
         if (!$this->is_downloading()) {
             $courseid = $this->assignment->get_course()->id;
             $link= new moodle_url('/user/view.php', array('id' =>$row->id, 'course'=>$courseid));
-            $fullname = $this->output->action_link($link, fullname($row));
+            return $this->output->action_link($link, fullname($row));
         } else {
-            $fullname = fullname($row);
+            return fullname($row);
         }
-
-        if (!$this->assignment->is_active_user($row->id)) {
-            $suspendedstring = get_string('userenrolmentsuspended', 'grades');
-            $fullname .= ' ' . html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/enrolmentsuspended'),
-                'title' => $suspendedstring, 'alt' => $suspendedstring, 'class' => 'usersuspendedicon'));
-            $fullname = html_writer::tag('span', $fullname, array('class' => 'usersuspended'));
-        }
-        return $fullname;
     }
 
     /**
-     * Insert a checkbox for selecting the current row for batch operations.
+     * Insert a checkbox for selecting the current row for batch operations
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_select(stdClass $row) {
-        $selectcol = '<label class="accesshide" for="selectuser_' . $row->userid . '">';
-        $selectcol .= get_string('selectuser', 'assign', fullname($row));
-        $selectcol .= '</label>';
-        $selectcol .= '<input type="checkbox"
-                              id="selectuser_' . $row->userid . '"
-                              name="selectedusers"
-                              value="' . $row->userid . '"/>';
-        $selectcol .= '<input type="hidden"
-                              name="grademodified_' . $row->userid . '"
-                              value="' . $row->timemarked . '"/>';
-        return $selectcol;
+    function col_select(stdClass $row) {
+        return '<label class="accesshide" for="selectuser_' . $row->userid . '">' .
+            get_string('selectuser', 'assign', fullname($row)) . '</label>
+            <input type="checkbox" id="selectuser_' . $row->userid . '" name="selectedusers" value="' . $row->userid . '"/>';
     }
 
     /**
-     * Return a users grades from the listing of all grade data for this assignment.
+     * Return a users grades from the listing of all grade data for this assignment
      *
      * @param int $userid
      * @return mixed stdClass or false
@@ -771,21 +574,6 @@ class assign_grading_table extends table_sql implements renderable {
             return $this->gradinginfo->items[0]->grades[$userid];
         }
         return false;
-    }
-
-    /**
-     * Format a column of data for display.
-     *
-     * @param stdClass $row
-     * @return string
-     */
-    public function col_gradecanbechanged(stdClass $row) {
-        $gradingdisabled = $this->assignment->grading_disabled($row->id);
-        if ($gradingdisabled) {
-            return get_string('no');
-        } else {
-            return get_string('yes');
-        }
     }
 
     /**
@@ -799,51 +587,43 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Format a column of data for display.
+     * Format a column of data for display
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_grade(stdClass $row) {
+    function col_grade(stdClass $row) {
         $o = '';
 
         $link = '';
-        $separator = $this->output->spacer(array(), true);
+        $separator = '';
         $grade = '';
         $gradingdisabled = $this->assignment->grading_disabled($row->id);
 
         if (!$this->is_downloading()) {
             $name = fullname($row);
             if ($this->assignment->is_blind_marking()) {
-                $name = get_string('hiddenuser', 'assign') .
-                        $this->assignment->get_uniqueid_for_user($row->userid);
+                $name = get_string('hiddenuser', 'assign') . $this->assignment->get_uniqueid_for_user($row->userid);
             }
-            $icon = $this->output->pix_icon('gradefeedback',
-                                            get_string('gradeuser', 'assign', $name),
-                                            'mod_assign');
-            $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                               'rownum'=>$this->rownum,
-                               'action'=>'grade');
-            $url = new moodle_url('/mod/assign/view.php', $urlparams);
+            $icon = $this->output->pix_icon('gradefeedback', get_string('gradeuser', 'assign', $name), 'mod_assign');
+            $url = new moodle_url('/mod/assign/view.php',
+                                            array('id' => $this->assignment->get_course_module()->id,
+                                                  'rownum'=>$this->rownum,'action'=>'grade'));
             $link = $this->output->action_link($url, $icon);
-            $grade .= $link . $separator;
+            $separator = $this->output->spacer(array(), true);
         }
+        $grade = $this->display_grade($row->grade, $this->quickgrading && !$gradingdisabled, $row->userid, $row->timemarked);
 
-        $grade .= $this->display_grade($row->grade,
-                                       $this->quickgrading && !$gradingdisabled,
-                                       $row->userid,
-                                       $row->timemarked);
-
-        return $grade;
+        return $link . $separator . $grade;
     }
 
     /**
-     * Format a column of data for display.
+     * Format a column of data for display
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_finalgrade(stdClass $row) {
+    function col_finalgrade(stdClass $row) {
         $o = '';
 
         $grade = $this->get_gradebook_data_for_user($row->userid);
@@ -855,15 +635,15 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Format a column of data for display.
+     * Format a column of data for display
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_timemarked(stdClass $row) {
+    function col_timemarked(stdClass $row) {
         $o = '-';
 
-        if ($row->timemarked && $row->grade !== null && $row->grade >= 0) {
+        if ($row->timemarked && $row->grade !== NULL && $row->grade >= 0) {
             $o = userdate($row->timemarked);
         }
         if ($row->timemarked && $this->is_downloading()) {
@@ -875,12 +655,12 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Format a column of data for display.
+     * Format a column of data for display
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_timesubmitted(stdClass $row) {
+    function col_timesubmitted(stdClass $row) {
         $o = '-';
 
         if ($row->timesubmitted) {
@@ -896,53 +676,38 @@ class assign_grading_table extends table_sql implements renderable {
      * @param stdClass $row
      * @return string
      */
-    public function col_status(stdClass $row) {
+    function col_status(stdClass $row) {
         $o = '';
-
-        $instance = $this->assignment->get_instance();
 
         if ($this->assignment->is_any_submission_plugin_enabled()) {
 
             $o .= $this->output->container(get_string('submissionstatus_' . $row->status, 'assign'),
                                            array('class'=>'submissionstatus' .$row->status));
-            if ($instance->duedate &&
-                    $row->timesubmitted > $instance->duedate) {
-                if (!$row->extensionduedate ||
-                        $row->timesubmitted > $row->extensionduedate) {
-                    $usertime = format_time($row->timesubmitted - $instance->duedate);
-                    $latemessage = get_string('submittedlateshort',
-                                              'assign',
-                                              $usertime);
+            if ($this->assignment->get_instance()->duedate && $row->timesubmitted > $this->assignment->get_instance()->duedate) {
+                if (!$row->extensionduedate || $row->timesubmitted > $row->extensionduedate) {
+                    $latemessage = get_string('submittedlateshort', 'assign',
+                                              format_time($row->timesubmitted - $this->assignment->get_instance()->duedate));
                     $o .= $this->output->container($latemessage, 'latesubmission');
                 }
             }
             if ($row->locked) {
-                $lockedstr = get_string('submissionslockedshort', 'assign');
-                $o .= $this->output->container($lockedstr, 'lockedsubmission');
+                $o .= $this->output->container(get_string('submissionslockedshort', 'assign'), 'lockedsubmission');
             }
-
-            // Add status of "grading", use markflow if enabled.
-            if ($instance->markingworkflow) {
-                $o .= $this->col_workflowstatus($row);
-            } else if ($row->grade !== null && $row->grade >= 0) {
+            if ($row->grade !== NULL && $row->grade >= 0) {
                 $o .= $this->output->container(get_string('graded', 'assign'), 'submissiongraded');
             }
-
             if (!$row->timesubmitted) {
                 $now = time();
-                $due = $instance->duedate;
+                $due = $this->assignment->get_instance()->duedate;
                 if ($row->extensionduedate) {
                     $due = $row->extensionduedate;
                 }
                 if ($due && ($now > $due)) {
-                    $overduestr = get_string('overdue', 'assign', format_time($now - $due));
-                    $o .= $this->output->container($overduestr, 'overduesubmission');
+                    $o .= $this->output->container(get_string('overdue', 'assign', format_time($now - $due)), 'overduesubmission');
                 }
             }
             if ($row->extensionduedate) {
-                $userdate = userdate($row->extensionduedate);
-                $extensionstr = get_string('userextensiondate', 'assign', $userdate);
-                $o .= $this->output->container($extensionstr, 'extensiondate');
+                $o .= $this->output->container(get_string('userextensiondate', 'assign', userdate($row->extensionduedate)), 'extensiondate');
             }
         }
 
@@ -954,25 +719,23 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Format a column of data for display.
+     * Format a column of data for display
      *
      * @param stdClass $row
      * @return string
      */
-    public function col_userid(stdClass $row) {
+    function col_userid(stdClass $row) {
         $edit = '';
 
         $actions = array();
 
-        $urlparams = array('id'=>$this->assignment->get_course_module()->id,
-                           'rownum'=>$this->rownum,
-                           'action'=>'grade');
-        $url = new moodle_url('/mod/assign/view.php', $urlparams);
-
+        $url = new moodle_url('/mod/assign/view.php',
+                                            array('id' => $this->assignment->get_course_module()->id,
+                                                  'rownum'=>$this->rownum,'action'=>'grade'));
         if (!$row->grade) {
-            $description = get_string('grade');
-        } else {
-            $description = get_string('updategrade', 'assign');
+           $description = get_string('grade');
+        }else{
+           $description = get_string('updategrade','assign');
         }
         $actions[$url->out(false)] = $description;
 
@@ -983,66 +746,44 @@ class assign_grading_table extends table_sql implements renderable {
                     !$this->assignment->get_instance()->submissiondrafts) {
 
                 if (!$row->locked) {
-                    $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                                       'userid'=>$row->id,
-                                       'action'=>'lock',
-                                       'sesskey'=>sesskey(),
-                                       'page'=>$this->currpage);
-                    $url = new moodle_url('/mod/assign/view.php', $urlparams);
-
+                    $url = new moodle_url('/mod/assign/view.php', array('id' => $this->assignment->get_course_module()->id,
+                                                                        'userid'=>$row->id,
+                                                                        'action'=>'lock',
+                                                                        'sesskey'=>sesskey(),
+                                                                        'page'=>$this->currpage));
                     $description = get_string('preventsubmissionsshort', 'assign');
                     $actions[$url->out(false)] = $description;
                 } else {
-                    $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                                       'userid'=>$row->id,
-                                       'action'=>'unlock',
-                                       'sesskey'=>sesskey(),
-                                       'page'=>$this->currpage);
-                    $url = new moodle_url('/mod/assign/view.php', $urlparams);
+                    $url = new moodle_url('/mod/assign/view.php', array('id' => $this->assignment->get_course_module()->id,
+                                                                        'userid'=>$row->id,
+                                                                        'action'=>'unlock',
+                                                                        'sesskey'=>sesskey(),
+                                                                        'page'=>$this->currpage));
                     $description = get_string('allowsubmissionsshort', 'assign');
-                    $actions[$url->out(false)] = $description;
+                        $actions[$url->out(false)] = $description;
                 }
             }
 
             if (($this->assignment->get_instance()->duedate ||
                    $this->assignment->get_instance()->cutoffdate) &&
                    $this->hasgrantextension) {
-                $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                                   'userid'=>$row->id,
-                                   'action'=>'grantextension',
-                                   'sesskey'=>sesskey(),
-                                   'page'=>$this->currpage);
-                $url = new moodle_url('/mod/assign/view.php', $urlparams);
+                $url = new moodle_url('/mod/assign/view.php', array('id' => $this->assignment->get_course_module()->id,
+                                                                    'userid'=>$row->id,
+                                                                    'action'=>'grantextension',
+                                                                    'sesskey'=>sesskey(),
+                                                                    'page'=>$this->currpage));
                 $description = get_string('grantextension', 'assign');
                 $actions[$url->out(false)] = $description;
+
             }
         }
-        if ($row->status == ASSIGN_SUBMISSION_STATUS_SUBMITTED &&
-                $this->assignment->get_instance()->submissiondrafts) {
-            $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                               'userid'=>$row->id,
-                               'action'=>'reverttodraft',
-                               'sesskey'=>sesskey(),
-                               'page'=>$this->currpage);
-            $url = new moodle_url('/mod/assign/view.php', $urlparams);
+        if ($row->status == ASSIGN_SUBMISSION_STATUS_SUBMITTED && $this->assignment->get_instance()->submissiondrafts) {
+            $url = new moodle_url('/mod/assign/view.php', array('id' => $this->assignment->get_course_module()->id,
+                                                                'userid'=>$row->id,
+                                                                'action'=>'reverttodraft',
+                                                                'sesskey'=>sesskey(),
+                                                                'page'=>$this->currpage));
             $description = get_string('reverttodraftshort', 'assign');
-            $actions[$url->out(false)] = $description;
-        }
-
-        $ismanual = $this->assignment->get_instance()->attemptreopenmethod == ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL;
-        $hassubmission = !empty($row->status);
-        $notreopened = $hassubmission && $row->status != ASSIGN_SUBMISSION_STATUS_REOPENED;
-        $isunlimited = $this->assignment->get_instance()->maxattempts == ASSIGN_UNLIMITED_ATTEMPTS;
-        $hasattempts = $isunlimited || $row->attemptnumber < $this->assignment->get_instance()->maxattempts - 1;
-
-        if ($ismanual && $hassubmission && $notreopened && $hasattempts) {
-            $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                               'userid'=>$row->id,
-                               'action'=>'addattempt',
-                               'sesskey'=>sesskey(),
-                               'page'=>$this->currpage);
-            $url = new moodle_url('/mod/assign/view.php', $urlparams);
-            $description = get_string('addattempt', 'assign');
             $actions[$url->out(false)] = $description;
         }
 
@@ -1081,33 +822,28 @@ class assign_grading_table extends table_sql implements renderable {
      *
      * @param assign_plugin $plugin Submission plugin or feedback plugin
      * @param stdClass $item Submission or grade
-     * @param string $returnaction The return action to pass to the
-     *                             view_submission page (the current page)
-     * @param string $returnparams The return params to pass to the view_submission
-     *                             page (the current page)
+     * @param string $returnaction The return action to pass to the view_submission page (the current page)
+     * @param string $returnparams The return params to pass to the view_submission page (the current page)
      * @return string The summary with an optional link
      */
-    private function format_plugin_summary_with_link(assign_plugin $plugin,
-                                                     stdClass $item,
-                                                     $returnaction,
-                                                     $returnparams) {
+    private function format_plugin_summary_with_link(assign_plugin $plugin, stdClass $item, $returnaction, $returnparams) {
         $link = '';
         $showviewlink = false;
 
         $summary = $plugin->view_summary($item, $showviewlink);
         $separator = '';
         if ($showviewlink) {
-            $viewstr = get_string('view' . substr($plugin->get_subtype(), strlen('assign')), 'assign');
-            $icon = $this->output->pix_icon('t/preview', $viewstr);
-            $urlparams = array('id' => $this->assignment->get_course_module()->id,
+            $icon = $this->output->pix_icon('t/preview', get_string('view' . substr($plugin->get_subtype(), strlen('assign')), 'mod_assign'));
+            $link = $this->output->action_link(
+                                new moodle_url('/mod/assign/view.php',
+                                               array('id' => $this->assignment->get_course_module()->id,
                                                      'sid'=>$item->id,
                                                      'gid'=>$item->id,
                                                      'plugin'=>$plugin->get_type(),
                                                      'action'=>'viewplugin' . $plugin->get_subtype(),
                                                      'returnaction'=>$returnaction,
-                                                     'returnparams'=>http_build_query($returnparams));
-            $url = new moodle_url('/mod/assign/view.php', $urlparams);
-            $link = $this->output->action_link($url, $icon);
+                                                     'returnparams'=>http_build_query($returnparams))),
+                                $icon);
             $separator = $this->output->spacer(array(), true);
         }
 
@@ -1116,7 +852,7 @@ class assign_grading_table extends table_sql implements renderable {
 
 
     /**
-     * Format the submission and feedback columns.
+     * Format the submission and feedback columns
      *
      * @param string $colname The column name
      * @param stdClass $row The submission row
@@ -1143,42 +879,24 @@ class assign_grading_table extends table_sql implements renderable {
                 if ($this->assignment->get_instance()->teamsubmission) {
                     $group = false;
                     $submission = false;
-
-                    $this->get_group_and_submission($row->id, $group, $submission, -1);
+                    $this->get_group_and_submission($row->id, $group, $submission);
                     if ($submission) {
-                        if ($submission->status == ASSIGN_SUBMISSION_STATUS_REOPENED) {
-                            // For a newly reopened submission - we want to show the previous submission in the table.
-                            $this->get_group_and_submission($row->id, $group, $submission, $submission->attemptnumber-1);
-                        }
                         if (isset($field)) {
                             return $plugin->get_editor_text($field, $submission->id);
                         }
-                        return $this->format_plugin_summary_with_link($plugin,
-                                                                      $submission,
-                                                                      'grading',
-                                                                      array());
+                        return $this->format_plugin_summary_with_link($plugin, $submission, 'grading', array());
                     }
                 } else if ($row->submissionid) {
-                    if ($row->status == ASSIGN_SUBMISSION_STATUS_REOPENED) {
-                        // For a newly reopened submission - we want to show the previous submission in the table.
-                        $submission = $this->assignment->get_user_submission($row->userid, false, $row->attemptnumber - 1);
-                    } else {
-                        $submission = new stdClass();
-                        $submission->id = $row->submissionid;
-                        $submission->timecreated = $row->firstsubmission;
-                        $submission->timemodified = $row->timesubmitted;
-                        $submission->assignment = $this->assignment->get_instance()->id;
-                        $submission->userid = $row->userid;
-                        $submission->attemptnumber = $row->attemptnumber;
-                    }
-                    // Field is used for only for import/export and refers the the fieldname for the text editor.
                     if (isset($field)) {
-                        return $plugin->get_editor_text($field, $submission->id);
+                        return $plugin->get_editor_text($field, $row->submissionid);
                     }
-                    return $this->format_plugin_summary_with_link($plugin,
-                                                                  $submission,
-                                                                  'grading',
-                                                                  array());
+                    $submission = new stdClass();
+                    $submission->id = $row->submissionid;
+                    $submission->timecreated = $row->firstsubmission;
+                    $submission->timemodified = $row->timesubmitted;
+                    $submission->assignment = $this->assignment->get_instance()->id;
+                    $submission->userid = $row->userid;
+                    return $this->format_plugin_summary_with_link($plugin, $submission, 'grading', array());
                 }
             } else {
                 $grade = null;
@@ -1195,15 +913,11 @@ class assign_grading_table extends table_sql implements renderable {
                     $grade->userid = $row->userid;
                     $grade->grade = $row->grade;
                     $grade->mailed = $row->mailed;
-                    $grade->attemptnumber = $row->attemptnumber;
                 }
                 if ($this->quickgrading && $plugin->supports_quickgrading()) {
                     return $plugin->get_quickgrading_html($row->userid, $grade);
                 } else if ($grade) {
-                    return $this->format_plugin_summary_with_link($plugin,
-                                                                  $grade,
-                                                                  'grading',
-                                                                  array());
+                    return $this->format_plugin_summary_with_link($plugin, $grade, 'grading', array());
                 }
             }
         }
@@ -1211,12 +925,12 @@ class assign_grading_table extends table_sql implements renderable {
     }
 
     /**
-     * Using the current filtering and sorting - load all rows and return a single column from them.
+     * Using the current filtering and sorting - load all rows and return a single column from them
      *
      * @param string $columnname The name of the raw column data
      * @return array of data
      */
-    public function get_column_data($columnname) {
+    function get_column_data($columnname) {
         $this->setup();
         $this->currpage = 0;
         $this->query_db($this->tablemaxrows);
@@ -1226,65 +940,83 @@ class assign_grading_table extends table_sql implements renderable {
         }
         return $result;
     }
+    /**
+     * Using the current filtering and sorting - load a single row and return a single column from it
+     *
+     * @param int $rownumber The rownumber to load
+     * @param string $columnname The name of the raw column data
+     * @param bool $lastrow Set to true if this is the last row in the table
+     * @return mixed string or false
+     */
+    function get_cell_data($rownumber, $columnname, $lastrow) {
+        $this->setup();
+        $this->currpage = $rownumber;
+        $this->query_db(1);
+        if ($rownumber == $this->totalrows-1) {
+            $lastrow = true;
+        }
+        foreach ($this->rawdata as $row) {
+            return $row->$columnname;
+        }
+        return false;
+    }
 
     /**
-     * Return things to the renderer.
+     * Return things to the renderer
      *
      * @return string the assignment name
      */
-    public function get_assignment_name() {
+    function get_assignment_name() {
         return $this->assignment->get_instance()->name;
     }
 
     /**
-     * Return things to the renderer.
+     * Return things to the renderer
      *
      * @return int the course module id
      */
-    public function get_course_module_id() {
+    function get_course_module_id() {
         return $this->assignment->get_course_module()->id;
     }
 
     /**
-     * Return things to the renderer.
+     * Return things to the renderer
      *
      * @return int the course id
      */
-    public function get_course_id() {
+    function get_course_id() {
         return $this->assignment->get_course()->id;
     }
 
     /**
-     * Return things to the renderer.
+     * Return things to the renderer
      *
      * @return stdClass The course context
      */
-    public function get_course_context() {
+    function get_course_context() {
         return $this->assignment->get_course_context();
     }
 
     /**
-     * Return things to the renderer.
+     * Return things to the renderer
      *
      * @return bool Does this assignment accept submissions
      */
-    public function submissions_enabled() {
+    function submissions_enabled() {
         return $this->assignment->is_any_submission_plugin_enabled();
     }
 
     /**
-     * Return things to the renderer.
+     * Return things to the renderer
      *
      * @return bool Can this user view all grades (the gradebook)
      */
-    public function can_view_all_grades() {
-        $context = $this->assignment->get_course_context();
-        return has_capability('gradereport/grader:view', $context) &&
-               has_capability('moodle/grade:viewall', $context);
+    function can_view_all_grades() {
+        return has_capability('gradereport/grader:view', $this->assignment->get_course_context()) && has_capability('moodle/grade:viewall', $this->assignment->get_course_context());
     }
 
     /**
-     * Override the table show_hide_link to not show for select column.
+     * Override the table show_hide_link to not show for select column
      *
      * @param string $column the column name, index into various names.
      * @param int $index numerical index of the column.

@@ -52,15 +52,6 @@ a:active {
     padding: 0 5px;
 }
 
-.mform .btn-cancel {
-    color: #69804E;
-    text-decoration: none;
-}
-.mform .btn-cancel:hover, .mform .btn-cancel:focus {
-    color: #41512f;
-    text-decoration: none;
-}
-
 .generalbox {
     border-color: #e5e5e5;
     padding: 5px;
@@ -130,8 +121,8 @@ a:active {
     overflow: auto;
 }
 
-.block_recent_activity h2,
-.block_recent_activity h3 {
+.block_recent_activity h2,main,
+.block_recent_activity h3.main {
     font-size: 1em;
     margin: 0.5em 0;
 }
@@ -263,41 +254,44 @@ td.eventskey {
 }
 
 /* Course */
-#site-news-forum h2,
-#frontpage-course-list h2,
-#frontpage-category-names h2,
-#frontpage-category-combo h2 {
+
+h2.headingblock {
     font-weight: normal;
-    border-bottom: 1px solid #eee;
-    font-size: 1.5em;
 }
 
 .coursebox {
     border-bottom: 1px solid #eee;
 }
 
-.coursebox .content .teachers,
-.coursebox .content .courseimage,
-.coursebox .content .coursefile,
-.coursebox.remotecoursebox .remotecourseinfo {
+.coursebox .info {
     width: 35%;
 }
 
-.coursebox .content .summary,
-.coursebox .content .coursecat {
-    width: 61%;
+.coursebox .summary {
+    width: 63%;
 }
 
-.coursebox > .info > h3.coursename {
+.coursebox h3.name {
+    margin: 0;
     font-size: 1.2em;
     line-height: 1.4;
 }
 
-.coursebox .content .teachers {
+.coursebox .info .teachers {
+    margin-left: 0.6em;
     font-size: 0.95em;
 }
 
-#page-course-index-category .categorypicker {
+.categorybox {
+    border: none;
+}
+
+h2.headingblock {
+    border-bottom: 1px solid #eee;
+    font-size: 1.5em;
+}
+
+#page-course-category .categorypicker {
     text-align: center;
     margin: 10px 0 20px;
 }
@@ -369,7 +363,7 @@ td.eventskey {
     display: inline;
 }
 
-#page-user-index h3 {
+#page-user-index h3.main {
     margin: 1em 0;
 }
 
@@ -773,7 +767,7 @@ td.eventskey {
     margin: 0 auto;
 }
 
-#page-mod-choice-view h2 {
+#page-mod-choice-view h2.main {
     font-size: 1.5em;
     margin: 1em 0;
 }
@@ -788,7 +782,7 @@ td.eventskey {
 
 /* Feedback */
 
-.path-mod-feedback h4 {
+.path-mod-feedback h4.main {
     margin-top: 1em;
 }
 
@@ -841,7 +835,7 @@ td.eventskey {
     border-bottom: 1px solid #e5e5e5;
 }
 
-.path-mod-glossary .entrybox .glossarycategoryheader th h2 {
+.path-mod-glossary .entrybox .glossarycategoryheader th h2.main {
     font-size: 1.2em;
     line-height: 1.5;
     margin: 0;
@@ -1063,11 +1057,4 @@ td.eventskey {
     margin-right: 3px;
     padding: 2px; /* adds padding to icon */
     width: 12px;
-}
-
-.core_media_preview #page-wrapper {
-    min-width: 0;
-    background: none;
-    margin: 0;
-    padding: 0 5px;
 }

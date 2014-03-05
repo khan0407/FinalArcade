@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +16,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File contains definition of class MoodleQuickForm_rubriceditor
- *
- * @package    gradingform_rubric
+ * @package    gradingform
+ * @subpackage rubric
  * @copyright  2011 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,40 +26,18 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("HTML/QuickForm/input.php");
 
-/**
- * Form element for handling rubric editor
- *
- * The rubric editor is defined as a separate form element. This allows us to render
- * criteria, levels and buttons using the rubric's own renderer. Also, the required
- * Javascript library is included, which processes, on the client, buttons needed
- * for reordering, adding and deleting criteria.
- *
- * If Javascript is disabled when one of those special buttons is pressed, the form
- * element is not validated and, instead of submitting the form, we process button presses.
- *
- * @package    gradingform_rubric
- * @copyright  2011 Marina Glancy
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
-    /** @var string help message */
+    /** help message */
     public $_helpbutton = '';
-    /** @var string|bool stores the result of the last validation: null - undefined, false - no errors, string - error(s) text */
+    /** stores the result of the last validation: null - undefined, false - no errors, string - error(s) text */
     protected $validationerrors = null;
-    /** @var bool if element has already been validated **/
+    /** if element has already been validated **/
     protected $wasvalidated = false;
-    /** @var bool If non-submit (JS) button was pressed: null - unknown, true/false - button was/wasn't pressed */
+    /** If non-submit (JS) button was pressed: null - unknown, true/false - button was/wasn't pressed */
     protected $nonjsbuttonpressed = false;
-    /** @var bool Message to display in front of the editor (that there exist grades on this rubric being edited) */
+    /** Message to display in front of the editor (that there exist grades on this rubric being edited) */
     protected $regradeconfirmation = false;
 
-    /**
-     * Constructor for rubric editor
-     *
-     * @param string $elementName
-     * @param string $elementLabel
-     * @param array $attributes
-     */
     function MoodleQuickForm_rubriceditor($elementName=null, $elementLabel=null, $attributes=null) {
         parent::HTML_QuickForm_input($elementName, $elementLabel, $attributes);
     }
@@ -67,7 +45,8 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
     /**
      * get html for help button
      *
-     * @return string html for help button
+     * @access   public
+     * @return  string html for help button
      */
     public function getHelpButton() {
         return $this->_helpbutton;
@@ -233,6 +212,7 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
                                 $level['error_definition'] = true;
                             }
                             if (!preg_match('#^[\+]?\d*$#', trim($level['score'])) && !preg_match('#^[\+]?\d*[\.,]\d+$#', trim($level['score']))) {
+                                // TODO why we can't allow negative score for rubric?
                                 $errors['err_scoreformat'] = 1;
                                 $level['error_score'] = true;
                             }
@@ -359,8 +339,8 @@ class MoodleQuickForm_rubriceditor extends HTML_QuickForm_input {
 
     /**
      * Prepares the data for saving
-     *
      * @see prepare_data()
+     *
      * @param array $submitValues
      * @param boolean $assoc
      * @return array

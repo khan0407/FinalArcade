@@ -77,17 +77,11 @@ if ($chapter) {
         require_capability('mod/book:viewhiddenchapters', $context);
     }
 
-    $params = array(
-        'context' => $context,
-        'objectid' => $chapter->id
-    );
-    $event = \booktool_print\event\chapter_printed::create($params);
-    $event->add_record_snapshot('book_chapters', $chapter);
-    $event->trigger();
+    add_to_log($course->id, 'book', 'print chapter', 'tool/print/index.php?id='.$cm->id.'&chapterid='.$chapter->id, $chapter->id, $cm->id);
 
     // page header
     ?>
-    <!DOCTYPE HTML>
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
     <head>
       <title><?php echo format_string($book->name, true, array('context'=>$context)) ?></title>
@@ -96,17 +90,8 @@ if ($chapter) {
       <link rel="stylesheet" type="text/css" href="print.css" />
     </head>
     <body>
-    <?php
-    // Print dialog link.
-    $printtext = get_string('printchapter', 'booktool_print');
-    $printicon = $OUTPUT->pix_icon('chapter', $printtext, 'booktool_print', array('class' => 'book_print_icon'));
-    $printlinkatt = array('onclick' => 'window.print();return false;', 'class' => 'book_no_print');
-    echo html_writer::link('#', $printicon.$printtext, $printlinkatt);
-    ?>
     <a name="top"></a>
-    <?php
-    echo $OUTPUT->heading(format_string($book->name, true, array('context'=>$context)), 1);
-    ?>
+    <h1 class="book_title"><?php echo format_string($book->name, true, array('context'=>$context)) ?></h1>
     <div class="chapter">
     <?php
 
@@ -114,12 +99,11 @@ if ($chapter) {
     if (!$book->customtitles) {
         if (!$chapter->subchapter) {
             $currtitle = book_get_chapter_title($chapter->id, $chapters, $book, $context);
-            echo $OUTPUT->heading($currtitle);
+            echo '<h2 class="book_chapter_title">'.$currtitle.'</h2>';
         } else {
             $currtitle = book_get_chapter_title($chapters[$chapter->id]->parent, $chapters, $book, $context);
             $currsubtitle = book_get_chapter_title($chapter->id, $chapters, $book, $context);
-            echo $OUTPUT->heading($currtitle);
-            echo $OUTPUT->heading($currsubtitle, 3);
+            echo '<h2 class="book_chapter_title">'.$currtitle.'</h2><h3 class="book_chapter_title">'.$currsubtitle.'</h3>';
         }
     }
 
@@ -129,20 +113,13 @@ if ($chapter) {
     echo '</body> </html>';
 
 } else {
-    $params = array(
-        'context' => $context,
-        'objectid' => $book->id
-    );
-    $event = \booktool_print\event\book_printed::create($params);
-    $event->add_record_snapshot('book', $book);
-    $event->trigger();
-
+    add_to_log($course->id, 'book', 'print', 'tool/print/index.php?id='.$cm->id, $book->id, $cm->id);
     $allchapters = $DB->get_records('book_chapters', array('bookid'=>$book->id), 'pagenum');
     $book->intro = file_rewrite_pluginfile_urls($book->intro, 'pluginfile.php', $context->id, 'mod_book', 'intro', null);
 
     // page header
     ?>
-    <!DOCTYPE HTML>
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
     <html>
     <head>
       <title><?php echo format_string($book->name, true, array('context'=>$context)) ?></title>
@@ -151,17 +128,8 @@ if ($chapter) {
       <link rel="stylesheet" type="text/css" href="print.css" />
     </head>
     <body>
-    <?php
-    // Print dialog link.
-    $printtext = get_string('printbook', 'booktool_print');
-    $printicon = $OUTPUT->pix_icon('book', $printtext, 'booktool_print', array('class' => 'book_print_icon'));
-    $printlinkatt = array('onclick' => 'window.print();return false;', 'class' => 'book_no_print');
-    echo html_writer::link('#', $printicon.$printtext, $printlinkatt);
-    ?>
     <a name="top"></a>
-    <?php
-    echo $OUTPUT->heading(format_string($book->name, true, array('context'=>$context)), 1);
-    ?>
+    <h1 class="book_title"><?php echo format_string($book->name, true, array('context'=>$context)) ?></h1>
     <p class="book_summary"><?php echo format_text($book->intro, $book->introformat, array('noclean'=>true, 'context'=>$context)) ?></p>
     <div class="book_info"><table>
     <tr>
@@ -196,9 +164,9 @@ if ($chapter) {
         echo '<div class="book_chapter"><a name="ch'.$ch->id.'"></a>';
         if (!$book->customtitles) {
             if (!$chapter->subchapter) {
-                echo $OUTPUT->heading($titles[$ch->id]);
+                echo '<h2 class="book_chapter_title">'.$titles[$ch->id].'</h2>';
             } else {
-                echo $OUTPUT->heading($titles[$ch->id], 3);
+                echo '<h3 class="book_chapter_title">'.$titles[$ch->id].'</h3>';
             }
         }
         $content = str_replace($link1, '#ch', $chapter->content);

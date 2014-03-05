@@ -27,8 +27,7 @@ require_once(dirname(__FILE__) . '/../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 $contextid = required_param('contextid',PARAM_INT);
-$forfilter = optional_param('filter', '', PARAM_SAFEDIR);
-$returnto  = optional_param('return', null, PARAM_ALPHANUMEXT);
+$forfilter = optional_param('filter', '', PARAM_SAFEPATH);
 
 list($context, $course, $cm) = get_context_info_array($contextid);
 
@@ -43,9 +42,6 @@ if (!empty($forfilter)) {
     $args['filter'] = $forfilter;
 }
 $PAGE->set_url($baseurl, $args);
-if ($returnto !== null) {
-    $baseurl->param('return', $returnto);
-}
 
 // This is a policy decision, rather than something that would be impossible to implement.
 if (!in_array($context->contextlevel, array(CONTEXT_COURSECAT, CONTEXT_COURSE, CONTEXT_MODULE))) {
@@ -54,10 +50,10 @@ if (!in_array($context->contextlevel, array(CONTEXT_COURSECAT, CONTEXT_COURSE, C
 
 $isfrontpage = ($context->contextlevel == CONTEXT_COURSE && $context->instanceid == SITEID);
 
-$contextname = $context->get_context_name();
+$contextname = print_context_name($context);
 
 if ($context->contextlevel == CONTEXT_COURSECAT) {
-    $heading = $SITE->fullname;
+    $heading = "$SITE->fullname: ".get_string("categories");
 } else if ($context->contextlevel == CONTEXT_COURSE) {
     $heading = $course->fullname;
 } else if ($context->contextlevel == CONTEXT_MODULE) {
@@ -86,8 +82,8 @@ if ($forfilter) {
         print_error('filterdoesnothavelocalconfig', 'error', $forfilter);
     }
     require_once($CFG->dirroot . '/filter/local_settings_form.php');
-    require_once($CFG->dirroot . '/filter/' . $forfilter . '/filterlocalsettings.php');
-    $formname = $forfilter . '_filter_local_settings_form';
+    require_once($CFG->dirroot . '/' . $forfilter . '/filterlocalsettings.php');
+    $formname = basename($forfilter) . '_filter_local_settings_form';
     $settingsform = new $formname($CFG->wwwroot . '/filter/manage.php', $forfilter, $context);
     if ($settingsform->is_cancelled()) {
         redirect($baseurl);
@@ -100,12 +96,12 @@ if ($forfilter) {
 /// Process any form submission.
 if ($forfilter == '' && optional_param('savechanges', false, PARAM_BOOL) && confirm_sesskey()) {
     foreach ($availablefilters as $filter => $filterinfo) {
-        $newstate = optional_param($filter, false, PARAM_INT);
+        $newstate = optional_param(str_replace('/', '_', $filter), false, PARAM_INT);
         if ($newstate !== false && $newstate != $filterinfo->localstate) {
             filter_set_local_state($filter, $context->id, $newstate);
         }
     }
-    redirect($baseurl, get_string('changessaved'), 1);
+    redirect($CFG->wwwroot . '/filter/manage.php?contextid=' . $context->id, get_string('changessaved'), 1);
 }
 
 /// Work out an appropriate page title.
@@ -119,11 +115,16 @@ if ($forfilter) {
 }
 $straction = get_string('filters', 'admin'); // Used by tabs.php
 
-// Print the header and tabs.
-$PAGE->set_cacheable(false);
-$PAGE->set_title($title);
-$PAGE->set_pagelayout('admin');
-echo $OUTPUT->header();
+/// Print the header and tabs
+if ($isfrontpage) {
+    admin_externalpage_setup('frontpagefilters');
+    echo $OUTPUT->header();
+} else {
+    $PAGE->set_cacheable(false);
+    $PAGE->set_title($title);
+    $PAGE->set_pagelayout('admin');
+    echo $OUTPUT->header();
+}
 
 /// Print heading.
 echo $OUTPUT->heading_with_help($title, 'filtersettings', 'filters');
@@ -153,22 +154,18 @@ if (empty($availablefilters)) {
         TEXTFILTER_ON => $stron,
     );
 
-    echo html_writer::start_tag('form', array('action'=>$baseurl->out_omit_querystring(), 'method'=>'post'));
+    echo html_writer::start_tag('form', array('action'=>$baseurl->out(), 'method'=>'post'));
     echo html_writer::start_tag('div');
     echo html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>'sesskey', 'value'=>sesskey()));
-    foreach ($baseurl->params() as $key => $value) {
-        echo html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>$key, 'value'=>$value));
-    }
 
     $table = new html_table();
     $table->head  = array(get_string('filter'), get_string('isactive', 'filters'));
-    $table->colclasses = array('leftalign', 'leftalign');
+    $table->align = array('left', 'left');
     if ($settingscol) {
         $table->head[] = $strsettings;
-        $table->colclasses[] = 'leftalign';
+        $table->align[] = 'left';
     }
-    $table->id = 'frontpagefiltersettings';
-    $table->attributes['class'] = 'admintable generaltable';
+    $table->width = ' ';
     $table->data = array();
 
     // iterate through filters adding to display table
@@ -184,8 +181,9 @@ if (empty($availablefilters)) {
         } else {
             $activechoices[TEXTFILTER_INHERIT] = $strdefaultoff;
         }
-        $select = html_writer::label($filterinfo->localstate, 'menu'. $filter, false, array('class' => 'accesshide'));
-        $select .= html_writer::select($activechoices, $filter, $filterinfo->localstate, false);
+        $filtername = str_replace('/', '_', $filter);
+        $select = html_writer::label($filterinfo->localstate, 'menu'. $filtername, false, array('class' => 'accesshide'));
+        $select .= html_writer::select($activechoices, $filtername, $filterinfo->localstate, false);
         $row[] = $select;
 
         // Settings link, if required
@@ -210,15 +208,8 @@ if (empty($availablefilters)) {
 
 /// Appropriate back link.
 if (!$isfrontpage) {
-
-    if ($context->contextlevel === CONTEXT_COURSECAT && $returnto === 'management') {
-        $url = new moodle_url('/course/management.php', array('categoryid' => $context->instanceid));
-    } else {
-        $url = $context->get_url();
-    }
-
     echo html_writer::start_tag('div', array('class'=>'backlink'));
-    echo html_writer::tag('a', get_string('backto', '', $contextname), array('href' => $url));
+    echo html_writer::tag('a', get_string('backto', '', $contextname), array('href'=>get_context_url($context)));
     echo html_writer::end_tag('div');
 }
 

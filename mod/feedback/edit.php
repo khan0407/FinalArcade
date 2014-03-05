@@ -22,8 +22,8 @@
  * @package feedback
  */
 
-require_once('../../config.php');
-require_once('lib.php');
+require_once("../../config.php");
+require_once("lib.php");
 require_once('edit_form.php');
 
 feedback_init_feedback_session();
@@ -49,11 +49,11 @@ if (! $cm = get_coursemodule_from_id('feedback', $id)) {
     print_error('invalidcoursemodule');
 }
 
-if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
+if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
     print_error('coursemisconf');
 }
 
-if (! $feedback = $DB->get_record('feedback', array('id'=>$cm->instance))) {
+if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
@@ -63,7 +63,7 @@ require_login($course, true, $cm);
 
 require_capability('mod/feedback:edititems', $context);
 
-//Move up/down items
+//move up/down items
 if ($moveupitem) {
     $item = $DB->get_record('feedback_item', array('id'=>$moveupitem));
     feedback_moveup_item($item);
@@ -73,7 +73,7 @@ if ($movedownitem) {
     feedback_movedown_item($item);
 }
 
-//Moving of items
+//moving of items
 if ($movehere && isset($SESSION->feedback->moving->movingitem)) {
     $item = $DB->get_record('feedback_item', array('id'=>$SESSION->feedback->moving->movingitem));
     feedback_move_item($item, intval($movehere));
@@ -94,14 +94,14 @@ if ($switchitemrequired) {
     exit;
 }
 
-//The create_template-form
+//the create_template-form
 $create_template_form = new feedback_edit_create_template_form();
 $create_template_form->set_feedbackdata(array('context'=>$context, 'course'=>$course));
 $create_template_form->set_form_elements();
 $create_template_form->set_data(array('id'=>$id, 'do_show'=>'templates'));
 $create_template_formdata = $create_template_form->get_data();
 if (isset($create_template_formdata->savetemplate) && $create_template_formdata->savetemplate == 1) {
-    //Check the capabilities to create templates.
+    //check the capabilities to create templates
     if (!has_capability('mod/feedback:createprivatetemplate', $context) AND
             !has_capability('mod/feedback:createpublictemplate', $context)) {
         print_error('cannotsavetempl', 'feedback');
@@ -109,8 +109,8 @@ if (isset($create_template_formdata->savetemplate) && $create_template_formdata-
     if (trim($create_template_formdata->templatename) == '') {
         $savereturn = 'notsaved_name';
     } else {
-        //If the feedback is located on the frontpage then templates can be public.
-        if (has_capability('mod/feedback:createpublictemplate', context_system::instance())) {
+        //if the feedback is located on the frontpage then templates can be public
+        if (has_capability('mod/feedback:createpublictemplate', get_system_context())) {
             $create_template_formdata->ispublic = isset($create_template_formdata->ispublic) ? 1 : 0;
         } else {
             $create_template_formdata->ispublic = 0;
@@ -125,7 +125,7 @@ if (isset($create_template_formdata->savetemplate) && $create_template_formdata-
     }
 }
 
-//Get the feedbackitems
+//get the feedbackitems
 $lastposition = 0;
 $feedbackitems = $DB->get_records('feedback_item', array('feedback'=>$feedback->id), 'position');
 if (is_array($feedbackitems)) {
@@ -140,51 +140,36 @@ if (is_array($feedbackitems)) {
 $lastposition++;
 
 
-//The add_item-form
+//the add_item-form
 $add_item_form = new feedback_edit_add_question_form('edit_item.php');
 $add_item_form->set_data(array('cmid'=>$id, 'position'=>$lastposition));
 
-//The use_template-form
+//the use_template-form
 $use_template_form = new feedback_edit_use_template_form('use_templ.php');
 $use_template_form->set_feedbackdata(array('course' => $course));
 $use_template_form->set_form_elements();
 $use_template_form->set_data(array('id'=>$id));
 
-//Print the page header.
-$strfeedbacks = get_string('modulenameplural', 'feedback');
-$strfeedback  = get_string('modulename', 'feedback');
+/// Print the page header
+$strfeedbacks = get_string("modulenameplural", "feedback");
+$strfeedback  = get_string("modulename", "feedback");
 
 $PAGE->set_url('/mod/feedback/edit.php', array('id'=>$cm->id, 'do_show'=>$do_show));
-$PAGE->set_heading($course->fullname);
-$PAGE->set_title($feedback->name);
-
-//Adding the javascript module for the items dragdrop.
-if (count($feedbackitems) > 1) {
-    if ($do_show == 'edit' and $CFG->enableajax) {
-        $PAGE->requires->strings_for_js(array(
-               'pluginname',
-               'move_item',
-               'position',
-            ), 'feedback');
-        $PAGE->requires->yui_module('moodle-mod_feedback-dragdrop', 'M.mod_feedback.init_dragdrop',
-                array(array('cmid' => $cm->id)));
-    }
-}
-
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(format_string($feedback->name));
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string($feedback->name));
 
 /// print the tabs
 require('tabs.php');
 
-/// Print the main part of the page.
+/// Print the main part of the page
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
 $savereturn=isset($savereturn)?$savereturn:'';
 
-//Print the messages.
+//print the messages
 if ($savereturn == 'notsaved_name') {
     echo '<p align="center"><b><font color="red">'.
           get_string('name_required', 'feedback').
@@ -204,7 +189,7 @@ if ($savereturn == 'failed') {
 }
 
 ///////////////////////////////////////////////////////////////////////////
-///Print the template-section.
+///print the template-section
 ///////////////////////////////////////////////////////////////////////////
 if ($do_show == 'templates') {
     echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
@@ -233,7 +218,7 @@ if ($do_show == 'templates') {
     echo $OUTPUT->box_end();
 }
 ///////////////////////////////////////////////////////////////////////////
-///Print the Item-Edit-section.
+///print the Item-Edit-section
 ///////////////////////////////////////////////////////////////////////////
 if ($do_show == 'edit') {
 
@@ -246,7 +231,7 @@ if ($do_show == 'edit') {
 
         $helpbutton = $OUTPUT->help_icon('preview', 'feedback');
 
-        echo $OUTPUT->heading(get_string('preview', 'feedback').$helpbutton, 3);
+        echo $OUTPUT->heading($helpbutton . get_string('preview', 'feedback'));
         if (isset($SESSION->feedback->moving) AND $SESSION->feedback->moving->shouldmoving == 1) {
             $anker = '<a href="edit.php?id='.$id.'">';
             $anker .= get_string('cancel_moving', 'feedback');
@@ -254,7 +239,7 @@ if ($do_show == 'edit') {
             echo $OUTPUT->heading($anker);
         }
 
-        //Check, if there exists required-elements.
+        //check, if there exists required-elements
         $params = array('feedback' => $feedback->id, 'required' => 1);
         $countreq = $DB->count_records('feedback_item', $params);
         if ($countreq > 0) {
@@ -263,12 +248,12 @@ if ($do_show == 'edit') {
             echo '</span>';
         }
 
-        //Use list instead a table
+        //use list instead a table
         echo $OUTPUT->box_start('feedback_items');
         if (isset($SESSION->feedback->moving) AND $SESSION->feedback->moving->shouldmoving == 1) {
             $moveposition = 1;
             $movehereurl = new moodle_url($url, array('movehere'=>$moveposition));
-            //Only shown if shouldmoving = 1
+            //only shown if shouldmoving = 1
             echo $OUTPUT->box_start('feedback_item_box_'.$align.' clipboard');
             $buttonlink = $movehereurl->out();
             $strbutton = get_string('move_here', 'feedback');
@@ -278,41 +263,35 @@ if ($do_show == 'edit') {
                   </a>';
             echo $OUTPUT->box_end();
         }
-        //Print the inserted items
+        //print the inserted items
         $itempos = 0;
-        echo '<div id="feedback_dragarea">'; //The container for the dragging area
-        echo '<ul id="feedback_draglist">'; //The list what includes the draggable items
         foreach ($feedbackitems as $feedbackitem) {
             $itempos++;
-            //Hiding the item to move
+            //hiding the item to move
             if (isset($SESSION->feedback->moving)) {
                 if ($SESSION->feedback->moving->movingitem == $feedbackitem->id) {
                     continue;
                 }
             }
-            //Here come the draggable items, each one in a single li-element.
-            echo '<li class="feedback_itemlist generalbox" id="feedback_item_'.$feedbackitem->id.'">';
-            echo '<span class="spinnertest"> </span>';
             if ($feedbackitem->dependitem > 0) {
                 $dependstyle = ' feedback_depend';
             } else {
                 $dependstyle = '';
             }
-            echo $OUTPUT->box_start('feedback_item_box_'.$align.$dependstyle,
-                                    'feedback_item_box_'.$feedbackitem->id);
-            //Items without value only are labels
+            echo $OUTPUT->box_start('feedback_item_box_'.$align.$dependstyle);
+            //items without value only are labels
             if ($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
                 $itemnr++;
                 echo $OUTPUT->box_start('feedback_item_number_'.$align);
                 echo $itemnr;
                 echo $OUTPUT->box_end();
             }
-            echo $OUTPUT->box_start('box boxalign_'.$align);
+            echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
             echo $OUTPUT->box_start('feedback_item_commands_'.$align);
-            echo '<span class="feedback_item_commands position">';
+            echo '<span class="feedback_item_commands">';
             echo '('.get_string('position', 'feedback').':'.$itempos .')';
             echo '</span>';
-            //Print the moveup-button
+            //print the moveup-button
             if ($feedbackitem->position > 1) {
                 echo '<span class="feedback_item_command_moveup">';
                 $moveupurl = new moodle_url($url, array('moveupitem'=>$feedbackitem->id));
@@ -323,7 +302,7 @@ if ($do_show == 'edit') {
                       </a>';
                 echo '</span>';
             }
-            //Print the movedown-button
+            //print the movedown-button
             if ($feedbackitem->position < $lastposition - 1) {
                 echo '<span class="feedback_item_command_movedown">';
                 $urlparams = array('movedownitem'=>$feedbackitem->id);
@@ -335,18 +314,16 @@ if ($do_show == 'edit') {
                       </a>';
                 echo '</span>';
             }
-            //Print the move-button
-            if (count($feedbackitems) > 1) {
-                echo '<span class="feedback_item_command_move">';
-                $moveurl = new moodle_url($url, array('moveitem'=>$feedbackitem->id));
-                $buttonlink = $moveurl->out();
-                $strbutton = get_string('move_item', 'feedback');
-                echo '<a class="editing_move" title="'.$strbutton.'" href="'.$buttonlink.'">
-                        <img alt="'.$strbutton.'" src="'.$OUTPUT->pix_url('t/move') . '" />
-                      </a>';
-                echo '</span>';
-            }
-            //Print the button to edit the item
+            //print the move-button
+            echo '<span class="feedback_item_command_move">';
+            $moveurl = new moodle_url($url, array('moveitem'=>$feedbackitem->id));
+            $buttonlink = $moveurl->out();
+            $strbutton = get_string('move_item', 'feedback');
+            echo '<a class="editing_move" title="'.$strbutton.'" href="'.$buttonlink.'">
+                    <img alt="'.$strbutton.'" src="'.$OUTPUT->pix_url('t/move') . '" />
+                  </a>';
+            echo '</span>';
+            //print the button to edit the item
             if ($feedbackitem->typ != 'pagebreak') {
                 echo '<span class="feedback_item_command_edit">';
                 $editurl = new moodle_url('/mod/feedback/edit_item.php');
@@ -355,8 +332,8 @@ if ($do_show == 'edit') {
                                          'id'=>$feedbackitem->id,
                                          'typ'=>$feedbackitem->typ));
 
-                // In edit_item.php the param id is used for the itemid
-                // and the cmid is the id to get the module.
+                // in edit_item.php the param id is used for the itemid
+                // and the cmid is the id to get the module
                 $buttonlink = $editurl->out();
                 $strbutton = get_string('edit_item', 'feedback');
                 echo '<a class="editing_update" title="'.$strbutton.'" href="'.$buttonlink.'">
@@ -365,7 +342,7 @@ if ($do_show == 'edit') {
                 echo '</span>';
             }
 
-            //Print the toggle-button to switch required yes/no
+            //print the toggle-button to switch required yes/no
             if ($feedbackitem->hasvalue == 1) {
                 echo '<span class="feedback_item_command_toggle">';
                 if ($feedbackitem->required == 1) {
@@ -387,7 +364,7 @@ if ($do_show == 'edit') {
                 echo '</span>';
             }
 
-            //Print the delete-button
+            //print the delete-button
             echo '<span class="feedback_item_command_toggle">';
             $deleteitemurl = new moodle_url('/mod/feedback/delete_item.php');
             $deleteitemurl->params(array('id'=>$id,
@@ -411,14 +388,10 @@ if ($do_show == 'edit') {
             }
             echo $OUTPUT->box_end();
             echo $OUTPUT->box_end();
-            echo '<div class="clearer">&nbsp;</div>';
-            echo '</li>';
-            //Print out the target box if we ar moving an item
             if (isset($SESSION->feedback->moving) AND $SESSION->feedback->moving->shouldmoving == 1) {
-                echo '<li>';
                 $moveposition++;
                 $movehereurl->param('movehere', $moveposition);
-                echo $OUTPUT->box_start('clipboard'); //Only shown if shouldmoving = 1
+                echo $OUTPUT->box_start('clipboard'); //only shown if shouldmoving = 1
                 $buttonlink = $movehereurl->out();
                 $strbutton = get_string('move_here', 'feedback');
                 $src = $OUTPUT->pix_url('movehere');
@@ -426,12 +399,10 @@ if ($do_show == 'edit') {
                         <img class="movetarget" alt="'.$strbutton.'" src="'.$src.'" />
                       </a>';
                 echo $OUTPUT->box_end();
-                echo '</li>';
             }
+            echo '<div class="clearer">&nbsp;</div>';
         }
         echo $OUTPUT->box_end();
-        echo '</ul>';
-        echo '</div>';
     } else {
         echo $OUTPUT->box(get_string('no_items_available_yet', 'feedback'),
                          'generalbox boxaligncenter');

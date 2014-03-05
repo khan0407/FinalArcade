@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot.'/course/lib.php');
 
-class core_course_courserequest_testcase extends advanced_testcase {
+class courserequest_testcase extends advanced_testcase {
 
     public function test_create_request() {
         global $DB, $USER;
@@ -81,8 +81,7 @@ class core_course_courserequest_testcase extends advanced_testcase {
         $this->resetAfterTest(true);
         $this->preventResetByRollback();
 
-        unset_config('noemailever');
-
+        $this->setAdminUser();
         $defaultcategory = $DB->get_field_select('course_categories', "MIN(id)", "parent=0");
         set_config('enablecourserequests', 1);
         set_config('requestcategoryselection', 0);
@@ -92,8 +91,6 @@ class core_course_courserequest_testcase extends advanced_testcase {
         $cat1 = $this->getDataGenerator()->create_category();
         $cat2 = $this->getDataGenerator()->create_category();
 
-        $requester = $this->getDataGenerator()->create_user();
-
         $data = new stdClass();
         $data->fullname = 'Həllo World!';
         $data->shortname = 'Hi th€re!';
@@ -102,13 +99,9 @@ class core_course_courserequest_testcase extends advanced_testcase {
         $data->reason = 'Because PHP Unit is cool.';
 
         // Test without category.
-        $this->setUser($requester);
         $cr = course_request::create($data);
-        $this->setAdminUser();
-        $sink = $this->redirectMessages();
         $id = $cr->approve();
-        $this->assertCount(1, $sink->get_messages());
-        $sink->close();
+        $this->assertDebuggingCalled(); // Caused by sending of message.
         $course = $DB->get_record('course', array('id' => $id));
         $this->assertEquals($data->fullname, $course->fullname);
         $this->assertEquals($data->shortname, $course->shortname);
@@ -122,13 +115,9 @@ class core_course_courserequest_testcase extends advanced_testcase {
         set_config('defaultrequestcategory', $cat2->id);
         $data->shortname .= ' 2nd';
         $data->category = $cat1->id;
-        $this->setUser($requester);
         $cr = course_request::create($data);
-        $this->setAdminUser();
-        $sink = $this->redirectMessages();
         $id = $cr->approve();
-        $this->assertCount(1, $sink->get_messages());
-        $sink->close();
+        $this->assertDebuggingCalled(); // Caused by sending of message.
         $course = $DB->get_record('course', array('id' => $id));
         $this->assertEquals($data->category, $course->category);
     }
@@ -137,15 +126,10 @@ class core_course_courserequest_testcase extends advanced_testcase {
         global $DB;
         $this->resetAfterTest(true);
         $this->preventResetByRollback();
-
-        unset_config('noemailever');
-
         $this->setAdminUser();
         set_config('enablecourserequests', 1);
         set_config('requestcategoryselection', 0);
         set_config('defaultrequestcategory', $DB->get_field_select('course_categories', "MIN(id)", "parent=0"));
-
-        $requester = $this->getDataGenerator()->create_user();
 
         $data = new stdClass();
         $data->fullname = 'Həllo World!';
@@ -154,15 +138,11 @@ class core_course_courserequest_testcase extends advanced_testcase {
         $data->summary_editor['format'] = FORMAT_HTML;
         $data->reason = 'Because PHP Unit is cool.';
 
-        $this->setUser($requester);
         $cr = course_request::create($data);
         $this->assertTrue($DB->record_exists('course_request', array('id' => $cr->id)));
-
-        $this->setAdminUser();
-        $sink = $this->redirectMessages();
         $cr->reject('Sorry!');
+        $this->assertDebuggingCalled(); // Caused by sending of message.
         $this->assertFalse($DB->record_exists('course_request', array('id' => $cr->id)));
-        $this->assertCount(1, $sink->get_messages());
-        $sink->close();
     }
+
 }

@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir . '/gradelib.php');
 
-class core_gradelib_testcase extends advanced_testcase {
+class gradelib_testcase extends advanced_testcase {
 
     public function test_grade_update_mod_grades() {
 
@@ -49,7 +49,7 @@ class core_gradelib_testcase extends advanced_testcase {
         $assigndata['name'] = 'lightwork assignment';
         $modinstance = self::getDataGenerator()->create_module('assign', $assigndata);
 
-        // Function grade_update_mod_grades() requires 2 additional properties, cmidnumber and modname.
+        // grade_update_mod_grades() requires 2 additional properties, cmidnumber and modname.
         $cm = get_coursemodule_from_instance('assign', $modinstance->id, 0, false, MUST_EXIST);
         $modinstance->cmidnumber = $cm->id;
         $modinstance->modname = 'assign';

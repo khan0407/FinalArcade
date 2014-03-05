@@ -49,11 +49,12 @@ function brick_set_headingcolor($css, $headingcolor) {
     return $css;
 }
 
-function brick_set_logo($css, $logo, $theme) {
+function brick_set_logo($css, $logo) {
+ global $OUTPUT;
  $tag = '[[setting:logo]]';
  $replacement = $logo;
  if (is_null($replacement)) {
- $replacement = $theme->pix_url('logo', 'theme');
+ $replacement = $OUTPUT->pix_url('logo', 'theme');
  }
  $css = str_replace($tag, $replacement, $css);
  return $css;
@@ -111,7 +112,7 @@ function brick_process_css($css, $theme) {
     } else {
         $logo = null;
     }
-    $css = brick_set_logo($css, $logo, $theme);
+    $css = brick_set_logo($css, $logo);
     
     
     

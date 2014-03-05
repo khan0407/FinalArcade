@@ -27,6 +27,7 @@
  */
 
 require_once($CFG->dirroot.'/cache/forms.php');
+require_once($CFG->dirroot.'/cache/stores/file/lib.php');
 
 /**
  * Form for adding a file instance.

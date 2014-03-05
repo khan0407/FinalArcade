@@ -251,7 +251,7 @@ class feedback_item_multichoice extends feedback_item_base {
                             -&nbsp;&nbsp;'.trim($val->answertext).':
                       </td>
                       <td align="left" style="width:'.FEEDBACK_MAX_PIX_LENGTH.';">
-                        <img class="feedback_bar_image" alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />
+                        <img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />
                         &nbsp;'.$val->answercount.$str_quotient.'
                       </td>';
                 echo '</tr>';
@@ -316,11 +316,8 @@ class feedback_item_multichoice extends feedback_item_base {
 
         //print the question and label
         echo '<div class="feedback_item_label_'.$align.'">';
-        if ($info->subtype == 'd') {
-            echo '<label for="'. $item->typ . '_' . $item->id .'">';
-        }
         echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
+        echo format_text($item->name.$requiredmark, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('feedback_item', array('id'=>$item->dependitem))) {
                 echo ' <span class="feedback_depend">';
@@ -328,21 +325,13 @@ class feedback_item_multichoice extends feedback_item_base {
                 echo '</span>';
             }
         }
-        if ($info->subtype == 'd') {
-            echo '</label>';
-        }
         echo '</div>';
 
         //print the presentation
         echo '<div class="feedback_item_presentation_'.$align.'">';
         $index = 1;
         $checked = '';
-        if ($info->subtype == 'r' || $info->subtype == 'c') {
-            // if (r)adio buttons or (c)heckboxes
-            echo '<fieldset>';
-            echo '<ul>';
-        }
-
+        echo '<ul>';
         if ($info->horizontal) {
             $hv = 'h';
         } else {
@@ -381,11 +370,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 $this->print_item_dropdown($presentation, $item, false, $info, $align);
                 break;
         }
-        if ($info->subtype == 'r' || $info->subtype == 'c') {
-            // if (r)adio buttons or (c)heckboxes
-            echo '</ul>';
-            echo '</fieldset>';
-        }
+        echo '</ul>';
         echo '</div>';
     }
 
@@ -435,23 +420,13 @@ class feedback_item_multichoice extends feedback_item_base {
 
         //print the question and label
         echo '<div class="feedback_item_label_'.$align.$highlight.'">';
-        if ($info->subtype == 'd') {
-            echo '<label for="'. $item->typ . '_' . $item->id .'">';
-            echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
-            echo '</label>';
-        } else {
-            echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
-        }
+            echo format_text($item->name.$requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
         echo '<div class="feedback_item_presentation_'.$align.$highlight.'">';
 
-        if ($info->subtype == 'r' || $info->subtype == 'c') {
-            // if (r)adio buttons or (c)heckboxes
-            echo '<fieldset>';
-            echo '<ul>';
-        }
+        echo '<ul>';
         if ($info->horizontal) {
             $hv = 'h';
         } else {
@@ -496,11 +471,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 $this->print_item_dropdown($presentation, $item, $value, $info, $align);
                 break;
         }
-        if ($info->subtype == 'r' || $info->subtype == 'c') {
-            // if (r)adio buttons or (c)heckboxes
-            echo '</ul>';
-            echo '</fieldset>';
-        }
+        echo '</ul>';
         echo '</div>';
     }
 
@@ -540,7 +511,7 @@ class feedback_item_multichoice extends feedback_item_base {
         //print the question and label
         echo '<div class="feedback_item_label_'.$align.'">';
         echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, FORMAT_HTML, array('noclean' => true, 'para' => false));
+        echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
@@ -552,7 +523,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 foreach ($values as $val) {
                     if ($val == $index) {
                         echo '<div class="feedback_item_multianswer">';
-                        echo format_text($pres, FORMAT_HTML, array('noclean' => true, 'para' => false));
+                        echo text_to_html($pres, true, false, false);
                         echo '</div>';
                         break;
                     }
@@ -564,7 +535,7 @@ class feedback_item_multichoice extends feedback_item_base {
             foreach ($presentation as $pres) {
                 if ($value == $index) {
                     echo $OUTPUT->box_start('generalbox boxalign'.$align);
-                    echo format_text($pres, FORMAT_HTML, array('noclean' => true, 'para' => false));
+                    echo text_to_html($pres, true, false, false);
                     echo $OUTPUT->box_end();
                     break;
                 }
@@ -720,7 +691,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 </span>
                 <span class="feedback_item_radiolabel_<?php echo $hv.'_'.$align;?>">
                     <label for="<?php echo $inputid;?>">
-                        <?php echo format_text($radio, FORMAT_HTML, array('noclean' => true, 'para' => false));?>&nbsp;
+                        <?php echo text_to_html($radio, true, false, false);?>&nbsp;
                     </label>
                 </span>
             </li>
@@ -768,7 +739,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 </span>
                 <span class="feedback_item_radiolabel_<?php echo $hv.'_'.$align;?>">
                     <label for="<?php echo $inputid;?>">
-                        <?php echo format_text($check, FORMAT_HTML, array('noclean' => true, 'para' => false));?>&nbsp;
+                        <?php echo text_to_html($check, true, false, false);?>&nbsp;
                     </label>
                 </span>
             </li>
@@ -791,7 +762,8 @@ class feedback_item_multichoice extends feedback_item_base {
         }
 
         ?>
-        <div class="feedback_item_select_<?php echo $hv.'_'.$align;?>">
+        <li class="feedback_item_select_<?php echo $hv.'_'.$align;?>">
+            <label class="accesshide" for="<?php echo $item->typ .'_' . $item->id;?>"><?php echo $item->name; ?></label>
             <select  id="<?php echo $item->typ .'_' . $item->id;?>" name="<?php echo $item->typ .'_' . $item->id;?>[]" size="1">
                 <option value="0">&nbsp;</option>
                 <?php
@@ -808,14 +780,14 @@ class feedback_item_multichoice extends feedback_item_base {
                     }
                 ?>
                     <option value="<?php echo $index;?>" <?php echo $selected;?>>
-                        <?php echo format_text($dropdown, FORMAT_HTML, array('noclean' => true, 'para' => false));?>
+                        <?php echo text_to_html($dropdown, true, false, false);?>
                     </option>
                 <?php
                     $index++;
                 }
                 ?>
             </select>
-        </div>
+        </li>
         <?php
     }
 

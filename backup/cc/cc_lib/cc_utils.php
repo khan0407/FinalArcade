@@ -63,13 +63,11 @@ abstract class cc_helpers {
      * @return mixed - directory short name or false in case of faliure
      */
     public static function randomdir($where, $prefix = '', $suffix = '') {
-        global $CFG;
-
         $dirname    = false;
         $randomname = self::uuidgen($prefix, $suffix, false);
         $newdirname = $where.DIRECTORY_SEPARATOR.$randomname;
         if (mkdir($newdirname)) {
-            chmod($newdirname, $CFG->directorypermissions);
+            chmod($newdirname, 0755);
             $dirname = $randomname;
         }
         return $dirname;
@@ -157,8 +155,6 @@ abstract class cc_helpers {
     }
 
     public static function add_files(cc_i_manifest &$manifest, $packageroot, $outdir, $allinone = true) {
-        global $CFG;
-
         if (pkg_static_resources::instance()->finished) {
             return;
         }
@@ -174,7 +170,7 @@ abstract class cc_helpers {
             //let us try to recreate them
             $justdir = $rdir->fullpath(false).$values[7];
             if (!file_exists($justdir)) {
-                if (!mkdir($justdir, $CFG->directorypermissions, true)) {
+                if (!mkdir($justdir, 0777, true)) {
                     throw new RuntimeException('Unable to create directories!');
                 }
             }

@@ -75,7 +75,8 @@ if (!empty($CFG->showcronsql)) {
     $DB->set_debug(true);
 }
 if (!empty($CFG->showcrondebugging)) {
-    set_debugging(DEBUG_DEVELOPER, true);
+    $CFG->debug = DEBUG_DEVELOPER;
+    $CFG->debugdisplay = true;
 }
 
 $starttime = microtime();

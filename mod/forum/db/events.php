@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Forum event handler definition.
+ * Meta course enrolment plugin event handler definition.
  *
  * @package mod_forum
  * @category event
@@ -23,16 +23,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// List of observers.
-$observers = array(
-
-    array(
-        'eventname'   => '\core\event\user_enrolment_deleted',
-        'callback'    => 'mod_forum_observer::user_enrolment_deleted',
+/* List of handlers */
+$handlers = array (
+    'role_assigned' => array (
+        'handlerfile'      => '/mod/forum/lib.php',
+        'handlerfunction'  => 'forum_user_role_assigned',
+        'schedule'         => 'instant',
+        'internal'         => 1,
     ),
 
-    array(
-        'eventname' => '\core\event\role_assigned',
-        'callback' => 'mod_forum_observer::role_assigned'
+    'user_unenrolled' => array (
+        'handlerfile'      => '/mod/forum/lib.php',
+        'handlerfunction'  => 'forum_user_unenrolled',
+        'schedule'         => 'instant',
+        'internal'         => 1,
     ),
 );

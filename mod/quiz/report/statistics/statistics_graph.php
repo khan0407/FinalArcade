@@ -28,18 +28,35 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 require_once(dirname(__FILE__) . '/../../../../config.php');
 require_once($CFG->libdir . '/graphlib.php');
 require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
-require_once($CFG->dirroot . '/mod/quiz/report/statistics/statisticslib.php');
+
+
+/**
+ * This helper function returns a sequence of colours each time it is called.
+ * Used for chooseing colours for graph data series.
+ * @return string colour name.
+ */
+function graph_get_new_colour() {
+    static $colourindex = -1;
+    $colours = array('red', 'green', 'yellow', 'orange', 'purple', 'black',
+            'maroon', 'blue', 'ltgreen', 'navy', 'ltred', 'ltltgreen', 'ltltorange',
+            'olive', 'gray', 'ltltred', 'ltorange', 'lime', 'ltblue', 'ltltblue');
+
+    $colourindex = ($colourindex + 1) % count($colours);
+
+    return $colours[$colourindex];
+}
 
 // Get the parameters.
-$quizid = required_param('quizid', PARAM_INT);
-$currentgroup = required_param('currentgroup', PARAM_INT);
-$whichattempts = required_param('whichattempts', PARAM_INT);
+$quizstatisticsid = required_param('id', PARAM_INT);
 
-$quiz = $DB->get_record('quiz', array('id' => $quizid), '*', MUST_EXIST);
+// Load enough data to check permissions.
+$quizstatistics = $DB->get_record('quiz_statistics', array('id' => $quizstatisticsid));
+$quiz = $DB->get_record('quiz', array('id' => $quizstatistics->quizid), '*', MUST_EXIST);
 $cm = get_coursemodule_from_instance('quiz', $quiz->id);
 
 // Check access.
@@ -52,24 +69,14 @@ if (groups_get_activity_groupmode($cm)) {
 } else {
     $groups = array();
 }
-if ($currentgroup && !in_array($currentgroup, array_keys($groups))) {
+if ($quizstatistics->groupid && !in_array($quizstatistics->groupid, array_keys($groups))) {
     print_error('groupnotamember', 'group');
 }
 
-if (empty($currentgroup)) {
-    $groupstudents = array();
-} else {
-    $groupstudents = get_users_by_capability($modcontext, array('mod/quiz:reviewmyattempts', 'mod/quiz:attempt'),
-                                             '', '', '', '', $currentgroup, '', false);
-}
-$qubaids = quiz_statistics_qubaids_condition($quizid, $groupstudents, $whichattempts);
-
 // Load the rest of the required data.
 $questions = quiz_report_get_significant_questions($quiz);
-
-// Only load main question not sub questions.
-$questionstatistics = $DB->get_records_select('question_statistics', 'hashcode = ? AND slot IS NOT NULL',
-                                              array($qubaids->get_hash_code()));
+$questionstatistics = $DB->get_records_select('quiz_question_statistics',
+        'quizstatisticsid = ? AND slot IS NOT NULL', array($quizstatistics->id));
 
 // Create the graph, and set the basic options.
 $graph = new graph(800, 600);
@@ -101,7 +108,7 @@ $xdata = array();
 foreach (array_keys($fieldstoplot) as $fieldtoplot) {
     $ydata[$fieldtoplot] = array();
     $graph->y_format[$fieldtoplot] = array(
-        'colour' => quiz_statistics_graph_get_new_colour(),
+        'colour' => graph_get_new_colour(),
         'bar' => 'fill',
         'shadow_offset' => 1,
         'legend' => $fieldstoplot[$fieldtoplot]
@@ -146,12 +153,6 @@ foreach ($fieldstoplot as $fieldtoplot => $notused) {
 $gridresolution = 10;
 $max = ceil($max / $gridresolution) * $gridresolution;
 $min = floor($min / $gridresolution) * $gridresolution;
-
-if ($max == $min) {
-    // Make sure there is some difference between min and max y values.
-    $max = $min + $gridresolution;
-}
-
 $gridlines = ceil(($max - $min) / $gridresolution) + 1;
 
 $graph->parameter['y_axis_gridlines'] = $gridlines;

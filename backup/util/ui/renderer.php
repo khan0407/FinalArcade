@@ -55,24 +55,6 @@ class core_backup_renderer extends plugin_renderer_base {
         }
         return html_writer::tag('div', join(get_separator(), $items), array('class'=>'backup_progress clearfix'));
     }
-
-    /**
-     * The backup and restore pages may display a log (if any) in a scrolling box.
-     *
-     * @param string $loghtml Log content in HTML format
-     * @return string HTML content that shows the log
-     */
-    public function log_display($loghtml) {
-        global $OUTPUT;
-        $out = html_writer::start_div('backup_log');
-        $out .= $OUTPUT->heading(get_string('backuplog', 'backup'));
-        $out .= html_writer::start_div('backup_log_contents');
-        $out .= $loghtml;
-        $out .= html_writer::end_div();
-        $out .= html_writer::end_div();
-        return $out;
-    }
-
     /**
      * Prints a dependency notification
      * @param string $message
@@ -91,7 +73,7 @@ class core_backup_renderer extends plugin_renderer_base {
      */
     public function backup_details($details, $nextstageurl) {
         $yestick = $this->output->pix_icon('i/valid', get_string('yes'));
-        $notick = $this->output->pix_icon('i/invalid', get_string('no'));
+        $notick = $this->output->pix_icon('i/valid', get_string('no'));
 
         $html  = html_writer::start_tag('div', array('class'=>'backup-restore'));
 
@@ -158,7 +140,7 @@ class core_backup_renderer extends plugin_renderer_base {
                     }
                     if (empty($table)) {
                         $table = new html_table();
-                        $table->head = array(get_string('module','backup'), get_string('title','backup'), get_string('userinfo','backup'));
+                        $table->head = array('Module', 'Title', 'Userinfo');
                         $table->colclasses = array('modulename', 'moduletitle', 'userinfoincluded');
                         $table->align = array('left','left', 'center');
                         $table->attributes = array('class'=>'activitytable generaltable');
@@ -410,7 +392,7 @@ class core_backup_renderer extends plugin_renderer_base {
         }
         if (array_key_exists('warnings', $results)) {
             foreach ($results['warnings'] as $warning) {
-                $output .= $this->output->notification($warning, 'notifyproblem');
+                $output .= $this->output->notification($warning, 'notifywarning notifyproblem');
             }
         }
         return $output.html_writer::end_tag('div');
@@ -539,6 +521,15 @@ class core_backup_renderer extends plugin_renderer_base {
         $url = $component->get_url();
 
         $output = html_writer::start_tag('div', array('class' => 'restore-course-search'));
+
+        $countstr = '';
+        if ($component->has_more_results()) {
+            $countstr = get_string('morecoursesearchresults', 'backup', $component->get_count());
+        } else {
+            $countstr = get_string('totalcoursesearchresults', 'backup', $component->get_count());
+        }
+
+        $output .= html_writer::tag('div', $countstr, array('class'=>'rcs-totalresults'));
         $output .= html_writer::start_tag('div', array('class' => 'rcs-results'));
 
         $table = new html_table();

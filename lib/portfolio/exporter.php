@@ -335,7 +335,7 @@ class portfolio_exporter {
                 $mform->display();
                 echo $OUTPUT->box_end();
                 echo $OUTPUT->footer();
-                return false;
+                return false;;
             }
         } else {
             $this->noexportconfig = true;
@@ -436,8 +436,7 @@ class portfolio_exporter {
     public function process_stage_queueorwait() {
         $wait = $this->instance->get_export_config('wait');
         if (empty($wait)) {
-            // TODO MDL-42541 Removing usage of events_trigger().
-            events_trigger_legacy('portfolio_send', $this->id);
+            events_trigger('portfolio_send', $this->id);
             $this->queued = true;
             return $this->process_stage_finished(true);
         }
@@ -836,7 +835,7 @@ class portfolio_exporter {
             if ($f->get_filename() == $skipfile) {
                 continue;
             }
-            $returnfiles[$f->get_filepath() . $f->get_filename()] = $f;
+            $returnfiles[$f->get_filepath() . '/' . $f->get_filename()] = $f;
         }
         return $returnfiles;
     }

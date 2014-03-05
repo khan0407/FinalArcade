@@ -91,22 +91,11 @@ class quiz_responses_table extends quiz_attempts_report_table {
 
         $stepdata = $this->lateststeps[$attempt->usageid][$slot];
 
-        if (property_exists($stepdata, $field . 'full')) {
-            $value = $stepdata->{$field . 'full'};
-        } else {
-            $value = $stepdata->$field;
-        }
-
-        if (is_null($value)) {
+        if (is_null($stepdata->$field)) {
             $summary = '-';
         } else {
-            $summary = trim($value);
+            $summary = trim($stepdata->$field);
         }
-
-        if ($this->is_downloading() && $this->is_downloading() != 'xhtml') {
-            return $summary;
-        }
-        $summary = s($summary);
 
         if ($this->is_downloading() || $field != 'responsesummary') {
             return $summary;
@@ -147,21 +136,8 @@ class quiz_responses_table extends quiz_attempts_report_table {
      * @param string $alias the table alias for latest state information relating to that slot.
      */
     protected function get_required_latest_state_fields($slot, $alias) {
-        global $DB;
-        $sortableresponse = $DB->sql_order_by_text("{$alias}.questionsummary");
-        if ($sortableresponse === "{$alias}.questionsummary") {
-            // Can just order by text columns. No complexity needed.
-            return "{$alias}.questionsummary AS question{$slot},
-                    {$alias}.rightanswer AS right{$slot},
-                    {$alias}.responsesummary AS response{$slot}";
-        } else {
-            // Work-around required.
-            return $DB->sql_order_by_text("{$alias}.questionsummary") . " AS question{$slot},
-                    {$alias}.questionsummary AS question{$slot}full,
-                    " . $DB->sql_order_by_text("{$alias}.rightanswer") . " AS right{$slot},
-                    {$alias}.rightanswer AS right{$slot}full,
-                    " . $DB->sql_order_by_text("{$alias}.responsesummary") . " AS response{$slot},
-                    {$alias}.responsesummary AS response{$slot}full";
-        }
+        return "$alias.questionsummary AS question$slot,
+                $alias.rightanswer AS right$slot,
+                $alias.responsesummary AS response$slot";
     }
 }

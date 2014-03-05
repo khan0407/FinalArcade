@@ -60,7 +60,6 @@ class qtype_truefalse_edit_form extends question_edit_form {
                 get_string('settingsformultipletries', 'question'));
 
         $mform->addElement('hidden', 'penalty', 1);
-        $mform->setType('penalty', PARAM_FLOAT);
 
         $mform->addElement('static', 'penaltymessage',
                 get_string('penaltyforeachincorrecttry', 'question'), 1);
@@ -80,13 +79,13 @@ class qtype_truefalse_edit_form extends question_edit_form {
             $question->feedbacktrue = array();
             $question->feedbacktrue['format'] = $trueanswer->feedbackformat;
             $question->feedbacktrue['text'] = file_prepare_draft_area(
-                $draftid,             // Draftid
+                $draftid,             // draftid
                 $this->context->id,   // context
                 'question',           // component
                 'answerfeedback',     // filarea
                 !empty($answerid) ? (int) $answerid : null, // itemid
                 $this->fileoptions,   // options
-                $trueanswer->feedback // text.
+                $trueanswer->feedback // text
             );
             $question->feedbacktrue['itemid'] = $draftid;
         }
@@ -100,13 +99,13 @@ class qtype_truefalse_edit_form extends question_edit_form {
             $question->feedbackfalse = array();
             $question->feedbackfalse['format'] = $falseanswer->feedbackformat;
             $question->feedbackfalse['text'] = file_prepare_draft_area(
-                $draftid,              // Draftid
+                $draftid,              // draftid
                 $this->context->id,    // context
                 'question',            // component
                 'answerfeedback',      // filarea
                 !empty($answerid) ? (int) $answerid : null, // itemid
                 $this->fileoptions,    // options
-                $falseanswer->feedback // text.
+                $falseanswer->feedback // text
             );
             $question->feedbackfalse['itemid'] = $draftid;
         }

@@ -31,9 +31,6 @@ defined('MOODLE_INTERNAL') || die();
 /** General rendering target, usually normal browser page */
 define('RENDERER_TARGET_GENERAL', 'general');
 
-/** General rendering target, usually normal browser page, but with limited capacity to avoid API use */
-define('RENDERER_TARGET_MAINTENANCE', 'maintenance');
-
 /** Plain text rendering for CLI scripts and cron */
 define('RENDERER_TARGET_CLI', 'cli');
 
@@ -133,10 +130,8 @@ abstract class renderer_factory_base implements renderer_factory {
      * @return array two element array, first element is target, second the target suffix string
      */
     protected function get_target_suffix($target) {
-        if (empty($target) || $target === RENDERER_TARGET_MAINTENANCE) {
-            // If the target hasn't been specified we need to guess the defaults.
-            // We also override the target with the default if the maintenance target has been provided.
-            // This ensures we don't use the maintenance renderer if we are processing a special target.
+        if (empty($target)) {
+            // automatically guessed defaults
             if (CLI_SCRIPT) {
                 $target = RENDERER_TARGET_CLI;
             } else if (AJAX_SCRIPT) {
@@ -149,7 +144,6 @@ abstract class renderer_factory_base implements renderer_factory {
             case RENDERER_TARGET_AJAX: $suffix = '_ajax'; break;
             case RENDERER_TARGET_TEXTEMAIL: $suffix = '_textemail'; break;
             case RENDERER_TARGET_HTMLEMAIL: $suffix = '_htmlemail'; break;
-            case RENDERER_TARGET_MAINTENANCE: $suffix = '_maintenance'; break;
             default: $target = RENDERER_TARGET_GENERAL; $suffix = '';
         }
 
@@ -166,13 +160,12 @@ abstract class renderer_factory_base implements renderer_factory {
      * @param string $component name such as 'core', 'mod_forum' or 'qtype_multichoice'.
      * @param string $subtype optional subtype such as 'news' resulting to 'mod_forum_news'
      * @return string the name of the standard renderer class for that module.
-     * @throws coding_exception
      */
     protected function standard_renderer_classname($component, $subtype = null) {
-        global $CFG; // Needed in included files.
+        global $CFG; // needed in included files
 
-        // Standardize component name ala frankenstyle.
-        list($plugin, $type) = core_component::normalize_component($component);
+        // standardize component name ala frankenstyle
+        list($plugin, $type) = normalize_component($component);
         if ($type === null) {
             $component = $plugin;
         } else {
@@ -180,9 +173,9 @@ abstract class renderer_factory_base implements renderer_factory {
         }
 
         if ($component !== 'core') {
-            // Renderers are stored in renderer.php files.
-            if (!$compdirectory = core_component::get_component_directory($component)) {
-                throw new coding_exception('Invalid component specified in renderer request', $component);
+            // renderers are stored in renderer.php files
+            if (!$compdirectory = get_component_directory($component)) {
+                throw new coding_exception('Invalid component specified in renderer request');
             }
             $rendererfile = $compdirectory . '/renderer.php';
             if (file_exists($rendererfile)) {
@@ -190,15 +183,13 @@ abstract class renderer_factory_base implements renderer_factory {
             }
 
         } else if (!empty($subtype)) {
-            $coresubsystems = core_component::get_core_subsystems();
-            if (!array_key_exists($subtype, $coresubsystems)) { // There may be nulls.
-                throw new coding_exception('Invalid core subtype "' . $subtype . '" in renderer request', $subtype);
+            $coresubsystems = get_core_subsystems();
+            if (!isset($coresubsystems[$subtype])) {
+                throw new coding_exception('Invalid core subtype "' . $subtype . '" in renderer request');
             }
-            if ($coresubsystems[$subtype]) {
-                $rendererfile = $coresubsystems[$subtype] . '/renderer.php';
-                if (file_exists($rendererfile)) {
-                    include_once($rendererfile);
-                }
+            $rendererfile = $CFG->dirroot . '/' . $coresubsystems[$subtype] . '/renderer.php';
+            if (file_exists($rendererfile)) {
+                include_once($rendererfile);
             }
         }
 

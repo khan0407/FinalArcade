@@ -26,7 +26,10 @@ if (!$cm = get_coursemodule_from_instance('chat', $chat->id, $course->id)) {
 
 require_login($course, false, $cm);
 $context = context_module::instance($cm->id);
-require_capability('mod/chat:chat', $context);
+
+if (isguestuser()) {
+    print_error('noguests', 'chat');
+}
 
 /// Check to see if groups are being used here
  if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used

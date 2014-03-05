@@ -15,10 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Restore subplugin class.
- *
- * Provides the necessary information needed to restore
- * one assign_submission subplugin.
+ * restore subplugin class that provides the necessary information needed to restore one assign_submission subplugin.
  *
  * @package   assignfeedback_comments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
@@ -28,10 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Restore subplugin class.
- *
- * Provides the necessary information needed to restore
- * one assignfeedback subplugin.
+ * restore subplugin class that provides the necessary information needed to restore one assignfeedback subplugin.
  *
  * @package   assignfeedback_comments
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
@@ -48,16 +42,14 @@ class restore_assignfeedback_comments_subplugin extends restore_subplugin {
         $paths = array();
 
         $elename = $this->get_namefor('grade');
-        // We used get_recommended_name() so this works.
-        $elepath = $this->get_pathfor('/feedback_comments');
-
+        $elepath = $this->get_pathfor('/feedback_comments'); // we used get_recommended_name() so this works
         $paths[] = new restore_path_element($elename, $elepath);
 
-        return $paths;
+        return $paths; // And we return the interesting paths
     }
 
     /**
-     * Processes one feedback_comments element.
+     * Processes one feedback_comments element
      * @param mixed $data
      */
     public function process_assignfeedback_comments_grade($data) {
@@ -66,8 +58,7 @@ class restore_assignfeedback_comments_subplugin extends restore_subplugin {
         $data = (object)$data;
         $data->assignment = $this->get_new_parentid('assign');
         $oldgradeid = $data->grade;
-        // The mapping is set in the restore for the core assign activity
-        // when a grade node is processed.
+        // the mapping is set in the restore for the core assign activity. When a grade node is processed
         $data->grade = $this->get_mappingid('grade', $data->grade);
 
         $DB->insert_record('assignfeedback_comments', $data);

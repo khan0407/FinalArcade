@@ -17,8 +17,9 @@
 /**
  * Test helper code for the description question type.
  *
- * @package    qtype_description
- * @copyright  2013 The Open University
+ * @package    qtype
+ * @subpackage description
+ * @copyright  2010 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Test helper class for the description question type.
  *
- * @copyright  2013 The Open University
+ * @copyright  2010 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_description_test_helper extends question_test_helper {
@@ -58,10 +59,11 @@ class qtype_description_test_helper extends question_test_helper {
     }
 
     /**
-     * Get the question data, as it would be loaded by get_question_options.
+     * Get the question data, as it would be loaded by get_question_options, for
+     * the question returned by {@link make_an_oumultiresponse_two_of_four()}.
      * @return object
      */
-    public static function get_description_question_data_info() {
+    public static function get_question_data() {
         global $USER;
 
         $qdata = new stdClass();
@@ -85,28 +87,7 @@ class qtype_description_test_helper extends question_test_helper {
         $qdata->length = 0;
         $qdata->penalty = 0;
         $qdata->hidden = 0;
-        $qdata->hints = array();
-        $qdata->options = new stdClass();
-        $qdata->options->answers = array();
 
         return $qdata;
     }
-
-
-    /**
-     * Get the question form data.
-     * @return object
-     */
-    public static function get_description_question_form_data_info() {
-        $form = new stdClass();
-
-        $form->name = 'Description';
-        $form->questiontext = array('text' => 'Here is some information about the questions you are about to attempt.',
-                                    'format' => FORMAT_HTML);
-        $form->generalfeedback = array('text' => 'And here is some more text shown only on the review page.',
-                                       'format' => FORMAT_HTML);
-
-        return $form;
-    }
-
 }

@@ -63,7 +63,7 @@ class repository_user extends repository {
         if (!empty($encodedpath)) {
             $params = unserialize(base64_decode($encodedpath));
             if (is_array($params)) {
-                $filepath = clean_param($params['filepath'], PARAM_PATH);
+                $filepath = clean_param($params['filepath'], PARAM_PATH);;
                 $filename = clean_param($params['filename'], PARAM_FILE);
             }
         } else {
@@ -160,11 +160,13 @@ class repository_user extends repository {
     }
 
     /**
-     * Is this repository accessing private data?
+     * Return reference file life time
      *
-     * @return bool
+     * @param string $ref
+     * @return int
      */
-    public function contains_private_data() {
-        return false;
+    public function get_reference_file_lifetime($ref) {
+        // this should be realtime
+        return 0;
     }
 }

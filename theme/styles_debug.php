@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,14 +18,11 @@
 /**
  * This file is responsible for serving of individual style sheets in designer mode.
  *
- * @package   core
+ * @package   moodlecore
  * @copyright 2009 Petr Skoda (skodak)  {@link http://skodak.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Disable moodle specific debug messages and any errors in output,
-// comment out when debugging or better look into error log!
-define('NO_DEBUG_DISPLAY', true);
 
 define('ABORT_AFTER_CONFIG', true);
 require('../config.php'); // this stops immediately at the beginning of lib/setup.php
@@ -57,22 +55,16 @@ if ($usesvg) {
     $candidatesheet = "$CFG->cachedir/theme/$themename/designer_nosvg.ser";
 }
 
-$css = false;
-if (is_readable($candidatesheet) and filemtime($candidatesheet) > time() - THEME_DESIGNER_CACHE_LIFETIME) {
-    $css = @unserialize(file_get_contents($candidatesheet));
+if (!file_exists($candidatesheet)) {
+
+    css_send_css_not_found();
 }
 
-if (!is_array($css)) {
-    // Ok, we need to start normal moodle script, we need to load all libs and $DB.
-    define('ABORT_AFTER_CONFIG_CANCEL', true);
-
-    define('NO_MOODLE_COOKIES', true); // Session not used here.
-    define('NO_UPGRADE_CHECK', true);  // Ignore upgrade check.
-
-    require("$CFG->dirroot/lib/setup.php");
-    $theme = theme_config::load($themename);
-    $css = $theme->css_content();
+if (!$css = file_get_contents($candidatesheet)) {
+    css_send_css_not_found();
 }
+
+$css = unserialize($css);
 
 if ($type === 'editor') {
     if (isset($css['editor'])) {

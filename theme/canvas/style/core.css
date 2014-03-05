@@ -16,10 +16,8 @@ body {
 .sitetopic {
     border: none;
 }
-#site-news-forum h2,
-#frontpage-course-list h2,
-#frontpage-category-names h2,
-#frontpage-category-combo h2 {
+
+.headingblock {
     border-bottom: 1px solid #ddd;
     font-size: 1.3em;
     color: #333;
@@ -37,7 +35,8 @@ body {
 .errorbox,
 .continuebutton,
 .singlebutton,
-.buttons {
+.buttons,
+.singleselect {
     text-align: center;
     margin: 1em 0;
 }
@@ -264,7 +263,6 @@ body {
     margin-left: 110px;
     border: 1px solid #ddd;
     padding: 10px;
-    width: 80%;
 }
 
 .path-user .description {
@@ -272,40 +270,18 @@ body {
     border-bottom: 1px solid #eee;
 }
 
-.userprofile dl {
+.userprofile .list {
     margin-top: 10px;
-    display: inline-block;
 }
 
-.userprofile dl dt, .userprofile dl dd {
+.userprofile .list td {
     padding-top: 3px;
     padding-bottom: 3px;
-    float: left;
 }
 
-.dir-rtl .userprofile dl dt, .dir-rtl  .userprofile dl dd {
-    float: right;
-}
-
-.userprofile dl dt {
+.userprofile .list .c0 {
     padding-left: 0;
     font-weight: bold;
-    display: inline-block;
-    padding-right: 2%;
-    min-width: 100px;
-    width: 15%;
-    clear: both;
-}
-
-.dir-rtl .userprofile dl dt {
-    padding-left: 2%;
-    padding-right: 0;
-}
-
-.userprofile dl dd {
-    display: inline-block;
-    margin: 0px;
-    width: 75%;
 }
 
 #page-user-view .buttons {
@@ -441,7 +417,7 @@ body {
     text-align: right;
 }
 
-#page-tag-index h2 {
+#page-tag-index .headingblock {
     text-align: center;
     margin-bottom: 0;
 }
@@ -463,6 +439,13 @@ body {
     text-align: center;
     padding: 0 0 1em;
 }
+
+/* YUI overlays
+------------------------*/
+#helppopupbox {
+    z-index: 99999 !important;
+}
+
 
 /* Embedded Pages
 ------------------------*/
@@ -506,15 +489,6 @@ body {
     margin:0;
 }
 
-.mform .btn-cancel {
-    color: #0000EE;
-    text-decoration: none;
-}
-.mform .btn-cancel:hover, .mform .btn-cancel:focus {
-    color: #0000EE;
-    text-decoration: none;
-}
-
 /* Comments
 -----------------------*/
 
@@ -534,13 +508,8 @@ body {
     background: #ddd;
 }
 
-table#user-grades tr.avg td.cell,
-table#user-grades tr.avg th.cell {
-    background: #eee;
-}
-
-table#user-grades tr.avg td.vmarked {
-    background-color: #fc3;
+.gradestable .lastrow td.cell {
+    background: #eee !important;
 }
 
 .user-grade td.b1t,

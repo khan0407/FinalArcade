@@ -123,15 +123,26 @@ function blog_rss_get_params($filters) {
 
     if (!$filters) {
         $thingid = SITEID;
+        $rsscontext = $sitecontext;
         $filtertype = 'site';
     } else if (array_key_exists('course', $filters)) {
         $thingid = $filters['course'];
+
+        $coursecontext = context_course::instance($thingid);
+        $rsscontext = $coursecontext;
+
         $filtertype = 'course';
     } else if (array_key_exists('user', $filters)) {
         $thingid = $filters['user'];
+
+        $usercontext = context_user::instance($thingid);
+        $rsscontext = $usercontext;
+
         $filtertype = 'user';
     } else if (array_key_exists('group', $filters)) {
         $thingid = $filters['group'];
+
+        $rsscontext = $sitecontext; //is this the context we should be using for group blogs?
         $filtertype = 'group';
     }
 
@@ -317,19 +328,5 @@ function blog_rss_save_file($type, $id, $tagid=0, $contents='') {
     $status = rss_save_file('blog', $filename, $contents, $expandfilename);
 
     return $status;
-}
-
-/**
- * Delete the supplied user's cached blog post RSS feed.
- * Only user blogs are available by RSS.
- * This doesn't call rss_delete_file() as blog RSS caching uses it's own file structure.
- *
- * @param int $userid
- */
-function blog_rss_delete_file($userid) {
-    $filename = blog_rss_file_name('user', $userid);
-    if (file_exists($filename)) {
-        unlink($filename);
-    }
 }
 

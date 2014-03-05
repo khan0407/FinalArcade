@@ -17,7 +17,8 @@
 /**
  * Unit tests for the Moodle GIFT format.
  *
- * @package    qformat_gift
+ * @package    qformat
+ * @subpackage gift
  * @copyright  2010 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -742,7 +743,7 @@ class qformat_gift_test extends question_testcase {
             'qtype' => 'shortanswer',
             'options' => (object) array(
                 'id' => 123,
-                'questionid' => 666,
+                'question' => 666,
                 'usecase' => 1,
                 'answers' => array(
                     1 => (object) array(
@@ -802,7 +803,7 @@ class qformat_gift_test extends question_testcase {
             'qtype' => 'shortanswer',
             'options' => (object) array(
                 'id' => 123,
-                'questionid' => 666,
+                'question' => 666,
                 'usecase' => 1,
                 'answers' => array(
                     1 => (object) array(

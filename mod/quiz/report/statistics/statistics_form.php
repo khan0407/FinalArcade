@@ -22,9 +22,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
+
 
 /**
  * This is the settings form for the quiz statistics report.
@@ -36,15 +38,17 @@ class quiz_statistics_settings_form extends moodleform {
     protected function definition() {
         $mform = $this->_form;
 
-        $mform->addElement('header', 'preferencespage', get_string('reportsettings', 'quiz_statistics'));
+        $mform->addElement('header', 'preferencespage',
+                get_string('preferencespage', 'quiz_overview'));
 
         $options = array();
-        foreach (array_keys(quiz_get_grading_options()) as $which) {
-            $options[$which] = \quiz_statistics_calculator::using_attempts_lang_string($which);
-        }
+        $options[0] = get_string('attemptsfirst', 'quiz_statistics');
+        $options[1] = get_string('attemptsall', 'quiz_statistics');
+        $mform->addElement('select', 'useallattempts',
+                get_string('calculatefrom', 'quiz_statistics'), $options);
+        $mform->setDefault('useallattempts', 0);
 
-        $mform->addElement('select', 'whichattempts', get_string('calculatefrom', 'quiz_statistics'), $options);
-
-        $mform->addElement('submit', 'submitbutton', get_string('preferencessave', 'quiz_overview'));
+        $mform->addElement('submit', 'submitbutton',
+                get_string('preferencessave', 'quiz_overview'));
     }
 }

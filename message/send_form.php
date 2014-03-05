@@ -50,8 +50,6 @@ class send_form extends moodleform {
 
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'viewing');
-        $mform->setType('viewing', PARAM_ALPHANUMEXT);
 
         $mform->addElement('textarea', 'message', get_string('message', 'message'), $displayoptions, $editoroptions);
 

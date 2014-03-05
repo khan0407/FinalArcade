@@ -78,7 +78,6 @@ class quiz_overview_report extends quiz_attempts_report {
             raise_memory_limit(MEMORY_EXTRA);
         }
 
-        $this->course = $course; // Hack to make this available in process_actions.
         $this->process_actions($quiz, $cm, $currentgroup, $groupstudents, $allowed, $options->get_url());
 
         // Start output.
@@ -268,60 +267,28 @@ class quiz_overview_report extends quiz_attempts_report {
         if (empty($currentgroup) || $groupstudents) {
             if (optional_param('regrade', 0, PARAM_BOOL) && confirm_sesskey()) {
                 if ($attemptids = optional_param_array('attemptid', array(), PARAM_INT)) {
-                    $this->start_regrade($quiz, $cm);
+                    require_capability('mod/quiz:regrade', $this->context);
                     $this->regrade_attempts($quiz, false, $groupstudents, $attemptids);
-                    $this->finish_regrade($redirecturl);
+                    redirect($redirecturl, '', 5);
                 }
             }
         }
 
         if (optional_param('regradeall', 0, PARAM_BOOL) && confirm_sesskey()) {
-            $this->start_regrade($quiz, $cm);
+            require_capability('mod/quiz:regrade', $this->context);
             $this->regrade_attempts($quiz, false, $groupstudents);
-            $this->finish_regrade($redirecturl);
+            redirect($redirecturl, '', 5);
 
         } else if (optional_param('regradealldry', 0, PARAM_BOOL) && confirm_sesskey()) {
-            $this->start_regrade($quiz, $cm);
+            require_capability('mod/quiz:regrade', $this->context);
             $this->regrade_attempts($quiz, true, $groupstudents);
-            $this->finish_regrade($redirecturl);
+            redirect($redirecturl, '', 5);
 
         } else if (optional_param('regradealldrydo', 0, PARAM_BOOL) && confirm_sesskey()) {
-            $this->start_regrade($quiz, $cm);
+            require_capability('mod/quiz:regrade', $this->context);
             $this->regrade_attempts_needing_it($quiz, $groupstudents);
-            $this->finish_regrade($redirecturl);
+            redirect($redirecturl, '', 5);
         }
-    }
-
-    /**
-     * Check necessary capabilities, and start the display of the regrade progress page.
-     * @param object $quiz the quiz settings.
-     * @param object $cm the cm object for the quiz.
-     */
-    protected function start_regrade($quiz, $cm) {
-        global $OUTPUT, $PAGE;
-        require_capability('mod/quiz:regrade', $this->context);
-        $this->print_header_and_tabs($cm, $this->course, $quiz, $this->mode);
-    }
-
-    /**
-     * Finish displaying the regrade progress page.
-     * @param moodle_url $nexturl where to send the user after the regrade.
-     * @uses exit. This method never returns.
-     */
-    protected function finish_regrade($nexturl) {
-        global $OUTPUT, $PAGE;
-        echo $OUTPUT->heading(get_string('regradecomplete', 'quiz_overview'), 3);
-        echo $OUTPUT->continue_button($nexturl);
-        echo $OUTPUT->footer();
-        die();
-    }
-
-    /**
-     * Unlock the session and allow the regrading process to run in the background.
-     */
-    protected function unlock_session() {
-        \core\session\manager::write_close();
-        ignore_user_abort(true);
     }
 
     /**
@@ -339,8 +306,7 @@ class quiz_overview_report extends quiz_attempts_report {
      */
     protected function regrade_attempt($attempt, $dryrun = false, $slots = null) {
         global $DB;
-        // Need more time for a quiz with many questions.
-        set_time_limit(300);
+        set_time_limit(30);
 
         $transaction = $DB->start_delegated_transaction();
 
@@ -393,7 +359,6 @@ class quiz_overview_report extends quiz_attempts_report {
     protected function regrade_attempts($quiz, $dryrun = false,
             $groupstudents = array(), $attemptids = array()) {
         global $DB;
-        $this->unlock_session();
 
         $where = "quiz = ? AND preview = 0";
         $params = array($quiz->id);
@@ -417,16 +382,8 @@ class quiz_overview_report extends quiz_attempts_report {
 
         $this->clear_regrade_table($quiz, $groupstudents);
 
-        $progressbar = new progress_bar('quiz_overview_regrade', 500, true);
-        $a = array(
-            'count' => count($attempts),
-            'done'  => 0,
-        );
         foreach ($attempts as $attempt) {
             $this->regrade_attempt($attempt, $dryrun);
-            $a['done']++;
-            $progressbar->update($a['done'], $a['count'],
-                    get_string('regradingattemptxofy', 'quiz_overview', $a));
         }
 
         if (!$dryrun) {
@@ -443,7 +400,6 @@ class quiz_overview_report extends quiz_attempts_report {
      */
     protected function regrade_attempts_needing_it($quiz, $groupstudents) {
         global $DB;
-        $this->unlock_session();
 
         $where = "quiza.quiz = ? AND quiza.preview = 0 AND qqr.regraded = 0";
         $params = array($quiz->id);
@@ -474,16 +430,8 @@ class quiz_overview_report extends quiz_attempts_report {
 
         $this->clear_regrade_table($quiz, $groupstudents);
 
-        $progressbar = new progress_bar('quiz_overview_regrade', 500, true);
-        $a = array(
-            'count' => count($attempts),
-            'done'  => 0,
-        );
         foreach ($attempts as $attempt) {
             $this->regrade_attempt($attempt, false, $attemptquestions[$attempt->uniqueid]);
-            $a['done']++;
-            $progressbar->update($a['done'], $a['count'],
-                    get_string('regradingattemptxofy', 'quiz_overview', $a));
         }
 
         $this->update_overall_grades($quiz);

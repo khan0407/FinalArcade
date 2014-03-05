@@ -34,12 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param bool $forcedownload
  * @return bool false if file not found, does not return if found - just send the file
  */
-function assignfeedback_file_pluginfile($course,
-                                        $cm,
-                                        context $context,
-                                        $filearea,
-                                        $args,
-                                        $forcedownload) {
+function assignfeedback_file_pluginfile($course, $cm, context $context, $filearea, $args, $forcedownload) {
     global $USER, $DB;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -51,6 +46,7 @@ function assignfeedback_file_pluginfile($course,
     $record = $DB->get_record('assign_grades', array('id'=>$itemid), 'userid,assignment', MUST_EXIST);
     $userid = $record->userid;
 
+
     if (!$assign = $DB->get_record('assign', array('id'=>$cm->instance))) {
         return false;
     }
@@ -59,7 +55,8 @@ function assignfeedback_file_pluginfile($course,
         return false;
     }
 
-    // Check is users feedback or has grading permission.
+
+    // check is users feedback or has grading permission
     if ($USER->id != $userid and !has_capability('mod/assign:grade', $context)) {
         return false;
     }
@@ -72,6 +69,5 @@ function assignfeedback_file_pluginfile($course,
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
         return false;
     }
-    // Download MUST be forced - security!
-    send_stored_file($file, 0, 0, true);
+    send_stored_file($file, 0, 0, true); // download MUST be forced - security!
 }

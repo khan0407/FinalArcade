@@ -83,7 +83,7 @@ if ($mimetype === 'application/x-javascript' && $allowcache) {
 
     // If it doesn't exist, minify it and save to that location.
     if (!file_exists($cachefile)) {
-        $content = core_minify::js_files(array($file));
+        $content = js_minify(array($file));
         js_write_cache_file_content($cachefile, $content);
     }
 

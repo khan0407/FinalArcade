@@ -53,7 +53,7 @@ require_once($CFG->libdir.'/clilib.php');
 require_once($CFG->libdir.'/cronlib.php');
 
 // extra safety
-\core\session\manager::write_close();
+session_get_instance()->write_close();
 
 // check if execution allowed
 if (!empty($CFG->cronclionly)) {
@@ -72,10 +72,24 @@ if (!empty($CFG->cronremotepassword)) {
 }
 
 // send mime type and encoding
-@header('Content-Type: text/plain; charset=utf-8');
+if (check_browser_version('MSIE')) {
+    //ugly IE hack to work around downloading instead of viewing
+    @header('Content-Type: text/html; charset=utf-8');
+    echo "<xmp>"; //<pre> is not good enough for us here
+} else {
+    //send proper plaintext header
+    @header('Content-Type: text/plain; charset=utf-8');
+}
 
 // we do not want html markup in emulated CLI
 @ini_set('html_errors', 'off');
 
 // execute the cron
 cron_run();
+
+// finish the IE hack
+if (check_browser_version('MSIE')) {
+    echo "</xmp>";
+}
+
+

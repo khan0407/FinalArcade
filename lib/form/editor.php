@@ -91,9 +91,6 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         $this->_options['trusted'] = trusttext_trusted($this->_options['context']);
         parent::HTML_QuickForm_element($elementName, $elementLabel, $attributes);
 
-        // Note: for some reason the code using this setting does not like bools.
-        $this->_options['subdirs'] = (int)($this->_options['subdirs'] == 1);
-
         editors_head_setup();
     }
 
@@ -208,7 +205,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
      * @param bool $allow true if sub directory can be created.
      */
     function setSubdirs($allow) {
-        $this->_options['subdirs'] = (int)($allow == 1);
+        $this->_options['subdirs'] = $allow;
     }
 
     /**
@@ -230,10 +227,28 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
     }
 
     /**
-     * @deprecated since Moodle 2.0
+     * Sets help button for editor
+     *
+     * @param mixed $_helpbuttonargs arguments to create help button
+     * @param string $function name of the callback function
+     * @deprecated since Moodle 2.0. Please do not call this function any more.
+     * @todo MDL-34508 this api will be removed.
+     * @see MoodleQuickForm::addHelpButton()
      */
     function setHelpButton($_helpbuttonargs, $function='_helpbutton') {
-        throw new coding_exception('setHelpButton() can not be used any more, please see MoodleQuickForm::addHelpButton().');
+        debugging('setHelpButton() is deprecated, please use $mform->addHelpButton() instead');
+        if (!is_array($_helpbuttonargs)) {
+            $_helpbuttonargs = array($_helpbuttonargs);
+        } else {
+            $_helpbuttonargs = $_helpbuttonargs;
+        }
+        //we do this to to return html instead of printing it
+        //without having to specify it in every call to make a button.
+        if ('_helpbutton' == $function){
+            $defaultargs = array('', '', 'moodle', true, false, '', true);
+            $_helpbuttonargs = $_helpbuttonargs + $defaultargs ;
+        }
+        $this->_helpbutton=call_user_func_array($function, $_helpbuttonargs);
     }
 
     /**
@@ -368,7 +383,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         if (!is_null($this->getAttribute('onblur')) && !is_null($this->getAttribute('onchange'))) {
             $editorrules = ' onblur="'.htmlspecialchars($this->getAttribute('onblur')).'" onchange="'.htmlspecialchars($this->getAttribute('onchange')).'"';
         }
-        $str .= '<div><textarea id="'.$id.'" name="'.$elname.'[text]" rows="'.$rows.'" cols="'.$cols.'" spellcheck="true"'.$editorrules.'>';
+        $str .= '<div><textarea id="'.$id.'" name="'.$elname.'[text]" rows="'.$rows.'" cols="'.$cols.'"'.$editorrules.'>';
         $str .= s($text);
         $str .= '</textarea></div>';
 

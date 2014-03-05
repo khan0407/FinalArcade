@@ -202,7 +202,7 @@ function tokenise_text($text, $stop_words = array(), $overlap_cjk = false, $join
         if ($tag) {
             // Increase or decrease score per word based on tag
             list($tagname) = explode(' ', $value, 2);
-            $tagname = core_text::strtolower($tagname);
+            $tagname = textlib::strtolower($tagname);
             // Closing or opening tag?
             if ($tagname[0] == '/') {
                 $tagname = substr($tagname, 1);
@@ -241,7 +241,7 @@ function tokenise_text($text, $stop_words = array(), $overlap_cjk = false, $join
                     $accum .= $word .' ';
                     $num = is_numeric($word);
                     // Check word length
-                    if ($num || core_text::strlen($word) >= MINIMUM_WORD_SIZE) {
+                    if ($num || textlib::strlen($word) >= MINIMUM_WORD_SIZE) {
                         // Normalize numbers
                         if ($num && $join_numbers) {
                             $word = (int)ltrim($word, '-0');
@@ -318,10 +318,10 @@ function tokenise_split($text, $stop_words, $overlap_cjk, $join_numbers) {
 function tokenise_simplify($text, $overlap_cjk, $join_numbers) {
 
     // Decode entities to UTF-8
-    $text = core_text::entities_to_utf8($text, true);
+    $text = textlib::entities_to_utf8($text, true);
 
     // Lowercase
-    $text = core_text::strtolower($text);
+    $text = textlib::strtolower($text);
 
     // Simple CJK handling
     if ($overlap_cjk) {
@@ -374,7 +374,7 @@ function tokenise_simplify($text, $overlap_cjk, $join_numbers) {
 function tokenise_expand_cjk($matches) {
 
     $str = $matches[0];
-    $l = core_text::strlen($str);
+    $l = textlib::strlen($str);
     // Passthrough short words
     if ($l <= MINIMUM_WORD_SIZE) {
         return ' '. $str .' ';
@@ -385,7 +385,7 @@ function tokenise_expand_cjk($matches) {
     // Begin loop
     for ($i = 0; $i < $l; ++$i) {
         // Grab next character
-        $current = core_text::substr($str, 0, 1);
+        $current = textlib::substr($str, 0, 1);
         $str = substr($str, strlen($current));
         $chars[] = $current;
         if ($i >= MINIMUM_WORD_SIZE - 1) {
@@ -402,5 +402,5 @@ function tokenise_expand_cjk($matches) {
  */
 function tokenise_truncate_word(&$text) {
 
-    $text = core_text::substr($text, 0, MAXIMUM_WORD_SIZE);
+    $text = textlib::substr($text, 0, MAXIMUM_WORD_SIZE);
 }

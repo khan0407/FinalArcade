@@ -164,12 +164,17 @@ function url_print_header($url, $cm, $course) {
  * @param object $url
  * @param object $cm
  * @param object $course
- * @param bool $notused This variable is no longer used.
+ * @param bool $ignoresettings print even if not specified in modedit
  * @return void
  */
-function url_print_heading($url, $cm, $course, $notused = false) {
+function url_print_heading($url, $cm, $course, $ignoresettings=false) {
     global $OUTPUT;
-    echo $OUTPUT->heading(format_string($url->name), 2);
+
+    $options = empty($url->displayoptions) ? array() : unserialize($url->displayoptions);
+
+    if ($ignoresettings or !empty($options['printheading'])) {
+        echo $OUTPUT->heading(format_string($url->name), 2, 'main', 'urlheading');
+    }
 }
 
 /**

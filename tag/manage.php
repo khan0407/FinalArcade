@@ -25,7 +25,6 @@
 require_once('../config.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once('lib.php');
-require_once($CFG->libdir.'/adminlib.php');
 
 define('SHOW_ALL_PAGE_SIZE', 50000);
 define('DEFAULT_PAGE_SIZE', 30);
@@ -42,16 +41,21 @@ if (empty($CFG->usetags)) {
     print_error('tagsaredisabled', 'tag');
 }
 
+$systemcontext = context_system::instance();
+require_capability('moodle/tag:manage', $systemcontext);
+
 $params = array();
 if ($perpage != DEFAULT_PAGE_SIZE) {
     $params['perpage'] = $perpage;
 }
-admin_externalpage_setup('managetags', '', $params, '', array('pagelayout' => 'standard'));
-
+$PAGE->set_url('/tag/manage.php', $params);
+$PAGE->set_context($systemcontext);
 $PAGE->set_blocks_editing_capability('moodle/tag:editblocks');
 $PAGE->navbar->add(get_string('tags', 'tag'), new moodle_url('/tag/search.php'));
 $PAGE->navbar->add(get_string('managetags', 'tag'));
-
+$PAGE->set_title(get_string('managetags', 'tag'));
+$PAGE->set_heading($COURSE->fullname);
+$PAGE->set_pagelayout('standard');
 echo $OUTPUT->header();
 
 $err_notice = '';
@@ -197,7 +201,7 @@ $table->sortable(true, 'flag', SORT_DESC);
 
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('id', 'tag-management-list');
-$table->set_attribute('class', 'admintable generaltable');
+$table->set_attribute('class', 'generaltable generalbox');
 
 $table->set_control_variables(array(
 TABLE_VAR_SORT    => 'ssort',
@@ -221,10 +225,9 @@ if ($where) {
     $where = 'WHERE '. $where;
 }
 
-$allusernames = get_all_user_name_fields(true, 'u');
 $query = "
         SELECT tg.id, tg.name, tg.rawname, tg.tagtype, tg.flag, tg.timemodified,
-               u.id AS owner, $allusernames,
+               u.id AS owner, u.firstname, u.lastname,
                COUNT(ti.id) AS count
           FROM {tag} tg
      LEFT JOIN {tag_instance} ti ON ti.tagid = tg.id

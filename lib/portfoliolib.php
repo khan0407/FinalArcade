@@ -534,16 +534,6 @@ function portfolio_instances($visibleonly=true, $useronly=true) {
 }
 
 /**
- * Return whether there are visible instances in portfolio.
- *
- * @return bool true when there are some visible instances.
- */
-function portfolio_has_visible_instances() {
-    global $DB;
-    return $DB->record_exists('portfolio_instance', array('visible' => 1));
-}
-
-/**
  * Supported formats currently in use.
  * Canonical place for a list of all formats
  * that portfolio plugins and callers
@@ -825,7 +815,7 @@ function portfolio_plugin_sanity_check($plugins=null) {
     if (is_string($plugins)) {
         $plugins = array($plugins);
     } else if (empty($plugins)) {
-        $plugins = core_component::get_plugin_list('portfolio');
+        $plugins = get_plugin_list('portfolio');
         $plugins = array_keys($plugins);
     }
 
@@ -1291,13 +1281,11 @@ function portfolio_include_callback_file($component, $class = null) {
         // Get rid of the first slash (if it exists).
         $component = ltrim($component, '/');
         // Get a list of valid plugin types.
-        $plugintypes = core_component::get_plugin_types();
+        $plugintypes = get_plugin_types(false);
         // Assume it is not valid for now.
         $isvalid = false;
         // Go through the plugin types.
         foreach ($plugintypes as $type => $path) {
-            // Getting the path relative to the dirroot.
-            $path = preg_replace('|^' . preg_quote($CFG->dirroot, '|') . '/|', '', $path);
             if (strrpos($component, $path) === 0) {
                 // Found the plugin type.
                 $isvalid = true;
@@ -1325,7 +1313,7 @@ function portfolio_include_callback_file($component, $class = null) {
     }
 
     // Obtain the component's location.
-    if (!$componentloc = core_component::get_component_directory($component)) {
+    if (!$componentloc = get_component_directory($component)) {
         throw new portfolio_button_exception('nocallbackcomponent', 'portfolio', '', $component);
     }
 

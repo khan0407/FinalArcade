@@ -39,11 +39,10 @@ require_once($CFG->libdir . '/formslib.php');
  * @copyright 2007 Jamie Pratt <me@jamiep.org>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
-
+class MoodleQuickForm_date_selector extends MoodleQuickForm_group
+{
     /**
-     * Control the fieldnames for form elements.
-     *
+     * Control the fieldnames for form elements
      * startyear => int start of range of years that can be selected
      * stopyear => int last year that can be selected
      * timezone => int|float|string (optional) timezone modifier used for edge case only.
@@ -53,19 +52,11 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      * optional => if true, show a checkbox beside the date to turn it on (or off)
      * @var array
      */
-    protected $_options = array();
+    protected $_options = array('startyear' => 1970, 'stopyear' => 2020,
+            'timezone' => 99, 'optional' => false);
 
-    /**
-     * @var array These complement separators, they are appended to the resultant HTML.
-     */
+   /** @var array These complement separators, they are appended to the resultant HTML */
     protected $_wrap = array('', '');
-
-    /**
-     * @var null|bool Keeps track of whether the date selector was initialised using createElement
-     *                or addElement. If true, createElement was used signifying the element has been
-     *                added to a group - see MDL-39187.
-     */
-    protected $_usedcreateelement = true;
 
     /**
      * constructor
@@ -75,11 +66,8 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      * @param array $options Options to control the element's display
      * @param mixed $attributes Either a typical HTML attribute string or an associative array
      */
-    function MoodleQuickForm_date_selector($elementName = null, $elementLabel = null, $options = array(), $attributes = null) {
-        // Get the calendar type used - see MDL-18375.
-        $calendartype = \core_calendar\type_factory::get_calendar_instance();
-        $this->_options = array('startyear' => $calendartype->get_min_year(), 'stopyear' => $calendartype->get_max_year(),
-            'defaulttime' => 0, 'timezone' => 99, 'step' => 5, 'optional' => false);
+    function MoodleQuickForm_date_selector($elementName = null, $elementLabel = null, $options = array(), $attributes = null)
+    {
         $this->HTML_QuickForm_element($elementName, $elementLabel, $attributes);
         $this->_persistantFreeze = true;
         $this->_appendName = true;
@@ -96,11 +84,7 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
                 }
             }
         }
-
-        // The YUI2 calendar only supports the gregorian calendar type.
-        if ($calendartype->get_name() === 'gregorian') {
-            form_init_date_js();
-        }
+        form_init_date_js();
     }
 
     /**
@@ -108,29 +92,25 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      *
      * @access private
      */
-    function _createElements() {
-        global $OUTPUT;
-
-        // Get the calendar type used - see MDL-18375.
-        $calendartype = \core_calendar\type_factory::get_calendar_instance();
-
+    function _createElements()
+    {
         $this->_elements = array();
-
-        $dateformat = $calendartype->get_date_order($this->_options['startyear'], $this->_options['stopyear']);
-        foreach ($dateformat as $key => $value) {
-            // E_STRICT creating elements without forms is nasty because it internally uses $this
-            $this->_elements[] = @MoodleQuickForm::createElement('select', $key, get_string($key, 'form'), $value, $this->getAttributes(), true);
+        for ($i=1; $i<=31; $i++) {
+            $days[$i] = $i;
         }
-        // The YUI2 calendar only supports the gregorian calendar type so only display the calendar image if this is being used.
-        if ($calendartype->get_name() === 'gregorian') {
-            $image = $OUTPUT->pix_icon('i/calendar', get_string('calendar', 'calendar'), 'moodle');
-            $this->_elements[] = @MoodleQuickForm::createElement('link', 'calendar',
-                    null, '#', $image,
-                    array('class' => 'visibleifjs'));
+        for ($i=1; $i<=12; $i++) {
+            $months[$i] = userdate(gmmktime(12,0,0,$i,15,2000), "%B");
         }
+        for ($i=$this->_options['startyear']; $i<=$this->_options['stopyear']; $i++) {
+            $years[$i] = $i;
+        }
+        // E_STRICT creating elements without forms is nasty because it internally uses $this
+        $this->_elements[] = @MoodleQuickForm::createElement('select', 'day', get_string('day', 'form'), $days, $this->getAttributes(), true);
+        $this->_elements[] = @MoodleQuickForm::createElement('select', 'month', get_string('month', 'form'), $months, $this->getAttributes(), true);
+        $this->_elements[] = @MoodleQuickForm::createElement('select', 'year', get_string('year', 'form'), $years, $this->getAttributes(), true);
         // If optional we add a checkbox which the user can use to turn if on
-        if ($this->_options['optional']) {
-            $this->_elements[] = @MoodleQuickForm::createElement('checkbox', 'enabled', null, get_string('enable'), $this->getAttributes(), true);
+        if($this->_options['optional']) {
+            $this->_elements[] =@MoodleQuickForm::createElement('checkbox', 'enabled', null, get_string('enable'), $this->getAttributes(), true);
         }
         foreach ($this->_elements as $element){
             if (method_exists($element, 'setHiddenLabel')){
@@ -148,15 +128,16 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      * @param object $caller calling object
      * @return bool
      */
-    function onQuickFormEvent($event, $arg, &$caller) {
+    function onQuickFormEvent($event, $arg, &$caller)
+    {
         switch ($event) {
             case 'updateValue':
-                // Constant values override both default and submitted ones
-                // default values are overriden by submitted.
+                // constant values override both default and submitted ones
+                // default values are overriden by submitted
                 $value = $this->_findValue($caller->_constantValues);
                 if (null === $value) {
-                    // If no boxes were checked, then there is no value in the array
-                    // yet we don't want to display default value in this case.
+                    // if no boxes were checked, then there is no value in the array
+                    // yet we don't want to display default value in this case
                     if ($caller->isSubmitted()) {
                         $value = $this->_findValue($caller->_submitValues);
                     } else {
@@ -168,20 +149,19 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
                     $value = time();
                 }
                 if (!is_array($value)) {
-                    $calendartype = \core_calendar\type_factory::get_calendar_instance();
-                    $currentdate = $calendartype->timestamp_to_date_array($value, $this->_options['timezone']);
+                    $currentdate = usergetdate($value, $this->_options['timezone']);
                     $value = array(
                         'day' => $currentdate['mday'],
                         'month' => $currentdate['mon'],
                         'year' => $currentdate['year']);
-                    // If optional, default to off, unless a date was provided.
-                    if ($this->_options['optional']) {
+                    // If optional, default to off, unless a date was provided
+                     if($this->_options['optional']) {
                         $value['enabled'] = $requestvalue != 0;
                     }
                 } else {
                     $value['enabled'] = isset($value['enabled']);
                 }
-                if (null !== $value) {
+                if (null !== $value){
                     $this->setValue($value);
                 }
                 break;
@@ -189,20 +169,8 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
                 // Optional is an optional param, if its set we need to add a disabledIf rule.
                 // If its empty or not specified then its not an optional dateselector.
                 if (!empty($arg[2]['optional']) && !empty($arg[0])) {
-                    // When using the function addElement, rather than createElement, we still
-                    // enter this case, making this check necessary.
-                    if ($this->_usedcreateelement) {
-                        $caller->disabledIf($arg[0] . '[day]', $arg[0] . '[enabled]');
-                        $caller->disabledIf($arg[0] . '[month]', $arg[0] . '[enabled]');
-                        $caller->disabledIf($arg[0] . '[year]', $arg[0] . '[enabled]');
-                    } else {
-                        $caller->disabledIf($arg[0], $arg[0] . '[enabled]');
-                    }
+                    $caller->disabledIf($arg[0], $arg[0].'[enabled]');
                 }
-                return parent::onQuickFormEvent($event, $arg, $caller);
-                break;
-            case 'addElement':
-                $this->_usedcreateelement = false;
                 return parent::onQuickFormEvent($event, $arg, $caller);
                 break;
             default:
@@ -215,21 +183,13 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      *
      * @return string
      */
-    function toHtml() {
+    function toHtml()
+    {
         include_once('HTML/QuickForm/Renderer/Default.php');
         $renderer = new HTML_QuickForm_Renderer_Default();
         $renderer->setElementTemplate('{element}');
         parent::accept($renderer);
-
-        $html = $this->_wrap[0];
-        if ($this->_usedcreateelement) {
-            $html .= html_writer::tag('span', $renderer->toHtml(), array('class' => 'fdate_selector'));
-        } else {
-            $html .= $renderer->toHtml();
-        }
-        $html .= $this->_wrap[1];
-
-        return $html;
+        return $this->_wrap[0] . $renderer->toHtml() . $this->_wrap[1];
     }
 
     /**
@@ -239,7 +199,8 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      * @param bool $required Whether a group is required
      * @param string $error An error message associated with a group
      */
-    function accept(&$renderer, $required = false, $error = null) {
+    function accept(&$renderer, $required = false, $error = null)
+    {
         $renderer->renderElement($this, $required, $error);
     }
 
@@ -250,7 +211,8 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
      * @param bool $assoc specifies if returned array is associative
      * @return array
      */
-    function exportValue(&$submitValues, $assoc = false) {
+    function exportValue(&$submitValues, $assoc = false)
+    {
         $value = null;
         $valuearray = array();
         foreach ($this->_elements as $element){
@@ -267,15 +229,13 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group {
                     return $value;
                 }
             }
-            // Get the calendar type used - see MDL-18375.
-            $calendartype = \core_calendar\type_factory::get_calendar_instance();
-            $gregoriandate = $calendartype->convert_to_gregorian($valuearray['year'], $valuearray['month'], $valuearray['day']);
-            $value[$this->getName()] = make_timestamp($gregoriandate['year'],
-                                                      $gregoriandate['month'],
-                                                      $gregoriandate['day'],
-                                                      0, 0, 0,
-                                                      $this->_options['timezone'],
-                                                      true);
+
+            $value[$this->getName()] = make_timestamp($valuearray['year'],
+                                   $valuearray['month'],
+                                   $valuearray['day'],
+                                   0, 0, 0,
+                                   $this->_options['timezone'],
+                                   true);
 
             return $value;
         } else {

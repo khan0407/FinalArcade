@@ -68,7 +68,6 @@ require_login($course, true, $cm);
 require_capability('mod/feedback:mapcourse', $context);
 
 if ($coursefilter) {
-    $map = new stdClass;
     $map->feedbackid = $feedback->id;
     $map->courseid = $coursefilter;
     // insert a map only if it does exists yet
@@ -84,10 +83,9 @@ if ($coursefilter) {
 $strfeedbacks = get_string("modulenameplural", "feedback");
 $strfeedback  = get_string("modulename", "feedback");
 
-$PAGE->set_heading($course->fullname);
-$PAGE->set_title($feedback->name);
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(format_string($feedback->name));
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string($feedback->name));
 
 require('tabs.php');
 
@@ -125,7 +123,6 @@ echo '</form>';
 
 if ($coursemap = feedback_get_courses_from_sitecourse_map($feedback->id)) {
     $table = new flexible_table('coursemaps');
-    $table->baseurl = $url;
     $table->define_columns( array('course'));
     $table->define_headers( array(get_string('mappedcourses', 'feedback')));
 
@@ -133,8 +130,9 @@ if ($coursemap = feedback_get_courses_from_sitecourse_map($feedback->id)) {
 
     $unmapurl = new moodle_url('/mod/feedback/unmapcourse.php');
     foreach ($coursemap as $cmap) {
+        $cmapcontext = context_course::instance($cmap->id);
+        $cmapshortname = format_string($cmap->shortname, true, array('context' => $cmapcontext));
         $coursecontext = context_course::instance($cmap->courseid);
-        $cmapshortname = format_string($cmap->shortname, true, array('context' => $coursecontext));
         $cmapfullname = format_string($cmap->fullname, true, array('context' => $coursecontext));
         $unmapurl->params(array('id'=>$id, 'cmapid'=>$cmap->id));
         $anker = '<a href="'.$unmapurl->out().'">';
@@ -145,7 +143,7 @@ if ($coursemap = feedback_get_courses_from_sitecourse_map($feedback->id)) {
 
     $table->print_html();
 } else {
-    echo $OUTPUT->heading(get_string('mapcoursenone', 'feedback'), 3);
+    echo '<h3>'.get_string('mapcoursenone', 'feedback').'</h3>';
 }
 
 

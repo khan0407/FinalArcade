@@ -81,7 +81,6 @@ if (!empty($config)) {
         $success = $instance->set_user_config($fromform, $USER->id);
             //$success = $success && $instance->save();
         if ($success) {
-            core_plugin_manager::reset_caches();
             redirect($baseurl, get_string('instancesaved', 'portfolio'), 3);
         } else {
             print_error('instancenotsaved', 'portfolio', $baseurl);
@@ -98,7 +97,6 @@ if (!empty($config)) {
 } else if (!empty($hide)) {
     $instance = portfolio_instance($hide);
     $instance->set_user_config(array('visible' => !$instance->get_user_config('visible', $USER->id)), $USER->id);
-    core_plugin_manager::reset_caches();
 }
 
 if ($display) {

@@ -6,12 +6,8 @@ if ($ADMIN->fulltree) {
     require_once($CFG->dirroot.'/mod/assignment/lib.php');
 
     if (isset($CFG->maxbytes)) {
-        $maxbytes = 0;
-        if (isset($CFG->assignment_maxbytes)) {
-            $maxbytes = $CFG->assignment_maxbytes;
-        }
         $settings->add(new admin_setting_configselect('assignment_maxbytes', get_string('maximumsize', 'assignment'),
-                           get_string('configmaxbytes', 'assignment'), 1048576, get_max_upload_sizes($CFG->maxbytes, 0, 0, $maxbytes)));
+                           get_string('configmaxbytes', 'assignment'), 1048576, get_max_upload_sizes($CFG->maxbytes)));
     }
 
     $options = array(ASSIGNMENT_COUNT_WORDS   => trim(get_string('numwords', '', '?')),

@@ -26,7 +26,7 @@ class grade_edit_tree {
     public $columns = array();
 
     /**
-     * @var grade_tree $gtree   @see grade/lib.php
+     * @var object $gtree          @see grade/lib.php
      */
     public $gtree;
 
@@ -309,7 +309,7 @@ class grade_edit_tree {
             $endcell->colspan = (19 - $level);
             $endcell->attributes['class'] = 'colspan ' . $levelclass;
 
-            $returnrows[] = new html_table_row(array($endcell));
+            $returnrows[] = new html_table_row(array($endcell));;
 
         } else { // Dealing with a grade item
 
@@ -793,12 +793,9 @@ class grade_edit_tree_column_range extends grade_edit_tree_column {
     public function get_item_cell($item, $params) {
         global $DB, $OUTPUT;
 
-        // If the parent aggregation is Sum of Grades, we should show the number, even for scales, as that value is used...
-        // ...in the computation. For text grades, the grademax is not used, so we can still show the no value string.
+        // If the parent aggregation is Sum of Grades, this cannot be changed
         $parent_cat = $item->get_parent_category();
-        if ($item->gradetype == GRADE_TYPE_TEXT) {
-            $grademax = ' - ';
-        } else if ($parent_cat->aggregation == GRADE_AGGREGATE_SUM) {
+        if ($parent_cat->aggregation == GRADE_AGGREGATE_SUM) {
             $grademax = format_float($item->grademax, $item->get_decimals());
         } elseif ($item->gradetype == GRADE_TYPE_SCALE) {
             $scale = $DB->get_record('scale', array('id' => $item->scaleid));

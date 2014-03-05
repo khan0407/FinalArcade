@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+
 /**
  * Code run after the assignfeedback_file module database tables have been created.
  * Moves the feedback file plugin down
@@ -34,12 +35,15 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_assignfeedback_file_install() {
     global $CFG;
 
-    require_once($CFG->dirroot . '/mod/assign/adminlib.php');
+    // do the install
 
-    // Set the correct initial order for the plugins.
+    require_once($CFG->dirroot . '/mod/assign/adminlib.php');
+    // set the correct initial order for the plugins
     $pluginmanager = new assign_plugin_manager('assignfeedback');
+
     $pluginmanager->move_plugin('file', 'down');
 
+    // do the upgrades
     return true;
 }
 

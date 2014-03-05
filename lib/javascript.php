@@ -30,7 +30,6 @@ define('NO_DEBUG_DISPLAY', true);
 define('ABORT_AFTER_CONFIG', true);
 require('../config.php'); // this stops immediately at the beginning of lib/setup.php
 require_once("$CFG->dirroot/lib/jslib.php");
-require_once("$CFG->dirroot/lib/classes/minify.php");
 
 if ($slashargument = min_get_slash_argument()) {
     $slashargument = ltrim($slashargument, '/');
@@ -43,7 +42,7 @@ if ($slashargument = min_get_slash_argument()) {
     $file = '/'.min_clean_param($file, 'SAFEPATH');
 
 } else {
-    $rev  = min_optional_param('rev', -1, 'INT');
+    $rev  = min_optional_param('rev', 0, 'INT');
     $file = min_optional_param('jsfile', '', 'RAW'); // 'file' would collide with URL rewriting!
 }
 
@@ -77,11 +76,9 @@ if (!$jsfiles) {
 }
 
 $etag = sha1($rev.implode(',', $jsfiles));
+$candidate = $CFG->cachedir.'/js/'.$etag;
 
-// Use the caching only for meaningful revision numbers which prevents future cache poisoning.
-if ($rev > 0 and $rev < (time() + 60*60)) {
-    $candidate = $CFG->localcachedir.'/js/'.$etag;
-
+if ($rev > -1) {
     if (file_exists($candidate)) {
         if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) || !empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             // we do not actually need to verify the etag value because our files
@@ -91,7 +88,7 @@ if ($rev > 0 and $rev < (time() + 60*60)) {
         js_send_cached($candidate, $etag);
 
     } else {
-        js_write_cache_file_content($candidate, core_minify::js_files($jsfiles));
+        js_write_cache_file_content($candidate, js_minify($jsfiles));
         // verify nothing failed in cache file creation
         clearstatcache();
         if (file_exists($candidate)) {

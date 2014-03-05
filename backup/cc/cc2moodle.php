@@ -149,7 +149,7 @@ class cc2moodle {
         $cdir = static::$path_to_manifest_folder . DIRECTORY_SEPARATOR . 'course_files';
 
         if (!file_exists($cdir)) {
-            mkdir($cdir, $CFG->directorypermissions, true);
+            mkdir($cdir);
         }
 
         $sheet_base = static::loadsheet(SHEET_BASE);

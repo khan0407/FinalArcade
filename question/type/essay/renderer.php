@@ -42,12 +42,6 @@ class qtype_essay_renderer extends qtype_renderer {
 
         // Answer field.
         $step = $qa->get_last_step_with_qt_var('answer');
-
-        if (!$step->has_qt_var('answer') && empty($options->readonly)) {
-            // Question has never been answered, fill it with response template.
-            $step = new question_attempt_step(array('answer'=>$question->responsetemplate));
-        }
-
         if (empty($options->readonly)) {
             $answer = $responseoutput->response_area_input('answer', $qa,
                     $step, $question->responsefieldlines, $options->context);
@@ -211,7 +205,7 @@ class qtype_essay_format_editor_renderer extends plugin_renderer_base {
             $formats[$fid] = $strformats[$fid];
         }
 
-        list($draftitemid, $response) = $this->prepare_response_for_editing(
+        list($draftitemid, $reponse) = $this->prepare_response_for_editing(
                 $name, $step, $context);
 
         $editor->use_editor($id, $this->get_editor_options($context),
@@ -221,7 +215,7 @@ class qtype_essay_format_editor_renderer extends plugin_renderer_base {
         $output .= html_writer::start_tag('div', array('class' =>
                 $this->class_name() . ' qtype_essay_response'));
 
-        $output .= html_writer::tag('div', html_writer::tag('textarea', s($response),
+        $output .= html_writer::tag('div', html_writer::tag('textarea', s($reponse),
                 array('id' => $id, 'name' => $inputname, 'rows' => $lines, 'cols' => 60)));
 
         $output .= html_writer::start_tag('div');

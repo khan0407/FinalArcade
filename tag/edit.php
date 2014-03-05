@@ -60,13 +60,15 @@ $tagname = tag_display_name($tag);
 // set the relatedtags field of the $tag object that will be passed to the form
 $tag->relatedtags = tag_get_related_tags_csv(tag_get_related_tags($tag->id, TAG_RELATED_MANUAL), TAG_RETURN_TEXT);
 
-$options = new stdClass();
-$options->smiley = false;
-$options->filter = false;
+if (can_use_html_editor()) {
+    $options = new stdClass();
+    $options->smiley = false;
+    $options->filter = false;
 
-// convert and remove any XSS
-$tag->description       = format_text($tag->description, $tag->descriptionformat, $options);
-$tag->descriptionformat = FORMAT_HTML;
+    // convert and remove any XSS
+    $tag->description       = format_text($tag->description, $tag->descriptionformat, $options);
+    $tag->descriptionformat = FORMAT_HTML;
+}
 
 $errorstring = '';
 
@@ -74,8 +76,7 @@ $editoroptions = array(
     'maxfiles'  => EDITOR_UNLIMITED_FILES,
     'maxbytes'  => $CFG->maxbytes,
     'trusttext' => false,
-    'context'   => $systemcontext,
-    'subdirs'   => file_area_contains_subdirs($systemcontext, 'tag', 'description', $tag->id),
+    'context'   => $systemcontext
 );
 $tag = file_prepare_standard_editor($tag, 'description', $editoroptions, $systemcontext, 'tag', 'description', $tag->id);
 

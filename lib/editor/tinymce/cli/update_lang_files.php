@@ -26,7 +26,7 @@ define('CLI_SCRIPT', true);
 
 require __DIR__ . '/../../../../config.php';
 
-if (!$CFG->debugdeveloper) {
+if (!debugging('', DEBUG_DEVELOPER)) {
     die('Only for developers!!!!!');
 }
 

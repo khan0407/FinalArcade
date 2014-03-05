@@ -77,10 +77,9 @@ $strfeedbacks = get_string("modulenameplural", "feedback");
 $strfeedback  = get_string("modulename", "feedback");
 
 $PAGE->navbar->add(get_string('analysis', 'feedback'));
-$PAGE->set_heading($course->fullname);
-$PAGE->set_title($feedback->name);
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(format_string($feedback->name));
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string($feedback->name));
 
 /// print the tabs
 require('tabs.php');
@@ -158,7 +157,7 @@ if ($check_anonymously) {
 } else {
     echo $OUTPUT->heading_with_help(get_string('insufficient_responses_for_this_group', 'feedback'),
                                     'insufficient_responses',
-                                    'feedback', '', '', 3);
+                                    'feedback');
 }
 echo '</td></tr></table></div>';
 echo $OUTPUT->box_end();

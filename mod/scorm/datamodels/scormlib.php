@@ -14,14 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * functions used by SCORM 1.2/2004 packages.
- *
- * @package    mod_scorm
- * @copyright 1999 onwards Roberto Pinna
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 function scorm_get_resources($blocks) {
     $resources = array();
     foreach ($blocks as $block) {
@@ -375,7 +367,7 @@ function scorm_get_manifest($blocks, $scoes) {
                             }
                             if ($sequencing['name']=='IMSSS:ROLLUPRULES') {
                                 if (isset($sequencing['attrs']['ROLLUPOBJECTIVESATISFIED'])) {
-                                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->rollupobjectivesatisfied = $sequencing['attrs']['ROLLUPOBJECTIVESATISFIED'] == 'true'?1:0;
+                                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->rollupobjectivesatisfied = $sequencing['attrs']['ROLLUPOBJECTIVESATISFIED'] == 'true'?1:0;;
                                 }
                                 if (isset($sequencing['attrs']['ROLLUPPROGRESSCOMPLETION'])) {
                                     $scoes->elements[$manifest][$parent->organization][$parent->identifier]->rollupprogresscompletion = $sequencing['attrs']['ROLLUPPROGRESSCOMPLETION'] == 'true'?1:0;
@@ -511,14 +503,7 @@ function scorm_get_manifest($blocks, $scoes) {
     return $scoes;
 }
 
-/**
- * Sets up SCORM 1.2/2004 packages using the manifest file.
- * Called whenever SCORM changes
- * @param object $scorm instance - fields are updated and changes saved into database
- * @param stored_file|string $manifest - path to manifest file or stored_file.
- * @return bool
- */
-function scorm_parse_scorm(&$scorm, $manifest) {
+function scorm_parse_scorm($scorm, $manifest) {
     global $CFG, $DB;
 
     // load manifest into string
@@ -529,8 +514,7 @@ function scorm_parse_scorm(&$scorm, $manifest) {
         $xmltext = download_file_content($manifest);
     }
 
-    $defaultorgid = 0;
-    $firstinorg = 0;
+    $launch = 0;
 
     $pattern = '/&(?!\w{2,6};)/';
     $replacement = '&amp;';
@@ -541,54 +525,28 @@ function scorm_parse_scorm(&$scorm, $manifest) {
     $scoes = new stdClass();
     $scoes->version = '';
     $scoes = scorm_get_manifest($manifests, $scoes);
-    $newscoes = array();
-    $sortorder = 0;
     if (count($scoes->elements) > 0) {
         $olditems = $DB->get_records('scorm_scoes', array('scorm'=>$scorm->id));
         foreach ($scoes->elements as $manifest => $organizations) {
             foreach ($organizations as $organization => $items) {
                 foreach ($items as $identifier => $item) {
-                    $sortorder++;
                     // This new db mngt will support all SCORM future extensions
                     $newitem = new stdClass();
                     $newitem->scorm = $scorm->id;
                     $newitem->manifest = $manifest;
                     $newitem->organization = $organization;
-                    $newitem->sortorder = $sortorder;
                     $standarddatas = array('parent', 'identifier', 'launch', 'scormtype', 'title');
                     foreach ($standarddatas as $standarddata) {
                         if (isset($item->$standarddata)) {
                             $newitem->$standarddata = $item->$standarddata;
-                        } else {
-                            $newitem->$standarddata = '';
                         }
                     }
 
-                    if (!empty($defaultorgid) && empty($firstinorg) && $newitem->parent == $scoes->defaultorg) {
-                        $firstinorg = $sortorder;
-                    }
-
+                    // Insert the new SCO, and retain the link between the old and new for later adjustment
+                    $id = $DB->insert_record('scorm_scoes', $newitem);
                     if (!empty($olditems) && ($olditemid = scorm_array_search('identifier', $newitem->identifier, $olditems))) {
-                        $newitem->id = $olditemid;
-                        // Update the Sco sortorder but keep id so that user tracks are kept against the same ids.
-                        $DB->update_record('scorm_scoes', $newitem);
-                        $id = $olditemid;
-                        // Remove all old data so we don't duplicate it.
-                        $DB->delete_records('scorm_scoes_data', array('scoid'=>$olditemid));
-                        $DB->delete_records('scorm_seq_objective', array('scoid'=>$olditemid));
-                        $DB->delete_records('scorm_seq_mapinfo', array('scoid'=>$olditemid));
-                        $DB->delete_records('scorm_seq_ruleconds', array('scoid'=>$olditemid));
-                        $DB->delete_records('scorm_seq_rulecond', array('scoid'=>$olditemid));
-                        $DB->delete_records('scorm_seq_rolluprule', array('scoid'=>$olditemid));
-                        $DB->delete_records('scorm_seq_rolluprulecond', array('scoid'=>$olditemid));
-
-                        // Now remove this SCO from the olditems object as we have dealt with it.
-                        unset($olditems[$olditemid]);
-                    } else {
-                        // Insert the new SCO, and retain the link between the old and new for later adjustment
-                        $id = $DB->insert_record('scorm_scoes', $newitem);
+                        $olditems[$olditemid]->newid = $id;
                     }
-                    $newscoes[$id] = $newitem; // Save this sco in memory so we can use it later.
 
                     if ($optionaldatas = scorm_optionals_data($item, $standarddatas)) {
                         $data = new stdClass();
@@ -673,8 +631,8 @@ function scorm_parse_scorm(&$scorm, $manifest) {
                             }
                         }
                     }
-                    if (empty($defaultorgid) && ((empty($scoes->defaultorg)) || ($scoes->defaultorg == $identifier))) {
-                        $defaultorgid = $id;
+                    if (($launch == 0) && ((empty($scoes->defaultorg)) || ($scoes->defaultorg == $identifier))) {
+                        $launch = $id;
                     }
                 }
             }
@@ -683,6 +641,9 @@ function scorm_parse_scorm(&$scorm, $manifest) {
             foreach ($olditems as $olditem) {
                 $DB->delete_records('scorm_scoes', array('id'=>$olditem->id));
                 $DB->delete_records('scorm_scoes_data', array('scoid'=>$olditem->id));
+                if (isset($olditem->newid)) {
+                    $DB->set_field('scorm_scoes_track', 'scoid', $olditem->newid, array('scoid' => $olditem->id));
+                }
                 $DB->delete_records('scorm_scoes_track', array('scoid'=>$olditem->id));
                 $DB->delete_records('scorm_seq_objective', array('scoid'=>$olditem->id));
                 $DB->delete_records('scorm_seq_mapinfo', array('scoid'=>$olditem->id));
@@ -695,34 +656,11 @@ function scorm_parse_scorm(&$scorm, $manifest) {
         if (empty($scoes->version)) {
             $scoes->version = 'SCORM_1.2';
         }
-        $DB->set_field('scorm', 'version', $scoes->version, array('id' => $scorm->id));
+        $DB->set_field('scorm', 'version', $scoes->version, array('id'=>$scorm->id));
         $scorm->version = $scoes->version;
     }
-    $scorm->launch = 0;
-    // Check launch sco is valid.
-    if (!empty($defaultorgid) && isset($newscoes[$defaultorgid]) && !empty($newscoes[$defaultorgid]->launch)) {
-        // Launch param is valid - do nothing.
-        $scorm->launch = $defaultorgid;
-    } else if (!empty($defaultorgid) && isset($newscoes[$defaultorgid]) && empty($newscoes[$defaultorgid]->launch)) {
-        // The launch is probably the default org so we need to find the first launchable item inside this org.
-        $sqlselect = 'scorm = ? AND sortorder > ? AND '.$DB->sql_isnotempty('scorm_scoes', 'launch', false, true);
-        // We use get_records here as we need to pass a limit in the query that works cross db.
-        $scoes = $DB->get_records_select('scorm_scoes', $sqlselect, array($scorm->id, $firstinorg), 'sortorder', 'id', 0, 1);
-        if (!empty($scoes)) {
-            $sco = reset($scoes); // We only care about the first record - the above query only returns one.
-            $scorm->launch = $sco->id;
-        }
-    }
-    if (empty($scorm->launch)) {
-        // No valid Launch is specified - find the first launchable sco instead.
-        $sqlselect = 'scorm = ? AND '.$DB->sql_isnotempty('scorm_scoes', 'launch', false, true);
-        // We use get_records here as we need to pass a limit in the query that works cross db.
-        $scoes = $DB->get_records_select('scorm_scoes', $sqlselect, array($scorm->id), 'sortorder', 'id', 0, 1);
-        if (!empty($scoes)) {
-            $sco = reset($scoes); // We only care about the first record - the above query only returns one.
-            $scorm->launch = $sco->id;
-        }
-    }
+
+    $scorm->launch = $launch;
 
     return true;
 }
@@ -763,8 +701,7 @@ function scorm_get_parent($sco) {
 function scorm_get_children($sco) {
     global $DB;
 
-    $children = $DB->get_records('scorm_scoes', array('scorm' => $sco->scorm, 'parent' => $sco->identifier), 'sortorder, id');
-    if (!empty($children)) {
+    if ($children = $DB->get_records('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->identifier))) {//originally this said parent instead of childrean
         return $children;
     }
     return null;
@@ -773,7 +710,7 @@ function scorm_get_children($sco) {
 function scorm_get_available_children($sco) {
     global $DB;
 
-    $res = $DB->get_records('scorm_scoes', array('scorm' => $sco->scorm, 'parent' => $sco->identifier), 'sortorder, id');
+    $res = $DB->get_records('scorm_scoes', array('scorm' => $sco->scorm, 'parent' => $sco->identifier));
     if (!$res || $res == null) {
         return false;
     } else {
@@ -801,7 +738,7 @@ function scorm_get_available_descendent($descend = array(), $sco) {
 function scorm_get_siblings($sco) {
     global $DB;
 
-    if ($siblings = $DB->get_records('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->parent), 'sortorder, id')) {
+    if ($siblings = $DB->get_records('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->parent))) {
         unset($siblings[$sco->id]);
         if (!empty($siblings)) {
             return $siblings;

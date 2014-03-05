@@ -29,6 +29,8 @@ require_once($CFG->dirroot . '/user/selector/lib.php');
  * either all the other Moodle users.
  */
 class service_user_selector extends user_selector_base {
+    const MAX_USERS_PER_PAGE = 100;
+
     protected $serviceid;
     protected $displayallowedusers; //set to true if the selector displays the
                                     //allowed users on this service
@@ -83,7 +85,7 @@ class service_user_selector extends user_selector_base {
 
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql($countfields . $sql, $params);
-            if ($potentialmemberscount > $this->maxusersperpage) {
+            if ($potentialmemberscount > service_user_selector::MAX_USERS_PER_PAGE) {
                 return $this->too_many_results($search, $potentialmemberscount);
             }
         }

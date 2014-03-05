@@ -16,7 +16,7 @@
 function wiki_print_editor_html($pageid, $content, $version = -1, $section = null, $upload = false, $deleteuploads = array()) {
     global $CFG, $OUTPUT;
 
-    $OUTPUT->heading(strtoupper(get_string('formathtml', 'wiki')), 3);
+    $OUTPUT->heading(strtoupper(get_string('formathtml', 'wiki')));
 
     $action = $CFG->wwwroot.'/mod/wiki/edit.php?pageid='.$pageid;
 

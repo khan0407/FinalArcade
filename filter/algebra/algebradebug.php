@@ -7,7 +7,7 @@
 
     require_once("../../config.php");
 
-    if (!filter_is_enabled('algebra')) {
+    if (!filter_is_enabled('filter/algebra')) {
         print_error('filternotenabled');
     }
 

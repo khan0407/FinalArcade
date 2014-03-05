@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -23,7 +24,7 @@
  * For full information about creating Moodle themes, see:
  *  http://docs.moodle.org/dev/Themes_2.0
  *
- * @package   theme_sky_high
+ * @package   moodlecore
   */
 
 $THEME->name = 'sky_high';

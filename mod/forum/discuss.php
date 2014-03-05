@@ -94,8 +94,10 @@
         $DB->set_field('forum_read', 'forumid', $forumto->id, array('discussionid' => $discussion->id));
         add_to_log($course->id, 'forum', 'move discussion', "discuss.php?d=$discussion->id", $discussion->id, $cmto->id);
 
-        // Delete the RSS files for the 2 forums to force regeneration of the feeds
+        require_once($CFG->libdir.'/rsslib.php');
         require_once($CFG->dirroot.'/mod/forum/rsslib.php');
+
+        // Delete the RSS files for the 2 forums to force regeneration of the feeds
         forum_rss_delete_file($forum);
         forum_rss_delete_file($forumto);
 
@@ -158,7 +160,6 @@
     $PAGE->set_heading($course->fullname);
     $PAGE->set_button($searchform);
     echo $OUTPUT->header();
-    echo $OUTPUT->heading(format_string($forum->name), 2);
 
 /// Check to see if groups are being used in this forum
 /// If so, make sure the current person is allowed to see this discussion

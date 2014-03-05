@@ -24,11 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/** Include locallib.php */
 require_once($CFG->dirroot.'/mod/assign/locallib.php');
+/** Include accesslib.php */
 require_once($CFG->libdir.'/accesslib.php');
-require_once($CFG->dirroot.'/course/lib.php');
 
-/*
+/**
  * The maximum amount of time to spend upgrading a single assignment.
  * This is intentionally generous (5 mins) as the effect of a timeout
  * for a legitimate upgrade would be quite harsh (roll back code will not run)
@@ -53,26 +54,25 @@ class assign_upgrade_manager {
      * @return bool true or false
      */
     public function upgrade_assignment($oldassignmentid, & $log) {
+        // steps to upgrade an assignment
         global $DB, $CFG, $USER;
-        // Steps to upgrade an assignment.
+        // steps to upgrade an assignment
 
-        // Is the user the admin? admin check goes here.
+        // is the user the admin? admin check goes here
         if (!is_siteadmin($USER->id)) {
               return false;
         }
 
+        // should we use a shutdown handler to rollback on timeout?
         @set_time_limit(ASSIGN_MAX_UPGRADE_TIME_SECS);
 
-        // Get the module details.
+
+        // get the module details
         $oldmodule = $DB->get_record('modules', array('name'=>'assignment'), '*', MUST_EXIST);
-        $params = array('module'=>$oldmodule->id, 'instance'=>$oldassignmentid);
-        $oldcoursemodule = $DB->get_record('course_modules',
-                                           $params,
-                                           '*',
-                                           MUST_EXIST);
+        $oldcoursemodule = $DB->get_record('course_modules', array('module'=>$oldmodule->id, 'instance'=>$oldassignmentid), '*', MUST_EXIST);
         $oldcontext = context_module::instance($oldcoursemodule->id);
 
-        // First insert an assign instance to get the id.
+        // first insert an assign instance to get the id
         $oldassignment = $DB->get_record('assignment', array('id'=>$oldassignmentid), '*', MUST_EXIST);
 
         $oldversion = get_config('assignment_' . $oldassignment->assignmenttype, 'version');
@@ -90,8 +90,6 @@ class assign_upgrade_manager {
         $data->grade = $oldassignment->grade;
         $data->submissiondrafts = $oldassignment->resubmit;
         $data->requiresubmissionstatement = 0;
-        $data->markingworkflow = 0;
-        $data->markingallocation = 0;
         $data->cutoffdate = 0;
         // New way to specify no late submissions.
         if ($oldassignment->preventlate) {
@@ -101,8 +99,6 @@ class assign_upgrade_manager {
         $data->requireallteammemberssubmit = 0;
         $data->teamsubmissiongroupingid = 0;
         $data->blindmarking = 0;
-        $data->attemptreopenmethod = 'none';
-        $data->maxattempts = ASSIGN_UNLIMITED_ATTEMPTS;
 
         $newassignment = new assign(null, null, null);
 
@@ -111,37 +107,36 @@ class assign_upgrade_manager {
             return false;
         }
 
-        // Now create a new coursemodule from the old one.
+        // now create a new coursemodule from the old one
         $newmodule = $DB->get_record('modules', array('name'=>'assign'), '*', MUST_EXIST);
-        $newcoursemodule = $this->duplicate_course_module($oldcoursemodule,
-                                                          $newmodule->id,
-                                                          $newassignment->get_instance()->id);
+        $newcoursemodule = $this->duplicate_course_module($oldcoursemodule, $newmodule->id, $newassignment->get_instance()->id);
         if (!$newcoursemodule) {
             $log = get_string('couldnotcreatenewcoursemodule', 'mod_assign');
             return false;
         }
 
-        // Convert the base database tables (assignment, submission, grade).
+        // convert the base database tables (assignment, submission, grade)
 
-        // These are used to store information in case a rollback is required.
+        // these are used to store information in case a rollback is required
         $gradingarea = null;
         $gradingdefinitions = null;
         $gradeidmap = array();
         $completiondone = false;
         $gradesdone = false;
 
-        // From this point we want to rollback on failure.
+        // from this point we want to rollback on failure
         $rollback = false;
         try {
             $newassignment->set_context(context_module::instance($newcoursemodule->id));
 
-            // The course module has now been created - time to update the core tables.
+            // the course module has now been created - time to update the core tables
 
-            // Copy intro files.
+            // copy intro files
             $newassignment->copy_area_files_for_upgrade($oldcontext->id, 'mod_assignment', 'intro', 0,
                                             $newassignment->get_context()->id, 'mod_assign', 'intro', 0);
 
-            // Get the plugins to do their bit.
+
+            // get the plugins to do their bit
             foreach ($newassignment->get_submission_plugins() as $plugin) {
                 if ($plugin->can_upgrade($oldassignment->assignmenttype, $oldversion)) {
                     $plugin->enable();
@@ -163,19 +158,11 @@ class assign_upgrade_manager {
                 }
             }
 
-            // See if there is advanced grading upgrades required.
-            $gradingarea = $DB->get_record('grading_areas',
-                                           array('contextid'=>$oldcontext->id, 'areaname'=>'submission'),
-                                           '*',
-                                           IGNORE_MISSING);
+            // see if there is advanced grading upgrades required
+            $gradingarea = $DB->get_record('grading_areas', array('contextid'=>$oldcontext->id, 'areaname'=>'submission'), '*', IGNORE_MISSING);
             if ($gradingarea) {
-                $params = array('id'=>$gradingarea->id,
-                                'contextid'=>$newassignment->get_context()->id,
-                                'component'=>'mod_assign',
-                                'areaname'=>'submissions');
-                $DB->update_record('grading_areas', $params);
-                $gradingdefinitions = $DB->get_records('grading_definitions',
-                                                       array('areaid'=>$gradingarea->id));
+                $DB->update_record('grading_areas', array('id'=>$gradingarea->id, 'contextid'=>$newassignment->get_context()->id, 'component'=>'mod_assign', 'areaname'=>'submissions'));
+                $gradingdefinitions = $DB->get_records('grading_definitions', array('areaid'=>$gradingarea->id));
             }
 
             // Upgrade availability data.
@@ -196,13 +183,9 @@ class assign_upgrade_manager {
                            $newcoursemodule->id,
                            array('sourcecmid'=>$oldcoursemodule->id));
 
-            // Upgrade completion data.
-            $DB->set_field('course_modules_completion',
-                           'coursemoduleid',
-                           $newcoursemodule->id,
-                           array('coursemoduleid'=>$oldcoursemodule->id));
-            $allcriteria = $DB->get_records('course_completion_criteria',
-                                            array('moduleinstance'=>$oldcoursemodule->id));
+            // upgrade completion data
+            $DB->set_field('course_modules_completion', 'coursemoduleid', $newcoursemodule->id, array('coursemoduleid'=>$oldcoursemodule->id));
+            $allcriteria = $DB->get_records('course_completion_criteria', array('moduleinstance'=>$oldcoursemodule->id));
             foreach ($allcriteria as $criteria) {
                 $criteria->module = 'assign';
                 $criteria->moduleinstance = $newcoursemodule->id;
@@ -215,9 +198,9 @@ class assign_upgrade_manager {
             $DB->set_field('log', 'module', 'assign', $logparams);
             $DB->set_field('log', 'cmid', $newcoursemodule->id, $logparams);
 
-            // Copy all the submission data (and get plugins to do their bit).
-            $oldsubmissions = $DB->get_records('assignment_submissions',
-                                               array('assignment'=>$oldassignmentid));
+
+            // copy all the submission data (and get plugins to do their bit)
+            $oldsubmissions = $DB->get_records('assignment_submissions', array('assignment'=>$oldassignmentid));
 
             foreach ($oldsubmissions as $oldsubmission) {
                 $submission = new stdClass();
@@ -233,57 +216,41 @@ class assign_upgrade_manager {
                 }
                 foreach ($newassignment->get_submission_plugins() as $plugin) {
                     if ($plugin->can_upgrade($oldassignment->assignmenttype, $oldversion)) {
-                        if (!$plugin->upgrade($oldcontext,
-                                              $oldassignment,
-                                              $oldsubmission,
-                                              $submission,
-                                              $log)) {
+                        if (!$plugin->upgrade($oldcontext, $oldassignment, $oldsubmission, $submission, $log)) {
                             $rollback = true;
                         }
                     }
                 }
                 if ($oldsubmission->timemarked) {
-                    // Submission has been graded - create a grade record.
+                    // submission has been graded - create a grade record
                     $grade = new stdClass();
                     $grade->assignment = $newassignment->get_instance()->id;
                     $grade->userid = $oldsubmission->userid;
                     $grade->grader = $oldsubmission->teacher;
                     $grade->timemodified = $oldsubmission->timemarked;
                     $grade->timecreated = $oldsubmission->timecreated;
+                    // $grade->locked = $oldsubmission->locked;
                     $grade->grade = $oldsubmission->grade;
-                    if ($oldsubmission->mailed) {
-                        // The mailed flag goes in the flags table.
-                        $flags = new stdClass();
-                        $flags->userid = $oldsubmission->userid;
-                        $flags->assignment = $newassignment->get_instance()->id;
-                        $flags->mailed = 1;
-                        $DB->insert_record('assign_user_flags', $flags);
-                    }
+                    $grade->mailed = $oldsubmission->mailed;
                     $grade->id = $DB->insert_record('assign_grades', $grade);
                     if (!$grade->id) {
                         $log .= get_string('couldnotinsertgrade', 'mod_assign', $grade->userid);
                         $rollback = true;
                     }
 
-                    // Copy any grading instances.
+                    // copy any grading instances
                     if ($gradingarea) {
 
                         $gradeidmap[$grade->id] = $oldsubmission->id;
 
                         foreach ($gradingdefinitions as $definition) {
-                            $params = array('definitionid'=>$definition->id,
-                                            'itemid'=>$oldsubmission->id);
-                            $DB->set_field('grading_instances', 'itemid', $grade->id, $params);
+                            $DB->set_field('grading_instances', 'itemid', $grade->id, array('definitionid'=>$definition->id, 'itemid'=>$oldsubmission->id));
                         }
 
                     }
                     foreach ($newassignment->get_feedback_plugins() as $plugin) {
                         if ($plugin->can_upgrade($oldassignment->assignmenttype, $oldversion)) {
-                            if (!$plugin->upgrade($oldcontext,
-                                                  $oldassignment,
-                                                  $oldsubmission,
-                                                  $grade,
-                                                  $log)) {
+                            if (!$plugin->upgrade($oldcontext, $oldassignment, $oldsubmission, $grade, $log)) {
                                 $rollback = true;
                             }
                         }
@@ -307,56 +274,45 @@ class assign_upgrade_manager {
         }
 
         if ($rollback) {
-            // Roll back the grades changes.
+            // roll back the grades changes
             if ($gradesdone) {
                 // Reassociate grade_items from the new assign instance to the old assignment instance.
                 $params = array('assignment', $oldassignment->id, 'assign', $newassignment->get_instance()->id);
                 $sql = 'UPDATE {grade_items} SET itemmodule = ?, iteminstance = ? WHERE itemmodule = ? AND iteminstance = ?';
                 $DB->execute($sql, $params);
             }
-            // Roll back the completion changes.
+            // roll back the completion changes
             if ($completiondone) {
-                $DB->set_field('course_modules_completion',
-                               'coursemoduleid',
-                               $oldcoursemodule->id,
-                               array('coursemoduleid'=>$newcoursemodule->id));
-
-                $allcriteria = $DB->get_records('course_completion_criteria',
-                                                array('moduleinstance'=>$newcoursemodule->id));
+                $DB->set_field('course_modules_completion', 'coursemoduleid', $oldcoursemodule->id, array('coursemoduleid'=>$newcoursemodule->id));
+                $allcriteria = $DB->get_records('course_completion_criteria', array('moduleinstance'=>$newcoursemodule->id));
                 foreach ($allcriteria as $criteria) {
                     $criteria->module = 'assignment';
                     $criteria->moduleinstance = $oldcoursemodule->id;
                     $DB->update_record('course_completion_criteria', $criteria);
                 }
             }
-            // Roll back the log changes.
+            // Roll back the log changes
             $logparams = array('cmid' => $newcoursemodule->id, 'course' => $newcoursemodule->course);
             $DB->set_field('log', 'module', 'assignment', $logparams);
             $DB->set_field('log', 'cmid', $oldcoursemodule->id, $logparams);
-            // Roll back the advanced grading update.
+            // roll back the advanced grading update
             if ($gradingarea) {
                 foreach ($gradeidmap as $newgradeid => $oldsubmissionid) {
                     foreach ($gradingdefinitions as $definition) {
-                        $DB->set_field('grading_instances',
-                                       'itemid',
-                                       $oldsubmissionid,
-                                       array('definitionid'=>$definition->id, 'itemid'=>$newgradeid));
+                        $DB->set_field('grading_instances', 'itemid', $oldsubmissionid, array('definitionid'=>$definition->id, 'itemid'=>$newgradeid));
                     }
                 }
-                $params = array('id'=>$gradingarea->id,
-                                'contextid'=>$oldcontext->id,
-                                'component'=>'mod_assignment',
-                                'areaname'=>'submission');
-                $DB->update_record('grading_areas', $params);
+                $DB->update_record('grading_areas', array('id'=>$gradingarea->id, 'contextid'=>$oldcontext->id, 'component'=>'mod_assignment', 'areaname'=>'submission'));
             }
             $newassignment->delete_instance();
 
             return false;
         }
-        // Delete the old assignment (use object delete).
+        // all is well,
+        // delete the old assignment (use object delete)
         $cm = get_coursemodule_from_id('', $oldcoursemodule->id, $oldcoursemodule->course);
         if ($cm) {
-            course_delete_module($cm->id);
+            $this->delete_course_module($cm);
         }
         rebuild_course_cache($oldcoursemodule->course);
         return true;
@@ -390,7 +346,7 @@ class assign_upgrade_manager {
         $newcm->completiongradeitemnumber = $cm->completiongradeitemnumber;
         $newcm->completionview            = $cm->completionview;
         $newcm->completionexpected        = $cm->completionexpected;
-        if (!empty($CFG->enableavailability)) {
+        if(!empty($CFG->enableavailability)) {
             $newcm->availablefrom             = $cm->availablefrom;
             $newcm->availableuntil            = $cm->availableuntil;
             $newcm->showavailability          = $cm->showavailability;
@@ -409,10 +365,65 @@ class assign_upgrade_manager {
 
         $newcm->section = course_add_cm_to_section($newcm->course, $newcm->id, $section->section, $cm->id);
 
-        // Make sure visibility is set correctly (in particular in calendar).
-        // Note: Allow them to set it even without moodle/course:activityvisibility.
+        // make sure visibility is set correctly (in particular in calendar)
+        // note: allow them to set it even without moodle/course:activityvisibility
         set_coursemodule_visible($newcm->id, $newcm->visible);
 
         return $newcm;
     }
+
+    /**
+     * This function deletes the old assignment course module after
+     * it has been upgraded. This code is adapted from "course/mod.php".
+     *
+     * @param stdClass $cm The course module to delete.
+     * @return bool
+     */
+    private function delete_course_module($cm) {
+        global $CFG, $USER, $DB, $OUTPUT;
+        $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+
+        $coursecontext = context_course::instance($course->id);
+        $modcontext = context_module::instance($cm->id);
+
+        $modlib = "$CFG->dirroot/mod/$cm->modname/lib.php";
+
+        if (file_exists($modlib)) {
+            require_once($modlib);
+        } else {
+            print_error('modulemissingcode', '', '', $modlib);
+        }
+
+        $deleteinstancefunction = $cm->modname."_delete_instance";
+
+        if (!$deleteinstancefunction($cm->instance)) {
+            echo $OUTPUT->notification("Could not delete the $cm->modname (instance)");
+        }
+
+        // remove all module files in case modules forget to do that
+        $fs = get_file_storage();
+        $fs->delete_area_files($modcontext->id);
+
+        if (!delete_course_module($cm->id)) {
+            echo $OUTPUT->notification("Could not delete the $cm->modname (coursemodule)");
+        }
+        if (!delete_mod_from_section($cm->id, $cm->section)) {
+            echo $OUTPUT->notification("Could not delete the $cm->modname from that section");
+        }
+
+        // Trigger a mod_deleted event with information about this module.
+        $eventdata = new stdClass();
+        $eventdata->modulename = $cm->modname;
+        $eventdata->cmid       = $cm->id;
+        $eventdata->courseid   = $course->id;
+        $eventdata->userid     = $USER->id;
+        events_trigger('mod_deleted', $eventdata);
+
+        add_to_log($course->id, 'course', "delete mod",
+                   "view.php?id=$cm->course",
+                   "$cm->modname $cm->instance", $cm->id);
+
+        return true;
+    }
+
 }

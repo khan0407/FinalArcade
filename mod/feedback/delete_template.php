@@ -93,7 +93,7 @@ if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
     }
 
     if ($template->ispublic) {
-        $systemcontext = context_system::instance();
+        $systemcontext = get_system_context();
         require_capability('mod/feedback:createpublictemplate', $systemcontext);
         require_capability('mod/feedback:deletetemplate', $systemcontext);
     }
@@ -107,10 +107,10 @@ $strfeedbacks = get_string("modulenameplural", "feedback");
 $strfeedback  = get_string("modulename", "feedback");
 $strdeletefeedback = get_string('delete_template', 'feedback');
 
-$PAGE->set_heading($course->fullname);
-$PAGE->set_title($feedback->name);
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(format_string($feedback->name));
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string($feedback->name));
+
 /// print the tabs
 require('tabs.php');
 
@@ -118,11 +118,11 @@ require('tabs.php');
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
-echo $OUTPUT->heading($strdeletefeedback, 3);
+echo $OUTPUT->heading($strdeletefeedback);
 if ($shoulddelete == 1) {
 
     echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-    echo html_writer::tag('p', get_string('confirmdeletetemplate', 'feedback'), array('class' => 'bold'));
+    echo $OUTPUT->heading(get_string('confirmdeletetemplate', 'feedback'));
     $mform->display();
     echo $OUTPUT->box_end();
 } else {
@@ -132,7 +132,7 @@ if ($shoulddelete == 1) {
         echo $OUTPUT->box(get_string('no_templates_available_yet', 'feedback'),
                          'generalbox boxaligncenter');
     } else {
-        echo $OUTPUT->heading(get_string('course'), 4);
+        echo $OUTPUT->heading(get_string('course'), 3);
         echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal');
         $tablecolumns = array('template', 'action');
         $tableheaders = array(get_string('template', 'feedback'), '');
@@ -164,7 +164,7 @@ if ($shoulddelete == 1) {
         echo $OUTPUT->box_end();
     }
     //now we get the public templates if it is permitted
-    $systemcontext = context_system::instance();
+    $systemcontext = get_system_context();
     if (has_capability('mod/feedback:createpublictemplate', $systemcontext) AND
         has_capability('mod/feedback:deletetemplate', $systemcontext)) {
         $templates = feedback_get_template_list($course, 'public');
@@ -172,7 +172,7 @@ if ($shoulddelete == 1) {
             echo $OUTPUT->box(get_string('no_templates_available_yet', 'feedback'),
                               'generalbox boxaligncenter');
         } else {
-            echo $OUTPUT->heading(get_string('public', 'feedback'), 4);
+            echo $OUTPUT->heading(get_string('public', 'feedback'), 3);
             echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal');
             $tablecolumns = array('template', 'action');
             $tableheaders = array(get_string('template', 'feedback'), '');

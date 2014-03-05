@@ -34,9 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 abstract class assign_plugin {
 
-    /** @var assign $assignment the assignment record that contains the global
-     *              settings for this assign instance
-     */
+    /** @var assign $assignment the assignment record that contains the global settings for this assign instance */
     protected $assignment;
     /** @var string $type assignment plugin type */
     private $type = '';
@@ -75,9 +73,7 @@ abstract class assign_plugin {
      * @return bool
      */
     public final function is_last() {
-        $lastindex = count(core_component::get_plugin_list($this->get_subtype()))-1;
-        $currentindex = get_config($this->get_subtype() . '_' . $this->get_type(), 'sortorder');
-        if ($lastindex == $currentindex) {
+        if ((count(get_plugin_list($this->get_subtype()))-1) == get_config($this->get_subtype() . '_' . $this->get_type(), 'sortorder')) {
             return true;
         }
 
@@ -126,6 +122,7 @@ abstract class assign_plugin {
 
     /**
      * What was the last error?
+     *
      *
      * @return string
      */
@@ -187,9 +184,8 @@ abstract class assign_plugin {
     /**
      * Save any custom data for this form submission
      *
-     * @param stdClass $submissionorgrade - assign_submission or assign_grade.
-     *              For submission plugins this is the submission data,
-     *              for feedback plugins it is the grade data
+     * @param stdClass $submissionorgrade - assign_submission or assign_grade
+     *              For submission plugins this is the submission data, for feedback plugins it is the grade data
      * @param stdClass $data - the data submitted from the form
      * @return bool - on error the subtype should call set_error and return false.
      */
@@ -244,8 +240,7 @@ abstract class assign_plugin {
      * Get any additional fields for the submission/grading form for this assignment.
      * This function is retained for backwards compatibility - new plugins should override {@link get_form_elements_for_user()}.
      *
-     * @param mixed $submissionorgrade submission|grade - For submission plugins this is the submission data,
-     *                                                    for feedback plugins it is the grade data
+     * @param mixed $submissionorgrade submission|grade - For submission plugins this is the submission data, for feedback plugins it is the grade data
      * @param MoodleQuickForm $mform - This is the form
      * @param stdClass $data - This is the form data that can be modified for example by a filemanager element
      * @return boolean - true if we added anything to the form
@@ -258,8 +253,7 @@ abstract class assign_plugin {
      * Should not output anything - return the result as a string so it can be consumed by webservices.
      *
      * @param stdClass $submissionorgrade assign_submission or assign_grade
-     *                 For submission plugins this is the submission data,
-     *                 for feedback plugins it is the grade data
+     *                 For submission plugins this is the submission data, for feedback plugins it is the grade data
      * @return string - return a string representation of the submission in full
      */
     public function view(stdClass $submissionorgrade) {
@@ -295,9 +289,7 @@ abstract class assign_plugin {
     public final function has_admin_settings() {
         global $CFG;
 
-        $pluginroot = $CFG->dirroot . '/mod/assign/' . substr($this->get_subtype(), strlen('assign')) . '/' . $this->get_type();
-        $settingsfile = $pluginroot . '/settings.php';
-        return file_exists($settingsfile);
+        return file_exists($CFG->dirroot . '/mod/assign/' . substr($this->get_subtype(), strlen('assign')) . '/' . $this->get_type() . '/settings.php');
     }
 
     /**
@@ -310,11 +302,7 @@ abstract class assign_plugin {
     public final function set_config($name, $value) {
         global $DB;
 
-        $dbparams = array('assignment'=>$this->assignment->get_instance()->id,
-                          'subtype'=>$this->get_subtype(),
-                          'plugin'=>$this->get_type(),
-                          'name'=>$name);
-        $current = $DB->get_record('assign_plugin_config', $dbparams, '*', IGNORE_MISSING);
+        $current = $DB->get_record('assign_plugin_config', array('assignment'=>$this->assignment->get_instance()->id, 'subtype'=>$this->get_subtype(), 'plugin'=>$this->get_type(), 'name'=>$name), '*', IGNORE_MISSING);
 
         if ($current) {
             $current->value = $value;
@@ -346,21 +334,14 @@ abstract class assign_plugin {
             }
             $assignment = $this->assignment->get_instance();
             if ($assignment) {
-                $dbparams = array('assignment'=>$assignment->id,
-                                  'subtype'=>$this->get_subtype(),
-                                  'plugin'=>$this->get_type(),
-                                  'name'=>$setting);
-                $result = $DB->get_record('assign_plugin_config', $dbparams, '*', IGNORE_MISSING);
+                $result = $DB->get_record('assign_plugin_config', array('assignment'=>$assignment->id, 'subtype'=>$this->get_subtype(), 'plugin'=>$this->get_type(), 'name'=>$setting), '*', IGNORE_MISSING);
                 if ($result) {
                     return $result->value;
                 }
             }
             return false;
         }
-        $dbparams = array('assignment'=>$this->assignment->get_instance()->id,
-                          'subtype'=>$this->get_subtype(),
-                           'plugin'=>$this->get_type());
-        $results = $DB->get_records('assign_plugin_config', $dbparams);
+        $results = $DB->get_records('assign_plugin_config', array('assignment'=>$this->assignment->get_instance()->id, 'subtype'=>$this->get_subtype(), 'plugin'=>$this->get_type()));
 
         $config = new stdClass();
         if (is_array($results)) {
@@ -475,8 +456,7 @@ abstract class assign_plugin {
      * @return bool true or false - false will trigger a rollback
      */
     public function upgrade_settings(context $oldcontext, stdClass $oldassignment, & $log) {
-        $params = array('type'=>$this->type, 'subtype'=>$this->get_subtype());
-        $log .= ' ' . get_string('upgradenotimplemented', 'mod_assign', $params);
+        $log = $log . ' ' . get_string('upgradenotimplemented', 'mod_assign', array('type'=>$this->type, 'subtype'=>$this->get_subtype()));
         return false;
     }
 
@@ -490,13 +470,8 @@ abstract class assign_plugin {
      * @param string $log Record upgrade messages in the log
      * @return boolean true or false - false will trigger a rollback
      */
-    public function upgrade(context $oldcontext,
-                            stdClass $oldassignment,
-                            stdClass $oldsubmissionorgrade,
-                            stdClass $submissionorgrade,
-                            & $log) {
-        $params = array('type'=>$this->type, 'subtype'=>$this->get_subtype());
-        $log = $log . ' ' . get_string('upgradenotimplemented', 'mod_assign', $params);
+    public function upgrade(context $oldcontext, stdClass $oldassignment, stdClass $oldsubmissionorgrade, stdClass $submissionorgrade, & $log) {
+        $log = $log . ' ' . get_string('upgradenotimplemented', 'mod_assign', array('type'=>$this->type, 'subtype'=>$this->get_subtype()));
         return false;
     }
 
@@ -507,7 +482,7 @@ abstract class assign_plugin {
      * @return string
      */
     public function format_for_log(stdClass $submissionorgrade) {
-        // Format the info for each submission plugin add_to_log.
+        // format the info for each submission plugin add_to_log
         return '';
     }
 
@@ -560,7 +535,7 @@ abstract class assign_plugin {
         global $CFG, $DB, $USER;
         $urlbase = $CFG->wwwroot.'/pluginfile.php';
 
-        // Permission check on the itemid.
+        // permission check on the itemid
 
         if ($this->get_subtype() == 'assignsubmission') {
             if ($itemid) {
@@ -573,7 +548,7 @@ abstract class assign_plugin {
                 }
             }
         } else {
-            // Not supported for feedback plugins.
+            // not supported for feedback plugins
             return null;
         }
 
@@ -627,23 +602,4 @@ abstract class assign_plugin {
         return true;
     }
 
-    /**
-     * If this plugin can participate in a webservice (save_submission or save_grade),
-     * return a list of external_params to be included in the definition of that webservice.
-     *
-     * @return external_description|null
-     */
-    public function get_external_parameters() {
-        return null;
-    }
-
-    /**
-     * If true, the plugin will appear on the module settings page and can be
-     * enabled/disabled per assignment instance.
-     *
-     * @return bool
-     */
-    public function is_configurable() {
-        return true;
-    }
 }

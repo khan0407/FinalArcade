@@ -377,7 +377,7 @@ case 'confirm':
 default:
 case 'plugins':
     $params = array();
-    $params['context'] = array($user_context, context_system::instance());
+    $params['context'] = array($user_context, get_system_context());
     $params['currentcontext'] = $PAGE->context;
     $params['return_types'] = FILE_INTERNAL;
 

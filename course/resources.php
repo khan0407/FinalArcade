@@ -52,6 +52,7 @@ foreach ($allmodules as $key=>$module) {
 }
 
 $strresources    = get_string('resources');
+$strsectionname  = get_string('sectionname', 'format_'.$course->format);
 $strname         = get_string('name');
 $strintro        = get_string('moduleintro');
 $strlastmodified = get_string('lastmodified');
@@ -83,11 +84,7 @@ foreach ($modinfo->cms as $cm) {
 
 // preload instances
 foreach ($resources as $modname=>$instances) {
-    $additionalfields = '';
-    if (plugin_supports('mod', $modname, FEATURE_MOD_INTRO)) {
-        $additionalfields = ',intro,introformat';
-    }
-    $resources[$modname] = $DB->get_records_list($modname, 'id', $instances, 'id', 'id,name'.$additionalfields);
+    $resources[$modname] = $DB->get_records_list($modname, 'id', $instances, 'id', 'id,name,intro,introformat,timemodified');
 }
 
 if (!$cms) {
@@ -99,7 +96,6 @@ $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
-    $strsectionname = get_string('sectionname', 'format_'.$course->format);
     $table->head  = array ($strsectionname, $strname, $strintro);
     $table->align = array ('center', 'left', 'left');
 } else {
@@ -113,8 +109,8 @@ foreach ($cms as $cm) {
         continue;
     }
     $resource = $resources[$cm->modname][$cm->instance];
-    $printsection = '';
     if ($usesections) {
+        $printsection = '';
         if ($cm->sectionnum !== $currentsection) {
             if ($cm->sectionnum) {
                 $printsection = get_section_name($course, $cm->sectionnum);
@@ -124,6 +120,8 @@ foreach ($cms as $cm) {
             }
             $currentsection = $cm->sectionnum;
         }
+    } else {
+        $printsection = '<span class="smallinfo">'.userdate($resource->timemodified)."</span>";
     }
 
     $extra = empty($cm->extra) ? '' : $cm->extra;
@@ -133,17 +131,11 @@ foreach ($cms as $cm) {
         $icon = '<img src="'.$OUTPUT->pix_url('icon', $cm->modname).'" class="activityicon" alt="'.get_string('modulename', $cm->modname).'" /> ';
     }
 
-    if (isset($resource->intro) && isset($resource->introformat)) {
-        $intro = format_module_intro('resource', $resource, $cm->id);
-    } else {
-        $intro = '';
-    }
-
     $class = $cm->visible ? '' : 'class="dimmed"'; // hidden modules are dimmed
     $table->data[] = array (
         $printsection,
         "<a $class $extra href=\"$CFG->wwwroot/mod/$cm->modname/view.php?id=$cm->id\">".$icon.format_string($resource->name)."</a>",
-        $intro);
+        format_module_intro('resource', $resource, $cm->id));
 }
 
 echo html_writer::table($table);

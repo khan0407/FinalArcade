@@ -18,7 +18,8 @@
  * Authentication Plugin: Manual Authentication
  * Just does a simple check against the moodle database.
  *
- * @package    auth_manual
+ * @package    auth
+ * @subpackage manual
  * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -81,9 +82,6 @@ class auth_plugin_manual extends auth_plugin_base {
      */
     function user_update_password($user, $newpassword) {
         $user = get_complete_user_data('id', $user->id);
-        // This will also update the stored hash to the latest algorithm
-        // if the existing hash is using an out-of-date algorithm (or the
-        // legacy md5 algorithm).
         return update_internal_user_password($user, $newpassword);
     }
 
@@ -126,15 +124,6 @@ class auth_plugin_manual extends auth_plugin_base {
      * @return bool
      */
     function can_reset_password() {
-        return true;
-    }
-
-    /**
-     * Returns true if plugin can be manually set.
-     *
-     * @return bool
-     */
-    function can_be_manually_set() {
         return true;
     }
 

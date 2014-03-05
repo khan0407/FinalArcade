@@ -56,10 +56,12 @@ $PAGE->set_url($url);
 // Make sure that the user has permissions to manage groups.
 require_login($course);
 
-$context = context_course::instance($course->id);
-require_capability('moodle/course:managegroups', $context);
-
 $PAGE->requires->js('/group/clientlib.js');
+
+$context = context_course::instance($course->id);
+if (!has_capability('moodle/course:managegroups', $context)) {
+    redirect('/course/view.php', array('id'=>$course->id)); // Not allowed to manage all groups
+}
 
 // Check for multiple/no group errors
 if (!$singlegroup) {
@@ -78,7 +80,7 @@ switch ($action) {
 
     case 'ajax_getmembersingroup':
         $roles = array();
-        if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id, ' . get_all_user_name_fields(true, 'u'))) {
+        if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id, u.firstname, u.lastname')) {
             foreach($groupmemberroles as $roleid=>$roledata) {
                 $shortroledata = new stdClass();
                 $shortroledata->name = $roledata->name;
@@ -144,7 +146,7 @@ $strparticipants = get_string('participants');
 /// Print header
 $PAGE->set_title($strgroups);
 $PAGE->set_heading($course->fullname);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('admin');
 echo $OUTPUT->header();
 
 // Add tabs
@@ -152,8 +154,7 @@ $currenttab = 'groups';
 require('tabs.php');
 
 $disabled = 'disabled="disabled"';
-$ajaxenabled = ajaxenabled();
-if ($ajaxenabled) {
+if (ajaxenabled()) {
     // Some buttons are enabled if single group selected
     $showaddmembersform_disabled = $singlegroup ? '' : $disabled;
     $showeditgroupsettingsform_disabled = $singlegroup ? '' : $disabled;
@@ -179,7 +180,7 @@ echo '<tr>'."\n";
 echo "<td>\n";
 echo '<p><label for="groups"><span id="groupslabel">'.get_string('groups').':</span><span id="thegrouping">&nbsp;</span></label></p>'."\n";
 
-if ($ajaxenabled) { // TODO: move this to JS init!
+if (ajaxenabled()) { // TODO: move this to JS init!
     $onchange = 'M.core_group.membersCombo.refreshMembers();';
 } else {
     $onchange = '';
@@ -247,7 +248,7 @@ $member_names = array();
 
 $atleastonemember = false;
 if ($singlegroup) {
-    if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id, ' . get_all_user_name_fields(true, 'u'))) {
+    if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id, u.firstname, u.lastname')) {
         foreach($groupmemberroles as $roleid=>$roledata) {
             echo '<optgroup label="'.s($roledata->name).'">';
             foreach($roledata->users as $member) {
@@ -276,7 +277,7 @@ echo '</table>'."\n";
 echo '</div>'."\n";
 echo '</form>'."\n";
 
-if ($ajaxenabled) {
+if (ajaxenabled()) {
     $PAGE->requires->js_init_call('M.core_group.init_index', array($CFG->wwwroot, $courseid));
     $PAGE->requires->js_init_call('M.core_group.groupslist', array($preventgroupremoval));
 }

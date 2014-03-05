@@ -278,8 +278,13 @@ class xmldb_structure extends xmldb_object {
                 $this->debug($this->errormsg);
                 $result = false;
             }
-            // Compute prev/next.
+            // Check previous & next are ok (duplicates and existing tables)
             $this->fixPrevNext($this->tables);
+            if ($result && !$this->checkPreviousNextValues($this->tables)) {
+                $this->errormsg = 'Some TABLES previous/next values are incorrect';
+                $this->debug($this->errormsg);
+                $result = false;
+            }
             // Order tables
             if ($result && !$this->orderTables($this->tables)) {
                 $this->errormsg = 'Error ordering the tables';

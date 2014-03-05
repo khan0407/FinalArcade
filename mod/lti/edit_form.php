@@ -89,10 +89,8 @@ class mod_lti_edit_types_form extends moodleform{
         } else {
             $mform->addElement('hidden', 'lti_coursevisible', '1');
         }
-        $mform->setType('lti_coursevisible', PARAM_BOOL);
 
         $mform->addElement('hidden', 'typeid');
-        $mform->setType('typeid', PARAM_INT);
 
         $launchoptions=array();
         $launchoptions[LTI_LAUNCH_CONTAINER_EMBED] = get_string('embed', 'lti');
@@ -102,7 +100,6 @@ class mod_lti_edit_types_form extends moodleform{
         $mform->addElement('select', 'lti_launchcontainer', get_string('default_launch_container', 'lti'), $launchoptions);
         $mform->setDefault('lti_launchcontainer', LTI_LAUNCH_CONTAINER_EMBED_NO_BLOCKS);
         $mform->addHelpButton('lti_launchcontainer', 'default_launch_container', 'lti');
-        $mform->setType('lti_launchcontainer', PARAM_INT);
 
         // Add privacy preferences fieldset where users choose whether to send their data
         $mform->addElement('header', 'privacy', get_string('privacy', 'lti'));
@@ -113,12 +110,10 @@ class mod_lti_edit_types_form extends moodleform{
         $options[2] = get_string('delegate', 'lti');
 
         $mform->addElement('select', 'lti_sendname', get_string('share_name_admin', 'lti'), $options);
-        $mform->setType('lti_sendname', PARAM_INT);
         $mform->setDefault('lti_sendname', '2');
         $mform->addHelpButton('lti_sendname', 'share_name_admin', 'lti');
 
         $mform->addElement('select', 'lti_sendemailaddr', get_string('share_email_admin', 'lti'), $options);
-        $mform->setType('lti_sendemailaddr', PARAM_INT);
         $mform->setDefault('lti_sendemailaddr', '2');
         $mform->addHelpButton('lti_sendemailaddr', 'share_email_admin', 'lti');
 
@@ -127,7 +122,6 @@ class mod_lti_edit_types_form extends moodleform{
 
         // Add grading preferences fieldset where the tool is allowed to return grades
         $mform->addElement('select', 'lti_acceptgrades', get_string('accept_grades_admin', 'lti'), $options);
-        $mform->setType('lti_acceptgrades', PARAM_INT);
         $mform->setDefault('lti_acceptgrades', '2');
         $mform->addHelpButton('lti_acceptgrades', 'accept_grades_admin', 'lti');
 
@@ -137,7 +131,6 @@ class mod_lti_edit_types_form extends moodleform{
         //$mform->addHelpButton('lti_allowroster', 'share_roster_admin', 'lti');
 
         $mform->addElement('checkbox', 'lti_forcessl', '&nbsp;', ' ' . get_string('force_ssl', 'lti'), $options);
-        $mform->setType('lti_forcessl', PARAM_BOOL);
         $mform->setDefault('lti_forcessl', '0');
         $mform->addHelpButton('lti_forcessl', 'force_ssl', 'lti');
 
@@ -172,11 +165,9 @@ class mod_lti_edit_types_form extends moodleform{
 
         $tab = optional_param('tab', '', PARAM_ALPHAEXT);
         $mform->addElement('hidden', 'tab', $tab);
-        $mform->setType('tab', PARAM_ALPHAEXT);
 
         $courseid = optional_param('course', 1, PARAM_INT);
         $mform->addElement('hidden', 'course', $courseid);
-        $mform->setType('course', PARAM_INT);
 
         //-------------------------------------------------------------------------------
         // Add standard buttons, common to all modules

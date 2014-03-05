@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,7 +18,7 @@
 /**
  * This file is responsible for serving of yui images
  *
- * @package   core
+ * @package   moodlecore
  * @copyright 2009 Petr Skoda (skodak)  {@link http://skodak.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -40,33 +41,24 @@ if ($slashargument = min_get_slash_argument()) {
 $etag = sha1($path);
 $parts = explode('/', $path);
 $version = array_shift($parts);
-if ($version === 'm') {
-    $version = 'moodle';
-}
+
 if ($version == 'moodle' && count($parts) >= 3) {
+    //TODO: this is a ugly hack because we should not load any libs here!
+    define('MOODLE_INTERNAL', true);
+    require_once($CFG->libdir.'/moodlelib.php');
     $frankenstyle = array_shift($parts);
     $module = array_shift($parts);
     $image = array_pop($parts);
     $subdir = join('/', $parts);
-    $dir = core_component::get_component_directory($frankenstyle);
-
-    // For shifted YUI modules, we need the YUI module name in frankenstyle format.
-    $frankenstylemodulename = join('-', array($version, $frankenstyle, $module));
-
-    // By default, try and use the /yui/build directory.
-    $imagepath = $dir . '/yui/build/' . $frankenstylemodulename . '/assets/skins/sam/' . $image;
-
-    // If the shifted versions don't exist, fall back to the non-shifted file.
-    if (!file_exists($imagepath) or !is_file($imagepath)) {
-        $imagepath = $dir . '/yui/' . $module . '/assets/skins/sam/' . $image;
-    }
+    $dir = get_component_directory($frankenstyle);
+    $imagepath = $dir.'/yui/'.$module.'/assets/skins/sam/'.$image;
 } else if ($version == 'gallery' && count($parts)==3) {
     list($module, $version, $image) = $parts;
     $imagepath = "$CFG->dirroot/lib/yui/gallery/$module/$version/assets/skins/sam/$image";
 } else if (count($parts) == 1 && ($version == $CFG->yui3version || $version == $CFG->yui2version)) {
     list($image) = $parts;
     if ($version == $CFG->yui3version) {
-        $imagepath = "$CFG->dirroot/lib/yuilib/$CFG->yui3version/assets/skins/sam/$image";
+        $imagepath = "$CFG->dirroot/lib/yuilib/$CFG->yui3version/build/assets/skins/sam/$image";
     } else  {
         $imagepath = "$CFG->dirroot/lib/yuilib/2in3/$CFG->yui2version/build/assets/skins/sam/$image";
     }
@@ -98,9 +90,9 @@ if (strpos($path, '/-1/') === false and (!empty($_SERVER['HTTP_IF_NONE_MATCH']) 
     header('HTTP/1.1 304 Not Modified');
     header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($imagepath)) .' GMT');
     header('Expires: '. gmdate('D, d M Y H:i:s', time() + $lifetime) .' GMT');
-    header('Cache-Control: public, max-age='.$lifetime.', no-transform');
+    header('Cache-Control: public, max-age='.$lifetime);
     header('Content-Type: '.$mimetype);
-    header('Etag: "'.$etag.'"');
+    header('Etag: '.$etag);
     die;
 }
 
@@ -117,11 +109,11 @@ function yui_image_cached($imagepath, $imagename, $mimetype, $etag) {
     header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($imagepath)) .' GMT');
     header('Expires: '. gmdate('D, d M Y H:i:s', time() + $lifetime) .' GMT');
     header('Pragma: ');
-    header('Cache-Control: public, max-age=315360000, no-transform');
+    header('Cache-Control: public, max-age=315360000');
     header('Accept-Ranges: none');
     header('Content-Type: '.$mimetype);
     header('Content-Length: '.filesize($imagepath));
-    header('Etag: "'.$etag.'"');
+    header('Etag: '.$etag);
 
     if (xsendfile($imagepath)) {
         die;

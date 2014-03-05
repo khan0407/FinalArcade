@@ -131,7 +131,6 @@ class lesson_page_type_essay extends lesson_page {
         $answers  = $this->get_answers();
         $properties->id = $this->properties->id;
         $properties->lessonid = $this->lesson->id;
-        $properties->timemodified = time();
         $properties = file_postupdate_standard_editor($properties, 'contents', array('noclean'=>true, 'maxfiles'=>EDITOR_UNLIMITED_FILES, 'maxbytes'=>$PAGE->course->maxbytes), context_module::instance($PAGE->cm->id), 'mod_lesson', 'page_contents', $properties->id);
         $DB->update_record("lesson_pages", $properties);
 
@@ -185,9 +184,9 @@ class lesson_page_type_essay extends lesson_page {
         $formattextdefoptions->context = $answerpage->context;
 
         foreach ($answers as $answer) {
-            if ($useranswer != null) {
+            if ($useranswer != NULL) {
                 $essayinfo = unserialize($useranswer->useranswer);
-                if ($essayinfo->response == null) {
+                if ($essayinfo->response == NULL) {
                     $answerdata->response = get_string("nocommentyet", "lesson");
                 } else {
                     $answerdata->response = s($essayinfo->response);

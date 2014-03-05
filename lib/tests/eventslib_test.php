@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Tests events subsystem.
+ * Tests events subsystems
  *
- * @package    core_event
- * @subpackage phpunit
+ * @package    core
+ * @subpackage event
  * @copyright  2007 onwards Martin Dougiamas (http://dougiamas.com)
  * @author     Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,38 +27,42 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-class core_eventslib_testcase extends advanced_testcase {
+class eventslib_testcase extends advanced_testcase {
 
     /**
      * Create temporary entries in the database for these tests.
      * These tests have to work no matter the data currently in the database
      * (meaning they should run on a brand new site). This means several items of
      * data have to be artificially inseminated (:-) in the DB.
+     * @return void
      */
     protected function setUp() {
         parent::setUp();
-        // Set global category settings to -1 (not force).
+        // Set global category settings to -1 (not force)
         eventslib_sample_function_handler('reset');
         eventslib_sample_handler_class::static_method('reset');
         events_update_definition('unittest');
 
-        $this->resetAfterTest();
+        $this->resetAfterTest(true);
     }
 
     /**
      * Tests the installation of event handlers from file
+     * @return void
      */
     public function test_events_update_definition__install() {
-        global $DB;
+        global $CFG, $DB;
 
         $dbcount = $DB->count_records('events_handlers', array('component'=>'unittest'));
         $handlers = array();
         require(__DIR__.'/fixtures/events.php');
-        $this->assertCount($dbcount, $handlers, 'Equal number of handlers in file and db: %s');
+        $filecount = count($handlers);
+        $this->assertEquals($dbcount, $filecount, 'Equal number of handlers in file and db: %s');
     }
 
     /**
-     * Tests the uninstallation of event handlers from file.
+     * Tests the uninstallation of event handlers from file
+     * @return void
      */
     public function test_events_update_definition__uninstall() {
         global $DB;
@@ -68,33 +72,36 @@ class core_eventslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests the update of event handlers from file.
+     * Tests the update of event handlers from file
+     * @return void
      */
     public function test_events_update_definition__update() {
         global $DB;
-        // First modify directly existing handler.
+        // first modify directly existing handler
         $handler = $DB->get_record('events_handlers', array('component'=>'unittest', 'eventname'=>'test_instant'));
 
         $original = $handler->handlerfunction;
 
-        // Change handler in db.
+        // change handler in db
         $DB->set_field('events_handlers', 'handlerfunction', serialize('some_other_function_handler'), array('id'=>$handler->id));
 
-        // Update the definition, it should revert the handler back.
+        // update the definition, it should revert the handler back
         events_update_definition('unittest');
         $handler = $DB->get_record('events_handlers', array('component'=>'unittest', 'eventname'=>'test_instant'));
-        $this->assertSame($handler->handlerfunction, $original, 'update should sync db with file definition: %s');
+        $this->assertEquals($handler->handlerfunction, $original, 'update should sync db with file definition: %s');
     }
 
     /**
-     * Tests events_trigger_is_registered() function.
+     * tests events_trigger_is_registered funtion()
+     * @return void
      */
     public function test_events_is_registered() {
         $this->assertTrue(events_is_registered('test_instant', 'unittest'));
     }
 
     /**
-     * Tests events_trigger() function.
+     * tests events_trigger funtion()
+     * @return void
      */
     public function test_events_trigger__instant() {
         $this->assertEquals(0, events_trigger('test_instant', 'ok'));
@@ -103,7 +110,8 @@ class core_eventslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests events_trigger() function.
+     * tests events_trigger funtion()
+     * @return void
      */
     public function test_events_trigger__cron() {
         $this->assertEquals(0, events_trigger('test_cron', 'ok'));
@@ -113,7 +121,8 @@ class core_eventslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests events_pending_count() function.
+     * tests events_pending_count()
+     * @return void
      */
     public function test_events_pending_count() {
         events_trigger('test_cron', 'ok');
@@ -123,21 +132,16 @@ class core_eventslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests events_trigger() function when instant handler fails.
+     * tests events_trigger funtion() when instant handler fails
+     * @return void
      */
     public function test_events_trigger__failed_instant() {
-        global $CFG;
-        $olddebug = $CFG->debug;
-
         $this->assertEquals(1, events_trigger('test_instant', 'fail'), 'fail first event: %s');
         $this->assertEquals(1, events_trigger('test_instant', 'ok'), 'this one should fail too: %s');
-
         $this->assertEquals(0, events_cron('test_instant'), 'all events should stay in queue: %s');
-        $this->assertDebuggingCalled();
-
         $this->assertEquals(2, events_pending_count('test_instant'), 'two events should in queue: %s');
         $this->assertEquals(0, eventslib_sample_function_handler('status'), 'verify no event dispatched yet: %s');
-        eventslib_sample_function_handler('ignorefail'); // Ignore "fail" eventdata from now on.
+        eventslib_sample_function_handler('ignorefail'); //ignore "fail" eventdata from now on
         $this->assertEquals(1, events_trigger('test_instant', 'ok'), 'this one should go to queue directly: %s');
         $this->assertEquals(3, events_pending_count('test_instant'), 'three events should in queue: %s');
         $this->assertEquals(0, eventslib_sample_function_handler('status'), 'verify previous event was not dispatched: %s');
@@ -151,9 +155,7 @@ class core_eventslib_testcase extends advanced_testcase {
 }
 
 
-/**
- * Test handler function.
- */
+// test handler function
 function eventslib_sample_function_handler($eventdata) {
     static $called = 0;
     static $ignorefail = false;
@@ -187,11 +189,9 @@ function eventslib_sample_function_handler($eventdata) {
 }
 
 
-/**
- * Test handler class with static method.
- */
+// test handler class with static method
 class eventslib_sample_handler_class {
-    public static function static_method($eventdata) {
+    static function static_method($eventdata) {
         static $called = 0;
         static $ignorefail = false;
 

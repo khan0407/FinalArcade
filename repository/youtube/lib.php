@@ -202,13 +202,4 @@ class repository_youtube extends repository {
     public function supported_returntypes() {
         return FILE_EXTERNAL;
     }
-
-    /**
-     * Is this repository accessing private data?
-     *
-     * @return bool
-     */
-    public function contains_private_data() {
-        return false;
-    }
 }

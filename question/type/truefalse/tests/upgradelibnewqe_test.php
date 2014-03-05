@@ -193,7 +193,6 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
             'variant' => 1,
             'maxmark' => 5,
             'minfraction' => 0,
-            'maxfraction' => 1,
             'flagged' => 0,
             'questionsummary' => 'The term ‘integration server’ is another name for an application server, true or false?',
             'rightanswer' => 'False',
@@ -381,7 +380,6 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
             'variant' => 1,
             'maxmark' => 1,
             'minfraction' => 0,
-            'maxfraction' => 1,
             'flagged' => 0,
             'questionsummary' => "[my market] \n\nWhat can you buy in this shop? Is this list accurate? \n\nMark true or false (for the list as a whole). \n\n_single tickets_ \n\n_weekly season tickets_ \n\n_monthly season tickets_ \n\n_wine and grappa_ \n\n_fruit and vegetables_ \n\n_tobacco _",
             'rightanswer' => 'False',
@@ -551,7 +549,6 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
             'variant' => 1,
             'maxmark' => 1,
             'minfraction' => 0,
-            'maxfraction' => 1,
             'flagged' => 0,
             'questionsummary' => 'Web services, integration servers, XML, application servers, message-oriented middleware and remote procedure call can be used to enable integrated systems?',
             'rightanswer' => 'True',
@@ -741,7 +738,6 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
             'variant' => 1,
             'maxmark' => 10.0000000,
             'minfraction' => 0,
-            'maxfraction' => 1,
             'flagged' => 0,
             'questionsummary' => '1 +1 = 2 ?',
             'rightanswer' => 'True',
@@ -933,7 +929,6 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
             'variant' => 1,
             'maxmark' => 10.0000000,
             'minfraction' => 0,
-            'maxfraction' => 1,
             'flagged' => 0,
             'questionsummary' => '1 +1 = 2 ?',
             'rightanswer' => 'True',
@@ -971,7 +966,7 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
         $this->compare_qas($expectedqa, $qa);
     }
 
-    public function test_truefalse_adaptive_qsession3() {
+ public function test_truefalse_adaptive_qsession3() {
         $quiz = (object) array(
             'id' => '1',
             'course' => '2',
@@ -1130,7 +1125,6 @@ class qtype_truefalse_attempt_upgrader_test extends question_attempt_upgrader_te
             'variant' => 1,
             'maxmark' => 1.0000000,
             'minfraction' => 0,
-            'maxfraction' => 1,
             'flagged' => 0,
             'questionsummary' => '',
             'rightanswer' => 'True',

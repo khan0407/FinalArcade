@@ -24,15 +24,13 @@ A definition:
             'overrideclassfile' => null,              // Optional
             'datasource' => null,                     // Optional
             'datasourcefile' => null,                 // Optional
-            'staticacceleration' => false,            // Optional
-            'staticaccelerationsize' => false,        // Optional
+            'persistent' => false,                    // Optional
+            'persistentmaxsize' => false,             // Optional
             'ttl' => 0,                               // Optional
             'mappingsonly' => false                   // Optional
             'invalidationevents' => array(            // Optional
                 'contextmarkeddirty'
             ),
-            'sharingoptions' => null                  // Optional
-            'defaultsharing' => null                  // Optional
         )
     );
 
@@ -110,9 +108,9 @@ The following points highlight things you should know about stores.
 * The store plugin can inherit the cache_is_lockable interface to handle its own locking.
 * The store plugin can inherit the cache_is_key_aware interface to handle is own has checks.
 * Store plugins inform the cache API about the things they support. Features can be required by a definition.
-  * Data guarantee - Data is guaranteed to exist in the cache once it is set there. It is never cleaned up to free space or because it has not been recently used.
-  * Multiple identifiers - Rather than a single string key, the parts that make up the key are passed as an array.
-  * Native TTL support - When required, the store supports native ttl and doesn't require the cache API to manage ttl of things given to the store.
+** Data guarantee - Data is guaranteed to exist in the cache once it is set there. It is never cleaned up to free space or because it has not been recently used.
+** Multiple identifiers - Rather than a single string key, the parts that make up the key are passed as an array.
+** Native TTL support - When required, the store supports native ttl and doesn't require the cache API to manage ttl of things given to the store.
 * There are two reserved store names, base and dummy. These are both used internally.
 
 ### Definition
@@ -144,30 +142,25 @@ The following optional settings can also be defined:
 * overrideclassfile - Included if required when using the overrideclass param.
 * datasource - If provided this class will be used as a data source for the definition. It must implement the cache_data_source interface.
 * datasourcefile - Included if required when using the datasource param.
-* staticacceleration - Any data passing through the cache will be held onto to make subsequent requests for it faster.
-* staticaccelerationsize - If set to an int this will be the maximum number of items stored in the static acceleration array.
+* persistent - If set to true the loader will be stored when first created and provided to subsequent requests. More on this later.
+* persistentmaxsize - If set to an int this will be the maximum number of items stored in the persistent cache.
 * ttl - Can be used to set a ttl value for data being set for this cache.
 * mappingsonly - This definition can only be used if there is a store mapping for it. More on this later.
 * invalidationevents - An array of events that should trigger this cache to invalidate.
-* sharingoptions - The sum of the possible sharing options that are applicable to the definition. An advanced setting.
-* defaultsharing - The default sharing option to use. It's highly recommended that you don't set this unless there is a very specific reason not to use the system default.
 
 It's important to note that internally the definition is also aware of the component. This is picked up when the definition is read, based upon the location of the caches.php file.
 
-The staticacceleration option.
+The persist option.
+As noted the persist option causes the loader generated for this definition to be stored when first created. Subsequent requests for this definition will be given the original loader instance.
 Data passed to or retrieved from the loader and its chained loaders gets cached by the instance.
+This option should be used when you know you will require the loader several times and perhaps in different areas of code.
 Because it caches key=>value data it avoids the need to re-fetch things from stores after the first request. Its good for performance, bad for memory.
-Memory use can be controlled by setting the staticaccelerationsize option.
 It should be used sparingly.
 
 The mappingsonly option.
 The administrator of a site can create mappings between stores and definitions. Allowing them to designate stores for specific definitions (caches).
 Setting this option to true means that the definition can only be used if a mapping has been made for it.
 Normally if no mappings exist then the default store for the definition mode is used.
-
-Sharing options.
-This controls the options available to the user when configuring the sharing of a definitions cached data.
-By default all sharing options are available to select. This particular option allows the developer to limit the options available to the admin configuring the cache.
 
 ### Data source
 Data sources allow cache _misses_ (requests for a key that doesn't exist) to be handled and loaded internally.
@@ -235,14 +228,3 @@ The first method is designed to be used when you have a single known definition 
 The second method is a lot more intensive for the system. There are defined invalidation events that definitions can "subscribe" to (through the definitions invalidationevents option).
 When you invalidate by event the cache API finds all of the definitions that subscribe to the event, it then loads the stores for each of those definitions and purges the keys from each store.
 This is obviously a recursive, and therefore, intense process.
-
-### Unit tests
-Both the cache API and the cache stores have unit tests.
-Please be aware that several of the cache stores require configuration in order to be able operate in the unit tests.
-Tests for stores requiring configuration that havn't been configured will be skipped.
-All configuration is done in your sites config.php through definitions.
-The following snippet illustates how to configure the three core cache stores that require configuration.
-
-    define('TEST_CACHESTORE_MEMCACHE_TESTSERVERS', '127.0.0.1:11211');
-    define('TEST_CACHESTORE_MEMCACHED_TESTSERVERS', '127.0.0.1:11211');
-    define('TEST_CACHESTORE_MONGODB_TESTSERVER', 'mongodb://localhost:27017');

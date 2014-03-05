@@ -206,9 +206,7 @@ class ChatDaemon {
         // if this is needed, as we have a nonblocking socket anyway.
         // If trouble starts to creep up, we 'll restore this.
 //        $check_socket = array($connection);
-//        $read = null;
-//        $except = null;
-//        $socket_changed = socket_select($read, $check_socket, $except, 0, 0);
+//        $socket_changed = socket_select($read = NULL, $check_socket, $except = NULL, 0, 0);
 //        if($socket_changed > 0) {
 //
 //            // ABOVE CODE GOES HERE
@@ -347,7 +345,6 @@ EOD;
 
         switch($type) {
             case CHAT_SIDEKICK_BEEP:
-
                 // Incoming beep
                 $msg = New stdClass;
                 $msg->chatid    = $this->sets_info[$sessionid]['chatid'];
@@ -358,8 +355,8 @@ EOD;
                 $msg->timestamp = time();
 
                 // Commit to DB
-                chat_send_chatmessage($this->sets_info[$sessionid]['chatuser'], $msg->message, false,
-                    $this->sets_info[$sessionid]['cm']);
+                $DB->insert_record('chat_messages', $msg, false);
+                $DB->insert_record('chat_messages_current', $msg, false);
 
                 // OK, now push it out to all users
                 $this->message_broadcast($msg, $this->sets_info[$sessionid]['user']);
@@ -453,8 +450,8 @@ EOD;
                 $msg->message = $msg->message;
 
                 // Commit to DB
-                chat_send_chatmessage($this->sets_info[$sessionid]['chatuser'], $msg->message, false,
-                    $this->sets_info[$sessionid]['cm']);
+                $DB->insert_record('chat_messages', $msg, false);
+                $DB->insert_record('chat_messages_current', $msg, false);
 
                 // Undo the hack
                 $msg->message = $origmsg;
@@ -520,10 +517,6 @@ EOD;
             $this->dismiss_half($sessionid);
             return false;
         }
-        if (!($cm = get_coursemodule_from_instance('chat', $chat->id, $course->id))) {
-            $this->dismiss_half($sessionid);
-            return false;
-        }
 
         global $CHAT_HTMLHEAD_JS, $CFG;
 
@@ -538,7 +531,6 @@ EOD;
             'courseid'  => $course->id,
             'chatuser'  => $chatuser,
             'chatid'    => $chat->id,
-            'cm'        => $cm,
             'user'      => $user,
             'userid'    => $user->id,
             'groupid'   => $chatuser->groupid,
@@ -581,7 +573,8 @@ EOD;
         $msg->message = 'enter';
         $msg->timestamp = time();
 
-        chat_send_chatmessage($chatuser, $msg->message, true);
+        $DB->insert_record('chat_messages', $msg, false);
+        $DB->insert_record('chat_messages_current', $msg, false);
         $this->message_broadcast($msg, $this->sets_info[$sessionid]['user']);
 
         return true;
@@ -698,9 +691,7 @@ EOD;
 
     function conn_accept() {
         $read_socket = array($this->listen_socket);
-        $write = null;
-        $except = null;
-        $changed = socket_select($read_socket, $write, $except, 0, 0);
+        $changed = socket_select($read_socket, $write = NULL, $except = NULL, 0, 0);
 
         if(!$changed) {
             return false;
@@ -730,9 +721,7 @@ EOD;
             return 0;
         }
 
-        $a = null;
-        $b = null;
-        $retval = socket_select($monitor, $a, $b, null);
+        $retval = socket_select($monitor, $a = NULL, $b = NULL, NULL);
         $handles = $monitor;
 
         return $retval;
@@ -792,7 +781,8 @@ EOD;
         $msg->timestamp = time();
 
         $this->trace('User has disconnected, destroying uid '.$info['userid'].' with SID '.$sessionid, E_USER_WARNING);
-        chat_send_chatmessage($info['chatuser'], $msg->message, true);
+        $DB->insert_record('chat_messages', $msg, false);
+        $DB->insert_record('chat_messages_current', $msg, false);
 
         // *************************** IMPORTANT
         //
@@ -1014,9 +1004,7 @@ while(true) {
     if($DAEMON->conn_activity_ufo($active)) {
         foreach($active as $handle) {
             $read_socket = array($handle);
-            $write = null;
-            $except = null;
-            $changed = socket_select($read_socket, $write, $except, 0, 0);
+            $changed = socket_select($read_socket, $write = NULL, $except = NULL, 0, 0);
 
             if($changed > 0) {
                 // Let's see what it has to say

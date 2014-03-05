@@ -49,7 +49,7 @@ $string['displayselect_help'] = 'This setting, together with the file type and w
 * Force download - The user is prompted to download the file
 * Open - Only the file is displayed in the browser window
 * In pop-up - The file is displayed in a new browser window without menus or an address bar
-* In frame - The file is displayed within a frame below the navigation bar and file description
+* In frame - The file is displayed within a frame below the the navigation bar and file description
 * New window - The file is displayed in a new browser window with menus and an address bar';
 $string['displayselect_link'] = 'mod/file/mod';
 $string['displayselectexplain'] = 'Choose display type, unfortunately not all types are suitable for all files.';
@@ -78,7 +78,7 @@ $string['modulename_link'] = 'mod/resource/view';
 $string['modulenameplural'] = 'Files';
 $string['neverseen'] = 'Never seen';
 $string['notmigrated'] = 'This legacy resource type ({$a}) was not yet migrated, sorry.';
-$string['optionsheader'] = 'Display options';
+$string['optionsheader'] = 'Options';
 $string['page-mod-resource-x'] = 'Any file module page';
 $string['pluginadministration'] = 'File module administration';
 $string['pluginname'] = 'File';
@@ -88,6 +88,8 @@ $string['popupresource'] = 'This resource should appear in a popup window.';
 $string['popupresourcelink'] = 'If it didn\'t, click here: {$a}';
 $string['popupwidth'] = 'Pop-up width (in pixels)';
 $string['popupwidthexplain'] = 'Specifies default width of popup windows.';
+$string['printheading'] = 'Display resource name';
+$string['printheadingexplain'] = 'Display resource name above content? Some display types may not display resource name even if enabled.';
 $string['printintro'] = 'Display resource description';
 $string['printintroexplain'] = 'Display resource description below content? Some display types may not display description even if enabled.';
 $string['resource:addinstance'] = 'Add a new resource';

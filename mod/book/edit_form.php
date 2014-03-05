@@ -42,11 +42,7 @@ class book_chapter_edit_form extends moodleform {
 
         $mform = $this->_form;
 
-        if (!empty($chapter->id)) {
-            $mform->addElement('header', 'general', get_string('editingchapter', 'mod_book'));
-        } else {
-            $mform->addElement('header', 'general', get_string('addafter', 'mod_book'));
-        }
+        $mform->addElement('header', 'general', get_string('edit'));
 
         $mform->addElement('text', 'title', get_string('chaptertitle', 'mod_book'), array('size'=>'30'));
         $mform->setType('title', PARAM_RAW);

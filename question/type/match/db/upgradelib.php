@@ -17,9 +17,10 @@
 /**
  * Upgrade library code for the match question type.
  *
- * @package   qtype_match
- * @copyright 2010 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    qtype
+ * @subpackage match
+ * @copyright  2010 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 
@@ -32,8 +33,8 @@ defined('MOODLE_INTERNAL') || die();
  *
  * This class is used by the code in question/engine/upgrade/upgradelib.php.
  *
- * @copyright 2010 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2010 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_match_qe2_attempt_updater extends question_qtype_attempt_updater {
     protected $stems;
@@ -97,7 +98,7 @@ class qtype_match_qe2_attempt_updater extends question_qtype_attempt_updater {
 
     protected function lookup_choice($choice) {
         foreach ($this->question->options->subquestions as $matchsub) {
-            if ($matchsub->id == $choice) {
+            if ($matchsub->code == $choice) {
                 if (array_key_exists($matchsub->id, $this->choices)) {
                     return $matchsub->id;
                 } else {

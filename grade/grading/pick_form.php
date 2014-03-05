@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,7 +18,8 @@
 /**
  * Defines forms used by pick.php
  *
- * @package    core_grading
+ * @package    core
+ * @subpackage grading
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,10 +30,6 @@ require_once($CFG->dirroot.'/lib/formslib.php');
 
 /**
  * Allows to search for a specific shared template
- *
- * @package    core_grading
- * @copyright  2011 David Mudrak <david@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grading_search_template_form extends moodleform {
 

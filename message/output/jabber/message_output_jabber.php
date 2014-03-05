@@ -43,19 +43,14 @@ class message_output_jabber extends message_output {
     function send_message($eventdata){
         global $CFG;
 
-        // Skip any messaging of suspended and deleted users.
-        if ($eventdata->userto->auth === 'nologin' or $eventdata->userto->suspended or $eventdata->userto->deleted) {
-            return true;
-        }
-
         if (!empty($CFG->noemailever)) {
             // hidden setting for development sites, set in config.php if needed
-            debugging('$CFG->noemailever is active, no jabber message sent.', DEBUG_MINIMAL);
+            debugging('$CFG->noemailever active, no jabber message sent.', DEBUG_MINIMAL);
             return true;
         }
 
-        if (PHPUNIT_TEST) {
-            // No connection to external servers allowed in phpunit tests.
+        // skip any messaging suspended and deleted users
+        if ($eventdata->userto->auth === 'nologin' or $eventdata->userto->suspended or $eventdata->userto->deleted) {
             return true;
         }
 

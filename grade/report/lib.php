@@ -271,21 +271,18 @@ abstract class grade_report {
      * @return int Count of users
      */
     public function get_numusers($groups=true) {
-        global $DB;
+        global $CFG, $DB;
 
         $groupsql      = "";
         $groupwheresql = "";
 
-        // Limit to users with a gradeable role.
+        //limit to users with a gradeable role
         list($gradebookrolessql, $gradebookrolesparams) = $DB->get_in_or_equal(explode(',', $this->gradebookroles), SQL_PARAMS_NAMED, 'grbr0');
 
-        // Limit to users with an active enrollment.
+        //limit to users with an active enrollment
         list($enrolledsql, $enrolledparams) = get_enrolled_sql($this->context);
 
-        // We want to query both the current context and parent contexts.
-        list($relatedctxsql, $relatedctxparams) = $DB->get_in_or_equal($this->context->get_parent_context_ids(true), SQL_PARAMS_NAMED, 'relatedctx');
-
-        $params = array_merge($gradebookrolesparams, $enrolledparams, $relatedctxparams);
+        $params = array_merge($gradebookrolesparams, $enrolledparams);
 
         if ($groups) {
             $groupsql      = $this->groupsql;
@@ -303,7 +300,7 @@ abstract class grade_report {
                       WHERE ra.roleid $gradebookrolessql
                             AND u.deleted = 0
                             $groupwheresql
-                            AND ra.contextid $relatedctxsql";
+                            AND ra.contextid ".get_related_contexts_string($this->context);
         return $DB->count_records_sql($countsql, $params);
     }
 
@@ -361,12 +358,7 @@ abstract class grade_report {
         // If we're dealing with multiple courses we need to know when we've moved on to a new course.
         static $previous_courseid = null;
 
-        if (!is_array($this->showtotalsifcontainhidden)) {
-            debugging('showtotalsifcontainhidden should be an array', DEBUG_DEVELOPER);
-            $this->showtotalsifcontainhidden = array($courseid => $this->showtotalsifcontainhidden);
-        }
-
-        if ($this->showtotalsifcontainhidden[$courseid] == GRADE_REPORT_SHOW_REAL_TOTAL_IF_CONTAINS_HIDDEN) {
+        if( $this->showtotalsifcontainhidden==GRADE_REPORT_SHOW_REAL_TOTAL_IF_CONTAINS_HIDDEN ) {
             return $finalgrade;
         }
 
@@ -404,7 +396,7 @@ abstract class grade_report {
 
         //if the item definitely depends on a hidden item
         if (array_key_exists($course_item->id, $hiding_affected['altered'])) {
-            if( !$this->showtotalsifcontainhidden[$courseid] ) {
+            if( !$this->showtotalsifcontainhidden ) {
                 //hide the grade
                 $finalgrade = null;
             }
@@ -414,7 +406,7 @@ abstract class grade_report {
             }
         } else if (!empty($hiding_affected['unknown'][$course_item->id])) {
             //not sure whether or not this item depends on a hidden item
-            if( !$this->showtotalsifcontainhidden[$courseid] ) {
+            if( !$this->showtotalsifcontainhidden ) {
                 //hide the grade
                 $finalgrade = null;
             }

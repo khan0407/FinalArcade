@@ -254,7 +254,8 @@ class file_info_context_coursecat extends file_info {
      * @return file_info|null fileinfo instance or null for root directory
      */
     public function get_parent() {
-        $parent = $this->context->get_parent_context();
+        $cid = get_parent_contextid($this->context);
+        $parent = context::instance_by_id($cid, IGNORE_MISSING);
         return $this->browser->get_file_info($parent);
     }
 }

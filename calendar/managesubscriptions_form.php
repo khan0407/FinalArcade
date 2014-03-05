@@ -93,7 +93,7 @@ class calendar_addsubscription_form extends moodleform {
         }
 
         $mform->addElement('hidden', 'course');
-        $mform->setType('course', PARAM_INT);
+        $mform->addElement('hidden', 'sesskey', sesskey());
         $mform->addElement('submit', 'add', get_string('add'));
     }
 

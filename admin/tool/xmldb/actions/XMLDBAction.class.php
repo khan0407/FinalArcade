@@ -215,28 +215,23 @@ class XMLDBAction {
      * @return string PHP code to be used to mark a reached savepoint
      */
     function upgrade_savepoint_php($structure) {
-        global $CFG;
-
-        // NOTE: $CFG->admin !== 'admin' is not supported in XMLDB editor, sorry.
 
         $path = $structure->getPath();
-        $plugintype = 'error';
 
-        if ($path === 'lib/db') {
+        // Trim "db" from path
+        $path = dirname($path);
+
+        // Get pluginname, plugindir and plugintype
+        $pluginname = basename($path);
+        if ($path == 'lib') { // exception for lib (not proper plugin)
+            $plugindir = 'lib';
             $plugintype = 'lib';
-            $pluginname = null;
-
-        } else {
-            $path = dirname($path);
-            $pluginname = basename($path);
-            $path = dirname($path);
-            $plugintypes = core_component::get_plugin_types();
-            foreach ($plugintypes as $type => $fulldir) {
-                if ($CFG->dirroot.'/'.$path === $fulldir) {
-                    $plugintype = $type;
-                    break;
-                }
-            }
+        } else { // rest of plugins
+            // TODO: this is not nice and may fail, plugintype should be passed around somehow instead
+            $plugintypes = get_plugin_types(false);
+            $plugindir = dirname($path);
+            $plugindir = str_replace('\\', '/', $plugindir);
+            $plugintype = array_search($plugindir, $plugintypes);
         }
 
         $result = '';
@@ -244,22 +239,22 @@ class XMLDBAction {
         switch ($plugintype ) {
             case 'lib': // has own savepoint function
                 $result = XMLDB_LINEFEED .
-                          '        // Main savepoint reached.' . XMLDB_LINEFEED .
+                          '        // Main savepoint reached' . XMLDB_LINEFEED .
                           '        upgrade_main_savepoint(true, XXXXXXXXXX);' . XMLDB_LINEFEED;
                 break;
             case 'mod': // has own savepoint function
                 $result = XMLDB_LINEFEED .
-                          '        // ' . ucfirst($pluginname) . ' savepoint reached.' . XMLDB_LINEFEED .
+                          '        // ' . $pluginname . ' savepoint reached' . XMLDB_LINEFEED .
                           '        upgrade_mod_savepoint(true, XXXXXXXXXX, ' . "'$pluginname'" . ');' . XMLDB_LINEFEED;
                 break;
             case 'block': // has own savepoint function
                 $result = XMLDB_LINEFEED .
-                          '        // ' . ucfirst($pluginname) . ' savepoint reached.' . XMLDB_LINEFEED .
+                          '        // ' . $pluginname . ' savepoint reached' . XMLDB_LINEFEED .
                           '        upgrade_block_savepoint(true, XXXXXXXXXX, ' . "'$pluginname'" . ');' . XMLDB_LINEFEED;
                 break;
             default: // rest of plugins
                 $result = XMLDB_LINEFEED .
-                          '        // ' . ucfirst($pluginname) . ' savepoint reached.' . XMLDB_LINEFEED .
+                          '        // ' . $pluginname . ' savepoint reached' . XMLDB_LINEFEED .
                           '        upgrade_plugin_savepoint(true, XXXXXXXXXX, ' . "'$plugintype'" . ', ' . "'$pluginname'" . ');' . XMLDB_LINEFEED;
         }
         return $result;

@@ -83,12 +83,12 @@ class question_category_list_item extends list_item {
         if (($this->parentlist->nextlist !== null) && $last && $toplevel && (count($this->parentlist->items)>1)){
             $url = new moodle_url($this->parentlist->pageurl, array('movedowncontext'=>$this->id, 'tocontext'=>$this->parentlist->nextlist->context->id, 'sesskey'=>sesskey()));
             $this->icons['down'] = $this->image_icon(
-                get_string('shareincontext', 'question', $this->parentlist->nextlist->context->get_context_name()), $url, 'down');
+                get_string('shareincontext', 'question', print_context_name($this->parentlist->nextlist->context)), $url, 'down');
         }
         if (($this->parentlist->lastlist !== null) && $first && $toplevel && (count($this->parentlist->items)>1)){
             $url = new moodle_url($this->parentlist->pageurl, array('moveupcontext'=>$this->id, 'tocontext'=>$this->parentlist->lastlist->context->id, 'sesskey'=>sesskey()));
             $this->icons['up'] = $this->image_icon(
-                get_string('shareincontext', 'question', $this->parentlist->lastlist->context->get_context_name()), $url, 'up');
+                get_string('shareincontext', 'question', print_context_name($this->parentlist->lastlist->context)), $url, 'up');
         }
     }
 
@@ -134,28 +134,25 @@ class question_category_list_item extends list_item {
  */
 class question_category_object {
 
+    var $str;
     /**
-     * @var array common language strings.
+     * Nested lists to display categories.
+     *
+     * @var array
      */
-    public $str;
-
-    /**
-     * @var array nested lists to display categories.
-     */
-    public $editlists = array();
-    public $newtable;
-    public $tab;
-    public $tabsize = 3;
+    var $editlists = array();
+    var $newtable;
+    var $tab;
+    var $tabsize = 3;
 
     /**
      * @var moodle_url Object representing url for this page
      */
-    public $pageurl;
-
+    var $pageurl;
     /**
      * @var question_category_edit_form Object representing form for adding / editing categories.
      */
-    public $catform;
+    var $catform;
 
     /**
      * Constructor
@@ -258,8 +255,7 @@ class question_category_object {
             $listhtml = $list->to_html(0, array('str'=>$this->str));
             if ($listhtml){
                 echo $OUTPUT->box_start('boxwidthwide boxaligncenter generalbox questioncategories contextlevel' . $list->context->contextlevel);
-                $fullcontext = context::instance_by_id($context);
-                echo $OUTPUT->heading(get_string('questioncatsfor', 'question', $fullcontext->get_context_name()), 3);
+                echo $OUTPUT->heading(get_string('questioncatsfor', 'question', print_context_name(context::instance_by_id($context))), 3);
                 echo $listhtml;
                 echo $OUTPUT->box_end();
             }
@@ -380,7 +376,7 @@ class question_category_object {
     /**
      * Creates a new category with given params
      */
-    public function add_category($newparent, $newcategory, $newinfo, $return = false, $newinfoformat = FORMAT_HTML) {
+    public function add_category($newparent, $newcategory, $newinfo, $return = false) {
         global $DB;
         if (empty($newcategory)) {
             print_error('categorynamecantbeblank', 'question');
@@ -400,7 +396,6 @@ class question_category_object {
         $cat->contextid = $contextid;
         $cat->name = $newcategory;
         $cat->info = $newinfo;
-        $cat->infoformat = $newinfoformat;
         $cat->sortorder = 999;
         $cat->stamp = make_unique_id_code();
         $categoryid = $DB->insert_record("question_categories", $cat);
@@ -414,7 +409,7 @@ class question_category_object {
     /**
      * Updates an existing category with given params
      */
-    public function update_category($updateid, $newparent, $newname, $newinfo, $newinfoformat = FORMAT_HTML) {
+    public function update_category($updateid, $newparent, $newname, $newinfo) {
         global $CFG, $DB;
         if (empty($newname)) {
             print_error('categorynamecantbeblank', 'question');
@@ -446,7 +441,6 @@ class question_category_object {
         $cat->id = $updateid;
         $cat->name = $newname;
         $cat->info = $newinfo;
-        $cat->infoformat = $newinfoformat;
         $cat->parent = $parentid;
         $cat->contextid = $tocontextid;
         $DB->update_record('question_categories', $cat);

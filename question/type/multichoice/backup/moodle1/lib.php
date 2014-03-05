@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -43,15 +44,15 @@ class moodle1_qtype_multichoice_handler extends moodle1_qtype_handler {
      */
     public function process_question(array $data, array $raw) {
 
-        // Convert and write the answers first.
+        // convert and write the answers first
         if (isset($data['answers'])) {
             $this->write_answers($data['answers'], $this->pluginname);
         }
 
-        // Convert and write the multichoice.
+        // convert and write the multichoice
         if (!isset($data['multichoice'])) {
             // This should never happen, but it can do if the 1.9 site contained
-            // corrupt data.
+            // corrupt data/
             $data['multichoice'] = array(array(
                 'single'                         => 1,
                 'shuffleanswers'                 => 1,
@@ -77,13 +78,13 @@ class moodle1_qtype_multichoice_handler extends moodle1_qtype_handler {
     protected function write_multichoice(array $multichoices, $oldquestiontextformat, $questionid) {
         global $CFG;
 
-        // The grouped array is supposed to have just one element - let us use foreach anyway
-        // just to be sure we do not loose anything.
+        // the grouped array is supposed to have just one element - let us use foreach anyway
+        // just to be sure we do not loose anything
         foreach ($multichoices as $multichoice) {
-            // Append an artificial 'id' attribute (is not included in moodle.xml).
+            // append an artificial 'id' attribute (is not included in moodle.xml)
             $multichoice['id'] = $this->converter->get_nextid();
 
-            // Replay the upgrade step 2009021801.
+            // replay the upgrade step 2009021801
             $multichoice['correctfeedbackformat']               = 0;
             $multichoice['partiallycorrectfeedbackformat']      = 0;
             $multichoice['incorrectfeedbackformat']             = 0;

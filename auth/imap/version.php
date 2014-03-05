@@ -17,13 +17,14 @@
 /**
  * Version details
  *
- * @package    auth_imap
+ * @package    auth
+ * @subpackage imap
  * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2013110500;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013110500;        // Requires this Moodle version
+$plugin->version   = 2012112900;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2012112900;        // Requires this Moodle version
 $plugin->component = 'auth_imap';       // Full name of the plugin (used for diagnostics)

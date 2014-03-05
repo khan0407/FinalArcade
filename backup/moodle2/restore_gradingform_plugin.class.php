@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,24 +16,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Contains class restore_gradingform_plugin responsible for advanced grading form plugin backup
- *
- * @package    core_backup
+ * Defines restore_gradingform_plugin class
+ * @package     core_backup
  * @subpackage  moodle2
- * @copyright  2011 David Mudrak <david@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @category    backup
+ * @copyright   2011 David Mudrak <david@moodle.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Base class for restoring all advanced grading form plugins
- *
- * As an example of implementation see {@link restore_gradingform_rubric_plugin}
- *
- * @copyright  2011 David Mudrak <david@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @category   backup
+ * Base class for all advanced grading form plugins
  */
 abstract class restore_gradingform_plugin extends restore_plugin {
 

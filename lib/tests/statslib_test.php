@@ -17,8 +17,8 @@
 /**
  * Tests for ../statslib.php
  *
- * @package    core_stats
- * @category   phpunit
+ * @package    core
+ * @subpackage stats
  * @copyright  2012 Tyler Bannister
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,12 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->libdir . '/statslib.php');
-require_once($CFG->libdir . '/cronlib.php');
 
 /**
- * Test functions that affect daily stats.
+ * Test functions that affect daily stats
  */
-class core_statslib_testcase extends advanced_testcase {
+class statslib_daily_testcase extends advanced_testcase {
     /** The student role ID **/
     const STID = 5;
 
@@ -50,11 +49,11 @@ class core_statslib_testcase extends advanced_testcase {
     protected $replacements = null;
 
     /**
-     * Set up the database for tests.
+     * Set up the database for tests
      *
      * This function is needed so that daily_log_provider has the before-test set up from setUp()
      */
-    protected function set_up_db() {
+    public function setUpDB() {
         global $DB;
 
         if ($DB->record_exists('user', array('username' => 'user1'))) {
@@ -70,7 +69,7 @@ class core_statslib_testcase extends advanced_testcase {
 
         $success = enrol_try_internal_enrol($course1->id, $user1->id, 5);
 
-        if (!$success) {
+        if (! $success) {
             trigger_error('User enrollment failed', E_USER_ERROR);
         }
 
@@ -88,13 +87,13 @@ class core_statslib_testcase extends advanced_testcase {
         global $CFG;
         parent::setUp();
 
-        // Settings to force statistic to run during testing.
+        // Settings to force statistic to run during testing
         $CFG->timezone                = self::TIMEZONE;
         $CFG->statsfirstrun           = 'all';
         $CFG->statslastdaily          = 0;
         $CFG->statslastexecution      = 0;
 
-        // Figure out the broken day start so I can figure out when to the start time should be.
+        // Figure out the broken day start so I can figure out when to the start time should be
         $time   = time();
         $offset = get_timezone_offset($CFG->timezone);
         $stime  = $time + $offset;
@@ -106,21 +105,15 @@ class core_statslib_testcase extends advanced_testcase {
         $CFG->statsruntimestarthour   = $shour;
         $CFG->statsruntimestartminute = 0;
 
-        $this->set_up_db();
+        $this->setUpDB();
 
-        $this->resetAfterTest();
-    }
-
-    protected function tearDown() {
-        // Reset the timeouts.
-        set_time_limit(0);
+        $this->resetAfterTest(true);
     }
 
     /**
      * Function to setup database.
      *
      * @param array $dataset An array of tables including the log table.
-     * @param array $tables
      */
     protected function prepare_db($dataset, $tables) {
         global $DB;
@@ -145,7 +138,9 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Load dataset from XML file.
+     * Load dataset from XML file
+     *
+     * @param string $file The name of the file to load
      */
     protected function generate_replacement_list() {
         global $CFG, $DB;
@@ -178,25 +173,25 @@ class core_statslib_testcase extends advanced_testcase {
         $gr         = get_guest_role();
 
         $this->replacements = array(
-            // Start and end times.
-            '[start_0]'          => $start -  14410,  // 4 hours before.
-            '[start_1]'          => $start +  14410,  // 4 hours after.
+            // Start and end times
+            '[start_0]'          => $start -  14410,  // 4 hours before
+            '[start_1]'          => $start +  14410,  // 4 hours after
             '[start_2]'          => $start +  14420,
             '[start_3]'          => $start +  14430,
-            '[start_4]'          => $start + 100800, // 28 hours after.
+            '[start_4]'          => $start + 100800, // 28 hours after
             '[end]'              => stats_get_next_day_start($start),
             '[end_no_logs]'      => stats_get_next_day_start($startnolog),
 
-            // User ids.
+            // User ids
             '[guest_id]'         => $guest->id,
             '[user1_id]'         => $user1->id,
             '[user2_id]'         => $user2->id,
 
-            // Course ids.
+            // Course ids
             '[course1_id]'       => $course1->id,
             '[site_id]'          => SITEID,
 
-            // Role ids.
+            // Role ids
             '[frontpage_roleid]' => (int) $CFG->defaultfrontpageroleid,
             '[guest_roleid]'     => $gr->id,
             '[student_roleid]'   => self::STID,
@@ -204,10 +199,9 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Load dataset from XML file.
+     * Load dataset from XML file
      *
      * @param string $file The name of the file to load
-     * @return array
      */
     protected function load_xml_data_file($file) {
         static $replacements = null;
@@ -229,12 +223,12 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Provides the log data for test_statslib_cron_daily.
+     * Provides the log data for test_statslib_cron_daily
      */
     public function daily_log_provider() {
         global $CFG, $DB;
 
-        $this->set_up_db();
+        $this->setUpDB();
 
         $tests = array('00', '01', '02', '03', '04', '05', '06', '07', '08');
 
@@ -250,8 +244,7 @@ class core_statslib_testcase extends advanced_testcase {
     /**
      * Compare the expected stats to those in the database.
      *
-     * @param array $expected
-     * @param string $output
+     * @param array $stats An array of arrays of arrays of both types of stats
      */
     protected function verify_stats($expected, $output = '') {
         global $DB;
@@ -270,7 +263,7 @@ class core_statslib_testcase extends advanced_testcase {
                 $message .= "\nCron output:\n$output";
             }
 
-            $this->assertCount($rows, $records, $message);
+            $this->assertEquals($rows, sizeof($records), $message);
 
             for ($i = 0; $i < $rows; $i++) {
                 $row   = $table->getRow($i);
@@ -296,29 +289,31 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Test progress output when debug is on.
+     * Test progress output when debug is on
      */
     public function test_statslib_progress_debug() {
-        set_debugging(DEBUG_ALL);
+        global $CFG;
+
+        $CFG->debug = DEBUG_ALL;
         $this->expectOutputString('1:0 ');
         stats_progress('init');
         stats_progress('1');
-        $this->resetDebugging();
     }
 
     /**
-     * Test progress output when debug is off.
+     * Test progress output when debug is off
      */
     public function test_statslib_progress_no_debug() {
-        set_debugging(DEBUG_NONE);
+        global $CFG;
+
+        $CFG->debug = DEBUG_NONE;
         $this->expectOutputString('.');
         stats_progress('init');
         stats_progress('1');
-        $this->resetDebugging();
     }
 
     /**
-     * Test the function that gets the start date from the config.
+     * Test the function that gets the start date from the config
      */
     public function test_statslib_get_start_from() {
         global $CFG, $DB;
@@ -351,7 +346,7 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Test the function that calculates the start of the day.
+     * Test the function that calculates the start of the day
      *
      * NOTE: I don't think this is the way this function should work.
      *       This test documents the current functionality.
@@ -372,7 +367,7 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Test the function that gets the start of the next day.
+     * Test the function that gets the start of the next day
      */
     public function test_statslib_get_next_day_start() {
         global $CFG;
@@ -382,7 +377,7 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Test the function that gets the action names.
+     * Test the function that gets the action names
      *
      * Note: The function results depend on installed modules.  The hard coded lists are the
      *       defaults for a new Moodle 2.3 install.
@@ -568,7 +563,7 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Test the daily stats function.
+     * Test the daily stats function
      *
      * @depends test_statslib_get_base_daily
      * @depends test_statslib_get_next_day_start
@@ -593,8 +588,7 @@ class core_statslib_testcase extends advanced_testcase {
     }
 
     /**
-     * Test the daily stats function.
-     *
+     * Test the daily stats function
      * @depends test_statslib_get_base_daily
      * @depends test_statslib_get_next_day_start
      */

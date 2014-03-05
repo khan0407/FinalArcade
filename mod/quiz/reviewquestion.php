@@ -50,7 +50,6 @@ $accessmanager = $attemptobj->get_access_manager(time());
 $options = $attemptobj->get_display_options(true);
 
 $PAGE->set_pagelayout('popup');
-$PAGE->set_heading($attemptobj->get_course()->fullname);
 $output = $PAGE->get_renderer('mod_quiz');
 
 // Check permissions.

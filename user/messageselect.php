@@ -58,12 +58,13 @@ if ($deluser !== 0) {
     $url->param('deluser', $deluser);
 }
 $PAGE->set_url($url);
+$PAGE->set_context(context_system::instance());
 
 if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('invalidcourseid');
 }
 
-require_login($course);
+require_login();
 
 $coursecontext = context_course::instance($id);   // Course context
 $systemcontext = context_system::instance();   // SYSTEM context
@@ -92,12 +93,10 @@ $count = 0;
 
 if ($data = data_submitted()) {
     require_sesskey();
-    $namefields = get_all_user_name_fields(true);
     foreach ($data as $k => $v) {
         if (preg_match('/^(user|teacher)(\d+)$/',$k,$m)) {
             if (!array_key_exists($m[2],$SESSION->emailto[$id])) {
-                if ($user = $DB->get_record_select('user', "id = ?", array($m[2]), 'id,
-                        ' . $namefields . ',idnumber,email,mailformat,lastaccess, lang, maildisplay')) {
+                if ($user = $DB->get_record_select('user', "id = ?", array($m[2]), 'id,firstname,lastname,idnumber,email,mailformat,lastaccess, lang, maildisplay')) {
                     $SESSION->emailto[$id][$m[2]] = $user;
                     $count++;
                 }
@@ -174,6 +173,7 @@ if ((!empty($send) || !empty($preview) || !empty($edit)) && (empty($messagebody)
 
 if (count($SESSION->emailto[$id])) {
     require_sesskey();
+    $usehtmleditor = can_use_html_editor();
     require("message.html");
 }
 

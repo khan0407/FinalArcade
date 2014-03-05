@@ -341,7 +341,7 @@ class block_manager {
      * output the blocks anyway, so we are not doing wasted effort.)
      *
      * @param string $region a block region that exists on this page.
-     * @param core_renderer $output a core_renderer. normally the global $OUTPUT.
+     * @param object $output a core_renderer. normally the global $OUTPUT.
      * @return boolean Whether there is anything in this region.
      */
     public function region_has_content($region, $output) {
@@ -445,9 +445,6 @@ class block_manager {
         if (array_key_exists($region, $this->visibleblockcontent)) {
             throw new coding_exception('block_manager has already prepared the blocks in region ' .
                     $region . 'for output. It is too late to add a fake block.');
-        }
-        if (!isset($bc->attributes['data-block'])) {
-            $bc->attributes['data-block'] = '_fake';
         }
         $this->extracontent[$region][] = $bc;
     }
@@ -569,7 +566,7 @@ class block_manager {
         $context = $this->page->context;
         $contexttest = 'bi.parentcontextid = :contextid2';
         $parentcontextparams = array();
-        $parentcontextids = $context->get_parent_context_ids();
+        $parentcontextids = get_parent_contexts($context);
         if ($parentcontextids) {
             list($parentcontexttest, $parentcontextparams) =
                     $DB->get_in_or_equal($parentcontextids, SQL_PARAMS_NAMED, 'parentcontext');
@@ -580,11 +577,9 @@ class block_manager {
         list($pagetypepatterntest, $pagetypepatternparams) =
                 $DB->get_in_or_equal($pagetypepatterns, SQL_PARAMS_NAMED, 'pagetypepatterntest');
 
-        $ccselect = ', ' . context_helper::get_preload_record_columns_sql('ctx');
-        $ccjoin = "LEFT JOIN {context} ctx ON (ctx.instanceid = bi.id AND ctx.contextlevel = :contextlevel)";
+        list($ccselect, $ccjoin) = context_instance_preload_sql('bi.id', CONTEXT_BLOCK, 'ctx');
 
         $params = array(
-            'contextlevel' => CONTEXT_BLOCK,
             'subpage1' => $this->page->subpage,
             'subpage2' => $this->page->subpage,
             'contextid1' => $context->id,
@@ -592,8 +587,8 @@ class block_manager {
             'pagetype' => $this->page->pagetype,
         );
         if ($this->page->subpage === '') {
-            $params['subpage1'] = '';
-            $params['subpage2'] = '';
+            $params['subpage1'] = $DB->sql_empty();
+            $params['subpage2'] = $DB->sql_empty();
         }
         $sql = "SELECT
                     bi.id,
@@ -635,7 +630,7 @@ class block_manager {
         $this->birecordsbyregion = $this->prepare_per_region_arrays();
         $unknown = array();
         foreach ($blockinstances as $bi) {
-            context_helper::preload_from_record($bi);
+            context_instance_preload($bi);
             if ($this->is_known_region($bi->region)) {
                 $this->birecordsbyregion[$bi->region][] = $bi;
             } else {
@@ -950,6 +945,8 @@ class block_manager {
             if ($first) {
                 $lastweight = $first->instance->weight - 2;
             }
+
+            $strmoveblockhere = get_string('moveblockhere', 'block');
         }
 
         foreach ($instances as $instance) {
@@ -960,7 +957,7 @@ class block_manager {
 
             if ($this->movingblock && $lastweight != $instance->instance->weight &&
                     $content->blockinstanceid != $this->movingblock && $lastblock != $this->movingblock) {
-                $results[] = new block_move_target($this->get_move_target_url($region, ($lastweight + $instance->instance->weight)/2));
+                $results[] = new block_move_target($strmoveblockhere, $this->get_move_target_url($region, ($lastweight + $instance->instance->weight)/2));
             }
 
             if ($content->blockinstanceid == $this->movingblock) {
@@ -975,7 +972,7 @@ class block_manager {
         }
 
         if ($this->movingblock && $lastblock != $this->movingblock) {
-            $results[] = new block_move_target($this->get_move_target_url($region, $lastweight + 1));
+            $results[] = new block_move_target($strmoveblockhere, $this->get_move_target_url($region, $lastweight + 1));
         }
         return $results;
     }
@@ -998,7 +995,7 @@ class block_manager {
      *
      * @param string $region The name of the region to check
      */
-    public function ensure_content_created($region, $output) {
+    protected function ensure_content_created($region, $output) {
         $this->ensure_instances_exist($region);
         if (!array_key_exists($region, $this->visibleblockcontent)) {
             $contents = array();
@@ -1030,49 +1027,39 @@ class block_manager {
 
         $controls = array();
         $actionurl = $this->page->url->out(false, array('sesskey'=> sesskey()));
-        $blocktitle = $block->title;
-        if (empty($blocktitle)) {
-            $blocktitle = $block->arialabel;
-        }
 
         if ($this->page->user_can_edit_blocks()) {
             // Move icon.
-            $str = new lang_string('moveblock', 'block', $blocktitle);
-            $controls[] = new action_menu_link_primary(
-                new moodle_url($actionurl, array('bui_moveid' => $block->instance->id)),
-                new pix_icon('t/move', $str, 'moodle', array('class' => 'iconsmall', 'title' => '')),
-                $str,
-                array('class' => 'editing_move')
-            );
-
+            $controls[] = array('url' => $actionurl . '&bui_moveid=' . $block->instance->id,
+                    'icon' => 't/move', 'caption' => get_string('moveblock', 'block', $block->title),
+                    'class' => 'editing_move');
         }
 
         if ($this->page->user_can_edit_blocks() || $block->user_can_edit()) {
             // Edit config icon - always show - needed for positioning UI.
-            $str = new lang_string('configureblock', 'block', $blocktitle);
-            $controls[] = new action_menu_link_secondary(
-                new moodle_url($actionurl, array('bui_editid' => $block->instance->id)),
-                new pix_icon('t/edit', $str, 'moodle', array('class' => 'iconsmall', 'title' => '')),
-                $str,
-                array('class' => 'editing_edit')
-            );
+            $controls[] = array('url' => $actionurl . '&bui_editid=' . $block->instance->id,
+                    'icon' => 't/edit', 'caption' => get_string('configureblock', 'block', $block->title),
+                    'class' => 'editing_edit');
+        }
 
+        if ($this->user_can_delete_block($block)) {
+            // Delete icon.
+            $controls[] = array('url' => $actionurl . '&bui_deleteid=' . $block->instance->id,
+                    'icon' => 't/delete', 'caption' => get_string('deleteblock', 'block', $block->title),
+                    'class' => 'editing_delete');
         }
 
         if ($this->page->user_can_edit_blocks() && $block->instance_can_be_hidden()) {
             // Show/hide icon.
             if ($block->instance->visible) {
-                $str = new lang_string('hideblock', 'block', $blocktitle);
-                $url = new moodle_url($actionurl, array('bui_hideid' => $block->instance->id));
-                $icon = new pix_icon('t/hide', $str, 'moodle', array('class' => 'iconsmall', 'title' => ''));
-                $attributes = array('class' => 'editing_hide');
+                $controls[] = array('url' => $actionurl . '&bui_hideid=' . $block->instance->id,
+                        'icon' => 't/hide', 'caption' => get_string('hideblock', 'block', $block->title),
+                        'class' => 'editing_hide');
             } else {
-                $str = new lang_string('showblock', 'block', $blocktitle);
-                $url = new moodle_url($actionurl, array('bui_showid' => $block->instance->id));
-                $icon = new pix_icon('t/show', $str, 'moodle', array('class' => 'iconsmall', 'title' => ''));
-                $attributes = array('class' => 'editing_show');
+                $controls[] = array('url' => $actionurl . '&bui_showid=' . $block->instance->id,
+                        'icon' => 't/show', 'caption' => get_string('showblock', 'block', $block->title),
+                        'class' => 'editing_show');
             }
-            $controls[] = new action_menu_link_secondary($url, $icon, $str, $attributes);
         }
 
         // Assign roles icon.
@@ -1083,27 +1070,10 @@ class block_manager {
             $return = $this->page->url->out(false);
             $return = str_replace($CFG->wwwroot . '/', '', $return);
 
-            $rolesurl = new moodle_url('/admin/roles/assign.php', array('contextid'=>$block->context->id,
-                                                                         'returnurl'=>$return));
-            // Delete icon.
-            $str = new lang_string('assignrolesinblock', 'block', $blocktitle);
-            $controls[] = new action_menu_link_secondary(
-                $rolesurl,
-                new pix_icon('t/assignroles', $str, 'moodle', array('class' => 'iconsmall', 'title' => '')),
-                $str,
-                array('class' => 'editing_roles')
-            );
-        }
-
-        if ($this->user_can_delete_block($block)) {
-            // Delete icon.
-            $str = new lang_string('deleteblock', 'block', $blocktitle);
-            $controls[] = new action_menu_link_secondary(
-                new moodle_url($actionurl, array('bui_deleteid' => $block->instance->id)),
-                new pix_icon('t/delete', $str, 'moodle', array('class' => 'iconsmall', 'title' => '')),
-                $str,
-                array('class' => 'editing_delete')
-            );
+            $controls[] = array('url' => $CFG->wwwroot . '/' . $CFG->admin .
+                    '/roles/assign.php?contextid=' . $block->context->id . '&returnurl=' . urlencode($return),
+                    'icon' => 't/assignroles', 'caption' => get_string('assignrolesinblock', 'block', $block->title),
+                    'class' => 'editing_roles');
         }
 
         return $controls;
@@ -1725,12 +1695,12 @@ function matching_page_type_patterns($pagetype) {
  * @return array an array of all the page type patterns that might match this page type.
  */
 function generate_page_type_patterns($pagetype, $parentcontext = null, $currentcontext = null) {
-    global $CFG; // Required for includes bellow.
+    global $CFG;
 
     $bits = explode('-', $pagetype);
 
-    $core = core_component::get_core_subsystems();
-    $plugins = core_component::get_plugin_types();
+    $core = get_core_subsystems();
+    $plugins = get_plugin_types();
 
     //progressively strip pieces off the page type looking for a match
     $componentarray = null;
@@ -1740,7 +1710,7 @@ function generate_page_type_patterns($pagetype, $parentcontext = null, $currentc
 
         // Check to see if the component is a core component
         if (array_key_exists($possiblecomponent, $core) && !empty($core[$possiblecomponent])) {
-            $libfile = $core[$possiblecomponent].'/lib.php';
+            $libfile = $CFG->dirroot.'/'.$core[$possiblecomponent].'/lib.php';
             if (file_exists($libfile)) {
                 require_once($libfile);
                 $function = $possiblecomponent.'_page_type_list';
@@ -1758,7 +1728,7 @@ function generate_page_type_patterns($pagetype, $parentcontext = null, $currentc
             //We've found a plugin type. Look for a plugin name by getting the next section of page type
             if (count($bits) > $i) {
                 $pluginname = $bits[$i];
-                $directory = core_component::get_plugin_directory($possiblecomponent, $pluginname);
+                $directory = get_plugin_directory($possiblecomponent, $pluginname);
                 if (!empty($directory)){
                     $libfile = $directory.'/lib.php';
                     if (file_exists($libfile)) {
@@ -1778,14 +1748,16 @@ function generate_page_type_patterns($pagetype, $parentcontext = null, $currentc
 
             //we'll only get to here if we still don't have any patterns
             //the plugin type may have a callback
-            $directory = $plugins[$possiblecomponent];
-            $libfile = $directory.'/lib.php';
-            if (file_exists($libfile)) {
-                require_once($libfile);
-                $function = $possiblecomponent.'_page_type_list';
-                if (function_exists($function)) {
-                    if ($patterns = $function($pagetype, $parentcontext, $currentcontext)) {
-                        break;
+            $directory = get_plugin_directory($possiblecomponent, null);
+            if (!empty($directory)){
+                $libfile = $directory.'/lib.php';
+                if (file_exists($libfile)) {
+                    require_once($libfile);
+                    $function = $possiblecomponent.'_page_type_list';
+                    if (function_exists($function)) {
+                        if ($patterns = $function($pagetype, $parentcontext, $currentcontext)) {
+                            break;
+                        }
                     }
                 }
             }
@@ -1888,7 +1860,6 @@ function block_add_block_ui($page, $output) {
     $bc = new block_contents();
     $bc->title = get_string('addblock');
     $bc->add_class('block_adminblock');
-    $bc->attributes['data-block'] = 'adminblock';
 
     $missingblocks = $page->blocks->get_addable_blocks();
     if (empty($missingblocks)) {
@@ -1903,7 +1874,7 @@ function block_add_block_ui($page, $output) {
             $menu[$block->name] = $blockobject->get_title();
         }
     }
-    core_collator::asort($menu);
+    collatorlib::asort($menu);
 
     $actionurl = new moodle_url($page->url, array('sesskey'=>sesskey()));
     $select = new single_select($actionurl, 'bui_addblock', $menu, null, array(''=>get_string('adddots')), 'add_block');
@@ -2010,7 +1981,7 @@ function blocks_delete_instance($instance, $nolongerused = false, $skipblockstab
     if ($block = block_instance($instance->blockname, $instance)) {
         $block->instance_delete();
     }
-    context_helper::delete_instance(CONTEXT_BLOCK, $instance->id);
+    delete_context(CONTEXT_BLOCK, $instance->id);
 
     if (!$skipblockstables) {
         $DB->delete_records('block_positions', array('blockinstanceid' => $instance->id));

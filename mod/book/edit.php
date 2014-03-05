@@ -70,19 +70,11 @@ if ($mform->is_cancelled()) {
 
     if ($data->id) {
         // store the files
-        $data->timemodified = time();
         $data = file_postupdate_standard_editor($data, 'content', $options, $context, 'mod_book', 'chapter', $data->id);
         $DB->update_record('book_chapters', $data);
-        $DB->set_field('book', 'revision', $book->revision+1, array('id'=>$book->id));
 
         add_to_log($course->id, 'course', 'update mod', '../mod/book/view.php?id='.$cm->id, 'book '.$book->id);
-        $params = array(
-            'context' => $context,
-            'objectid' => $data->id
-        );
-        $event = \mod_book\event\chapter_updated::create($params);
-        $event->add_record_snapshot('book_chapters', $data);
-        $event->trigger();
+        add_to_log($course->id, 'book', 'update chapter', 'view.php?id='.$cm->id.'&chapterid='.$data->id, $data->id, $cm->id);
 
     } else {
         // adding new chapter
@@ -108,13 +100,7 @@ if ($mform->is_cancelled()) {
         $DB->set_field('book', 'revision', $book->revision+1, array('id'=>$book->id));
 
         add_to_log($course->id, 'course', 'update mod', '../mod/book/view.php?id='.$cm->id, 'book '.$book->id);
-        $params = array(
-            'context' => $context,
-            'objectid' => $data->id
-        );
-        $event = \mod_book\event\chapter_created::create($params);
-        $event->add_record_snapshot('book_chapters', $data);
-        $event->trigger();
+        add_to_log($course->id, 'book', 'add chapter', 'view.php?id='.$cm->id.'&chapterid='.$data->id, $data->id, $cm->id);
     }
 
     book_preload_chapters($book); // fix structure
@@ -126,7 +112,7 @@ $PAGE->set_title($book->name);
 $PAGE->set_heading($course->fullname);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($book->name);
+echo $OUTPUT->heading(get_string('editingchapter', 'mod_book'));
 
 $mform->display();
 

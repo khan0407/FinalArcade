@@ -298,6 +298,15 @@ class mysqli_native_moodle_database extends moodle_database {
     }
 
     /**
+     * Returns localised database description
+     * Note: can be used before connect()
+     * @return string
+     */
+    public function get_configuration_hints() {
+        return get_string('databasesettingssub_mysqli', 'install');
+    }
+
+    /**
      * Diagnose database and tables, this function is used
      * to verify database and driver settings, db engine types, etc.
      *
@@ -367,9 +376,6 @@ class mysqli_native_moodle_database extends moodle_database {
         // verify ini.get does not return nonsense
         if (empty($dbport)) {
             $dbport = 3306;
-        }
-        if ($dbhost and !empty($this->dboptions['dbpersist'])) {
-            $dbhost = "p:$dbhost";
         }
         ob_start();
         $this->mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport, $dbsocket);
@@ -619,7 +625,7 @@ class mysqli_native_moodle_database extends moodle_database {
         }
 
         if ($usecache) {
-            $cache->set($table, $structure);
+            $result = $cache->set($table, $structure);
         }
 
         return $structure;
@@ -797,24 +803,45 @@ class mysqli_native_moodle_database extends moodle_database {
     }
 
     /**
-     * Is this database compatible with utf8?
+     * Is db in unicode mode?
      * @return bool
      */
     public function setup_is_unicodedb() {
-        // All new tables are created with this collation, we just have to make sure it is utf8 compatible,
-        // if config table already exists it has this collation too.
-        $collation = $this->get_dbcollation();
-
-        $sql = "SHOW COLLATION WHERE Collation ='$collation' AND Charset = 'utf8'";
-        $this->query_start($sql, NULL, SQL_QUERY_AUX);
+        $sql = "SHOW LOCAL VARIABLES LIKE 'character_set_database'";
+        $this->query_start($sql, null, SQL_QUERY_AUX);
         $result = $this->mysqli->query($sql);
         $this->query_end($result);
-        if ($result->fetch_assoc()) {
-            $return = true;
-        } else {
-            $return = false;
+
+        $return = false;
+        if ($result) {
+            while($row = $result->fetch_assoc()) {
+                if (isset($row['Value'])) {
+                    $return = (strtoupper($row['Value']) === 'UTF8' or strtoupper($row['Value']) === 'UTF-8');
+                }
+                break;
+            }
+            $result->close();
         }
-        $result->close();
+
+        if (!$return) {
+            return false;
+        }
+
+        $sql = "SHOW LOCAL VARIABLES LIKE 'collation_database'";
+        $this->query_start($sql, null, SQL_QUERY_AUX);
+        $result = $this->mysqli->query($sql);
+        $this->query_end($result);
+
+        $return = false;
+        if ($result) {
+            while($row = $result->fetch_assoc()) {
+                if (isset($row['Value'])) {
+                    $return = (strpos($row['Value'], 'latin1') !== 0);
+                }
+                break;
+            }
+            $result->close();
+        }
 
         return $return;
     }
@@ -844,8 +871,8 @@ class mysqli_native_moodle_database extends moodle_database {
             return $sql;
         }
         // ok, we have verified sql statement with ? and correct number of params
-        $parts = array_reverse(explode('?', $sql));
-        $return = array_pop($parts);
+        $parts = explode('?', $sql);
+        $return = array_shift($parts);
         foreach ($params as $param) {
             if (is_bool($param)) {
                 $return .= (int)$param;
@@ -859,7 +886,7 @@ class mysqli_native_moodle_database extends moodle_database {
                 $param = $this->mysqli->real_escape_string($param);
                 $return .= "'$param'";
             }
-            $return .= array_pop($parts);
+            $return .= array_shift($parts);
         }
         return $return;
     }
@@ -1390,16 +1417,6 @@ class mysqli_native_moodle_database extends moodle_database {
      */
     public function sql_cast_2signed($fieldname) {
         return ' CAST(' . $fieldname . ' AS SIGNED) ';
-    }
-
-    /**
-     * Does this driver support tool_replace?
-     *
-     * @since 2.6.1
-     * @return bool
-     */
-    public function replace_all_text_supported() {
-        return true;
     }
 
     public function session_lock_supported() {

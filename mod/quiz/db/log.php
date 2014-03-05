@@ -40,5 +40,4 @@ $logs = array(
     array('module'=>'quiz', 'action'=>'continue attempt', 'mtable'=>'quiz', 'field'=>'name'),
     array('module'=>'quiz', 'action'=>'edit override', 'mtable'=>'quiz', 'field'=>'name'),
     array('module'=>'quiz', 'action'=>'delete override', 'mtable'=>'quiz', 'field'=>'name'),
-    array('module'=>'quiz', 'action'=>'view summary', 'mtable'=>'quiz', 'field'=>'name'),
 );

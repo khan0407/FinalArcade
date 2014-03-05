@@ -175,7 +175,7 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
      * @return int
      */
     public static function get_supported_modes(array $configuration = array()) {
-        return self::MODE_APPLICATION;
+        return self::MODE_APPLICATION + self::MODE_SESSION;
     }
 
     /**
@@ -274,7 +274,11 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
         $cursor = $this->collection->find($query);
         $results = array();
         foreach ($cursor as $result) {
-            $id = (string)$result['key'];
+            if (array_key_exists('key', $result)) {
+                $id = $result[$key];
+            } else {
+                $id = (string)$result['key'];
+            }
             $results[$id] = unserialize($result['data']);
         }
         foreach ($keys as $key) {
@@ -303,22 +307,11 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
         $record['data'] = serialize($data);
         $options = array(
             'upsert' => true,
-            'safe' => $this->usesafe,
-            'w' => $this->usesafe ? 1 : 0
+            'safe' => $this->usesafe
         );
         $this->delete($key);
         $result = $this->collection->insert($record, $options);
-        if ($result === true) {
-            // Safe mode is off.
-            return true;
-        } else if (is_array($result)) {
-            if (empty($result['ok']) || isset($result['err'])) {
-                return false;
-            }
-            return true;
-        }
-        // Who knows?
-        return false;
+        return $result;
     }
 
     /**
@@ -333,11 +326,11 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
         $count = 0;
         foreach ($keyvaluearray as $pair) {
             $result = $this->set($pair['key'], $pair['value']);
-            if ($result === true) {
+            if ($result === true || (is_array($result)) && !empty($result['ok'])) {
                  $count++;
             }
         }
-        return $count;
+        return;
     }
 
     /**
@@ -356,25 +349,13 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
         }
         $options = array(
             'justOne' => false,
-            'safe' => $this->usesafe,
-            'w' => $this->usesafe ? 1 : 0
+            'safe' => $this->usesafe
         );
         $result = $this->collection->remove($criteria, $options);
-
-        if ($result === true) {
-            // Safe mode.
-            return true;
-        } else if (is_array($result)) {
-            if (empty($result['ok']) || isset($result['err'])) {
-                return false;
-            } else if (empty($result['n'])) {
-                // Nothing was removed.
-                return false;
-            }
-            return true;
+        if ($result === false || (is_array($result) && !array_key_exists('ok', $result)) || $result === 0) {
+            return false;
         }
-        // Who knows?
-        return false;
+        return !empty($result['ok']);
     }
 
     /**
@@ -515,6 +496,7 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
         if (empty($config->testserver)) {
             return false;
         }
+
         $configuration = array();
         $configuration['server'] = $config->testserver;
         if (!empty($config->testreplicaset)) {
@@ -529,7 +511,9 @@ class cachestore_mongodb extends cache_store implements cache_is_configurable {
         if (!empty($config->testdatabase)) {
             $configuration['database'] = $config->testdatabase;
         }
-        $configuration['usesafe'] = 1;
+        if (!empty($config->testusesafe)) {
+            $configuration['usesafe'] = $config->testusesafe;
+        }
         if (!empty($config->testextendedmode)) {
             $configuration['extendedmode'] = (bool)$config->testextendedmode;
         }

@@ -34,12 +34,17 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_assignsubmission_comments_install() {
     global $CFG;
 
+    // do the install
+
     require_once($CFG->dirroot . '/mod/assign/adminlib.php');
-    // Set the correct initial order for the plugins.
+    // set the correct initial order for the plugins
     $pluginmanager = new assign_plugin_manager('assignsubmission');
 
     $pluginmanager->move_plugin('comments', 'down');
     $pluginmanager->move_plugin('comments', 'down');
 
+    // do the upgrades
     return true;
+
+
 }

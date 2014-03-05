@@ -54,7 +54,6 @@ $mform = $strategy->get_assessment_form($workshop->editform_url(), 'preview');
 
 // output starts here
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string($workshop->name));
-echo $OUTPUT->heading(get_string('assessmentform', 'workshop'), 3);
+echo $OUTPUT->heading(get_string('assessmentform', 'workshop'), 2);
 $mform->display();
 echo $OUTPUT->footer();

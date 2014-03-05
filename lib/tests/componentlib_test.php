@@ -28,45 +28,44 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir.'/componentlib.class.php');
 
-class core_componentlib_testcase extends advanced_testcase {
+class componentlib_testcase extends advanced_testcase {
 
     public function test_component_installer() {
         global $CFG;
 
-        $url = $this->getExternalTestFileUrl('');
-        $ci = new component_installer($url, '', 'downloadtests.zip');
+        $ci = new component_installer('http://download.moodle.org', 'unittest', 'downloadtests.zip');
         $this->assertTrue($ci->check_requisites());
 
         $destpath = $CFG->dataroot.'/downloadtests';
 
-        // Carefully remove component files to enforce fresh installation.
+        //carefully remove component files to enforce fresh installation
         @unlink($destpath.'/'.'downloadtests.md5');
         @unlink($destpath.'/'.'test.html');
         @unlink($destpath.'/'.'test.jpg');
         @rmdir($destpath);
 
-        $this->assertSame(COMPONENT_NEEDUPDATE, $ci->need_upgrade());
+        $this->assertEquals(COMPONENT_NEEDUPDATE, $ci->need_upgrade());
 
         $status = $ci->install();
-        $this->assertSame(COMPONENT_INSTALLED, $status);
-        $this->assertSame('9e94f74b3efb1ff6cf075dc6b2abf15c', $ci->get_component_md5());
+        $this->assertEquals(COMPONENT_INSTALLED, $status);
+        $this->assertEquals('9e94f74b3efb1ff6cf075dc6b2abf15c', $ci->get_component_md5());
 
-        // It's already installed, so Moodle should detect it's up to date.
-        $this->assertSame(COMPONENT_UPTODATE, $ci->need_upgrade());
+        //it's already installed, so Moodle should detect it's up to date
+        $this->assertEquals(COMPONENT_UPTODATE, $ci->need_upgrade());
         $status = $ci->install();
-        $this->assertSame(COMPONENT_UPTODATE, $status);
+        $this->assertEquals(COMPONENT_UPTODATE, $status);
 
-        // Check if correct files were downloaded.
-        $this->assertSame('2af180e813dc3f446a9bb7b6af87ce24', md5_file($destpath.'/'.'test.jpg'));
-        $this->assertSame('47250a973d1b88d9445f94db4ef2c97a', md5_file($destpath.'/'.'test.html'));
+        //check if correct files were downloaded
+        $this->assertEquals('2af180e813dc3f446a9bb7b6af87ce24', md5_file($destpath.'/'.'test.jpg'));
+        $this->assertEquals('47250a973d1b88d9445f94db4ef2c97a', md5_file($destpath.'/'.'test.html'));
     }
 
     /**
-     * Test the public API of the {@link lang_installer} class.
+     * Test the public API of the {@link lang_installer} class
      */
     public function test_lang_installer() {
 
-        // Test the manipulation with the download queue.
+        // test the manipulation with the download queue
         $installer = new testable_lang_installer();
         $this->assertFalse($installer->protected_is_queued());
         $installer->protected_add_to_queue('cs');
@@ -91,28 +90,26 @@ class core_componentlib_testcase extends advanced_testcase {
         $this->assertFalse($installer->protected_is_queued());
         unset($installer);
 
-        // Install a set of lang packs.
+        // install a set of lang packs
         $installer = new testable_lang_installer(array('cs', 'de_kids', 'xx'));
         $result = $installer->run();
-        $this->assertSame($result['cs'], lang_installer::RESULT_UPTODATE);
-        $this->assertSame($result['de_kids'], lang_installer::RESULT_INSTALLED);
-        $this->assertSame($result['xx'], lang_installer::RESULT_DOWNLOADERROR);
+        $this->assertEquals($result['cs'], lang_installer::RESULT_UPTODATE);
+        $this->assertEquals($result['de_kids'], lang_installer::RESULT_INSTALLED);
+        $this->assertEquals($result['xx'], lang_installer::RESULT_DOWNLOADERROR);
+        // the following two were automatically added to the queue
+        $this->assertEquals($result['de_du'], lang_installer::RESULT_INSTALLED);
+        $this->assertEquals($result['de'], lang_installer::RESULT_UPTODATE);
 
-        // The following two were automatically added to the queue.
-        $this->assertSame($result['de_du'], lang_installer::RESULT_INSTALLED);
-        $this->assertSame($result['de'], lang_installer::RESULT_UPTODATE);
-
-        // Exception throwing.
+        // exception throwing
         $installer = new testable_lang_installer(array('yy'));
         try {
             $installer->run();
             $this->fail('lang_installer_exception exception expected');
-        } catch (moodle_exception $e) {
-            $this->assertInstanceOf('lang_installer_exception', $e);
+        } catch (Exception $e) {
+            $this->assertEquals('lang_installer_exception', get_class($e));
         }
     }
 }
-
 
 /**
  * Testable lang_installer subclass that does not actually install anything
@@ -138,7 +135,7 @@ class testable_lang_installer extends lang_installer {
     }
 
     /**
-     * Simulate lang pack installation via component_installer.
+     * Simulate lang pack installation via component_installer
      *
      * Language packages 'de_du' and 'de_kids' reported as installed
      * Language packages 'cs' and 'de' reported as up-to-date
@@ -167,7 +164,7 @@ class testable_lang_installer extends lang_installer {
     }
 
     /**
-     * Simulate detection of parent language.
+     * Simulate detection of parent languge
      *
      * @see parent::get_parent_language()
      */

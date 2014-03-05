@@ -271,6 +271,14 @@ class xmldb_key extends xmldb_object {
             $this->comment = trim($xmlarr['@']['COMMENT']);
         }
 
+        if (isset($xmlarr['@']['PREVIOUS'])) {
+            $this->previous = trim($xmlarr['@']['PREVIOUS']);
+        }
+
+        if (isset($xmlarr['@']['NEXT'])) {
+            $this->next = trim($xmlarr['@']['NEXT']);
+        }
+
         // Set some attributes
         if ($result) {
             $this->loaded = true;
@@ -375,6 +383,12 @@ class xmldb_key extends xmldb_object {
         }
         if ($this->comment) {
             $o.= ' COMMENT="' . htmlspecialchars($this->comment) . '"';
+        }
+        if ($this->previous) {
+            $o.= ' PREVIOUS="' . $this->previous . '"';
+        }
+        if ($this->next) {
+            $o.= ' NEXT="' . $this->next . '"';
         }
         $o.= '/>' . "\n";
 

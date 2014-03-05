@@ -122,7 +122,14 @@ case 'renameform':
     break;
 
 case 'rename':
-    repository::update_draftfile($itemid, $draftpath, $filename, array('filename' => $newfilename));
+
+    if ($fs->file_exists($user_context->id, 'user', 'draft', $itemid, $draftpath, $newfilename)) {
+        print_error('fileexists');
+    } else if ($file = $fs->get_file($user_context->id, 'user', 'draft', $itemid, $draftpath, $filename)) {
+        $newfile = $fs->create_file_from_storedfile(array('filename'=>$newfilename), $file);
+        $file->delete();
+    }
+
     $home_url->param('action', 'browse');
     $home_url->param('draftpath', $draftpath);
     redirect($home_url);
@@ -187,7 +194,15 @@ case 'unzip':
 
 case 'movefile':
     if (!empty($targetpath)) {
-        repository::update_draftfile($itemid, $draftpath, $filename, array('filepath' => $targetpath));
+        if ($fs->file_exists($user_context->id, 'user', 'draft', $itemid, $targetpath, $filename)) {
+            print_error('cannotmovefile');
+        } else if ($file = $fs->get_file($user_context->id, 'user', 'draft', $itemid, $draftpath, $filename)) {
+            $newfile = $fs->create_file_from_storedfile(array('filepath'=>$targetpath), $file);
+            $file->delete();
+        } else {
+            var_dump('cannot find file');
+            die;
+        }
         $home_url->param('action', 'browse');
         $home_url->param('draftpath', $targetpath);
         redirect($home_url);

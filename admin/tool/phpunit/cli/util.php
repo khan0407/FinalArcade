@@ -28,11 +28,8 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
     die; // no access from web!
 }
 
-define('IGNORE_COMPONENT_CACHE', true);
-
 require_once(__DIR__.'/../../../../lib/clilib.php');
 require_once(__DIR__.'/../../../../lib/phpunit/bootstraplib.php');
-require_once(__DIR__.'/../../../../lib/testing/lib.php');
 
 // now get cli options
 list($options, $unrecognized) = cli_get_params(
@@ -62,10 +59,6 @@ if (file_exists(__DIR__.'/../../../../vendor/phpunit/phpunit/PHPUnit/Autoload.ph
     }
 }
 
-if ($options['install'] or $options['drop']) {
-    define('CACHE_DISABLE_ALL', true);
-}
-
 if ($options['run']) {
     unset($options);
     unset($unrecognized);
@@ -90,6 +83,7 @@ require(__DIR__ . '/../../../../lib/phpunit/bootstrap.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/upgradelib.php');
 require_once($CFG->libdir.'/clilib.php');
+require_once($CFG->libdir.'/pluginlib.php');
 require_once($CFG->libdir.'/installlib.php');
 
 if ($unrecognized) {
@@ -118,7 +112,7 @@ Options:
 -h, --help     Print out this help
 
 Example:
-\$ php ".testing_cli_argument_path('/admin/tool/phpunit/cli/util.php')." --install
+\$ php ".phpunit_bootstrap_cli_argument_path('/admin/tool/phpunit/cli/util.php')." --install
 ";
     echo $help;
     exit(0);
@@ -144,7 +138,7 @@ if ($diag) {
 
 } else if ($drop) {
     // make sure tests do not run in parallel
-    test_lock::acquire('phpunit');
+    phpunit_util::acquire_test_lock();
     phpunit_util::drop_site(true);
     // note: we must stop here because $CFG is messed up and we can not reinstall, sorry
     exit(0);

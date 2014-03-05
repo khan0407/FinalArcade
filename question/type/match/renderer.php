@@ -17,9 +17,10 @@
 /**
  * Matching question renderer class.
  *
- * @package   qtypematch
- * @copyright 2009 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    qtype
+ * @subpackage match
+ * @copyright  2009 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 
@@ -29,8 +30,8 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Generates the output for matching questions.
  *
- * @copyright 2009 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2009 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
 
@@ -58,7 +59,9 @@ class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
             $result .= html_writer::start_tag('tr', array('class' => 'r' . $parity));
             $fieldname = 'sub' . $key;
 
-            $result .= html_writer::tag('td', $this->format_stem_text($qa, $stemid),
+            $result .= html_writer::tag('td', $question->format_text(
+                    $question->stems[$stemid], $question->stemformat[$stemid],
+                    $qa, 'qtype_match', 'subquestion', $stemid),
                     array('class' => 'text'));
 
             $classes = 'control';
@@ -78,9 +81,7 @@ class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
             }
 
             $result .= html_writer::tag('td',
-                    html_writer::label(get_string('answer', 'qtype_match', $i),
-                            'menu' . $qa->get_qt_field_name('sub' . $key), false,
-                            array('class' => 'accesshide')) .
+                    html_writer::label(get_string('answer', 'qtype_match', $i), 'menu' . $qa->get_qt_field_name('sub' . $key), false, array('class' => 'accesshide')) .
                     html_writer::select($choices, $qa->get_qt_field_name('sub' . $key), $selected,
                             array('0' => 'choose'), array('disabled' => $options->readonly)) .
                     ' ' . $feedbackimage, array('class' => $classes));
@@ -92,7 +93,7 @@ class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::end_tag('tbody');
         $result .= html_writer::end_tag('table');
 
-        $result .= html_writer::end_tag('div'); // Closes <div class="ablock">.
+        $result .= html_writer::end_tag('div'); // ablock
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
@@ -105,20 +106,6 @@ class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
 
     public function specific_feedback(question_attempt $qa) {
         return $this->combined_feedback($qa);
-    }
-
-    /**
-     * Format each question stem. Overwritten by randomsamatch renderer.
-     *
-     * @param question_attempt $qa
-     * @param integer $stemid stem index
-     * @return string
-     */
-    public function format_stem_text($qa, $stemid) {
-        $question = $qa->get_question();
-        return $question->format_text(
-                    $question->stems[$stemid], $question->stemformat[$stemid],
-                    $qa, 'qtype_match', 'subquestion', $stemid);
     }
 
     protected function format_choices($question) {
@@ -137,7 +124,9 @@ class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
         $choices = $this->format_choices($question);
         $right = array();
         foreach ($stemorder as $key => $stemid) {
-            $right[] = $this->format_stem_text($qa, $stemid) . ' – ' .
+            $right[] = $question->format_text($question->stems[$stemid],
+                    $question->stemformat[$stemid], $qa,
+                    'qtype_match', 'subquestion', $stemid) . ' – ' .
                     $choices[$question->get_right_choice_for($stemid)];
         }
 

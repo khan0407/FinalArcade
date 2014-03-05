@@ -30,12 +30,12 @@ require_once($CFG->dirroot.'/mod/lesson/view_form.php');
 require_once($CFG->libdir . '/completionlib.php');
 
 $id      = required_param('id', PARAM_INT);             // Course Module ID
-$pageid  = optional_param('pageid', null, PARAM_INT);   // Lesson Page ID
+$pageid  = optional_param('pageid', NULL, PARAM_INT);   // Lesson Page ID
 $edit    = optional_param('edit', -1, PARAM_BOOL);
 $userpassword = optional_param('userpassword','',PARAM_RAW);
 $backtocourse = optional_param('backtocourse', false, PARAM_RAW);
 
-$cm = get_coursemodule_from_id('lesson', $id, 0, false, MUST_EXIST);
+$cm = get_coursemodule_from_id('lesson', $id, 0, false, MUST_EXIST);;
 $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 $lesson = new lesson($DB->get_record('lesson', array('id' => $cm->instance), '*', MUST_EXIST));
 
@@ -191,33 +191,29 @@ if (empty($pageid)) {
         unset($USER->modattempts[$lesson->id]);  // if no pageid, then student is NOT reviewing
     }
 
-    // If there are any questions that have been answered correctly (or not) in this attempt.
-    $allattempts = $lesson->get_attempts($retries);
-    if (!empty($allattempts)) {
-        $attempt = end($allattempts);
-        $attemptpage = $lesson->load_page($attempt->pageid);
+    // if there are any questions have been answered correctly in this attempt
+    $corrrectattempts = $lesson->get_attempts($retries, true);
+    if (!empty($corrrectattempts)) {
+        $attempt = end($corrrectattempts);
         $jumpto = $DB->get_field('lesson_answers', 'jumpto', array('id' => $attempt->answerid));
         // convert the jumpto to a proper page id
-        if ($jumpto == 0) {
-            // Check if a question has been incorrectly answered AND no more attempts at it are left.
-            $nattempts = $lesson->get_attempts($attempt->retry, false, $attempt->pageid, $USER->id);
-            if (count($nattempts) >= $lesson->maxattempts) {
-                $lastpageseen = $lesson->get_next_page($attemptpage->nextpageid);
-            } else {
-                $lastpageseen = $attempt->pageid;
-            }
+        if ($jumpto == 0) { // unlikely value!
+            $lastpageseen = $attempt->pageid;
         } elseif ($jumpto == LESSON_NEXTPAGE) {
-            $lastpageseen = $lesson->get_next_page($attemptpage->nextpageid);
+            if (!$lastpageseen = $DB->get_field('lesson_pages', 'nextpageid', array('id' => $attempt->pageid))) {
+                // no nextpage go to end of lesson
+                $lastpageseen = LESSON_EOL;
+            }
         } else {
             $lastpageseen = $jumpto;
         }
     }
 
-    if ($branchtables = $DB->get_records('lesson_branch', array("lessonid" => $lesson->id, "userid" => $USER->id, "retry" => $retries), 'timeseen DESC')) {
+    if ($branchtables = $DB->get_records('lesson_branch', array("lessonid"=>$lesson->id, "userid"=>$USER->id, "retry"=>$retries), 'timeseen DESC')) {
         // in here, user has viewed a branch table
         $lastbranchtable = current($branchtables);
-        if (count($allattempts) > 0) {
-            foreach($allattempts as $attempt) {
+        if (count($corrrectattempts)>0) {
+            foreach($corrrectattempts as $attempt) {
                 if ($lastbranchtable->timeseen > $attempt->timeseen) {
                     // branch table was viewed later than the last attempt
                     $lastpageseen = $lastbranchtable->pageid;
@@ -479,7 +475,7 @@ if ($pageid != LESSON_EOL) {
         } else {
             if ($lesson->timed) {
                 if ($outoftime == 'normal') {
-                    $grade = new stdClass();
+                    $grade = new stdClass();;
                     $grade->lessonid = $lesson->id;
                     $grade->userid = $USER->id;
                     $grade->grade = 0;

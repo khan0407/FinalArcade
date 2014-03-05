@@ -57,6 +57,7 @@ class grouping_form extends moodleform {
         $mform->addElement('text','idnumber', get_string('idnumbergrouping'), 'maxlength="100" size="10"');
         $mform->addHelpButton('idnumber', 'idnumbergrouping');
         $mform->setType('idnumber', PARAM_RAW);
+        $mform->setAdvanced('idnumber');
         if (!has_capability('moodle/course:changeidnumber', $coursecontext)) {
             $mform->hardFreeze('idnumber');
         }
@@ -92,7 +93,7 @@ class grouping_form extends moodleform {
             $idnumber = '';
         }
         if ($data['id'] and $grouping = $DB->get_record('groupings', array('id'=>$data['id']))) {
-            if (core_text::strtolower($grouping->name) != core_text::strtolower($name)) {
+            if (textlib::strtolower($grouping->name) != textlib::strtolower($name)) {
                 if (groups_get_grouping_by_name($COURSE->id,  $name)) {
                     $errors['name'] = get_string('groupingnameexists', 'group', $name);
                 }

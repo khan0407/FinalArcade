@@ -223,7 +223,7 @@
 
         if(empty($title)){
             // no title present, use portion of description
-            $title = core_text::substr(strip_tags($description), 0, 20) . '...';
+            $title = textlib::substr(strip_tags($description), 0, 20) . '...';
         }else{
             $title = break_up_long_words($title, 30);
         }
@@ -231,15 +231,10 @@
         if(empty($link)){
             $link = $item->get_id();
         } else {
-            try {
-                // URLs in our RSS cache will be escaped (correctly as theyre store in XML)
-                // html_writer::link() will re-escape them. To prevent double escaping unescape here.
-                // This can by done using htmlspecialchars_decode() but moodle_url also has that effect.
-                $link = new moodle_url($link);
-            } catch (moodle_exception $e) {
-                // Catching the exception to prevent the whole site to crash in case of malformed RSS feed
-                $link = '';
-            }
+            //URLs in our RSS cache will be escaped (correctly as theyre store in XML)
+            //html_writer::link() will re-escape them. To prevent double escaping unescape here.
+            //This can by done using htmlspecialchars_decode() but moodle_url also has that effect
+            $link = new moodle_url($link);
         }
 
         $r = html_writer::start_tag('li');
@@ -249,13 +244,13 @@
 
             if($this->config->display_description && !empty($description)){
 
+                $description = break_up_long_words($description, 30);
+
                 $formatoptions = new stdClass();
                 $formatoptions->para = false;
 
                 $r.= html_writer::start_tag('div',array('class'=>'description'));
-                    $description = format_text($description, FORMAT_HTML, $formatoptions, $this->page->course->id);
-                    $description = break_up_long_words($description, 30);
-                    $r.= $description;
+                    $r.= format_text($description, FORMAT_HTML, $formatoptions, $this->page->course->id);
                 $r.= html_writer::end_tag('div');
             }
         $r.= html_writer::end_tag('li');
@@ -272,10 +267,10 @@
      */
     function format_title($title,$max=64) {
 
-        if (core_text::strlen($title) <= $max) {
+        if (textlib::strlen($title) <= $max) {
             return s($title);
         } else {
-            return s(core_text::substr($title,0,$max-3).'...');
+            return s(textlib::substr($title,0,$max-3).'...');
         }
     }
 

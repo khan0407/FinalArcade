@@ -33,8 +33,8 @@
 
 define('CLI_SCRIPT', true);
 
-require(__DIR__.'/../../../config.php');
-require_once("$CFG->libdir/clilib.php");
+require(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
+require_once($CFG->libdir.'/clilib.php');
 
 // Now get cli options.
 list($options, $unrecognized) = cli_get_params(array('verbose'=>false, 'help'=>false), array('v'=>'verbose', 'h'=>'help'));
@@ -50,15 +50,15 @@ if ($options['help']) {
 The enrol_database plugin must be enabled and properly configured.
 
 Options:
--v, --verbose         Print verbose progress information
+-v, --verbose         Print verbose progess information
 -h, --help            Print out this help
 
 Example:
-\$ sudo -u www-data /usr/bin/php enrol/database/cli/sync.php
+\$sudo -u www-data /usr/bin/php enrol/database/cli/sync.php
 
 Sample cron entry:
 # 5 minutes past 4am
-5 4 * * * sudo -u www-data /usr/bin/php /var/www/moodle/enrol/database/cli/sync.php
+5 4 * * * \$sudo -u www-data /usr/bin/php /var/www/moodle/enrol/database/cli/sync.php
 ";
 
     echo $help;
@@ -66,20 +66,15 @@ Sample cron entry:
 }
 
 if (!enrol_is_enabled('database')) {
-    cli_error('enrol_database plugin is disabled, synchronisation stopped', 2);
+    echo('enrol_database plugin is disabled, sync is disabled'."\n");
+    exit(1);
 }
 
-if (empty($options['verbose'])) {
-    $trace = new null_progress_trace();
-} else {
-    $trace = new text_progress_trace();
-}
-
-/** @var enrol_database_plugin $enrol  */
+$verbose = !empty($options['verbose']);
 $enrol = enrol_get_plugin('database');
 $result = 0;
 
-$result = $result | $enrol->sync_courses($trace);
-$result = $result | $enrol->sync_enrolments($trace);
+$result = $result | $enrol->sync_courses($verbose);
+$result = $result | $enrol->sync_enrolments($verbose);
 
 exit($result);

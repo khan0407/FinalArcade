@@ -30,11 +30,8 @@ require_sesskey();
 
 $assignmentid = required_param('id', PARAM_INT);
 
-// This calls require_login and checks moodle/site:config.
-admin_externalpage_setup('assignmentupgrade',
-                         '',
-                         array(),
-                         tool_assignmentupgrade_url('upgradesingle', array('id' => $assignmentid)));
+// admin_externalpage_setup calls require_login and checks moodle/site:config
+admin_externalpage_setup('assignmentupgrade', '', array(), tool_assignmentupgrade_url('upgradesingle', array('id' => $assignmentid)));
 
 $PAGE->navbar->add(get_string('upgradesingle', 'tool_assignmentupgrade'));
 $renderer = $PAGE->get_renderer('tool_assignmentupgrade');

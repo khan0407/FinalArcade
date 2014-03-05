@@ -51,14 +51,10 @@ class qformat_blackboard_six_qti_test extends question_testcase {
 
         $importer = new qformat_blackboard_six();
         $questions = $importer->readquestions($xml);
-        $q = $questions[4];
-
-        // If qtype_ddmatch is installed, the formatter produces ddmatch
-        // qtypes, not match ones.
-        $ddmatchisinstalled = question_bank::is_qtype_installed('ddmatch');
+        $q = $questions[3];
 
         $expectedq = new stdClass();
-        $expectedq->qtype = $ddmatchisinstalled ? 'ddmatch' : 'match';
+        $expectedq->qtype = 'match';
         $expectedq->name = 'Classify the animals.';
         $expectedq->questiontext = 'Classify the animals.';
         $expectedq->questiontextformat = FORMAT_HTML;
@@ -79,16 +75,7 @@ class qformat_blackboard_six_qti_test extends question_testcase {
             array('text' => 'cat', 'format' => FORMAT_HTML),
             array('text' => 'frog', 'format' => FORMAT_HTML),
             array('text' => 'newt', 'format' => FORMAT_HTML));
-        if ($ddmatchisinstalled) {
-            $expectedq->subanswers = array(
-                array('text' => 'insect', 'format' => FORMAT_HTML),
-                array('text' => 'mammal', 'format' => FORMAT_HTML),
-                array('text' => 'amphibian', 'format' => FORMAT_HTML),
-                array('text' => 'amphibian', 'format' => FORMAT_HTML),
-            );
-        } else {
-            $expectedq->subanswers = array('insect', 'mammal', 'amphibian', 'amphibian');
-        }
+        $expectedq->subanswers = array('insect', 'mammal', 'amphibian', 'amphibian');
 
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }
@@ -98,7 +85,7 @@ class qformat_blackboard_six_qti_test extends question_testcase {
 
         $importer = new qformat_blackboard_six();
         $questions = $importer->readquestions($xml);
-        $q = $questions[2];
+        $q = $questions[1];
 
         $expectedq = new stdClass();
         $expectedq->qtype = 'multichoice';
@@ -157,7 +144,7 @@ class qformat_blackboard_six_qti_test extends question_testcase {
 
         $importer = new qformat_blackboard_six();
         $questions = $importer->readquestions($xml);
-        $q = $questions[3];
+        $q = $questions[2];
 
         $expectedq = new stdClass();
         $expectedq->qtype = 'multichoice';
@@ -233,7 +220,7 @@ class qformat_blackboard_six_qti_test extends question_testcase {
 
         $importer = new qformat_blackboard_six();
         $questions = $importer->readquestions($xml);
-        $q = $questions[1];
+        $q = $questions[0];
 
         $expectedq = new stdClass();
         $expectedq->qtype = 'truefalse';
@@ -263,7 +250,7 @@ class qformat_blackboard_six_qti_test extends question_testcase {
 
         $importer = new qformat_blackboard_six();
         $questions = $importer->readquestions($xml);
-        $q = $questions[5];
+        $q = $questions[4];
 
         $expectedq = new stdClass();
         $expectedq->qtype = 'shortanswer';
@@ -297,7 +284,7 @@ class qformat_blackboard_six_qti_test extends question_testcase {
 
         $importer = new qformat_blackboard_six();
         $questions = $importer->readquestions($xml);
-        $q = $questions[6];
+        $q = $questions[5];
 
         $expectedq = new stdClass();
         $expectedq->qtype = 'essay';
@@ -315,21 +302,6 @@ class qformat_blackboard_six_qti_test extends question_testcase {
                 'text' => 'Blackboard answer for essay questions will be imported as informations for graders.',
                 'format' => FORMAT_HTML,
             );
-
-        $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
-    }
-
-    public function test_import_category() {
-
-        $xml = $this->make_test_xml();
-
-        $importer = new qformat_blackboard_six();
-        $questions = $importer->readquestions($xml);
-        $q = $questions[0];
-
-        $expectedq = new stdClass();
-        $expectedq->qtype = 'category';
-        $expectedq->category = 'sample_blackboard_six';
 
         $this->assert(new question_check_specified_fields_expectation($expectedq), $q);
     }

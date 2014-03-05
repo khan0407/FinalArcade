@@ -186,22 +186,11 @@ if ($user->deleted) {
     }
 }
 
-// OK, security out the way, now we are showing the user.
-// Trigger a user profile viewed event.
-$event = \core\event\user_profile_viewed::create(array(
-    'objectid' => $USER->id,
-    'relateduserid' => $user->id,
-    'context' => $usercontext,
-    'other' => array(
-        'courseid' => $course->id,
-        'courseshortname' => $course->shortname,
-        'coursefullname' => $course->fullname
-    )
-));
-$event->add_record_snapshot('user', $user);
-$event->trigger();
+/// OK, security out the way, now we are showing the user
 
-// Get the hidden field list.
+add_to_log($course->id, "user", "view", "view.php?id=$user->id&course=$course->id", "$user->id");
+
+/// Get the hidden field list
 if (has_capability('moodle/user:viewhiddendetails', $coursecontext)) {
     $hiddenfields = array();
 } else {
@@ -248,7 +237,8 @@ echo '</div>';
 
 // Print all the little details in a list
 
-echo html_writer::start_tag('dl', array('class'=>'list'));
+echo '<table class="list">';
+
 // Show email if any of the following conditions match.
 // 1. User is viewing his own profile.
 // 2. Has allowed everyone to see email
@@ -259,8 +249,7 @@ if ($currentuser
    or ($user->maildisplay == 2 && is_enrolled($coursecontext, $USER))
    or has_capability('moodle/course:viewhiddenuserfields', $coursecontext)
    or has_capability('moodle/site:viewuseridentity', $coursecontext)) {
-    echo html_writer::tag('dt', get_string('email'));
-    echo html_writer::tag('dd', obfuscate_mailto($user->email, ''));
+    print_row(get_string("email").":", obfuscate_mailto($user->email, ''));
 }
 
 // Show last time this user accessed this course
@@ -270,14 +259,12 @@ if (!isset($hiddenfields['lastaccess'])) {
     } else {
         $datestring = get_string("never");
     }
-    echo html_writer::tag('dt', get_string('lastaccess'));
-    echo html_writer::tag('dd', $datestring);
+    print_row(get_string("lastaccess").":", $datestring);
 }
 
 // Show roles in this course
 if ($rolestring = get_user_roles_in_course($id, $course->id)) {
-    echo html_writer::tag('dt', get_string('roles'));
-    echo html_writer::tag('dd', $rolestring);
+    print_row(get_string('roles').':', $rolestring);
 }
 
 // Show groups this user is in
@@ -299,8 +286,7 @@ if (!isset($hiddenfields['groups'])) {
             }
         }
         if ($groupstr !== '') {
-            echo html_writer::tag('dt', get_string('group'));
-            echo html_writer::tag('dd', rtrim($groupstr, ', '));
+            print_row(get_string("group").":", rtrim($groupstr, ', '));
         }
     }
 }
@@ -336,28 +322,23 @@ if (!isset($hiddenfields['mycourses'])) {
                 break;
             }
         }
-        echo html_writer::tag('dt', get_string('courseprofiles'));
-        echo html_writer::tag('dd', rtrim($courselisting,', '));
+        print_row(get_string('courseprofiles').':', rtrim($courselisting,', '));
     }
 }
 
 if (!isset($hiddenfields['suspended'])) {
     if ($user->suspended) {
-        echo html_writer::tag('dt', "&nbsp;");
-        echo html_writer::tag('dd', get_string('suspended', 'auth'));
+        print_row('', get_string('suspended', 'auth'));
     }
 }
-echo html_writer::end_tag('dl');
-echo "</div></div>"; // Closing desriptionbox and userprofilebox.
+
+echo "</table></div></div>";
+
 // Print messaging link if allowed
 if (isloggedin() && has_capability('moodle/site:sendmessage', $usercontext)
     && !empty($CFG->messaging) && !isguestuser() && !isguestuser($user) && ($USER->id != $user->id)) {
     echo '<div class="messagebox">';
-    $sendmessageurl = new moodle_url('/message/index.php', array('id' => $user->id));
-    if ($courseid) {
-        $sendmessageurl->param('viewing', MESSAGE_VIEW_COURSE. $courseid);
-    }
-    echo html_writer::link($sendmessageurl, get_string('messageselectadd'));
+    echo '<a href="'.$CFG->wwwroot.'/message/index.php?id='.$user->id.'">'.get_string('messageselectadd').'</a>';
     echo '</div>';
 }
 
@@ -380,3 +361,11 @@ if ($currentuser || has_capability('moodle/user:viewdetails', $usercontext) || h
 echo '</div>';  // userprofile class
 
 echo $OUTPUT->footer();
+
+/// Functions ///////
+
+function print_row($left, $right) {
+    echo "\n<tr><th class=\"label c0\">$left</th><td class=\"info c1\">$right</td></tr>\n";
+}
+
+

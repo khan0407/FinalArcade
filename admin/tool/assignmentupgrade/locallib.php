@@ -51,24 +51,17 @@ class tool_assignmentupgrade_batchoperationconfirm implements renderable {
      * Constructor for this class
      * @param stdClass $data - The data from the previous batch form
      */
-    public function __construct($data) {
+    function __construct($data) {
         if (isset($data->upgradeselected)) {
-            $this->continuemessage = get_string('upgradeselectedcount',
-                                                'tool_assignmentupgrade',
-                                                count(explode(',', $data->selectedassignments)));
-            $urlparams = array('upgradeselected'=>'1',
-                               'confirm'=>'1',
-                               'sesskey'=>sesskey(),
-                               'selected'=>$data->selectedassignments);
-            $this->continueurl = new moodle_url('/admin/tool/assignmentupgrade/batchupgrade.php', $urlparams);
+            $this->continuemessage = get_string('upgradeselectedcount', 'tool_assignmentupgrade', count(explode(',', $data->selectedassignments)));
+            $this->continueurl = new moodle_url('/admin/tool/assignmentupgrade/batchupgrade.php', array('upgradeselected'=>'1', 'confirm'=>'1', 'sesskey'=>sesskey(), 'selected'=>$data->selectedassignments));
         } else if (isset($data->upgradeall)) {
             if (!tool_assignmentupgrade_any_upgradable_assignments()) {
                 $this->continuemessage = get_string('noassignmentstoupgrade', 'tool_assignmentupgrade');
                 $this->continueurl = '';
             } else {
                 $this->continuemessage = get_string('upgradeallconfirm', 'tool_assignmentupgrade');
-                $urlparams = array('upgradeall'=>'1', 'confirm'=>'1', 'sesskey'=>sesskey());
-                $this->continueurl = new moodle_url('/admin/tool/assignmentupgrade/batchupgrade.php', $urlparams);
+                $this->continueurl = new moodle_url('/admin/tool/assignmentupgrade/batchupgrade.php', array('upgradeall'=>'1', 'confirm'=>'1', 'sesskey'=>sesskey()));
             }
         }
     }
@@ -93,8 +86,7 @@ class tool_assignmentupgrade_action {
     /**
      * Constructor to set the fields.
      *
-     * In order to create a new tool_assignmentupgrade_action instance you must use
-     * the tool_assignmentupgrade_action::make
+     * In order to create a new tool_assignmentupgrade_action instance you must use the tool_assignmentupgrade_action::make
      * method.
      *
      * @param string $name the name of this action.
@@ -128,13 +120,8 @@ class tool_assignmentupgrade_action {
 function tool_assignmentupgrade_any_upgradable_assignments() {
     global $DB, $CFG;
     require_once($CFG->dirroot . '/mod/assign/locallib.php');
-    // First find all the unique assignment types.
-    $types = $DB->get_records_sql('SELECT plugin AS assignmenttype,
-                                          value AS version
-                                   FROM {config_plugins}
-                                   WHERE
-                                       name = ? AND
-                                       plugin LIKE ?', array('version', 'assignment_%'));
+    // first find all the unique assignment types
+    $types = $DB->get_records_sql('SELECT plugin AS assignmenttype, value AS version FROM {config_plugins} WHERE name = ? AND plugin LIKE ?', array('version', 'assignment_%'));
 
     $upgradabletypes = array();
 
@@ -146,7 +133,7 @@ function tool_assignmentupgrade_any_upgradable_assignments() {
     }
     list($sql, $params) = $DB->get_in_or_equal($upgradabletypes);
 
-    $count = $DB->count_records_sql('SELECT COUNT(id) FROM {assignment} WHERE assignmenttype ' . $sql, $params);
+    $count = $DB->count_records_sql('SELECT COUNT(id) from {assignment} where assignmenttype ' . $sql, $params);
 
     return $count > 0;
 }
@@ -158,14 +145,8 @@ function tool_assignmentupgrade_any_upgradable_assignments() {
 function tool_assignmentupgrade_load_all_upgradable_assignmentids() {
     global $DB, $CFG;
     require_once($CFG->dirroot . '/mod/assign/locallib.php');
-    // First find all the unique assignment types.
-    $types = $DB->get_records_sql('SELECT
-                                       plugin AS assignmenttype,
-                                       value AS version
-                                   FROM {config_plugins}
-                                   WHERE
-                                       name = ? AND
-                                       plugin LIKE ?', array('version', 'assignment_%'));
+    // first find all the unique assignment types
+    $types = $DB->get_records_sql('SELECT plugin AS assignmenttype, value AS version FROM {config_plugins} WHERE name = ? AND plugin LIKE ?', array('version', 'assignment_%'));
 
     $upgradabletypes = array();
 

@@ -44,9 +44,9 @@ assignment submission for \'{$a->assignment}\'
 You can see it appended to your assignment submission:
 
     {$a->url}';
-$string['assignmentmailhtml'] = '<p>{$a->teacher} has posted some feedback on your
-assignment submission for \'<i>{$a->assignment}</i>\'.</p>
-<p>You can see it appended to your <a href="{$a->url}">assignment submission</a>.</p>';
+$string['assignmentmailhtml'] = '{$a->teacher} has posted some feedback on your
+assignment submission for \'<i>{$a->assignment}</i>\'<br /><br />
+You can see it appended to your <a href="{$a->url}">assignment submission</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} has posted some feedback on your
 assignment submission for \'{$a->assignment}\' You can see it appended to your submission';
 $string['assignmentname'] = 'Assignment name';
@@ -58,7 +58,7 @@ $string['availabledate'] = 'Available from';
 $string['cannotdeletefiles'] = 'An error occurred and files could not be deleted';
 $string['cannotviewassignment'] = 'You can not view this assignment';
 $string['changegradewarning'] = 'This assignment has graded submissions and changing the grade will not automatically re-calculate existing submission grades. You must re-grade all existing submissions, if you wish to change the grade.';
-$string['closedassignment'] = 'This assignment is closed, as the submission deadline has passed.';
+$string['closedassignment'] = 'The submission date for this assignment has been closed.';
 $string['comment'] = 'Comment';
 $string['commentinline'] = 'Comment inline';
 $string['commentinline_help'] = 'If enabled, the submission text will be copied into the feedback comment field during grading, making it easier to comment inline (using a different colour, perhaps) or to edit the original text.';
@@ -88,8 +88,9 @@ for \'{$a->assignment}\' at {$a->timeupdated}
 It is available here:
 
     {$a->url}';
-$string['emailteachermailhtml'] = '<p>{$a->username} has updated their assignment submission for <i>\'{$a->assignment}\' at {$a->timeupdated}</i>.</p>
-<p>It is <a href="{$a->url}">available on the site</a>.</p>';
+$string['emailteachermailhtml'] = '{$a->username} has updated their assignment submission
+for <i>\'{$a->assignment}\'  at {$a->timeupdated}</i><br /><br />
+It is <a href="{$a->url}">available on the web site</a>.';
 $string['emailteachers'] = 'Email alerts to teachers';
 $string['emailteachers_help'] = 'If enabled, teachers receive email notification whenever students add or update an assignment submission.
 
@@ -222,4 +223,3 @@ $string['viewfeedback'] = 'View assignment grades and feedback';
 $string['viewmysubmission'] = 'View my submission';
 $string['viewsubmissions'] = 'View {$a} submitted assignments';
 $string['yoursubmission'] = 'Your submission';
-$string['unsupportedsubplugin'] = 'The assignment type of \'{$a}\' is not currently supported. You may wait until the assignment type is made available, or delete the assignment.';

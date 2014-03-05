@@ -31,7 +31,6 @@ if ($ADMIN->fulltree) {
     $title = get_string('logo', 'theme_splash');
     $description = get_string('logodesc', 'theme_splash');
     $setting = new admin_setting_configtext($name, $title, $description, '', PARAM_URL);
-    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     // Tagline setting
@@ -39,14 +38,12 @@ if ($ADMIN->fulltree) {
     $title = get_string('tagline', 'theme_splash');
     $description = get_string('taglinedesc', 'theme_splash');
     $setting = new admin_setting_configtextarea($name, $title, $description, get_string('defaulttagline', 'theme_splash'));
-    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     $name = 'theme_splash/hide_tagline';
     $title = get_string('hide_tagline', 'theme_splash');
     $description = get_string('hide_taglinedesc', 'theme_splash');
     $setting = new admin_setting_configcheckbox($name, $title, $description, 0);
-    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     // Block region width
@@ -56,7 +53,6 @@ if ($ADMIN->fulltree) {
     //$default = 240;
     //$choices = array(200=>'200px', 240=>'240px', 290=>'290px', 350=>'350px', 420=>'420px');
     //$setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
-    //$setting->set_updatedcallback('theme_reset_all_caches');
     //$temp->add($setting);
 
     // Foot note setting
@@ -64,7 +60,6 @@ if ($ADMIN->fulltree) {
     $title = get_string('footnote', 'theme_splash');
     $description = get_string('footnotedesc', 'theme_splash');
     $setting = new admin_setting_confightmleditor($name, $title, $description, '');
-    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     // Custom CSS file
@@ -72,7 +67,6 @@ if ($ADMIN->fulltree) {
     $title = get_string('customcss', 'theme_splash');
     $description = get_string('customcssdesc', 'theme_splash');
     $setting = new admin_setting_configtextarea($name, $title, $description, '');
-    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
 }

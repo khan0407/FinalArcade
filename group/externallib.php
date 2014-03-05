@@ -760,7 +760,6 @@ class core_group_external extends external_api {
             array(
                 'groupingids' => new external_multiple_structure(new external_value(PARAM_INT, 'grouping ID')
                         , 'List of grouping id. A grouping id is an integer.'),
-                'returngroups' => new external_value(PARAM_BOOL, 'return associated groups', VALUE_DEFAULT, 0)
             )
         );
     }
@@ -769,18 +768,15 @@ class core_group_external extends external_api {
      * Get groupings definition specified by ids
      *
      * @param array $groupingids arrays of grouping ids
-     * @param boolean $returngroups return the associated groups if true. The default is false.
      * @return array of grouping objects (id, courseid, name)
      * @since Moodle 2.3
      */
-    public static function get_groupings($groupingids, $returngroups = false) {
-        global $CFG, $DB;
+    public static function get_groupings($groupingids) {
+        global $CFG;
         require_once("$CFG->dirroot/group/lib.php");
         require_once("$CFG->libdir/filelib.php");
 
-        $params = self::validate_parameters(self::get_groupings_parameters(),
-                                            array('groupingids' => $groupingids,
-                                                  'returngroups' => $returngroups));
+        $params = self::validate_parameters(self::get_groupings_parameters(), array('groupingids'=>$groupingids));
 
         $groupings = array();
         foreach ($params['groupingids'] as $groupingid) {
@@ -803,30 +799,7 @@ class core_group_external extends external_api {
                 external_format_text($grouping->description, $grouping->descriptionformat,
                         $context->id, 'grouping', 'description', $grouping->id);
 
-            $groupingarray = (array)$grouping;
-
-            if ($params['returngroups']) {
-                $grouprecords = $DB->get_records_sql("SELECT * FROM {groups} g INNER JOIN {groupings_groups} gg ".
-                                               "ON g.id = gg.groupid WHERE gg.groupingid = ? ".
-                                               "ORDER BY groupid", array($groupingid));
-                if ($grouprecords) {
-                    $groups = array();
-                    foreach ($grouprecords as $grouprecord) {
-                        list($grouprecord->description, $grouprecord->descriptionformat) =
-                        external_format_text($grouprecord->description, $grouprecord->descriptionformat,
-                        $context->id, 'group', 'description', $grouprecord->groupid);
-                        $groups[] = array('id' => $grouprecord->groupid,
-                                          'name' => $grouprecord->name,
-                                          'description' => $grouprecord->description,
-                                          'descriptionformat' => $grouprecord->descriptionformat,
-                                          'enrolmentkey' => $grouprecord->enrolmentkey,
-                                          'courseid' => $grouprecord->courseid
-                                          );
-                    }
-                    $groupingarray['groups'] = $groups;
-                }
-            }
-            $groupings[] = $groupingarray;
+            $groupings[] = (array)$grouping;
         }
 
         return $groupings;
@@ -846,19 +819,7 @@ class core_group_external extends external_api {
                     'courseid' => new external_value(PARAM_INT, 'id of course'),
                     'name' => new external_value(PARAM_TEXT, 'multilang compatible name, course unique'),
                     'description' => new external_value(PARAM_RAW, 'grouping description text'),
-                    'descriptionformat' => new external_format_value('description'),
-                    'groups' => new external_multiple_structure(
-                        new external_single_structure(
-                            array(
-                                'id' => new external_value(PARAM_INT, 'group record id'),
-                                'courseid' => new external_value(PARAM_INT, 'id of course'),
-                                'name' => new external_value(PARAM_TEXT, 'multilang compatible name, course unique'),
-                                'description' => new external_value(PARAM_RAW, 'group description text'),
-                                'descriptionformat' => new external_format_value('description'),
-                                'enrolmentkey' => new external_value(PARAM_RAW, 'group enrol secret phrase')
-                            )
-                        ),
-                    'optional groups', VALUE_OPTIONAL)
+                    'descriptionformat' => new external_format_value('description')
                 )
             )
         );
@@ -1164,6 +1125,7 @@ class core_group_external extends external_api {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since Moodle 2.0
  * @deprecated Moodle 2.2 MDL-29106 - Please do not use this class any more.
+ * @todo MDL-31194 This will be deleted in Moodle 2.5.
  * @see core_group_external
  */
 class moodle_group_external extends external_api {
@@ -1174,6 +1136,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::create_groups_parameters()
      */
     public static function create_groups_parameters() {
@@ -1187,6 +1150,7 @@ class moodle_group_external extends external_api {
      * @return array of newly created groups
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see use core_group_external::create_groups()
      */
     public static function create_groups($groups) {
@@ -1199,6 +1163,7 @@ class moodle_group_external extends external_api {
      * @return external_description
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::create_groups_returns()
      */
     public static function create_groups_returns() {
@@ -1211,6 +1176,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_groups_parameters()
      */
     public static function get_groups_parameters() {
@@ -1224,6 +1190,7 @@ class moodle_group_external extends external_api {
      * @return array of group objects (id, courseid, name, enrolmentkey)
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_groups()
      */
     public static function get_groups($groupids) {
@@ -1236,6 +1203,7 @@ class moodle_group_external extends external_api {
      * @return external_description
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_groups_returns()
      */
     public static function get_groups_returns() {
@@ -1248,6 +1216,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_course_groups_parameters()
      */
     public static function get_course_groups_parameters() {
@@ -1261,6 +1230,7 @@ class moodle_group_external extends external_api {
      * @return array of group objects (id, courseid, name, enrolmentkey)
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_course_groups()
      */
     public static function get_course_groups($courseid) {
@@ -1273,6 +1243,7 @@ class moodle_group_external extends external_api {
      * @return external_description
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_course_groups_returns()
      */
     public static function get_course_groups_returns() {
@@ -1285,6 +1256,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::delete_group_members_parameters()
      */
     public static function delete_groups_parameters() {
@@ -1297,6 +1269,7 @@ class moodle_group_external extends external_api {
      * @param array $groupids array of group ids
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::delete_groups()
      */
     public static function delete_groups($groupids) {
@@ -1309,6 +1282,7 @@ class moodle_group_external extends external_api {
      * @return null
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::delete_group_members_returns()
      */
     public static function delete_groups_returns() {
@@ -1322,6 +1296,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_group_members_parameters()
      */
     public static function get_groupmembers_parameters() {
@@ -1335,6 +1310,7 @@ class moodle_group_external extends external_api {
      * @return array with  group id keys containing arrays of user ids
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_group_members()
      */
     public static function get_groupmembers($groupids) {
@@ -1347,6 +1323,7 @@ class moodle_group_external extends external_api {
      * @return external_description
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::get_group_members_returns()
      */
     public static function get_groupmembers_returns() {
@@ -1360,6 +1337,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::add_group_members_parameters()
      */
     public static function add_groupmembers_parameters() {
@@ -1372,6 +1350,7 @@ class moodle_group_external extends external_api {
      * @param array $members of arrays with keys userid, groupid
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see use core_group_external::add_group_members()
      */
     public static function add_groupmembers($members) {
@@ -1384,6 +1363,7 @@ class moodle_group_external extends external_api {
      * @return external_description
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::add_group_members_returns()
      */
     public static function add_groupmembers_returns() {
@@ -1397,6 +1377,7 @@ class moodle_group_external extends external_api {
      * @return external_function_parameters
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::delete_group_members_parameters()
      */
     public static function delete_groupmembers_parameters() {
@@ -1409,6 +1390,7 @@ class moodle_group_external extends external_api {
      * @param array $members of arrays with keys userid, groupid
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::delete_group_members()
      */
     public static function delete_groupmembers($members) {
@@ -1421,6 +1403,7 @@ class moodle_group_external extends external_api {
      * @return external_description
      * @since Moodle 2.0
      * @deprecated Moodle 2.2 MDL-29106 - Please do not call this function any more.
+     * @todo MDL-31194 This will be deleted in Moodle 2.5.
      * @see core_group_external::delete_group_members_returns()
      */
     public static function delete_groupmembers_returns() {

@@ -75,7 +75,6 @@ class flexible_table {
     var $pagesize    = 30;
     var $currpage    = 0;
     var $totalrows   = 0;
-    var $currentrow  = 0;
     var $sort_default_column = NULL;
     var $sort_default_order  = SORT_ASC;
 
@@ -218,8 +217,6 @@ class flexible_table {
 
     /**
      * Use text sorting functions for this column (required for text columns with Oracle).
-     * Be warned that you cannot use this with column aliases. You can only do this
-     * with real columns. See MDL-40481 for an example.
      * @param string column name
      */
     function text_sorting($column) {
@@ -797,7 +794,7 @@ class flexible_table {
             }
             return format_text($text, $format, $options);
         } else {
-            $eci = $this->export_class_instance();
+            $eci =& $this->export_class_instance();
             return $eci->format_text($text, $format, $options, $courseid);
         }
     }
@@ -981,16 +978,15 @@ class flexible_table {
      */
     function print_row($row, $classname = '') {
         static $suppress_lastrow = NULL;
-        $oddeven = $this->currentrow % 2;
+        static $oddeven = 1;
         $rowclasses = array('r' . $oddeven);
+        $oddeven = $oddeven ? 0 : 1;
 
         if ($classname) {
             $rowclasses[] = $classname;
         }
 
-        $rowid = $this->uniqueid . '_r' . $this->currentrow;
-
-        echo html_writer::start_tag('tr', array('class' => implode(' ', $rowclasses), 'id' => $rowid));
+        echo html_writer::start_tag('tr', array('class' => implode(' ', $rowclasses)));
 
         // If we have a separator, print it
         if ($row === NULL) {
@@ -1015,7 +1011,6 @@ class flexible_table {
 
                 echo html_writer::tag('td', $content, array(
                         'class' => 'cell c' . $index . $this->column_class[$column],
-                        'id' => $rowid . '_c' . $index,
                         'style' => $this->make_styles_string($this->column_style[$column])));
             }
         }
@@ -1026,7 +1021,6 @@ class flexible_table {
         if ($suppress_enabled) {
             $suppress_lastrow = $row;
         }
-        $this->currentrow++;
     }
 
     /**
@@ -1039,14 +1033,6 @@ class flexible_table {
             $this->print_nothing_to_display();
 
         } else {
-            // Print empty rows to fill the table to the current pagesize.
-            // This is done so the header aria-controls attributes do not point to
-            // non existant elements.
-            $emptyrow = array_fill(0, count($this->columns), '');
-            while ($this->currentrow < $this->pagesize) {
-                $this->print_row($emptyrow, 'emptyrow');
-            }
-
             echo html_writer::end_tag('tbody');
             echo html_writer::end_tag('table');
             echo html_writer::end_tag('div');
@@ -1077,28 +1063,15 @@ class flexible_table {
         // Some headers contain <br /> tags, do not include in title, hence the
         // strip tags.
 
-        $ariacontrols = '';
-        for ($i = 0; $i < $this->pagesize; $i++) {
-            $ariacontrols .= $this->uniqueid . '_r' . $i . '_c' . $index . ' ';
-        }
-
-        $ariacontrols = trim($ariacontrols);
-
         if (!empty($this->sess->collapse[$column])) {
-            $linkattributes = array('title' => get_string('show') . ' ' . strip_tags($this->headers[$index]),
-                                    'aria-expanded' => 'false',
-                                    'aria-controls' => $ariacontrols);
             return html_writer::link($this->baseurl->out(false, array($this->request[TABLE_VAR_SHOW] => $column)),
                     html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/switch_plus'), 'alt' => get_string('show'))),
-                    $linkattributes);
+                    array('title' => get_string('show') . ' ' . strip_tags($this->headers[$index])));
 
         } else if ($this->headers[$index] !== NULL) {
-            $linkattributes = array('title' => get_string('hide') . ' ' . strip_tags($this->headers[$index]),
-                                    'aria-expanded' => 'true',
-                                    'aria-controls' => $ariacontrols);
             return html_writer::link($this->baseurl->out(false, array($this->request[TABLE_VAR_HIDE] => $column)),
                     html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/switch_minus'), 'alt' => get_string('hide'))),
-                    $linkattributes);
+                    array('title' => get_string('hide') . ' ' . strip_tags($this->headers[$index])));
         }
     }
 
@@ -1127,23 +1100,24 @@ class flexible_table {
             switch ($column) {
 
                 case 'fullname':
-                // Check the full name display for sortable fields.
-                $nameformat = $CFG->fullnamedisplay;
-                if ($nameformat == 'language') {
-                    $nameformat = get_string('fullnamedisplay');
-                }
-                $requirednames = order_in_string(array('firstname', 'lastname'), $nameformat);
+                if ($this->is_sortable($column)) {
+                    $firstnamesortlink = $this->sort_link(get_string('firstname'),
+                            'firstname', $primary_sort_column === 'firstname', $primary_sort_order);
 
-                if (!empty($requirednames)) {
-                    if ($this->is_sortable($column)) {
-                        // Done this way for the possibility of more than two sortable full name display fields.
-                        $this->headers[$index] = '';
-                        foreach ($requirednames as $name) {
-                            $sortname = $this->sort_link(get_string($name),
-                                    $name, $primary_sort_column === $name, $primary_sort_order);
-                            $this->headers[$index] .= $sortname . ' / ';
-                        }
-                        $this->headers[$index] = substr($this->headers[$index], 0, -3);
+                    $lastnamesortlink = $this->sort_link(get_string('lastname'),
+                            'lastname', $primary_sort_column === 'lastname', $primary_sort_order);
+
+                    $override = new stdClass();
+                    $override->firstname = 'firstname';
+                    $override->lastname = 'lastname';
+                    $fullnamelanguage = get_string('fullnamedisplay', '', $override);
+
+                    if (($CFG->fullnamedisplay == 'firstname lastname') or
+                        ($CFG->fullnamedisplay == 'firstname') or
+                        ($CFG->fullnamedisplay == 'language' and $fullnamelanguage == 'firstname lastname' )) {
+                        $this->headers[$index] = $firstnamesortlink . ' / ' . $lastnamesortlink;
+                    } else {
+                        $this->headers[$index] = $lastnamesortlink . ' / ' . $firstnamesortlink;
                     }
                 }
                 break;
@@ -1500,7 +1474,7 @@ class table_default_export_format_parent {
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_spreadsheet_export_format_parent extends table_default_export_format_parent {
-    var $currentrow;
+    var $rownum;
     var $workbook;
     var $worksheet;
     /**
@@ -1527,9 +1501,9 @@ class table_spreadsheet_export_format_parent extends table_default_export_format
         $filename = $filename.'.'.$this->fileextension;
         $this->define_workbook();
         // format types
-        $this->formatnormal = $this->workbook->add_format();
+        $this->formatnormal =& $this->workbook->add_format();
         $this->formatnormal->set_bold(0);
-        $this->formatheaders = $this->workbook->add_format();
+        $this->formatheaders =& $this->workbook->add_format();
         $this->formatheaders->set_bold(1);
         $this->formatheaders->set_align('center');
         // Sending HTTP headers
@@ -1539,30 +1513,30 @@ class table_spreadsheet_export_format_parent extends table_default_export_format
 
     function start_table($sheettitle) {
         $this->worksheet = $this->workbook->add_worksheet($sheettitle);
-        $this->currentrow=0;
+        $this->rownum=0;
     }
 
     function output_headers($headers) {
         $colnum = 0;
         foreach ($headers as $item) {
-            $this->worksheet->write($this->currentrow,$colnum,$item,$this->formatheaders);
+            $this->worksheet->write($this->rownum,$colnum,$item,$this->formatheaders);
             $colnum++;
         }
-        $this->currentrow++;
+        $this->rownum++;
     }
 
     function add_data($row) {
         $colnum = 0;
         foreach ($row as $item) {
-            $this->worksheet->write($this->currentrow,$colnum,$item,$this->formatnormal);
+            $this->worksheet->write($this->rownum,$colnum,$item,$this->formatnormal);
             $colnum++;
         }
-        $this->currentrow++;
+        $this->rownum++;
         return true;
     }
 
     function add_seperator() {
-        $this->currentrow++;
+        $this->rownum++;
         return true;
     }
 
@@ -1712,7 +1686,6 @@ class table_xhtml_export_format extends table_default_export_format_parent {
 <html xmlns="http://www.w3.org/1999/xhtml"
   xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style type="text/css">/*<![CDATA[*/
 
 .flexible th {

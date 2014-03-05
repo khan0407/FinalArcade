@@ -103,25 +103,22 @@ try {
         foreach ($branch->find_all_of_type(navigation_node::TYPE_CATEGORY) as $category) {
             $category->action = null;
         }
-        foreach ($branch->find_all_of_type(navigation_node::TYPE_MY_CATEGORY) as $category) {
-            $category->action = null;
-        }
     }
 
     // Stop buffering errors at this point
     $html = ob_get_contents();
     ob_end_clean();
 } catch (Exception $e) {
-    throw new coding_exception('Error: '.$e->getMessage());
+    die('Error: '.$e->getMessage());
 }
 
 // Check if the buffer contianed anything if it did ERROR!
 if (trim($html) !== '') {
-    throw new coding_exception('Errors were encountered while producing the navigation branch'."\n\n\n".$html);
+    die('Errors were encountered while producing the navigation branch'."\n\n\n".$html);
 }
 // Check that branch isn't empty... if it is ERROR!
-if (empty($branch) || ($branch->nodetype !== navigation_node::NODETYPE_BRANCH && !$branch->isexpandable)) {
-    throw new coding_exception('No further information available for this branch');
+if (empty($branch) || $branch->nodetype !== navigation_node::NODETYPE_BRANCH) {
+    die('No further information available for this branch');
 }
 
 // Prepare an XML converter for the branch

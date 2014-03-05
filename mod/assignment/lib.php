@@ -68,6 +68,8 @@ class assignment_base {
     var $strlastmodified;
     /** @var string */
     var $pagetitle;
+    /** @var bool */
+    var $usehtmleditor;
     /**
      * @todo document this var
      */
@@ -1245,7 +1247,7 @@ class assignment_base {
         $tabindex = 1; //tabindex for quick grading tabbing; Not working for dropdowns yet
         add_to_log($course->id, 'assignment', 'view submission', 'submissions.php?id='.$this->cm->id, $this->assignment->id, $this->cm->id);
 
-        $PAGE->set_title($this->assignment->name);
+        $PAGE->set_title(format_string($this->assignment->name,true));
         $PAGE->set_heading($this->course->fullname);
         echo $OUTPUT->header();
 
@@ -1519,7 +1521,7 @@ class assignment_base {
                             } else if ($quickgrade) {
                                 $comment = '<div id="com'.$auser->id.'">'
                                          . '<textarea tabindex="'.$tabindex++.'" name="submissioncomment['.$auser->id.']" id="submissioncomment'
-                                         . $auser->id.'" rows="2" cols="20" spellcheck="true">'.($auser->submissioncomment).'</textarea></div>';
+                                         . $auser->id.'" rows="2" cols="20">'.($auser->submissioncomment).'</textarea></div>';
                             } else {
                                 $comment = '<div id="com'.$auser->id.'">'.shorten_text(strip_tags($auser->submissioncomment),15).'</div>';
                             }
@@ -1547,7 +1549,7 @@ class assignment_base {
                             } else if ($quickgrade) {
                                 $comment = '<div id="com'.$auser->id.'">'
                                          . '<textarea tabindex="'.$tabindex++.'" name="submissioncomment['.$auser->id.']" id="submissioncomment'
-                                         . $auser->id.'" rows="2" cols="20" spellcheck="true">'.($auser->submissioncomment).'</textarea></div>';
+                                         . $auser->id.'" rows="2" cols="20">'.($auser->submissioncomment).'</textarea></div>';
                             } else {
                                 $comment = '<div id="com'.$auser->id.'">&nbsp;</div>';
                             }
@@ -1933,7 +1935,7 @@ class assignment_base {
         $context = context_module::instance($this->cm->id);
 
         // Get ids of users enrolled in the given course.
-        list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:submit', $groupid);
+        list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:view', $groupid);
         $params['assignmentid'] = $this->cm->instance;
 
         // Get ids of users enrolled in the given course.
@@ -2366,6 +2368,12 @@ class assignment_base {
                 // remove all grades from gradebook
                 assignment_reset_gradebook($data->courseid, $this->type);
             }
+        }
+
+        /// updating dates - shift may be negative too
+        if ($data->timeshift) {
+            shift_course_mod_dates('assignment', array('timedue', 'timeavailable'), $data->timeshift, $data->courseid);
+            $status[] = array('component'=>$componentstr, 'item'=>get_string('datechanged').': '.$typestr, 'error'=>false);
         }
 
         return $status;
@@ -2817,7 +2825,7 @@ function assignment_cron () {
     global $CFG, $USER, $DB;
 
     /// first execute all crons in plugins
-    if ($plugins = core_component::get_plugin_list('assignment')) {
+    if ($plugins = get_plugin_list('assignment')) {
         foreach ($plugins as $plugin=>$dir) {
             require_once("$dir/assignment.class.php");
             $assignmentclass = "assignment_$plugin";
@@ -3162,8 +3170,7 @@ function assignment_scale_used_anywhere($scaleid) {
  * @return boolean Always returns true
  */
 function assignment_refresh_events($courseid = 0) {
-    global $DB, $CFG;
-    require_once($CFG->dirroot.'/calendar/lib.php');
+    global $DB;
 
     if ($courseid == 0) {
         if (! $assignments = $DB->get_records("assignment")) {
@@ -3177,15 +3184,15 @@ function assignment_refresh_events($courseid = 0) {
     $moduleid = $DB->get_field('modules', 'id', array('name'=>'assignment'));
 
     foreach ($assignments as $assignment) {
-        $cm = get_coursemodule_from_instance('assignment', $assignment->id, $courseid, false, MUST_EXIST);
+        $cm = get_coursemodule_from_id('assignment', $assignment->id);
         $event = new stdClass();
         $event->name        = $assignment->name;
         $event->description = format_module_intro('assignment', $assignment, $cm->id);
         $event->timestart   = $assignment->timedue;
 
         if ($event->id = $DB->get_field('event', 'id', array('modulename'=>'assignment', 'instance'=>$assignment->id))) {
-            $calendarevent = calendar_event::load($event->id);
-            $calendarevent->update($event);
+            update_event($event);
+
         } else {
             $event->courseid    = $assignment->course;
             $event->groupid     = 0;
@@ -3195,7 +3202,7 @@ function assignment_refresh_events($courseid = 0) {
             $event->eventtype   = 'due';
             $event->timeduration = 0;
             $event->visible     = $DB->get_field('course_modules', 'visible', array('module'=>$moduleid, 'instance'=>$assignment->id));
-            calendar_event::create($event);
+            add_event($event);
         }
 
     }
@@ -3587,7 +3594,7 @@ function assignment_get_all_submissions($assignment, $sort="", $dir="DESC") {
  * Given a course_module object, this function returns any "extra" information that may be needed
  * when printing this activity in a course listing.  See get_array_of_activities() in course/lib.php.
  *
- * @param stdClass $coursemodule object The coursemodule object (record).
+ * @param $coursemodule object The coursemodule object (record).
  * @return cached_cm_info An object on information that the courses will know about (most noticeably, an icon).
  */
 function assignment_get_coursemodule_info($coursemodule) {
@@ -3630,7 +3637,7 @@ function assignment_get_coursemodule_info($coursemodule) {
  */
 function assignment_types() {
     $types = array();
-    $names = core_component::get_plugin_list('assignment');
+    $names = get_plugin_list('assignment');
     foreach ($names as $name=>$dir) {
         $types[$name] = get_string('type'.$name, 'assignment');
 
@@ -3813,8 +3820,8 @@ function assignment_get_types() {
     }
 
     /// Drop-in extra assignment types
-    $assignmenttypes = core_component::get_plugin_list('assignment');
-    foreach ($assignmenttypes as $assignmenttype=>$fulldir) {
+    $assignmenttypes = get_list_of_plugins('mod/assignment/type');
+    foreach ($assignmenttypes as $assignmenttype) {
         if (!empty($CFG->{'assignment_hide_'.$assignmenttype})) {  // Not wanted
             continue;
         }
@@ -3873,22 +3880,11 @@ function assignment_reset_userdata($data) {
     global $CFG;
 
     $status = array();
-    foreach (core_component::get_plugin_list('assignment') as $type=>$dir) {
+    foreach (get_plugin_list('assignment') as $type=>$dir) {
         require_once("$dir/assignment.class.php");
         $assignmentclass = "assignment_$type";
         $ass = new $assignmentclass();
         $status = array_merge($status, $ass->reset_userdata($data));
-    }
-
-    // Updating dates - shift may be negative too.
-    if ($data->timeshift) {
-        shift_course_mod_dates('assignment',
-                                array('timedue', 'timeavailable'),
-                                $data->timeshift,
-                                $data->courseid);
-        $status[] = array('component' => get_string('modulenameplural', 'assignment'),
-                          'item' => get_string('datechanged'),
-                          'error' => false);
     }
 
     return $status;
@@ -3951,12 +3947,7 @@ function assignment_extend_settings_navigation(settings_navigation $settings, na
     global $PAGE, $DB, $USER, $CFG;
 
     $assignmentrow = $DB->get_record("assignment", array("id" => $PAGE->cm->instance));
-
-    $classfile = "$CFG->dirroot/mod/assignment/type/$assignmentrow->assignmenttype/assignment.class.php";
-    if (!file_exists($classfile)) {
-        return;
-    }
-    require_once($classfile);
+    require_once "$CFG->dirroot/mod/assignment/type/$assignmentrow->assignmenttype/assignment.class.php";
 
     $assignmentclass = 'assignment_'.$assignmentrow->assignmenttype;
     $assignmentinstance = new $assignmentclass($PAGE->cm->id, $assignmentrow, $PAGE->cm, $PAGE->course);

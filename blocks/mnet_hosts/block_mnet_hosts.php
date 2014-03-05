@@ -25,7 +25,7 @@ class block_mnet_hosts extends block_list {
             return false;
         }
 
-        if (\core\session\manager::is_loggedinas()) {
+        if (session_is_loggedinas()) {
             $this->content = new stdClass();
             $this->content->footer = html_writer::tag('span',
                 get_string('notpermittedtojumpas', 'mnet'));

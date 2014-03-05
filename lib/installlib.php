@@ -93,7 +93,7 @@ function install_init_dataroot($dataroot, $dirpermissions) {
         return false;
     }
 
-    umask(0000); // $CFG->umaskpermissions is not set yet.
+    umask(0000);
     if (!file_exists($dataroot)) {
         if (!mkdir($dataroot, $dirpermissions, true)) {
             // most probably this does not work, but anyway
@@ -192,20 +192,7 @@ function install_db_validate($database, $dbhost, $dbuser, $dbpass, $dbname, $pre
         }
         return '';
     } catch (dml_exception $ex) {
-        $stringmanager = get_string_manager();
-        $errorstring = $ex->errorcode.'oninstall';
-        $legacystring = $ex->errorcode;
-        if ($stringmanager->string_exists($errorstring, $ex->module)) {
-            // By using a different string id from the error code we are separating exception handling and output.
-            return $stringmanager->get_string($errorstring, $ex->module, $ex->a).'<br />'.$ex->debuginfo;
-        } else if ($stringmanager->string_exists($legacystring, $ex->module)) {
-            // There are some DML exceptions that may be thrown here as well as during normal operation.
-            // If we have a translated message already we still want to serve it here.
-            // However it is not the preferred way.
-            return $stringmanager->get_string($legacystring, $ex->module, $ex->a).'<br />'.$ex->debuginfo;
-        }
-        // No specific translation. Deliver a generic error message.
-        return $stringmanager->get_string('dmlexceptiononinstall', 'error', $ex);
+        return get_string($ex->errorcode, $ex->module, $ex->a).'<br />'.$ex->debuginfo;
     }
 }
 
@@ -246,10 +233,7 @@ function install_generate_configphp($database, $cfg) {
     }
     $configphp .= '$CFG->directorypermissions = ' . $chmod . ';' . PHP_EOL . PHP_EOL;
 
-    // A site-wide salt is only needed if bcrypt is not properly supported by the current version of PHP.
-    if (password_compat_not_supported()) {
-        $configphp .= '$CFG->passwordsaltmain = '.var_export(complex_random_string(), true) . ';' . PHP_EOL . PHP_EOL;
-    }
+    $configphp .= '$CFG->passwordsaltmain = '.var_export(complex_random_string(), true) . ';' . PHP_EOL . PHP_EOL;
 
     $configphp .= 'require_once(dirname(__FILE__) . \'/lib/setup.php\');' . PHP_EOL . PHP_EOL;
     $configphp .= '// There is no php closing tag in this file,' . PHP_EOL;
@@ -424,7 +408,6 @@ function install_cli_database(array $options, $interactive) {
     @ini_set('display_errors', '1');
     $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = true;
-    $CFG->debugdeveloper = true;
 
     $CFG->version = '';
     $CFG->release = '';
@@ -495,7 +478,7 @@ function install_cli_database(array $options, $interactive) {
     upgrade_finished();
 
     // log in as admin - we need do anything when applying defaults
-    \core\session\manager::set_user(get_admin());
+    session_set_user(get_admin());
 
     // apply all default settings, do it twice to fill all defaults - some settings depend on other setting
     admin_apply_default_settings(NULL, true);

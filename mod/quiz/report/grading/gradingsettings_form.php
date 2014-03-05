@@ -79,8 +79,7 @@ class quiz_grading_settings_form extends moodleform {
             'date' => get_string('bydate', 'quiz_grading'),
         );
         if ($this->shownames) {
-            $orderoptions['studentfirstname'] = get_string('bystudentfirstname', 'quiz_grading');
-            $orderoptions['studentlastname']  = get_string('bystudentlastname', 'quiz_grading');
+            $orderoptions['student'] = get_string('bystudentname', 'quiz_grading');
         }
         if ($this->showidnumbers) {
             $orderoptions['idnumber'] = get_string('bystudentidnumber', 'quiz_grading');
@@ -90,11 +89,6 @@ class quiz_grading_settings_form extends moodleform {
 
         foreach ($this->hidden as $name => $value) {
             $mform->addElement('hidden', $name, $value);
-            if ($name == 'mode') {
-                $mform->setType($name, PARAM_ALPHA);
-            } else {
-                $mform->setType($name, PARAM_INT);
-            }
         }
 
         $mform->addElement('submit', 'submitbutton', get_string('changeoptions', 'quiz_grading'));

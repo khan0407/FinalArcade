@@ -240,11 +240,11 @@ switch ($mode) {
 /// Print the browsing interface
 
 ///get the list of possible fields (plugins)
-$plugins = core_component::get_plugin_list('datafield');
+$directories = get_list_of_plugins('mod/data/field/');
 $menufield = array();
 
-foreach ($plugins as $plugin=>$fulldir){
-    $menufield[$plugin] = get_string('pluginname', 'datafield_'.$plugin);    //get from language files
+foreach ($directories as $directory){
+    $menufield[$directory] = get_string($directory,'data');    //get from language files
 }
 asort($menufield);    //sort in alphabetical order
 $PAGE->set_title(get_string('course') . ': ' . $course->fullname);

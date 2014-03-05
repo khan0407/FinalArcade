@@ -49,16 +49,40 @@ class mod_feedback_mod_form extends moodleform_mod {
         $this->add_intro_editor(true, get_string('description', 'feedback'));
 
         //-------------------------------------------------------------------------------
-        $mform->addElement('header', 'timinghdr', get_string('availability'));
+        $mform->addElement('header', 'timinghdr', get_string('timing', 'form'));
 
-        $mform->addElement('date_time_selector', 'timeopen', get_string('feedbackopen', 'feedback'),
-            array('optional' => true));
+        $enableopengroup = array();
+        $enableopengroup[] =& $mform->createElement('checkbox',
+                                    'openenable',
+                                    get_string('feedbackopen', 'feedback'));
 
-        $mform->addElement('date_time_selector', 'timeclose', get_string('feedbackclose', 'feedback'),
-            array('optional' => true));
+        $enableopengroup[] =& $mform->createElement('date_time_selector', 'timeopen', '');
+        $mform->addGroup($enableopengroup,
+                         'enableopengroup',
+                         get_string('feedbackopen', 'feedback'),
+                         ' ',
+                         false);
+
+        $mform->addHelpButton('enableopengroup', 'timeopen', 'feedback');
+        $mform->disabledIf('enableopengroup', 'openenable', 'notchecked');
+
+        $enableclosegroup = array();
+        $enableclosegroup[] =& $mform->createElement('checkbox',
+                                        'closeenable',
+                                        get_string('feedbackclose', 'feedback'));
+
+        $enableclosegroup[] =& $mform->createElement('date_time_selector', 'timeclose', '');
+        $mform->addGroup($enableclosegroup,
+                         'enableclosegroup',
+                         get_string('feedbackclose', 'feedback'),
+                         ' ',
+                         false);
+
+        $mform->addHelpButton('enableclosegroup', 'timeclose', 'feedback');
+        $mform->disabledIf('enableclosegroup', 'closeenable', 'notchecked');
 
         //-------------------------------------------------------------------------------
-        $mform->addElement('header', 'feedbackhdr', get_string('questionandsubmission', 'feedback'));
+        $mform->addElement('header', 'feedbackhdr', get_string('feedback_options', 'feedback'));
 
         $options=array();
         $options[1]  = get_string('anonymous', 'feedback');
@@ -67,6 +91,16 @@ class mod_feedback_mod_form extends moodleform_mod {
                            'anonymous',
                            get_string('anonymous_edit', 'feedback'),
                            $options);
+
+        $mform->addElement('selectyesno',
+                           'publish_stats',
+                           get_string('show_analysepage_after_submit', 'feedback'));
+
+        $mform->addElement('selectyesno',
+                           'email_notification',
+                           get_string('email_notification', 'feedback'));
+
+        $mform->addHelpButton('email_notification', 'emailnotification', 'feedback');
 
         // check if there is existing responses to this feedback
         if (is_numeric($this->_instance) AND
@@ -82,33 +116,26 @@ class mod_feedback_mod_form extends moodleform_mod {
             $multiple_submit_value = $feedback->multiple_submit ? get_string('yes') : get_string('no');
             $mform->addElement('text',
                                'multiple_submit_static',
-                               get_string('multiplesubmit', 'feedback'),
+                               get_string('multiple_submit', 'feedback'),
                                array('size'=>'4',
                                     'disabled'=>'disabled',
                                     'value'=>$multiple_submit_value));
-            $mform->setType('multiple_submit_static', PARAM_RAW);
 
             $mform->addElement('hidden', 'multiple_submit', '');
-            $mform->setType('multiple_submit', PARAM_INT);
+            $mform->setType('', PARAM_INT);
             $mform->addHelpButton('multiple_submit_static', 'multiplesubmit', 'feedback');
         } else {
             $mform->addElement('selectyesno',
                                'multiple_submit',
-                               get_string('multiplesubmit', 'feedback'));
+                               get_string('multiple_submit', 'feedback'));
 
             $mform->addHelpButton('multiple_submit', 'multiplesubmit', 'feedback');
         }
-
-        $mform->addElement('selectyesno', 'email_notification', get_string('email_notification', 'feedback'));
-        $mform->addHelpButton('email_notification', 'email_notification', 'feedback');
-
         $mform->addElement('selectyesno', 'autonumbering', get_string('autonumbering', 'feedback'));
         $mform->addHelpButton('autonumbering', 'autonumbering', 'feedback');
 
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'aftersubmithdr', get_string('after_submit', 'feedback'));
-
-        $mform->addElement('selectyesno', 'publish_stats', get_string('show_analysepage_after_submit', 'feedback'));
 
         $mform->addElement('editor',
                            'page_after_submit_editor',
@@ -120,7 +147,7 @@ class mod_feedback_mod_form extends moodleform_mod {
 
         $mform->addElement('text',
                            'site_after_submit',
-                           get_string('url_for_continue', 'feedback'),
+                           get_string('url_for_continue_button', 'feedback'),
                            array('size'=>'64', 'maxlength'=>'255'));
 
         $mform->setType('site_after_submit', PARAM_TEXT);
@@ -133,6 +160,16 @@ class mod_feedback_mod_form extends moodleform_mod {
     }
 
     public function data_preprocessing(&$default_values) {
+        if (empty($default_values['timeopen'])) {
+            $default_values['openenable'] = 0;
+        } else {
+            $default_values['openenable'] = 1;
+        }
+        if (empty($default_values['timeclose'])) {
+            $default_values['closeenable'] = 0;
+        } else {
+            $default_values['closeenable'] = 1;
+        }
 
         $editoroptions = feedback_get_editor_options();
 
@@ -166,13 +203,14 @@ class mod_feedback_mod_form extends moodleform_mod {
             $data->page_after_submitformat = $data->page_after_submit_editor['format'];
             $data->page_after_submit = $data->page_after_submit_editor['text'];
 
-            if (!empty($data->completionunlocked)) {
-                // Turn off completion settings if the checkboxes aren't ticked
-                $autocompletion = !empty($data->completion) &&
-                    $data->completion == COMPLETION_TRACKING_AUTOMATIC;
-                if (!$autocompletion || empty($data->completionsubmit)) {
-                    $data->completionsubmit=0;
-                }
+            // Turn off completion settings if the checkboxes aren't ticked
+            $autocompletion = !empty($data->completion) AND
+                                    $data->completion==COMPLETION_TRACKING_AUTOMATIC;
+            if (empty($data->completion) || !$autocompletion) {
+                $data->completionsubmit=0;
+            }
+            if (empty($data->completionsubmit)) {
+                $data->completionsubmit=0;
             }
         }
 

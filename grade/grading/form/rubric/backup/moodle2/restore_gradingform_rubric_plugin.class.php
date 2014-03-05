@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,7 +18,8 @@
 /**
  * Support for restore API
  *
- * @package    gradingform_rubric
+ * @package    gradingform
+ * @subpackage rubric
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,10 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Restores the rubric specific data from grading.xml file
- *
- * @package    gradingform_rubric
- * @copyright  2011 David Mudrak <david@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
 
@@ -71,8 +69,6 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
      *
      * Sets the mapping 'gradingform_rubric_criterion' to be used later by
      * {@link self::process_gradinform_rubric_filling()}
-     *
-     * @param stdClass|array $data
      */
     public function process_gradingform_rubric_criterion($data) {
         global $DB;
@@ -90,8 +86,6 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
      *
      * Sets the mapping 'gradingform_rubric_level' to be used later by
      * {@link self::process_gradinform_rubric_filling()}
-     *
-     * @param stdClass|array $data
      */
     public function process_gradingform_rubric_level($data) {
         global $DB;
@@ -106,8 +100,6 @@ class restore_gradingform_rubric_plugin extends restore_gradingform_plugin {
 
     /**
      * Processes filling element data
-     *
-     * @param stdClass|array $data
      */
     public function process_gradinform_rubric_filling($data) {
         global $DB;

@@ -88,7 +88,6 @@ if (($action == 'edit') || ($action == 'new')) {
         } else {
             portfolio_static_function($plugin, 'create_instance', $plugin, $fromform->name, $fromform);
         }
-        core_plugin_manager::reset_caches();
         $savedstr = get_string('instancesaved', 'portfolio');
         redirect($baseurl, $savedstr, 1);
         exit;
@@ -117,7 +116,6 @@ if (($action == 'edit') || ($action == 'new')) {
 
     $instance->set('visible', $visible);
     $instance->save();
-    core_plugin_manager::reset_caches();
     $return = true;
 } else if ($action == 'delete') {
     $instance = portfolio_instance($portfolio);
@@ -162,7 +160,7 @@ if (($action == 'edit') || ($action == 'new')) {
 
     $output = $OUTPUT->box_start('generalbox');
 
-    $plugins = core_component::get_plugin_list('portfolio');
+    $plugins = get_plugin_list('portfolio');
     $plugins = array_keys($plugins);
     $instances = portfolio_instances(false, false);
     $usedplugins = array();

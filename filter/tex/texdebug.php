@@ -28,7 +28,7 @@
 
     require_once("../../config.php");
 
-    if (!filter_is_enabled('tex')) {
+    if (!filter_is_enabled('filter/tex')) {
         print_error('filternotenabled');
     }
 

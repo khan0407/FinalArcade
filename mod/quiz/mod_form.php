@@ -250,10 +250,8 @@ class mod_quiz_mod_form extends moodleform_mod {
         $mform->addElement('header', 'display', get_string('display', 'form'));
 
         // Show user picture.
-        $mform->addElement('select', 'showuserpicture', get_string('showuserpicture', 'quiz'), array(
-                QUIZ_SHOWIMAGE_NONE => get_string('shownoimage', 'quiz'),
-                QUIZ_SHOWIMAGE_SMALL => get_string('showsmallimage', 'quiz'),
-                QUIZ_SHOWIMAGE_LARGE => get_string('showlargeimage', 'quiz')));
+        $mform->addElement('selectyesno', 'showuserpicture',
+                get_string('showuserpicture', 'quiz'));
         $mform->addHelpButton('showuserpicture', 'showuserpicture', 'quiz');
         $mform->setAdvanced('showuserpicture', $quizconfig->showuserpicture_adv);
         $mform->setDefault('showuserpicture', $quizconfig->showuserpicture);
@@ -349,7 +347,7 @@ class mod_quiz_mod_form extends moodleform_mod {
         $repeatarray = array();
         $repeatedoptions = array();
         $repeatarray[] = $mform->createElement('editor', 'feedbacktext',
-                get_string('feedback', 'quiz'), array('rows' => 3), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+                get_string('feedback', 'quiz'), null, array('maxfiles' => EDITOR_UNLIMITED_FILES,
                         'noclean' => true, 'context' => $this->context));
         $repeatarray[] = $mform->createElement('text', 'feedbackboundaries',
                 get_string('gradeboundary', 'quiz'), array('size' => 10));
@@ -370,7 +368,7 @@ class mod_quiz_mod_form extends moodleform_mod {
 
         // Put some extra elements in before the button.
         $mform->insertElementBefore($mform->createElement('editor',
-                "feedbacktext[$nextel]", get_string('feedback', 'quiz'), array('rows' => 3),
+                "feedbacktext[$nextel]", get_string('feedback', 'quiz'), null,
                 array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true,
                       'context' => $this->context)),
                 'boundary_add_fields');
@@ -426,12 +424,10 @@ class mod_quiz_mod_form extends moodleform_mod {
             }
         }
 
-        if ($whenname != 'during') {
-            $mform->disabledIf('correctness' . $whenname, 'attempt' . $whenname);
-            $mform->disabledIf('specificfeedback' . $whenname, 'attempt' . $whenname);
-            $mform->disabledIf('generalfeedback' . $whenname, 'attempt' . $whenname);
-            $mform->disabledIf('rightanswer' . $whenname, 'attempt' . $whenname);
-        }
+        $mform->disabledIf('correctness' . $whenname, 'attempt' . $whenname);
+        $mform->disabledIf('specificfeedback' . $whenname, 'attempt' . $whenname);
+        $mform->disabledIf('generalfeedback' . $whenname, 'attempt' . $whenname);
+        $mform->disabledIf('rightanswer' . $whenname, 'attempt' . $whenname);
     }
 
     protected function preprocessing_review_settings(&$toform, $whenname, $when) {

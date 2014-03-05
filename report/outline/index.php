@@ -37,12 +37,7 @@ require_login($course);
 $context = context_course::instance($course->id);
 require_capability('report/outline:view', $context);
 
-// Trigger a content view event.
-$event = \report_outline\event\content_viewed::create(array('courseid' => $course->id,
-                                                            'other'    => array('content' => 'outline')));
-$event->set_page_detail();
-$event->set_legacy_logdata(array($course->id, 'course', 'report outline', "report/outline/index.php?id=$course->id", $course->id));
-$event->trigger();
+add_to_log($course->id, 'course', 'report outline', "report/outline/index.php?id=$course->id", $course->id);
 
 $showlastaccess = true;
 $hiddenfields = explode(',', $CFG->hiddenuserfields);
@@ -132,7 +127,7 @@ foreach ($modinfo->sections as $sectionnum=>$section) {
             $attributes['class'] = 'dimmed';
         }
 
-        $activitycell->text = $activityicon . html_writer::link("$CFG->wwwroot/mod/$cm->modname/view.php?id=$cm->id", format_string($cm->name), $attributes);
+        $activitycell->text = $activityicon . html_writer::link("$CFG->wwwroot/mod/$cm->modname/view.php?id=$cm->id", format_string($cm->name), $attributes);;
 
         $reportrow->cells[] = $activitycell;
 

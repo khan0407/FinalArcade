@@ -29,24 +29,13 @@
 $definitions = array(
 
     // Used to store processed lang files.
-    // The keys used are the revision, lang and component of the string file.
-    // The static acceleration size has been based upon student access of the site.
-    // NOTE: this data may be safely stored in local caches on cluster nodes.
+    // The keys used are the component of the string file.
     'string' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'simplekeys' => true,
         'simpledata' => true,
-        'staticacceleration' => true,
-        'staticaccelerationsize' => 30
-    ),
-
-    // Used to store cache of all available translations.
-    // NOTE: this data may be safely stored in local caches on cluster nodes.
-    'langmenu' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-        'simpledata' => true,
-        'staticacceleration' => true,
+        'persistent' => true,
+        'persistentmaxsize' => 3
     ),
 
     // Used to store database meta information.
@@ -58,8 +47,8 @@ $definitions = array(
         'requireidentifiers' => array(
             'dbfamily'
         ),
-        'staticacceleration' => true,
-        'staticaccelerationsize' => 15
+        'persistent' => true,
+        'persistentmaxsize' => 2
     ),
 
     // Event invalidation cache.
@@ -71,7 +60,7 @@ $definitions = array(
     // cache will likely be used either lots or never.
     'eventinvalidation' => array(
         'mode' => cache_store::MODE_APPLICATION,
-        'staticacceleration' => true,
+        'persistent' => true,
         'requiredataguarantee' => true,
         'simpledata' => true,
     ),
@@ -89,127 +78,9 @@ $definitions = array(
 
     // HTML Purifier cache
     // This caches the html purifier cleaned text. This is done because the text is usually cleaned once for every user
-    // and context combo. Text caching handles caching for the combination, this cache is responsible for caching the
+    // and context combo. Text caching handles caching for the combonation, this cache is responsible for caching the
     // cleaned text which is shareable.
-    // NOTE: this data may be safely stored in local caches on cluster nodes.
     'htmlpurifier' => array(
         'mode' => cache_store::MODE_APPLICATION,
-    ),
-
-    // Used to store data from the config + config_plugins table in the database.
-    // The key used is the component:
-    //   - core for all core config settings
-    //   - plugin component for all plugin settings.
-    // Persistence is used because normally several settings within a script.
-    'config' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'staticacceleration' => true,
-        'simpledata' => true
-    ),
-
-    // Groupings belonging to a course.
-    // A simple cache designed to replace $GROUPLIB_CACHE->groupings.
-    // Items are organised by course id and are essentially course records.
-    'groupdata' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true, // The course id the groupings exist for.
-        'simpledata' => true, // Array of stdClass objects containing only strings.
-        'staticacceleration' => true, // Likely there will be a couple of calls to this.
-        'staticaccelerationsize' => 2, // The original cache used 1, we've increased that to two.
-    ),
-
-    // Used to cache calendar subscriptions.
-    'calendar_subscriptions' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-        'simpledata' => true,
-        'staticacceleration' => true,
-    ),
-
-    // YUI Module cache.
-    // This stores the YUI module metadata for Shifted YUI modules in Moodle.
-    'yuimodules' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-    ),
-
-    // Cache for the list of event observers.
-    'observers' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-        'simpledata' => true,
-        'staticacceleration' => true,
-        'staticaccelerationsize' => 2,
-    ),
-
-    // Cache used by the {@link core_plugin_manager} class.
-    // NOTE: this must be a shared cache.
-    'plugin_manager' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-        'simpledata' => true,
-    ),
-
-    // Used to store the full tree of course categories.
-    'coursecattree' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'staticacceleration' => true,
-        'invalidationevents' => array(
-            'changesincoursecat',
-        )
-    ),
-    // Used to store data for course categories visible to current user. Helps to browse list of categories.
-    'coursecat' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'invalidationevents' => array(
-            'changesincoursecat',
-            'changesincourse',
-        ),
-        'ttl' => 600,
-    ),
-    // Used to store data for course categories visible to current user. Helps to browse list of categories.
-    'coursecatrecords' => array(
-        'mode' => cache_store::MODE_REQUEST,
-        'simplekeys' => true,
-        'invalidationevents' => array(
-            'changesincoursecat',
-        ),
-    ),
-    // Cache course contacts for the courses.
-    'coursecontacts' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'staticacceleration' => true,
-        'simplekeys' => true,
-    ),
-    // Used to store data for repositories to avoid repetitive DB queries within one request.
-    'repositories' => array(
-        'mode' => cache_store::MODE_REQUEST,
-    ),
-    // Used to store external badges.
-    'externalbadges' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-        'ttl' => 3600,
-    ),
-    // Accumulated information about course modules and sections used to print course view page (user-independed).
-    // Used in function get_fast_modinfo(), reset in function rebuild_course_cache().
-    'coursemodinfo' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'simplekeys' => true,
-    ),
-    // This is the session user selections cache.
-    // It's a special cache that is used to record user selections that should persist for the lifetime of the session.
-    // Things such as which categories the user has expanded can be stored here.
-    // It uses simple keys and simple data, please ensure all uses conform to those two constraints.
-    'userselections' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'simplekeys' => true,
-        'simpledata' => true
-    ),
-    // Used to cache user grades for conditional availability purposes.
-    'gradecondition' => array(
-        'mode' => cache_store::MODE_APPLICATION,
-        'staticacceleration' => true,
-        'staticaccelerationsize' => 2, // Should not be required for more than one user at a time.
-        'ttl' => 3600,
-    ),
+    )
 );

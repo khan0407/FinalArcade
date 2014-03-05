@@ -59,14 +59,6 @@ class cache_config_phpunittest extends cache_config_writer {
     }
 
     /**
-     * Removes a definition.
-     * @param string $name
-     */
-    public function phpunit_remove_definition($name) {
-        unset($this->configdefinitions[$name]);
-    }
-
-    /**
      * Removes the configured stores so that there are none available.
      */
     public function phpunit_remove_stores() {
@@ -91,24 +83,6 @@ class cache_config_phpunittest extends cache_config_writer {
             'class' => 'cachestore_file',
             'default' => false,
             'lock' => 'cachelock_file_default'
-        );
-    }
-
-    /**
-     * Forcefully adds a session store.
-     *
-     * @param string $name
-     */
-    public function phpunit_add_session_store($name) {
-        $this->configstores[$name] = array(
-            'name' => $name,
-            'plugin' => 'session',
-            'configuration' => array(),
-            'features' => 14,
-            'modes' => 2,
-            'default' => true,
-            'class' => 'cachestore_session',
-            'lock' => 'cachelock_file_default',
         );
     }
 
@@ -244,24 +218,6 @@ class cache_phpunit_application extends cache_application {
         return get_class($this->get_store());
     }
 
-    /**
-     * Returns all the interfaces the cache store implements.
-     * @return array
-     */
-    public function phpunit_get_store_implements() {
-        return class_implements($this->get_store());
-    }
-
-    /**
-     * Returns the given key directly from the static acceleration array.
-     *
-     * @param string $key
-     * @return false|mixed
-     */
-    public function phpunit_static_acceleration_get($key) {
-        $key = $this->parse_key($key);
-        return $this->static_acceleration_get($key);
-    }
 }
 
 /**
@@ -281,14 +237,6 @@ class cache_phpunit_session extends cache_session {
     public function phpunit_get_store_class() {
         return get_class($this->get_store());
     }
-
-    /**
-     * Returns all the interfaces the cache store implements.
-     * @return array
-     */
-    public function phpunit_get_store_implements() {
-        return class_implements($this->get_store());
-    }
 }
 
 /**
@@ -307,14 +255,6 @@ class cache_phpunit_request extends cache_request {
      */
     public function phpunit_get_store_class() {
         return get_class($this->get_store());
-    }
-
-    /**
-     * Returns all the interfaces the cache store implements.
-     * @return array
-     */
-    public function phpunit_get_store_implements() {
-        return class_implements($this->get_store());
     }
 }
 

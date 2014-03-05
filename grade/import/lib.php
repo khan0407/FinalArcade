@@ -161,16 +161,12 @@ function grade_import_commit($courseid, $importcode, $importfeedback=true, $verb
  */
 function get_unenrolled_users_in_import($importcode, $courseid) {
     global $CFG, $DB;
+    $relatedctxcondition = get_related_contexts_string(context_course::instance($courseid));
 
-    $coursecontext = context_course::instance($courseid);
-
-    // We want to query both the current context and parent contexts.
-    list($relatedctxsql, $relatedctxparams) = $DB->get_in_or_equal($coursecontext->get_parent_context_ids(true), SQL_PARAMS_NAMED, 'relatedctx');
-
-    // Users with a gradeable role.
+    //users with a gradeable role
     list($gradebookrolessql, $gradebookrolesparams) = $DB->get_in_or_equal(explode(',', $CFG->gradebookroles), SQL_PARAMS_NAMED, 'grbr');
 
-    // Enrolled users.
+    //enrolled users
     $context = context_course::instance($courseid);
     list($enrolledsql, $enrolledparams) = get_enrolled_sql($context);
     list($sort, $sortparams) = users_order_by_sql('u');
@@ -187,11 +183,11 @@ function get_unenrolled_users_in_import($importcode, $courseid) {
               LEFT JOIN ($enrolledsql) je
                         ON je.id = u.id
               LEFT JOIN {role_assignments} ra
-                        ON (giv.userid = ra.userid AND ra.roleid $gradebookrolessql AND ra.contextid $relatedctxsql)
+                        ON (giv.userid = ra.userid AND ra.roleid $gradebookrolessql AND ra.contextid $relatedctxcondition)
              WHERE giv.importcode = :importcode
                    AND (ra.id IS NULL OR je.id IS NULL)
           ORDER BY gradeidnumber, $sort";
-    $params = array_merge($gradebookrolesparams, $enrolledparams, $sortparams, $relatedctxparams);
+    $params = array_merge($gradebookrolesparams, $enrolledparams, $sortparams);
     $params['importcode'] = $importcode;
 
     return $DB->get_records_sql($sql, $params);

@@ -143,30 +143,17 @@ abstract class editor_tinymce_plugin {
      * plugins you can set $alwaysadd to false and check the return value
      * to see if it succeeded.
      *
-     * Note: button will not be added if it is already present in any row
-     * (separator is an exception).
-     *
-     * The following example will add the button 'newbutton' after the
-     * 'existingbutton' if it exists or in the end of the last row otherwise:
-     * <pre>
-     * if ($row = $this->find_button($params, 'existingbutton')) {
-     *     $this->add_button_after($params, $row, 'newbutton', 'existingbutton');
-     * } else {
-     *     $this->add_button_after($params, $this->count_button_rows($params), 'newbutton');
-     * }
-     * </pre>
-     *
      * @param array $params TinyMCE init parameters array
      * @param int $row Row to add button to (1 to 3)
      * @param string $button Identifier of button/plugin
      * @param string $after Adds button directly after the named plugin
      * @param bool $alwaysadd If specified $after string not found, add at end
-     * @return bool True if added or button already exists (in any row)
+     * @return bool True if added
      */
     protected function add_button_after(array &$params, $row, $button,
             $after = '', $alwaysadd = true) {
 
-        if ($button !== '|' && $this->find_button($params, $button)) {
+        if ($this->is_button_present($params, $button)) {
             return true;
         }
 
@@ -207,30 +194,17 @@ abstract class editor_tinymce_plugin {
      * plugins you can set $alwaysadd to false and check the return value
      * to see if it succeeded.
      *
-     * Note: button will not be added if it is already present in any row
-     * (separator is an exception).
-     *
-     * The following example will add the button 'newbutton' before the
-     * 'existingbutton' if it exists or in the end of the last row otherwise:
-     * <pre>
-     * if ($row = $this->find_button($params, 'existingbutton')) {
-     *     $this->add_button_before($params, $row, 'newbutton', 'existingbutton');
-     * } else {
-     *     $this->add_button_after($params, $this->count_button_rows($params), 'newbutton');
-     * }
-     * </pre>
-     *
      * @param array $params TinyMCE init parameters array
      * @param int $row Row to add button to (1 to 10)
      * @param string $button Identifier of button/plugin
      * @param string $before Adds button directly before the named plugin
-     * @param bool $alwaysadd If specified $before string not found, add at start
-     * @return bool True if added or button already exists (in any row)
+     * @param bool $alwaysadd If specified $after string not found, add at start
+     * @return bool True if added
      */
     protected function add_button_before(array &$params, $row, $button,
             $before = '', $alwaysadd = true) {
 
-        if ($button !== '|' && $this->find_button($params, $button)) {
+        if ($this->is_button_present($params, $button)) {
             return true;
         }
         $row = $this->fix_row($params, $row);
@@ -244,7 +218,7 @@ abstract class editor_tinymce_plugin {
             return true;
         }
 
-        // Try to add before given plugin.
+        // Try to add after given plugin.
         $params[$field] = preg_replace('~(,|^)(' . preg_quote($before) . ')(,|$)~',
                 '$1' . $button . ',$2$3', $old);
         if ($params[$field] !== $old) {
@@ -261,17 +235,20 @@ abstract class editor_tinymce_plugin {
     }
 
     /**
-     * Tests if button is already present.
-     *
-     * @param array $params TinyMCE init parameters array
-     * @param string $button button name
-     * @return false|int false if button is not found, row number otherwise (row numbers start from 1)
+     * Tests if button already present.
+     * @param array $params
+     * @param string $button
+     * @return bool
      */
-    protected function find_button(array &$params, $button) {
-        foreach ($params as $key => $value) {
-            if (preg_match('/^theme_advanced_buttons(\d+)$/', $key, $matches) &&
-                    strpos(','. $value. ',', ','. $button. ',') !== false) {
-                return (int)$matches[1];
+    private function is_button_present(array $params, $button) {
+        for($i=1; $i<=10; $i++) {
+            $field = 'theme_advanced_buttons' . $i;
+            if (!isset($params[$field])) {
+                continue;
+            }
+            $buttons = explode(',', $params[$field]);
+            if (in_array($button, $buttons)) {
+                return true;
             }
         }
         return false;
@@ -285,31 +262,20 @@ abstract class editor_tinymce_plugin {
      * @return int requested row if exists, lower number if does not exist.
      */
     private function fix_row(array &$params, $row) {
-        if ($row <= 1) {
-            // Row 1 is always present.
-            return 1;
-        } else if (isset($params['theme_advanced_buttons' . $row])) {
-            return $row;
-        } else {
-            return $this->count_button_rows($params);
-        }
-    }
+        $row = ($row < 1) ? 1 : (int)$row;
+        $row = ($row > 10) ? 10 : $row;
 
-    /**
-     * Counts the number of rows in TinyMCE editor (row numbering starts with 1)
-     *
-     * @param array $params TinyMCE init parameters array
-     * @return int the maximum existing row number
-     */
-    protected function count_button_rows(array &$params) {
-        $maxrow = 1;
-        foreach ($params as $key => $value) {
-            if (preg_match('/^theme_advanced_buttons(\d+)$/', $key, $matches) &&
-                    (int)$matches[1] > $maxrow) {
-                $maxrow = (int)$matches[1];
+        $field = 'theme_advanced_buttons' . $row;
+        if (isset($params[$field])) {
+            return $row;
+        }
+        for($i=$row; $i>=1; $i--) {
+            if (isset($params[$field])) {
+                return $row;
             }
         }
-        return $maxrow;
+        // This should not happen.
+        return 1;
     }
 
     /**
@@ -360,7 +326,7 @@ abstract class editor_tinymce_plugin {
         // Version number comes from plugin version.php, except in developer
         // mode where the special string 'dev' is used (prevents cacheing and
         // serves unminified JS).
-        if ($CFG->debugdeveloper) {
+        if (debugging('', DEBUG_DEVELOPER)) {
             $version = '-1';
         } else {
             $version = $this->get_version();
@@ -411,7 +377,7 @@ abstract class editor_tinymce_plugin {
         global $CFG;
 
         // Get list of plugin directories.
-        $plugins = core_component::get_plugin_list('tinymce');
+        $plugins = get_plugin_list('tinymce');
 
         // Get list of disabled subplugins.
         $disabled = array();
@@ -451,7 +417,7 @@ abstract class editor_tinymce_plugin {
      * @return editor_tinymce_plugin Plugin object
      */
     public static function get($plugin) {
-        $dir = core_component::get_component_directory('tinymce_' . $plugin);
+        $dir = get_component_directory('tinymce_' . $plugin);
         require_once($dir . '/lib.php');
         $classname = 'tinymce_' . $plugin;
         return new $classname($plugin);

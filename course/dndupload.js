@@ -102,32 +102,31 @@ M.course_dndupload = {
      * is available (or to explain why it is not available)
      */
     add_status_div: function() {
-        var Y = this.Y,
-            coursecontents = Y.one('#' + this.pagecontentid),
-            div,
-            handlefile = (this.handlers.filehandlers.length > 0),
-            handletext = false,
-            handlelink = false,
-            i = 0,
-            styletop,
-            styletopunit;
-
+        var coursecontents = document.getElementById(this.pagecontentid);
         if (!coursecontents) {
             return;
         }
 
-        div = Y.Node.create('<div id="dndupload-status"></div>').setStyle('opacity', '0.0');
-        coursecontents.insert(div, 0);
+        var div = document.createElement('div');
+        div.id = 'dndupload-status';
+        div.style.opacity = 0.0;
+        coursecontents.insertBefore(div, coursecontents.firstChild);
 
-        for (i = 0; i < this.handlers.types.length; i++) {
+        var Y = this.Y;
+        div = Y.one(div);
+        var handlefile = (this.handlers.filehandlers.length > 0);
+        var handletext = false;
+        var handlelink = false;
+        var i;
+        for (i=0; i<this.handlers.types.length; i++) {
             switch (this.handlers.types[i].identifier) {
-                case 'text':
-                case 'text/html':
-                    handletext = true;
-                    break;
-                case 'url':
-                    handlelink = true;
-                    break;
+            case 'text':
+            case 'text/html':
+                handletext = true;
+                break;
+            case 'url':
+                handlelink = true;
+                break;
             }
         }
         $msgident = 'dndworking';
@@ -142,20 +141,16 @@ M.course_dndupload = {
         }
         div.setContent(M.util.get_string($msgident, 'moodle'));
 
-        styletop = div.getStyle('top') || '0px';
-        styletopunit = styletop.replace(/^\d+/, '');
-        styletop = parseInt(styletop.replace(/\D*$/, ''), 10);
-
         var fadeanim = new Y.Anim({
             node: '#dndupload-status',
             from: {
                 opacity: 0.0,
-                top: (styletop - 30).toString() + styletopunit
+                top: '-30px'
             },
 
             to: {
                 opacity: 1.0,
-                top: styletop.toString() + styletopunit
+                top: '0px'
             },
             duration: 0.5
         });
@@ -244,7 +239,7 @@ M.course_dndupload = {
      * Look through the event data, checking it against the registered data types
      * (in order of priority) and return details of the first matching data type
      * @param e the event details
-     * @return object|false - false if not found or an object {
+     * @return mixed false if not found or an object {
      *           realtype: the type as given by the browser
      *           addmessage: the message to show to the user during dragging
      *           namemessage: the message for requesting a name for the resource from the user
@@ -289,7 +284,6 @@ M.course_dndupload = {
                         realtype: dttypes[j],
                         addmessage: types[i].addmessage,
                         namemessage: types[i].namemessage,
-                        handlermessage: types[i].handlermessage,
                         type: types[i].identifier,
                         handlers: types[i].handlers
                     };
@@ -423,7 +417,7 @@ M.course_dndupload = {
         var modsel = section.one(this.modslistselector);
         if (!modsel) {
             // Create the above 'ul' if it doesn't exist
-            modsel = document.createElement('ul');
+            var modsel = document.createElement('ul');
             modsel.className = 'section img-text';
             var contentel = section.get('children').pop();
             var brel = contentel.get('children').pop();
@@ -441,7 +435,7 @@ M.course_dndupload = {
      * @param section the DOM element reperesenting the course section
      * @return DOM element containing the new item
      */
-    add_resource_element: function(name, section, module) {
+    add_resource_element: function(name, section) {
         var modsel = this.get_mods_element(section);
 
         var resel = {
@@ -457,7 +451,7 @@ M.course_dndupload = {
             progress: document.createElement('span')
         };
 
-        resel.li.className = 'activity ' + module + ' modtype_' + module;
+        resel.li.className = 'activity resource modtype_resource';
 
         resel.indentdiv.className = 'mod-indent';
         resel.li.appendChild(resel.indentdiv);
@@ -495,7 +489,6 @@ M.course_dndupload = {
      */
     hide_preview_element: function() {
         this.Y.all('li.dndupload-preview').addClass('dndupload-hidden');
-        this.Y.all('.dndupload-over').removeClass('dndupload-over');
     },
 
     /**
@@ -507,11 +500,7 @@ M.course_dndupload = {
     show_preview_element: function(section, type) {
         this.hide_preview_element();
         var preview = section.one('li.dndupload-preview').removeClass('dndupload-hidden');
-        section.addClass('dndupload-over');
-
-        // Horrible work-around to allow the 'Add X here' text to be a drop target in Firefox.
-        var node = preview.one('span').getDOMNode();
-        node.firstChild.nodeValue = type.addmessage;
+        preview.one('span').setContent(type.addmessage);
     },
 
     /**
@@ -627,16 +616,44 @@ M.course_dndupload = {
 
         var Y = this.Y;
         var self = this;
-        var panel = new M.core.dialogue({
+        var panel = new Y.Panel({
             bodyContent: content,
-            width: '350px',
+            width: 350,
+            zIndex: 5,
+            centered: true,
             modal: true,
             visible: true,
             render: true,
-            align: {
-                node: null,
-                points: [Y.WidgetPositionAlign.CC, Y.WidgetPositionAlign.CC]
-            }
+            buttons: [{
+                value: M.util.get_string('upload', 'moodle'),
+                action: function(e) {
+                    e.preventDefault();
+                    // Find out which module was selected
+                    var module = false;
+                    var div = Y.one('#dndupload_handlers'+uploadid);
+                    div.all('input').each(function(input) {
+                        if (input.get('checked')) {
+                            module = input.get('value');
+                        }
+                    });
+                    if (!module) {
+                        return;
+                    }
+                    panel.hide();
+                    // Remember this selection for next time
+                    self.lastselected[extension] = module;
+                    // Do the upload
+                    self.upload_file(file, section, sectionnumber, module);
+                },
+                section: Y.WidgetStdMod.FOOTER
+            },{
+                value: M.util.get_string('cancel', 'moodle'),
+                action: function(e) {
+                    e.preventDefault();
+                    panel.hide();
+                },
+                section: Y.WidgetStdMod.FOOTER
+            }]
         });
         // When the panel is hidden - destroy it and then check for other pending uploads
         panel.after("visibleChange", function(e) {
@@ -644,39 +661,6 @@ M.course_dndupload = {
                 panel.destroy(true);
                 self.check_upload_queue();
             }
-        });
-
-        // Add the submit/cancel buttons to the bottom of the dialog.
-        panel.addButton({
-            label: M.util.get_string('upload', 'moodle'),
-            action: function(e) {
-                e.preventDefault();
-                // Find out which module was selected
-                var module = false;
-                var div = Y.one('#dndupload_handlers'+uploadid);
-                div.all('input').each(function(input) {
-                    if (input.get('checked')) {
-                        module = input.get('value');
-                    }
-                });
-                if (!module) {
-                    return;
-                }
-                panel.hide();
-                // Remember this selection for next time
-                self.lastselected[extension] = module;
-                // Do the upload
-                self.upload_file(file, section, sectionnumber, module);
-            },
-            section: Y.WidgetStdMod.FOOTER
-        });
-        panel.addButton({
-            label: M.util.get_string('cancel', 'moodle'),
-            action: function(e) {
-                e.preventDefault();
-                panel.hide();
-            },
-            section: Y.WidgetStdMod.FOOTER
         });
     },
 
@@ -723,7 +707,7 @@ M.course_dndupload = {
         }
 
         // Add the file to the display
-        var resel = this.add_resource_element(file.name, section, module);
+        var resel = this.add_resource_element(file.name, section);
 
         // Update the progress bar as the file is uploaded
         xhr.upload.addEventListener('progress', function(e) {
@@ -741,12 +725,30 @@ M.course_dndupload = {
                     var result = JSON.parse(xhr.responseText);
                     if (result) {
                         if (result.error == 0) {
-                            // All OK - replace the dummy element.
-                            resel.li.outerHTML = result.fullcontent;
+                            // All OK - update the dummy element
+                            resel.icon.src = result.icon;
+                            resel.a.href = result.link;
+                            resel.namespan.innerHTML = result.name;
+                            if (!parseInt(result.visible, 10)) {
+                                resel.a.className = 'dimmed';
+                            }
+
+                            if (result.groupingname) {
+                                resel.groupingspan.innerHTML = '(' + result.groupingname + ')';
+                            } else {
+                                resel.div.removeChild(resel.groupingspan);
+                            }
+
+                            resel.div.removeChild(resel.progressouter);
+                            resel.li.id = result.elementid;
+                            resel.indentdiv.innerHTML += result.commands;
+                            if (result.onclick) {
+                                resel.a.onclick = result.onclick;
+                            }
                             if (self.Y.UA.gecko > 0) {
                                 // Fix a Firefox bug which makes sites with a '~' in their wwwroot
                                 // log the user out when clicking on the link (before refreshing the page).
-                                resel.li.outerHTML = unescape(resel.li.outerHTML);
+                                resel.div.innerHTML = unescape(resel.div.innerHTML);
                             }
                             self.add_editing(result.elementid);
                         } else {
@@ -789,13 +791,6 @@ M.course_dndupload = {
             return;
         }
 
-        if (type.handlers.length == 1 && type.handlers[0].noname) {
-            // Only one handler and it doesn't need a name (i.e. a label).
-            this.upload_item('', type.type, contents, section, sectionnumber, type.handlers[0].module);
-            this.check_upload_queue();
-            return;
-        }
-
         if (this.uploaddialog) {
             var details = new Object();
             details.isfile = false;
@@ -812,38 +807,70 @@ M.course_dndupload = {
         var uploadid = Math.round(Math.random()*100000)+'-'+timestamp;
         var nameid = 'dndupload_handler_name'+uploadid;
         var content = '';
+        content += '<label for="'+nameid+'">'+type.namemessage+'</label>';
+        content += ' <input type="text" id="'+nameid+'" value="" />';
         if (type.handlers.length > 1) {
-            content += '<p>'+type.handlermessage+'</p>';
             content += '<div id="dndupload_handlers'+uploadid+'">';
             var sel = type.handlers[0].module;
             for (var i=0; i<type.handlers.length; i++) {
-                var id = 'dndupload_handler'+uploadid+type.handlers[i].module;
+                var id = 'dndupload_handler'+uploadid;
                 var checked = (type.handlers[i].module == sel) ? 'checked="checked" ' : '';
-                content += '<input type="radio" name="handler" value="'+i+'" id="'+id+'" '+checked+'/>';
+                content += '<input type="radio" name="handler" value="'+type.handlers[i].module+'" id="'+id+'" '+checked+'/>';
                 content += ' <label for="'+id+'">';
                 content += type.handlers[i].message;
                 content += '</label><br/>';
             }
             content += '</div>';
         }
-        var disabled = (type.handlers[0].noname) ? ' disabled = "disabled" ' : '';
-        content += '<label for="'+nameid+'">'+type.namemessage+'</label>';
-        content += ' <input type="text" id="'+nameid+'" value="" '+disabled+' />';
 
         var Y = this.Y;
         var self = this;
-        var panel = new M.core.dialogue({
+        var panel = new Y.Panel({
             bodyContent: content,
-            width: '350px',
+            width: 350,
+            zIndex: 5,
+            centered: true,
             modal: true,
             visible: true,
             render: true,
-            align: {
-                node: null,
-                points: [Y.WidgetPositionAlign.CC, Y.WidgetPositionAlign.CC]
-            }
+            buttons: [{
+                value: M.util.get_string('upload', 'moodle'),
+                action: function(e) {
+                    e.preventDefault();
+                    var name = Y.one('#dndupload_handler_name'+uploadid).get('value');
+                    name = name.replace(/^\s\s*/, '').replace(/\s\s*$/, ''); // Trim
+                    if (name == '') {
+                        return;
+                    }
+                    var module = false;
+                    if (type.handlers.length > 1) {
+                        // Find out which module was selected
+                        var div = Y.one('#dndupload_handlers'+uploadid);
+                        div.all('input').each(function(input) {
+                            if (input.get('checked')) {
+                                module = input.get('value');
+                            }
+                        });
+                        if (!module) {
+                            return;
+                        }
+                    } else {
+                        module = type.handlers[0].module;
+                    }
+                    panel.hide();
+                    // Do the upload
+                    self.upload_item(name, type.type, contents, section, sectionnumber, module);
+                },
+                section: Y.WidgetStdMod.FOOTER
+            },{
+                value: M.util.get_string('cancel', 'moodle'),
+                action: function(e) {
+                    e.preventDefault();
+                    panel.hide();
+                },
+                section: Y.WidgetStdMod.FOOTER
+            }]
         });
-
         // When the panel is hidden - destroy it and then check for other pending uploads
         panel.after("visibleChange", function(e) {
             if (!panel.get('visible')) {
@@ -851,84 +878,6 @@ M.course_dndupload = {
                 self.check_upload_queue();
             }
         });
-
-        var namefield = Y.one('#'+nameid);
-        var submit = function(e) {
-            e.preventDefault();
-            var name = Y.Lang.trim(namefield.get('value'));
-            var module = false;
-            var noname = false;
-            if (type.handlers.length > 1) {
-                // Find out which module was selected
-                var div = Y.one('#dndupload_handlers'+uploadid);
-                div.all('input').each(function(input) {
-                    if (input.get('checked')) {
-                        var idx = input.get('value');
-                        module = type.handlers[idx].module;
-                        noname = type.handlers[idx].noname;
-                    }
-                });
-                if (!module) {
-                    return;
-                }
-            } else {
-                module = type.handlers[0].module;
-                noname = type.handlers[0].noname;
-            }
-            if (name == '' && !noname) {
-                return;
-            }
-            if (noname) {
-                name = '';
-            }
-            panel.hide();
-            // Do the upload
-            self.upload_item(name, type.type, contents, section, sectionnumber, module);
-        };
-
-        // Add the submit/cancel buttons to the bottom of the dialog.
-        panel.addButton({
-            label: M.util.get_string('upload', 'moodle'),
-            action: submit,
-            section: Y.WidgetStdMod.FOOTER,
-            name: 'submit'
-        });
-        panel.addButton({
-            label: M.util.get_string('cancel', 'moodle'),
-            action: function(e) {
-                e.preventDefault();
-                panel.hide();
-            },
-            section: Y.WidgetStdMod.FOOTER
-        });
-        var submitbutton = panel.getButton('submit').button;
-        namefield.on('key', submit, 'enter'); // Submit the form if 'enter' pressed
-        namefield.after('keyup', function() {
-            if (Y.Lang.trim(namefield.get('value')) == '') {
-                submitbutton.disable();
-            } else {
-                submitbutton.enable();
-            }
-        });
-
-        // Enable / disable the 'name' box, depending on the handler selected.
-        for (i=0; i<type.handlers.length; i++) {
-            if (type.handlers[i].noname) {
-                Y.one('#dndupload_handler'+uploadid+type.handlers[i].module).on('click', function (e) {
-                    namefield.set('disabled', 'disabled');
-                    submitbutton.enable();
-                });
-            } else {
-                Y.one('#dndupload_handler'+uploadid+type.handlers[i].module).on('click', function (e) {
-                    namefield.removeAttribute('disabled');
-                    namefield.focus();
-                    if (Y.Lang.trim(namefield.get('value')) == '') {
-                        submitbutton.disable();
-                    }
-                });
-            }
-        }
-
         // Focus on the 'name' box
         Y.one('#'+nameid).focus();
     },
@@ -956,7 +905,7 @@ M.course_dndupload = {
         var self = this;
 
         // Add the item to the display
-        var resel = this.add_resource_element(name, section, module);
+        var resel = this.add_resource_element(name, section);
 
         // Wait for the AJAX call to complete, then update the
         // dummy element with the returned details
@@ -966,14 +915,32 @@ M.course_dndupload = {
                     var result = JSON.parse(xhr.responseText);
                     if (result) {
                         if (result.error == 0) {
-                            // All OK - replace the dummy element.
-                            resel.li.outerHTML = result.fullcontent;
+                            // All OK - update the dummy element
+                            resel.icon.src = result.icon;
+                            resel.a.href = result.link;
+                            resel.namespan.innerHTML = result.name;
+                            if (!parseInt(result.visible, 10)) {
+                                resel.a.className = 'dimmed';
+                            }
+
+                            if (result.groupingname) {
+                                resel.groupingspan.innerHTML = '(' + result.groupingname + ')';
+                            } else {
+                                resel.div.removeChild(resel.groupingspan);
+                            }
+
+                            resel.div.removeChild(resel.progressouter);
+                            resel.li.id = result.elementid;
+                            resel.div.innerHTML += result.commands;
+                            if (result.onclick) {
+                                resel.a.onclick = result.onclick;
+                            }
                             if (self.Y.UA.gecko > 0) {
                                 // Fix a Firefox bug which makes sites with a '~' in their wwwroot
                                 // log the user out when clicking on the link (before refreshing the page).
-                                resel.li.outerHTML = unescape(resel.li.outerHTML);
+                                resel.div.innerHTML = unescape(resel.div.innerHTML);
                             }
-                            self.add_editing(result.elementid);
+                            self.add_editing(result.elementid, sectionnumber);
                         } else {
                             // Error - remove the dummy element
                             resel.parent.removeChild(resel.li);
@@ -1008,13 +975,8 @@ M.course_dndupload = {
      * @param sectionnumber the number of the selected course section
      */
     add_editing: function(elementid) {
-        var node = Y.one('#' + elementid);
         YUI().use('moodle-course-coursebase', function(Y) {
-            Y.log("Invoking setup_for_resource", 'debug', 'coursedndupload');
-            M.course.coursebase.invoke_function('setup_for_resource', node);
+            M.course.coursebase.invoke_function('setup_for_resource', '#' + elementid);
         });
-        if (M.core.actionmenu && M.core.actionmenu.newDOMNode) {
-            M.core.actionmenu.newDOMNode(node);
-        }
     }
 };

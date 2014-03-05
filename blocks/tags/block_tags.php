@@ -81,7 +81,6 @@ class block_tags extends block_base {
         }
 
         $this->content = new stdClass;
-        $this->content->text = '';
         $this->content->footer = '';
 
         // Get a list of tags.
@@ -111,12 +110,12 @@ class block_tags extends block_base {
             $content = '';
             $moretags = new moodle_url('/tag/coursetags_more.php', array('show'=>$tagtype));
             if ($tagtype == 'all') {
-                $tags = coursetag_get_tags(0, 0, $this->config->tagtype, $this->config->numberoftags);
+                $tags = coursetag_get_tags(0, 0, $this->config->tagtype, $this->config->numberoftags, 'name');
             } else if ($tagtype == 'course') {
-                $tags = coursetag_get_tags($this->page->course->id, 0, $this->config->tagtype, $this->config->numberoftags);
+                $tags = coursetag_get_tags($this->page->course->id, 0, $this->config->tagtype, $this->config->numberoftags, 'name');
                 $moretags->param('courseid', $this->page->course->id);
             } else if ($tagtype == 'my') {
-                $tags = coursetag_get_tags(0, $USER->id, $this->config->tagtype, $this->config->numberoftags);
+                $tags = coursetag_get_tags(0, $USER->id, $this->config->tagtype, $this->config->numberoftags, 'name');
             }
             $tagcloud = tag_print_cloud($tags, 150, true);
             if (!$tagcloud) {

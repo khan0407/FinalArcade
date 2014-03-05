@@ -216,7 +216,7 @@ function rss_get_file_name($instance, $sql, $params = array()) {
         // serialize it and then concatenate it with the sql.
         // The reason for this is to generate a unique filename
         // for queries using the same sql but different parameters.
-        asort($params);
+        asort($parms);
         $serializearray = serialize($params);
         return $instance->id.'_'.md5($sql . $serializearray);
     } else {
@@ -269,7 +269,7 @@ function rss_standard_header($title = NULL, $link = NULL, $description = NULL) {
             $result .= rss_full_tag('language', 2, false, substr($USER->lang,0,2));
         }
         $today = getdate();
-        $result .= rss_full_tag('copyright', 2, false, '(c) '. $today['year'] .' '. format_string($site->fullname));
+        $result .= rss_full_tag('copyright', 2, false, '&#169; '. $today['year'] .' '. format_string($site->fullname));
         /*
        if (!empty($USER->email)) {
             $result .= rss_full_tag('managingEditor', 2, false, fullname($USER));

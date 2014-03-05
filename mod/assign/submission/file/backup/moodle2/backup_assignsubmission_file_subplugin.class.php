@@ -36,30 +36,25 @@ defined('MOODLE_INTERNAL') || die();
 class backup_assignsubmission_file_subplugin extends backup_subplugin {
 
     /**
+     *
      * Returns the subplugin information to attach to submission element
      * @return backup_subplugin_element
      */
     protected function define_submission_subplugin_structure() {
 
-        // Create XML elements.
-        $subplugin = $this->get_subplugin_element();
+        // create XML elements
+        $subplugin = $this->get_subplugin_element(); // virtual optigroup element
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subpluginelement = new backup_nested_element('submission_file',
-                                                      null,
-                                                      array('numfiles', 'submission'));
+        $subpluginelement = new backup_nested_element('submission_file', null, array('numfiles', 'submission'));
 
-        // Connect XML elements into the tree.
+        // connect XML elements into the tree
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subpluginelement);
 
-        // Set source to populate the data.
-        $subpluginelement->set_source_table('assignsubmission_file',
-                                            array('submission' => backup::VAR_PARENTID));
+        // set source to populate the data
+        $subpluginelement->set_source_table('assignsubmission_file', array('submission' => backup::VAR_PARENTID));
 
-        // The parent is the submission.
-        $subpluginelement->annotate_files('assignsubmission_file',
-                                          'submission_files',
-                                          'submission');
+        $subpluginelement->annotate_files('assignsubmission_file', 'submission_files', 'submission');// The parent is the submission
         return $subplugin;
     }
 

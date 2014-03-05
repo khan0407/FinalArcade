@@ -53,19 +53,13 @@ if ($frm = data_submitted() and confirm_sesskey()) {
 
     } else if (isset($frm->add) and !empty($frm->addselect)) {
         foreach ($frm->addselect as $groupid) {
-            // Ask this method not to purge the cache, we'll do it ourselves afterwards.
-            groups_assign_grouping($grouping->id, (int)$groupid, null, false);
+            groups_assign_grouping($grouping->id, (int)$groupid);
         }
-        // Invalidate the course groups cache seeing as we've changed it.
-        cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
 
     } else if (isset($frm->remove) and !empty($frm->removeselect)) {
         foreach ($frm->removeselect as $groupid) {
-            // Ask this method not to purge the cache, we'll do it ourselves afterwards.
-            groups_unassign_grouping($grouping->id, (int)$groupid, false);
+            groups_unassign_grouping($grouping->id, (int)$groupid);
         }
-        // Invalidate the course groups cache seeing as we've changed it.
-        cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
     }
 }
 

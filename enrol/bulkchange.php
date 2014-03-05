@@ -17,7 +17,8 @@
 /**
  * Bulk user enrolment processing.
  *
- * @package    core_enrol
+ * @package    core
+ * @subpackage enrol
  * @copyright  2011 Sam Hemelryk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

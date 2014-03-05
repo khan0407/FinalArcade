@@ -31,6 +31,21 @@
     var javatime = javatimeDate.getTime();
     javatime = Math.floor(javatime/1000);
 
+    if (typeof(clocksettings)!='undefined') {
+        if (clocksettings.starttime) {
+            starttime = parseInt(clocksettings.starttime);
+        }
+        if (clocksettings.servertime) {
+            servertime =  parseInt(clocksettings.servertime);
+        }
+        if (clocksettings.testlength) {
+            testlength =  parseInt(clocksettings.testlength);
+        }
+    }
+
+    difference = javatime - servertime;
+    starttime = starttime + difference;
+
     var dn = "";
     var old = "";
 
@@ -48,21 +63,6 @@
     leave();*/
 
     function show_clock() {
-
-        if (typeof(clocksettings) != 'undefined') {
-            if (clocksettings.starttime) {
-                starttime = parseInt(clocksettings.starttime);
-            }
-            if (clocksettings.servertime) {
-                servertime =  parseInt(clocksettings.servertime);
-            }
-            if (clocksettings.testlength) {
-                testlength =  parseInt(clocksettings.testlength);
-            }
-        }
-
-        difference = javatime - servertime;
-        starttime = starttime + difference;
 
         //show clock in NS 4
         if (document.layers)

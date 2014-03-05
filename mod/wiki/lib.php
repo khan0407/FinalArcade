@@ -279,12 +279,10 @@ function wiki_supports($feature) {
 function wiki_print_recent_activity($course, $viewfullnames, $timestart) {
     global $CFG, $DB, $OUTPUT;
 
-    $usernamefields = get_all_user_name_fields(true, 'u');
-    $sql = "SELECT p.*, w.id as wikiid, sw.groupid, $usernamefields
+    $sql = "SELECT p.*, w.id as wikiid, sw.groupid
             FROM {wiki_pages} p
                 JOIN {wiki_subwikis} sw ON sw.id = p.subwikiid
                 JOIN {wiki} w ON w.id = sw.wikiid
-                JOIN {user} u ON u.id = sw.userid
             WHERE p.timemodified > ? AND w.course = ?
             ORDER BY p.timemodified ASC";
     if (!$pages = $DB->get_records_sql($sql, array($timestart, $course->id))) {
@@ -464,7 +462,9 @@ function wiki_pluginfile($course, $cm, $context, $filearea, $args, $forcedownloa
             return false;
         }
 
-        send_stored_file($file, null, 0, $options);
+        $lifetime = isset($CFG->filelifetime) ? $CFG->filelifetime : 86400;
+
+        send_stored_file($file, $lifetime, 0, $options);
     }
 }
 

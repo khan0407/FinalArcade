@@ -1,6 +1,5 @@
 admindirname,install
 availablelangs,install
-cannotcreatedboninstall,error
 cannotcreatelangdir,error
 cannotcreatetempdir,error
 cannotdownloadcomponents,error
@@ -29,7 +28,6 @@ databasetypehead,install
 dataroot,install
 datarootpermission,install
 dbprefix,install
-dmlexceptiononinstall,error
 dirroot,install
 downloadedfilecheckfailed,error
 environmenthead,install

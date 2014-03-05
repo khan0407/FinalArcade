@@ -16,7 +16,8 @@
 
 /**
  * Returns an array of reports to which are currently readable.
- * @package    mod_scorm
+ * @package    mod
+ * @subpackage scorm
  * @author     Ankit Kumar Agarwal
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,7 +35,7 @@ function scorm_report_list($context) {
     if (!empty($reportlist)) {
         return $reportlist;
     }
-    $installed = core_component::get_plugin_list('scormreport');
+    $installed = get_plugin_list('scormreport');
     foreach ($installed as $reportname => $notused) {
         $pluginfile = $CFG->dirroot.'/mod/scorm/report/'.$reportname.'/report.php';
         if (is_readable($pluginfile)) {

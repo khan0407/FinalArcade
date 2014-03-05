@@ -32,12 +32,20 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_assignsubmission_onlinetext_install() {
     global $CFG;
 
-    // Set the correct initial order for the plugins.
+    // do the install
+
     require_once($CFG->dirroot . '/mod/assign/adminlib.php');
+    // set the correct initial order for the plugins
     $pluginmanager = new assign_plugin_manager('assignsubmission');
 
     $pluginmanager->move_plugin('onlinetext', 'up');
     $pluginmanager->move_plugin('onlinetext', 'up');
 
+    // do the upgrades
     return true;
+
+
+
 }
+
+

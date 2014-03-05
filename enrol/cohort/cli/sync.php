@@ -30,8 +30,8 @@
 
 define('CLI_SCRIPT', true);
 
-require(__DIR__.'/../../../config.php');
-require_once("$CFG->libdir/clilib.php");
+require(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
+require_once($CFG->libdir.'/clilib.php');
 require_once("$CFG->dirroot/enrol/cohort/locallib.php");
 
 // Now get cli options.
@@ -51,20 +51,15 @@ Options:
 -h, --help            Print out this help
 
 Example:
-\$ sudo -u www-data /usr/bin/php enrol/cohort/cli/sync.php
+\$sudo -u www-data /usr/bin/php enrol/cohort/cli/sync.php
 ";
 
     echo $help;
     die;
 }
 
-if (empty($options['verbose'])) {
-    $trace = new null_progress_trace();
-} else {
-    $trace = new text_progress_trace();
-}
+$verbose = !empty($options['verbose']);
 
-$result = enrol_cohort_sync($trace, null);
-$trace->finished();
+$result = enrol_cohort_sync(null, $verbose);
 
 exit($result);

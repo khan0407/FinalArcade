@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,7 +16,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    qtype_match
+ * @package    qtype
+ * @subpackage match
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -23,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Matching question type conversion handler.
+ * Matching question type conversion handler
  */
 class moodle1_qtype_match_handler extends moodle1_qtype_handler {
 
@@ -33,19 +35,19 @@ class moodle1_qtype_match_handler extends moodle1_qtype_handler {
     public function get_question_subpaths() {
         return array(
             'MATCHOPTIONS',
-            'MATCHS/MATCH',
+            'MATCHS/MATCH'
         );
     }
 
     /**
-     * Appends the match specific information to the question.
+     * Appends the match specific information to the question
      */
     public function process_question(array $data, array $raw) {
         global $CFG;
 
-        // Populate the list of matches first to get their ids.
-        // Note that the field is re-populated on restore anyway but let us
-        // do our best to produce valid backup files.
+        // populate the list of matches first to get their ids
+        // note that the field is re-populated on restore anyway but let us
+        // do our best to produce valid backup files
         $matchids = array();
         if (isset($data['matchs']['match'])) {
             foreach ($data['matchs']['match'] as $match) {
@@ -53,7 +55,7 @@ class moodle1_qtype_match_handler extends moodle1_qtype_handler {
             }
         }
 
-        // Convert match options.
+        // convert match options
         if (isset($data['matchoptions'])) {
             $matchoptions = $data['matchoptions'][0];
         } else {
@@ -63,11 +65,11 @@ class moodle1_qtype_match_handler extends moodle1_qtype_handler {
         $matchoptions['subquestions'] = implode(',', $matchids);
         $this->write_xml('matchoptions', $matchoptions, array('/matchoptions/id'));
 
-        // Convert matches.
+        // convert matches
         $this->xmlwriter->begin_tag('matches');
         if (isset($data['matchs']['match'])) {
             foreach ($data['matchs']['match'] as $match) {
-                // Replay the upgrade step 2009072100.
+                // replay the upgrade step 2009072100
                 $match['questiontextformat'] = 0;
                 if ($CFG->texteditors !== 'textarea' and $data['oldquestiontextformat'] == FORMAT_MOODLE) {
                     $match['questiontext'] = text_to_html($match['questiontext'], false, false, true);

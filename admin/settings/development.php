@@ -19,18 +19,6 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     $enablecssoptimiser->set_updatedcallback('theme_reset_all_caches');
     $temp->add($enablecssoptimiser);
 
-    // Backup archive .mbz format: switching to .tar.gz enables larger files, better
-    // progress reporting and possibly better performance. This is an experimental
-    // setting but if successful, should be removed and enabled by default in a future
-    // version. Note: this setting controls newly-created backups only; restore always
-    // supports both formats.
-    $temp->add(new admin_setting_configcheckbox('enabletgzbackups',
-            new lang_string('enabletgzbackups', 'admin'),
-            new lang_string('enabletgzbackups_desc', 'admin'), 0));
-    $temp->add(new admin_setting_php_extension_enabled('zlibenabled',
-            get_string('zlibenabled', 'admin'),
-            get_string('enabletgzbackups_nozlib', 'admin'), 'zlib'));
-
     $ADMIN->add('experimental', $temp);
 
     // "debugging" settingpage
@@ -77,10 +65,6 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
             60 => new lang_string('numminutes', '', 60),
             30 => new lang_string('numminutes', '', 30),
             15 => new lang_string('numminutes', '', 15))));
-        // Define the prefix to be added to imported profiling runs.
-        $temp->add(new admin_setting_configtext('profilingimportprefix',
-                new lang_string('profilingimportprefix', 'admin'),
-                new lang_string('profilingimportprefix_desc', 'admin'), '(I)', PARAM_TAG, 10));
 
         // Add the 'profiling' page to admin block
         $ADMIN->add('development', $temp);
@@ -96,6 +80,4 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     }
 
     $ADMIN->add('development', new admin_externalpage('purgecaches', new lang_string('purgecaches','admin'), "$CFG->wwwroot/$CFG->admin/purgecaches.php"));
-
-    $ADMIN->add('development', new admin_externalpage('thirdpartylibs', new lang_string('thirdpartylibs','admin'), "$CFG->wwwroot/$CFG->admin/thirdpartylibs.php"));
 } // end of speedup

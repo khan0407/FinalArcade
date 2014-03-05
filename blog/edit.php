@@ -45,6 +45,7 @@ $returnurl = new moodle_url('/blog/index.php');
 
 if (!empty($courseid) && empty($modid)) {
     $returnurl->param('courseid', $courseid);
+    $PAGE->set_context(context_course::instance($courseid));
 }
 
 // If a modid is given, guess courseid
@@ -52,12 +53,13 @@ if (!empty($modid)) {
     $returnurl->param('modid', $modid);
     $courseid = $DB->get_field('course_modules', 'course', array('id' => $modid));
     $returnurl->param('courseid', $courseid);
+    $PAGE->set_context(context_module::instance($modid));
 }
 
-// Blogs are always in system context.
-$sitecontext = context_system::instance();
-$PAGE->set_context($sitecontext);
-
+// If courseid is empty use the system context
+if (empty($courseid)) {
+    $PAGE->set_context(context_system::instance());
+}
 
 $blogheaders = blog_get_headers();
 
@@ -75,6 +77,7 @@ if (isguestuser()) {
     print_error('noguestentry', 'blog');
 }
 
+$sitecontext = context_system::instance();
 if (!has_capability('moodle/blog:create', $sitecontext) && !has_capability('moodle/blog:manageentries', $sitecontext)) {
     print_error('cannoteditentryorblog');
 }
@@ -117,7 +120,6 @@ if ($action === 'delete'){
             print_error('nopermissionstodeleteentry', 'blog');
         } else {
             $entry->delete();
-            blog_rss_delete_file($userid);
             redirect($returnurl);
         }
     } else if (blog_user_can_edit_entry($entry)) {
@@ -163,8 +165,7 @@ if (!empty($entry->id)) {
 }
 
 require_once('edit_form.php');
-$summaryoptions = array('maxfiles'=> 99, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>true, 'context'=>$sitecontext,
-    'subdirs'=>file_area_contains_subdirs($sitecontext, 'blog', 'post', $entry->id));
+$summaryoptions = array('subdirs'=>false, 'maxfiles'=> 99, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>true, 'context'=>$sitecontext);
 $attachmentoptions = array('subdirs'=>false, 'maxfiles'=> 99, 'maxbytes'=>$CFG->maxbytes);
 
 $blogeditform = new blog_edit_form(null, compact('entry', 'summaryoptions', 'attachmentoptions', 'sitecontext', 'courseid', 'modid'));

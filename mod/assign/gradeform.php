@@ -25,8 +25,11 @@
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 
 
-require_once($CFG->libdir.'/formslib.php');
+/** Include formslib.php */
+require_once ($CFG->libdir.'/formslib.php');
+/** Include locallib.php */
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
+/** Required for advanced grading */
 require_once('HTML/QuickForm/input.php');
 
 /**
@@ -41,13 +44,13 @@ class mod_assign_grade_form extends moodleform {
     private $assignment;
 
     /**
-     * Define the form - called by parent constructor.
+     * Define the form - called by parent constructor
      */
-    public function definition() {
+    function definition() {
         $mform = $this->_form;
 
         list($assignment, $data, $params) = $this->_customdata;
-        // Visible elements.
+        // visible elements
         $this->assignment = $assignment;
         $assignment->add_grade_form_elements($mform, $data, $params);
 
@@ -58,8 +61,7 @@ class mod_assign_grade_form extends moodleform {
 
     /**
      * This is required so when using "Save and next", each form is not defaulted to the previous form.
-     * Giving each form a unique identitifer is enough to prevent this
-     * (include the rownum in the form name).
+     * Giving each form a unique identitifer is enough to prevent this (include the rownum in the form name).
      *
      * @return string - The unique identifier for this form.
      */
@@ -73,32 +75,32 @@ class mod_assign_grade_form extends moodleform {
      * @param array $data
      * @param array $files
      */
-    public function validation($data, $files) {
+    function validation($data, $files) {
         global $DB;
         $errors = parent::validation($data, $files);
-        $instance = $this->assignment->get_instance();
-        // Advanced grading.
+        // advanced grading
         if (!array_key_exists('grade', $data)) {
             return $errors;
         }
 
-        if ($instance->grade > 0) {
+        if ($this->assignment->get_instance()->grade > 0) {
             if (unformat_float($data['grade']) === null && (!empty($data['grade']))) {
                 $errors['grade'] = get_string('invalidfloatforgrade', 'assign', $data['grade']);
-            } else if (unformat_float($data['grade']) > $instance->grade) {
-                $errors['grade'] = get_string('gradeabovemaximum', 'assign', $instance->grade);
+            } else if (unformat_float($data['grade']) > $this->assignment->get_instance()->grade) {
+                $errors['grade'] = get_string('gradeabovemaximum', 'assign', $this->assignment->get_instance()->grade);
             } else if (unformat_float($data['grade']) < 0) {
                 $errors['grade'] = get_string('gradebelowzero', 'assign');
             }
         } else {
-            // This is a scale.
-            if ($scale = $DB->get_record('scale', array('id'=>-($instance->grade)))) {
+            // this is a scale
+            if ($scale = $DB->get_record('scale', array('id'=>-($this->assignment->get_instance()->grade)))) {
                 $scaleoptions = make_menu_from_list($scale->scale);
-                if ((int)$data['grade'] !== -1 && !array_key_exists((int)$data['grade'], $scaleoptions)) {
+                if (!array_key_exists((int)$data['grade'], $scaleoptions)) {
                     $errors['grade'] = get_string('invalidgradeforscale', 'assign');
                 }
             }
         }
         return $errors;
     }
+
 }

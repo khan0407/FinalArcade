@@ -123,7 +123,7 @@ if (!$quizname = $DB->get_field($cm->modname, 'name', array('id' => $cm->instanc
             print_error('invalidcoursemodule');
 }
 
-echo $OUTPUT->heading(get_string('addrandomquestiontoquiz', 'quiz', $quizname), 2);
+echo $OUTPUT->heading(get_string('addrandomquestiontoquiz', 'quiz', $quizname), 2, 'mdl-left');
 $mform->display();
 echo $OUTPUT->footer();
 

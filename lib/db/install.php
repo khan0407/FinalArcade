@@ -259,16 +259,59 @@ function xmldb_main_install() {
     // Now is the correct moment to install capabilities - after creation of legacy roles, but before assigning of roles
     update_capabilities('moodle');
 
+    // Default allow assign
+    $defaultallowassigns = array(
+        array($managerrole, $managerrole),
+        array($managerrole, $coursecreatorrole),
+        array($managerrole, $editteacherrole),
+        array($managerrole, $noneditteacherrole),
+        array($managerrole, $studentrole),
 
-    // Default allow role matrices.
-    foreach ($DB->get_records('role') as $role) {
-        foreach (array('assign', 'override', 'switch') as $type) {
-            $function = 'allow_'.$type;
-            $allows = get_default_role_archetype_allows($type, $role->archetype);
-            foreach ($allows as $allowid) {
-                $function($role->id, $allowid);
-            }
-        }
+        array($editteacherrole, $noneditteacherrole),
+        array($editteacherrole, $studentrole),
+    );
+    foreach ($defaultallowassigns as $allow) {
+        list($fromroleid, $toroleid) = $allow;
+        allow_assign($fromroleid, $toroleid);
+    }
+
+    // Default allow override
+    $defaultallowoverrides = array(
+        array($managerrole, $managerrole),
+        array($managerrole, $coursecreatorrole),
+        array($managerrole, $editteacherrole),
+        array($managerrole, $noneditteacherrole),
+        array($managerrole, $studentrole),
+        array($managerrole, $guestrole),
+        array($managerrole, $userrole),
+        array($managerrole, $frontpagerole),
+
+        array($editteacherrole, $noneditteacherrole),
+        array($editteacherrole, $studentrole),
+        array($editteacherrole, $guestrole),
+    );
+    foreach ($defaultallowoverrides as $allow) {
+        list($fromroleid, $toroleid) = $allow;
+        allow_override($fromroleid, $toroleid); // There is a rant about this in MDL-15841.
+    }
+
+    // Default allow switch.
+    $defaultallowswitch = array(
+        array($managerrole, $editteacherrole),
+        array($managerrole, $noneditteacherrole),
+        array($managerrole, $studentrole),
+        array($managerrole, $guestrole),
+
+        array($editteacherrole, $noneditteacherrole),
+        array($editteacherrole, $studentrole),
+        array($editteacherrole, $guestrole),
+
+        array($noneditteacherrole, $studentrole),
+        array($noneditteacherrole, $guestrole),
+    );
+    foreach ($defaultallowswitch as $allow) {
+        list($fromroleid, $toroleid) = $allow;
+        allow_switch($fromroleid, $toroleid);
     }
 
     // Set up the context levels where you can assign each role.
@@ -283,9 +326,6 @@ function xmldb_main_install() {
     // Init theme and JS revisions
     set_config('themerev', time());
     set_config('jsrev', time());
-
-    // No admin setting for this any more, GD is now required, remove in Moodle 2.6.
-    set_config('gdversion', 2);
 
     // Install licenses
     require_once($CFG->libdir . '/licenselib.php');

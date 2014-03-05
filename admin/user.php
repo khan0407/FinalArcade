@@ -2,9 +2,7 @@
 
     require_once('../config.php');
     require_once($CFG->libdir.'/adminlib.php');
-    require_once($CFG->libdir.'/authlib.php');
     require_once($CFG->dirroot.'/user/filters/lib.php');
-    require_once($CFG->dirroot.'/user/lib.php');
 
     $delete       = optional_param('delete', 0, PARAM_INT);
     $confirm      = optional_param('confirm', '', PARAM_ALPHANUM);   //md5 confirmation hash
@@ -18,7 +16,6 @@
     $acl          = optional_param('acl', '0', PARAM_INT);           // id of user to tweak mnet ACL (requires $access)
     $suspend      = optional_param('suspend', 0, PARAM_INT);
     $unsuspend    = optional_param('unsuspend', 0, PARAM_INT);
-    $unlock       = optional_param('unlock', 0, PARAM_INT);
 
     admin_externalpage_setup('editusers');
 
@@ -35,7 +32,6 @@
     $strshowallusers = get_string('showallusers');
     $strsuspend = get_string('suspenduser', 'admin');
     $strunsuspend = get_string('unsuspenduser', 'admin');
-    $strunlock = get_string('unlockaccount', 'admin');
     $strconfirm = get_string('confirm');
 
     if (empty($CFG->loginhttps)) {
@@ -82,10 +78,10 @@
             die;
         } else if (data_submitted() and !$user->deleted) {
             if (delete_user($user)) {
-                \core\session\manager::gc(); // Remove stale sessions.
+                session_gc(); // remove stale sessions
                 redirect($returnurl);
             } else {
-                \core\session\manager::gc(); // Remove stale sessions.
+                session_gc(); // remove stale sessions
                 echo $OUTPUT->header();
                 echo $OUTPUT->notification($returnurl, get_string('deletednot', '', fullname($user, true)));
             }
@@ -124,9 +120,12 @@
         if ($user = $DB->get_record('user', array('id'=>$suspend, 'mnethostid'=>$CFG->mnet_localhost_id, 'deleted'=>0))) {
             if (!is_siteadmin($user) and $USER->id != $user->id and $user->suspended != 1) {
                 $user->suspended = 1;
-                // Force logout.
-                \core\session\manager::kill_user_sessions($user->id);
-                user_update_user($user, false);
+                $user->timemodified = time();
+                $DB->set_field('user', 'suspended', $user->suspended, array('id'=>$user->id));
+                $DB->set_field('user', 'timemodified', $user->timemodified, array('id'=>$user->id));
+                // force logout
+                session_kill_user($user->id);
+                events_trigger('user_updated', $user);
             }
         }
         redirect($returnurl);
@@ -137,16 +136,11 @@
         if ($user = $DB->get_record('user', array('id'=>$unsuspend, 'mnethostid'=>$CFG->mnet_localhost_id, 'deleted'=>0))) {
             if ($user->suspended != 0) {
                 $user->suspended = 0;
-                user_update_user($user, false);
+                $user->timemodified = time();
+                $DB->set_field('user', 'suspended', $user->suspended, array('id'=>$user->id));
+                $DB->set_field('user', 'timemodified', $user->timemodified, array('id'=>$user->id));
+                events_trigger('user_updated', $user);
             }
-        }
-        redirect($returnurl);
-
-    } else if ($unlock and confirm_sesskey()) {
-        require_capability('moodle/user:update', $sitecontext);
-
-        if ($user = $DB->get_record('user', array('id'=>$unlock, 'mnethostid'=>$CFG->mnet_localhost_id, 'deleted'=>0))) {
-            login_unlock_account($user);
         }
         redirect($returnurl);
     }
@@ -202,10 +196,19 @@
     }
 
     list($extrasql, $params) = $ufiltering->get_sql_filter();
-    $users = get_users_listing($sort, $dir, $page*$perpage, $perpage, '', '', '',
-            $extrasql, $params, $context);
+
     $usercount = get_users(false);
     $usersearchcount = get_users(false, '', false, null, "", '', '', '', '', '*', $extrasql, $params);
+
+    // Exclude guest user from list.
+    $noguestsql = '';
+    if (!empty($extrasql)) {
+        $noguestsql .= ' AND';
+    }
+    $noguestsql .= " id <> :guestid";
+    $params['guestid'] = $CFG->siteguest;
+    $users = get_users_listing($sort, $dir, $page*$perpage, $perpage, '', '', '',
+            $extrasql.$noguestsql, $params, $context);
 
     if ($extrasql !== '') {
         echo $OUTPUT->heading("$usersearchcount / $usercount ".get_string('users'));
@@ -253,27 +256,30 @@
 
         $table = new html_table();
         $table->head = array ();
-        $table->colclasses = array();
+        $table->align = array();
         $table->head[] = $fullnamedisplay;
-        $table->attributes['class'] = 'admintable generaltable';
-        $table->colclasses[] = 'leftalign';
+        $table->align[] = 'left';
         foreach ($extracolumns as $field) {
             $table->head[] = ${$field};
-            $table->colclasses[] = 'leftalign';
+            $table->align[] = 'left';
         }
         $table->head[] = $city;
-        $table->colclasses[] = 'leftalign';
+        $table->align[] = 'left';
         $table->head[] = $country;
-        $table->colclasses[] = 'leftalign';
+        $table->align[] = 'left';
         $table->head[] = $lastaccess;
-        $table->colclasses[] = 'leftalign';
+        $table->align[] = 'left';
         $table->head[] = get_string('edit');
-        $table->colclasses[] = 'centeralign';
+        $table->align[] = 'center';
         $table->head[] = "";
-        $table->colclasses[] = 'centeralign';
+        $table->align[] = 'center';
 
-        $table->id = "users";
+        $table->width = "95%";
         foreach ($users as $user) {
+            if (isguestuser($user)) {
+                continue; // do not display guest here
+            }
+
             $buttons = array();
             $lastcolumn = '';
 
@@ -308,9 +314,6 @@
                         }
                     }
 
-                    if (login_is_lockedout($user)) {
-                        $buttons[] = html_writer::link(new moodle_url($returnurl, array('unlock'=>$user->id, 'sesskey'=>sesskey())), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/unlock'), 'alt'=>$strunlock, 'class'=>'iconsmall')), array('title'=>$strunlock));
-                    }
                 }
             }
 
@@ -373,9 +376,7 @@
         echo $OUTPUT->heading('<a href="'.$securewwwroot.'/user/editadvanced.php?id=-1">'.get_string('addnewuser').'</a>');
     }
     if (!empty($table)) {
-        echo html_writer::start_tag('div', array('class'=>'no-overflow'));
         echo html_writer::table($table);
-        echo html_writer::end_tag('div');
         echo $OUTPUT->paging_bar($usercount, $page, $perpage, $baseurl);
         if (has_capability('moodle/user:create', $sitecontext)) {
             echo $OUTPUT->heading('<a href="'.$securewwwroot.'/user/editadvanced.php?id=-1">'.get_string('addnewuser').'</a>');

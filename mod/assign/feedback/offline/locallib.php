@@ -80,7 +80,7 @@ class assign_feedback_offline extends assign_feedback_plugin {
 
         $gradeimporter = new assignfeedback_offline_grade_importer($importid, $this->assignment);
 
-        $context = context_user::instance($USER->id);
+        $context = get_context_instance(CONTEXT_USER, $USER->id);
         $fs = get_file_storage();
         if (!$files = $fs->get_area_files($context->id, 'user', 'draft', $draftid, 'id DESC', false)) {
             redirect(new moodle_url('view.php',
@@ -107,8 +107,9 @@ class assign_feedback_offline extends assign_feedback_plugin {
         // Does this assignment use a scale?
         $scaleoptions = null;
         if ($this->assignment->get_instance()->grade < 0) {
-            if ($scale = $DB->get_record('scale', array('id'=>-($this->assignment->get_instance()->grade)))) {
-                $scaleoptions = make_menu_from_list($scale->scale);
+            $scale = $DB->get_record('scale', array('id'=>-($this->assignment->get_instance()->grade)));
+            if ($scale) {
+                $scaleoptions = explode(',', $scale->scale);
             }
         }
         // We may need to upgrade the gradebook comments after this update.
@@ -126,7 +127,7 @@ class assign_feedback_offline extends assign_feedback_plugin {
                 // This is a scale - we need to convert any grades to indexes in the scale.
                 $scaleindex = array_search($record->grade, $scaleoptions);
                 if ($scaleindex !== false) {
-                    $record->grade = $scaleindex;
+                    $record->grade = $scaleindex + 1;
                 } else {
                     $record->grade = '';
                 }

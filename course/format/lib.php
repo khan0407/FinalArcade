@@ -72,8 +72,6 @@ abstract class format_base {
     protected $formatoptions = array();
     /** @var array cached instances */
     private static $instances = array();
-    /** @var array plugin name => class name. */
-    private static $classesforformat = array('site' => 'site');
 
     /**
      * Creates a new instance of class
@@ -96,28 +94,24 @@ abstract class format_base {
      * @return string
      */
     protected static final function get_format_or_default($format) {
-        if (array_key_exists($format, self::$classesforformat)) {
-            return self::$classesforformat[$format];
+        if ($format === 'site') {
+            return $format;
         }
-
         $plugins = get_sorted_course_formats();
-        foreach ($plugins as $plugin) {
-            self::$classesforformat[$plugin] = $plugin;
+        if (in_array($format, $plugins)) {
+            return $format;
         }
-
-        if (array_key_exists($format, self::$classesforformat)) {
-            return self::$classesforformat[$format];
-        }
-
         // Else return default format
         $defaultformat = get_config('moodlecourse', 'format');
         if (!in_array($defaultformat, $plugins)) {
             // when default format is not set correctly, use the first available format
             $defaultformat = reset($plugins);
         }
-        debugging('Format plugin format_'.$format.' is not found. Using default format_'.$defaultformat, DEBUG_DEVELOPER);
-
-        self::$classesforformat[$format] = $defaultformat;
+        static $warningprinted = array();
+        if (empty($warningprinted[$format])) {
+            debugging('Format plugin format_'.$format.' is not found. Using default format_'.$defaultformat, DEBUG_DEVELOPER);
+            $warningprinted[$format] = true;
+        }
         return $defaultformat;
     }
 
@@ -134,7 +128,7 @@ abstract class format_base {
         global $CFG;
         static $classnames = array('site' => 'format_site');
         if (!isset($classnames[$format])) {
-            $plugins = core_component::get_plugin_list('format');
+            $plugins = get_plugin_list('format');
             $usedformat = self::get_format_or_default($format);
             if (file_exists($plugins[$usedformat].'/lib.php')) {
                 require_once($plugins[$usedformat].'/lib.php');
@@ -235,44 +229,19 @@ abstract class format_base {
             return null;
         }
         if ($this->course === false) {
-            $this->course = get_course($this->courseid);
+            $this->course = $DB->get_record('course', array('id' => $this->courseid));
             $options = $this->get_format_options();
-            $dbcoursecolumns = null;
             foreach ($options as $optionname => $optionvalue) {
-                if (isset($this->course->$optionname)) {
-                    // Course format options must not have the same names as existing columns in db table "course".
-                    if (!isset($dbcoursecolumns)) {
-                        $dbcoursecolumns = $DB->get_columns('course');
-                    }
-                    if (isset($dbcoursecolumns[$optionname])) {
-                        debugging('The option name '.$optionname.' in course format '.$this->format.
-                            ' is invalid because the field with the same name exists in {course} table',
-                            DEBUG_DEVELOPER);
-                        continue;
-                    }
+                if (!isset($this->course->$optionname)) {
+                    $this->course->$optionname = $optionvalue;
+                } else {
+                    debugging('The option name '.$optionname.' in course format '.$this->format.
+                        ' is invalid because the field with the same name exists in {course} table',
+                        DEBUG_DEVELOPER);
                 }
-                $this->course->$optionname = $optionvalue;
             }
         }
         return $this->course;
-    }
-
-    /**
-     * Returns true if the course has a front page.
-     *
-     * This function is called to determine if the course has a view page, whether or not
-     * it contains a listing of activities. It can be useful to set this to false when the course
-     * format has only one activity and ignores the course page. Or if there are multiple
-     * activities but no page to see the centralised information.
-     *
-     * Initially this was created to know if forms should add a button to return to the course page.
-     * So if 'Return to course' does not make sense in your format your should probably return false.
-     *
-     * @return boolean
-     * @since 2.6
-     */
-    public function has_view_page() {
-        return true;
     }
 
     /**
@@ -579,7 +548,7 @@ abstract class format_base {
             $sectionid = $section->id;
         } else if ($this->courseid && is_int($section) &&
                 ($sectionobj = $DB->get_record('course_sections',
-                        array('section' => $section, 'course' => $this->courseid), 'id'))) {
+                        array('section' => $section, 'courseid' => $this->courseid), 'id'))) {
             // course section format options will be returned
             $sectionid = $sectionobj->id;
         } else {

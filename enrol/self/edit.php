@@ -82,11 +82,6 @@ if ($mform->is_cancelled()) {
         // Keep previous/default value of disabled expirythreshold option.
         $data->expirythreshold = $instance->expirythreshold;
     }
-    if (!isset($data->customint6)) {
-        // Add previous value of newenrols if disabled.
-        $data->customint6 = $instance->customint6;
-    }
-
     if ($instance->id) {
         $reset = ($instance->status != $data->status);
 
@@ -98,7 +93,6 @@ if ($mform->is_cancelled()) {
         $instance->customint3     = $data->customint3;
         $instance->customint4     = $data->customint4;
         $instance->customint5     = $data->customint5;
-        $instance->customint6     = $data->customint6;
         $instance->customtext1    = $data->customtext1;
         $instance->roleid         = $data->roleid;
         $instance->enrolperiod    = $data->enrolperiod;
@@ -124,7 +118,6 @@ if ($mform->is_cancelled()) {
             'customint3'      => $data->customint3,
             'customint4'      => $data->customint4,
             'customint5'      => $data->customint5,
-            'customint6'      => $data->customint6,
             'customtext1'     => $data->customtext1,
             'roleid'          => $data->roleid,
             'enrolperiod'     => $data->enrolperiod,

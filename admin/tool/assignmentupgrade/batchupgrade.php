@@ -32,7 +32,7 @@ require_once($CFG->dirroot . '/'.$CFG->admin.'/tool/assignmentupgrade/upgradable
 
 require_sesskey();
 
-// This calls require_login and checks moodle/site:config.
+// admin_externalpage_setup calls require_login and checks moodle/site:config
 admin_externalpage_setup('assignmentupgrade', '', array(), tool_assignmentupgrade_url('batchupgrade'));
 
 $PAGE->set_pagelayout('maintenance');
@@ -46,8 +46,7 @@ if (!$confirm) {
     die();
 }
 raise_memory_limit(MEMORY_EXTRA);
-// Release session.
-\core\session\manager::write_close();
+session_get_instance()->write_close(); // release session
 
 echo $renderer->header();
 echo $renderer->heading(get_string('batchupgrade', 'tool_assignmentupgrade'));
@@ -63,8 +62,7 @@ $total = count($assignmentids);
 foreach ($assignmentids as $assignmentid) {
     list($summary, $success, $log) = tool_assignmentupgrade_upgrade_assignment($assignmentid);
     $current += 1;
-    $params = array('current'=>$current, 'total'=>$total);
-    echo $renderer->heading(get_string('upgradeprogress', 'tool_assignmentupgrade', $params), 3);
+    echo $renderer->heading(get_string('upgradeprogress', 'tool_assignmentupgrade', array('current'=>$current, 'total'=>$total)), 3);
     echo $renderer->convert_assignment_result($summary, $success, $log);
 }
 

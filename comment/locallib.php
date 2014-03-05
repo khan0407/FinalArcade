@@ -61,8 +61,7 @@ class comment_manager {
         }
         $comments = array();
 
-        $usernamefields = get_all_user_name_fields(true, 'u');
-        $sql = "SELECT c.id, c.contextid, c.itemid, c.commentarea, c.userid, c.content, $usernamefields, c.timecreated
+        $sql = "SELECT c.id, c.contextid, c.itemid, c.commentarea, c.userid, c.content, u.firstname, u.lastname, c.timecreated
                   FROM {comments} c
                   JOIN {user} u
                        ON u.id=c.userid
@@ -75,9 +74,8 @@ class comment_manager {
             $item->time = userdate($item->timecreated);
             $item->content = format_text($item->content, FORMAT_MOODLE, $formatoptions);
             // Unset fields not related to the comment
-            foreach (get_all_user_name_fields() as $namefield) {
-                unset($item->$namefield);
-            }
+            unset($item->firstname);
+            unset($item->lastname);
             unset($item->timecreated);
             // Record the comment
             $comments[] = $item;
@@ -162,9 +160,8 @@ class comment_manager {
             get_string('content'),
             get_string('action')
         );
-        $table->colclasses = array ('leftalign', 'leftalign', 'leftalign', 'leftalign');
-        $table->attributes = array('class'=>'admintable generaltable');
-        $table->id = 'commentstable';
+        $table->align = array ('left', 'left', 'left', 'left');
+        $table->attributes = array('class'=>'generaltable commentstable');
         $table->data = array();
 
         $link = new moodle_url('/comment/index.php', array('action' => 'delete', 'sesskey' => sesskey()));

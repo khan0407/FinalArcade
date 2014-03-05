@@ -18,7 +18,6 @@
  * Test classes for handling embedded media (audio/video).
  *
  * @package core_media
- * @category phpunit
  * @copyright 2012 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,7 +30,7 @@ require_once($CFG->libdir . '/medialib.php');
 /**
  * Test script for media embedding.
  */
-class core_medialib_testcase extends advanced_testcase {
+class medialib_testcase extends advanced_testcase {
 
     /** @var array Files covered by test */
     public static $includecoverage = array('lib/medialib.php', 'lib/outputrenderers.php');
@@ -44,7 +43,7 @@ class core_medialib_testcase extends advanced_testcase {
         parent::setUp();
 
         // Reset $CFG and $SERVER.
-        $this->resetAfterTest();
+        $this->resetAfterTest(true);
 
         // Consistent initial setup: all players disabled.
         $CFG->core_media_enable_html5video = false;
@@ -67,8 +66,8 @@ class core_medialib_testcase extends advanced_testcase {
      */
     private function pretend_to_be_safari() {
         // Pretend to be using Safari browser (must support mp4 for tests to work).
-        core_useragent::instance(true, 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) ' .
-                'AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1');
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) ' .
+                'AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1';
     }
 
     /**
@@ -76,7 +75,7 @@ class core_medialib_testcase extends advanced_testcase {
      */
     private function pretend_to_be_firefox() {
         // Pretend to be using Firefox browser (must support ogg for tests to work).
-        core_useragent::instance(true, 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0');
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
     }
 
     /**
@@ -98,11 +97,11 @@ class core_medialib_testcase extends advanced_testcase {
      * Test for core_media::get_filename.
      */
     public function test_get_filename() {
-        $this->assertSame('frog.mp4', core_media::get_filename(new moodle_url(
+        $this->assertEquals('frog.mp4', core_media::get_filename(new moodle_url(
                 '/pluginfile.php/312/mod_page/content/7/frog.mp4')));
         // This should work even though slasharguments is true, because we want
         // it to support 'legacy' links if somebody toggles the option later.
-        $this->assertSame('frog.mp4', core_media::get_filename(new moodle_url(
+        $this->assertEquals('frog.mp4', core_media::get_filename(new moodle_url(
                 '/pluginfile.php?file=/312/mod_page/content/7/frog.mp4')));
     }
 
@@ -110,13 +109,13 @@ class core_medialib_testcase extends advanced_testcase {
      * Test for core_media::get_extension.
      */
     public function test_get_extension() {
-        $this->assertSame('mp4', core_media::get_extension(new moodle_url(
+        $this->assertEquals('mp4', core_media::get_extension(new moodle_url(
                 '/pluginfile.php/312/mod_page/content/7/frog.mp4')));
-        $this->assertSame('', core_media::get_extension(new moodle_url(
+        $this->assertEquals('', core_media::get_extension(new moodle_url(
                 '/pluginfile.php/312/mod_page/content/7/frog')));
-        $this->assertSame('mp4', core_media::get_extension(new moodle_url(
+        $this->assertEquals('mp4', core_media::get_extension(new moodle_url(
                 '/pluginfile.php?file=/312/mod_page/content/7/frog.mp4')));
-        $this->assertSame('', core_media::get_extension(new moodle_url(
+        $this->assertEquals('', core_media::get_extension(new moodle_url(
                 '/pluginfile.php?file=/312/mod_page/content/7/frog')));
     }
 
@@ -161,13 +160,13 @@ class core_medialib_testcase extends advanced_testcase {
 
         // All players are initially disabled (except link, which you can't).
         $renderer = new core_media_renderer_test($PAGE, '');
-        $this->assertSame('link', $renderer->get_players_test());
+        $this->assertEquals('link', $renderer->get_players_test());
 
         // A couple enabled, check the order.
         $CFG->core_media_enable_html5audio = true;
         $CFG->core_media_enable_mp3 = true;
         $renderer = new core_media_renderer_test($PAGE, '');
-        $this->assertSame('mp3, html5audio, link', $renderer->get_players_test());
+        $this->assertEquals('mp3, html5audio, link', $renderer->get_players_test());
     }
 
     /**
@@ -217,7 +216,7 @@ class core_medialib_testcase extends advanced_testcase {
         $t = $renderer->embed_url($url, 0, 0, '',
                 array(core_media::OPTION_NO_LINK => true));
         // Completely empty.
-        $this->assertSame('', $t);
+        $this->assertEquals('', $t);
 
         // All plugins disabled but not NOLINK.
         $renderer = new core_media_renderer_test($PAGE, '');
@@ -259,23 +258,9 @@ class core_medialib_testcase extends advanced_testcase {
         $html5 = '</video>';
         $link = 'mediafallbacklink';
 
-        if ($hasqt) {
-            $this->assertContains($qt, $text);
-        } else {
-            $this->assertNotContains($qt, $text);
-        }
-
-        if ($hashtml5) {
-            $this->assertContains($html5, $text);
-        } else {
-            $this->assertNotContains($html5, $text);
-        }
-
-        if ($haslink) {
-            $this->assertContains($link, $text);
-        } else {
-            $this->assertNotContains($link, $text);
-        }
+        $this->assertEquals($hasqt, self::str_contains($text, $qt));
+        $this->assertEquals($hashtml5, self::str_contains($text, $html5));
+        $this->assertEquals($haslink, self::str_contains($text, $link));
     }
 
     /**
@@ -290,12 +275,12 @@ class core_medialib_testcase extends advanced_testcase {
         // Without any options...
         $url = new moodle_url('http://example.org/test.swf');
         $t = $renderer->embed_url($url);
-        $this->assertNotContains('</object>', $t);
+        $this->assertFalse(self::str_contains($t, '</object>'));
 
         // ...and with the 'no it's safe, I checked it' option.
         $url = new moodle_url('http://example.org/test.swf');
         $t = $renderer->embed_url($url, '', 0, 0, array(core_media::OPTION_TRUSTED => true));
-        $this->assertContains('</object>', $t);
+        $this->assertTrue(self::str_contains($t, '</object>'));
     }
 
     /**
@@ -322,52 +307,52 @@ class core_medialib_testcase extends advanced_testcase {
         // Format: mp3.
         $url = new moodle_url('http://example.org/test.mp3');
         $t = $renderer->embed_url($url);
-        $this->assertContains('core_media_mp3_', $t);
+        $this->assertTrue(self::str_contains($t, 'core_media_mp3_'));
 
         // Format: flv.
         $url = new moodle_url('http://example.org/test.flv');
         $t = $renderer->embed_url($url);
-        $this->assertContains('core_media_flv_', $t);
+        $this->assertTrue(self::str_contains($t, 'core_media_flv_'));
 
         // Format: wmp.
         $url = new moodle_url('http://example.org/test.avi');
         $t = $renderer->embed_url($url);
-        $this->assertContains('6BF52A52-394A-11d3-B153-00C04F79FAA6', $t);
+        $this->assertTrue(self::str_contains($t, '6BF52A52-394A-11d3-B153-00C04F79FAA6'));
 
         // Format: rm.
         $url = new moodle_url('http://example.org/test.rm');
         $t = $renderer->embed_url($url);
-        $this->assertContains('CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA', $t);
+        $this->assertTrue(self::str_contains($t, 'CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA'));
 
         // Format: youtube.
         $url = new moodle_url('http://www.youtube.com/watch?v=vyrwMmsufJc');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</iframe>', $t);
+        $this->assertTrue(self::str_contains($t, '</iframe>'));
         $url = new moodle_url('http://www.youtube.com/v/vyrwMmsufJc');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</iframe>', $t);
+        $this->assertTrue(self::str_contains($t, '</iframe>'));
 
         // Format: youtube playlist.
         $url = new moodle_url('http://www.youtube.com/view_play_list?p=PL6E18E2927047B662');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</iframe>', $t);
+        $this->assertTrue(self::str_contains($t, '</iframe>'));
         $url = new moodle_url('http://www.youtube.com/playlist?list=PL6E18E2927047B662');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</iframe>', $t);
+        $this->assertTrue(self::str_contains($t, '</iframe>'));
         $url = new moodle_url('http://www.youtube.com/p/PL6E18E2927047B662');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</iframe>', $t);
+        $this->assertTrue(self::str_contains($t, '</iframe>'));
 
         // Format: vimeo.
         $url = new moodle_url('http://vimeo.com/1176321');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</iframe>', $t);
+        $this->assertTrue(self::str_contains($t, '</iframe>'));
 
         // Format: html5audio.
         $this->pretend_to_be_firefox();
         $url = new moodle_url('http://example.org/test.ogg');
         $t = $renderer->embed_url($url);
-        $this->assertContains('</audio>', $t);
+        $this->assertTrue(self::str_contains($t, '</audio>'));
     }
 
     /**
@@ -387,7 +372,7 @@ class core_medialib_testcase extends advanced_testcase {
         // Format: mp3.
         $url = new moodle_url('http://example.org/pluginfile.php?file=x/y/z/test.mp3');
         $t = $renderer->embed_url($url);
-        $this->assertContains('core_media_mp3_', $t);
+        $this->assertTrue(self::str_contains($t, 'core_media_mp3_'));
     }
 
     /**
@@ -406,13 +391,13 @@ class core_medialib_testcase extends advanced_testcase {
         // Embed that does match something should still include the link too.
         $url = new moodle_url('http://example.org/test.ogg');
         $t = $renderer->embed_url($url, '', 0, 0, $options);
-        $this->assertContains('</audio>', $t);
-        $this->assertContains('mediafallbacklink', $t);
+        $this->assertTrue(self::str_contains($t, '</audio>'));
+        $this->assertTrue(self::str_contains($t, 'mediafallbacklink'));
 
         // Embed that doesn't match something should be totally blank.
         $url = new moodle_url('http://example.org/test.mp4');
         $t = $renderer->embed_url($url, '', 0, 0, $options);
-        $this->assertSame('', $t);
+        $this->assertEquals('', $t);
     }
 
     /**
@@ -433,19 +418,19 @@ class core_medialib_testcase extends advanced_testcase {
 
         // HTML5 default size - specifies core width and does not specify height.
         $t = $renderer->embed_url($url);
-        $this->assertContains('width="' . CORE_MEDIA_VIDEO_WIDTH . '"', $t);
-        $this->assertNotContains('height', $t);
+        $this->assertTrue(self::str_contains($t, 'width="' . CORE_MEDIA_VIDEO_WIDTH . '"'));
+        $this->assertFalse(self::str_contains($t, 'height'));
 
         // HTML5 specified size - specifies both.
         $t = $renderer->embed_url($url, '', '666', '101');
-        $this->assertContains('width="666"', $t);
-        $this->assertContains('height="101"', $t);
+        $this->assertTrue(self::str_contains($t, 'width="666"'));
+        $this->assertTrue(self::str_contains($t, 'height="101"'));
 
         // HTML5 size specified in url, overrides call.
         $url = new moodle_url('http://example.org/test.mp4?d=123x456');
         $t = $renderer->embed_url($url, '', '666', '101');
-        $this->assertContains('width="123"', $t);
-        $this->assertContains('height="456"', $t);
+        $this->assertTrue(self::str_contains($t, 'width="123"'));
+        $this->assertTrue(self::str_contains($t, 'height="456"'));
     }
 
     /**
@@ -464,11 +449,11 @@ class core_medialib_testcase extends advanced_testcase {
 
         // HTML5 default name - use filename.
         $t = $renderer->embed_url($url);
-        $this->assertContains('title="test.mp4"', $t);
+        $this->assertTrue(self::str_contains($t, 'title="test.mp4"'));
 
         // HTML5 specified name - check escaping.
         $t = $renderer->embed_url($url, 'frog & toad');
-        $this->assertContains('title="frog &amp; toad"', $t);
+        $this->assertTrue(self::str_contains($t, 'title="frog &amp; toad"'));
     }
 
     /**
@@ -531,9 +516,9 @@ class core_medialib_testcase extends advanced_testcase {
         $t = $renderer->embed_alternatives($urls);
 
         // HTML5 sources - mp4, not flv or webm (not supported in Safari).
-        $this->assertContains('<source src="http://example.org/test.mp4"', $t);
-        $this->assertNotContains('<source src="http://example.org/test.webm"', $t);
-        $this->assertNotContains('<source src="http://example.org/test.flv"', $t);
+        $this->assertTrue(self::str_contains($t, '<source src="http://example.org/test.mp4"'));
+        $this->assertFalse(self::str_contains($t, '<source src="http://example.org/test.webm"'));
+        $this->assertFalse(self::str_contains($t, '<source src="http://example.org/test.flv"'));
 
         // FLV is before the video tag (indicating html5 is used as fallback to flv
         // and not vice versa).
@@ -544,9 +529,21 @@ class core_medialib_testcase extends advanced_testcase {
         $t = $renderer->embed_alternatives($urls);
 
         // HTML5 sources - webm, not not flv or mp4 (not supported in Firefox).
-        $this->assertNotContains('<source src="http://example.org/test.mp4"', $t);
-        $this->assertContains('<source src="http://example.org/test.webm"', $t);
-        $this->assertNotContains('<source src="http://example.org/test.flv"', $t);
+        $this->assertFalse(self::str_contains($t, '<source src="http://example.org/test.mp4"'));
+        $this->assertTrue(self::str_contains($t, '<source src="http://example.org/test.webm"'));
+        $this->assertFalse(self::str_contains($t, '<source src="http://example.org/test.flv"'));
+    }
+
+    /**
+     * Checks if text contains a given string. Should be PHP built-in function,
+     * but oddly isn't.
+     *
+     * @param string $text Text
+     * @param string $value Value that should be contained within the text
+     * @return bool True if value is contained
+     */
+    public static function str_contains($text, $value) {
+        return strpos($text, $value) !== false;
     }
 
     /**

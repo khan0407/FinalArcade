@@ -13,7 +13,6 @@ $THEME->sheets = array(
     'afterburner_calendar',
     'afterburner_dock',
     'afterburner_rtl',
-    'afterburner_responsive',
     'afterburner_settings',
 
 );

@@ -51,8 +51,7 @@ switch ($action) {
         if ($auth == $CFG->registerauth) {
             set_config('registerauth', '');
         }
-        \core\session\manager::gc(); // Remove stale sessions.
-        core_plugin_manager::reset_caches();
+        session_gc(); // remove stale sessions
         break;
 
     case 'enable':
@@ -62,8 +61,7 @@ switch ($action) {
             $authsenabled = array_unique($authsenabled);
             set_config('auth', implode(',', $authsenabled));
         }
-        \core\session\manager::gc(); // Remove stale sessions.
-        core_plugin_manager::reset_caches();
+        session_gc(); // remove stale sessions
         break;
 
     case 'down':

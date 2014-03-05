@@ -28,20 +28,19 @@
 /**
  * Creates a user
  *
- * @param stdClass $user user to create
- * @param bool $updatepassword if true, authentication plugin will update password.
+ * @param object $user user to create
  * @return int id of the newly created user
  */
-function user_create_user($user, $updatepassword = true) {
-    global $CFG, $DB;
+function user_create_user($user) {
+    global $DB;
 
-    // Set the timecreate field to the current time.
+    // set the timecreate field to the current time
     if (!is_object($user)) {
-        $user = (object) $user;
+            $user = (object)$user;
     }
 
-    // Check username.
-    if ($user->username !== core_text::strtolower($user->username)) {
+    //check username
+    if ($user->username !== textlib::strtolower($user->username)) {
         throw new moodle_exception('usernamelowercase');
     } else {
         if ($user->username !== clean_param($user->username, PARAM_USERNAME)) {
@@ -49,10 +48,10 @@ function user_create_user($user, $updatepassword = true) {
         }
     }
 
-    // Save the password in a temp value for later.
-    if ($updatepassword && isset($user->password)) {
+    // save the password in a temp value for later
+    if (isset($user->password)) {
 
-        // Check password toward the password policy.
+        //check password toward the password policy
         if (!check_password_policy($user->password, $errmsg)) {
             throw new moodle_exception($errmsg);
         }
@@ -61,62 +60,49 @@ function user_create_user($user, $updatepassword = true) {
         unset($user->password);
     }
 
-    // Make sure calendartype, if set, is valid.
-    if (!empty($user->calendartype)) {
-        $availablecalendartypes = \core_calendar\type_factory::get_list_of_calendar_types();
-        if (empty($availablecalendartypes[$user->calendartype])) {
-            $user->calendartype = $CFG->calendartype;
-        }
-    } else {
-        $user->calendartype = $CFG->calendartype;
-    }
-
     $user->timecreated = time();
     $user->timemodified = $user->timecreated;
 
-    // Insert the user into the database.
+    // insert the user into the database
     $newuserid = $DB->insert_record('user', $user);
 
-    // Create USER context for this user.
-    $usercontext = context_user::instance($newuserid);
+    // trigger user_created event on the full database user row
+    $newuser = $DB->get_record('user', array('id' => $newuserid));
 
-    // Update user password if necessary.
+    // create USER context for this user
+    context_user::instance($newuserid);
+
+    // update user password if necessary
     if (isset($userpassword)) {
-        // Get full database user row, in case auth is default.
-        $newuser = $DB->get_record('user', array('id' => $newuserid));
         $authplugin = get_auth_plugin($newuser->auth);
         $authplugin->user_update_password($newuser, $userpassword);
     }
 
-    // Trigger event.
-    $event = \core\event\user_created::create(
-            array(
-                'objectid' => $newuserid,
-                'context' => $usercontext
-                )
-            );
-    $event->trigger();
+    events_trigger('user_created', $newuser);
+
+    add_to_log(SITEID, 'user', get_string('create'), '/view.php?id='.$newuser->id,
+        fullname($newuser));
 
     return $newuserid;
+
 }
 
 /**
  * Update a user with a user object (will compare against the ID)
  *
- * @param stdClass $user the user to update
- * @param bool $updatepassword if true, authentication plugin will update password.
+ * @param object $user the user to update
  */
-function user_update_user($user, $updatepassword = true) {
+function user_update_user($user) {
     global $DB;
 
     // set the timecreate field to the current time
     if (!is_object($user)) {
-        $user = (object) $user;
+            $user = (object)$user;
     }
 
     //check username
     if (isset($user->username)) {
-        if ($user->username !== core_text::strtolower($user->username)) {
+        if ($user->username !== textlib::strtolower($user->username)) {
             throw new moodle_exception('usernamelowercase');
         } else {
             if ($user->username !== clean_param($user->username, PARAM_USERNAME)) {
@@ -125,8 +111,8 @@ function user_update_user($user, $updatepassword = true) {
         }
     }
 
-    // Unset password here, for updating later, if password update is required.
-    if ($updatepassword && isset($user->password)) {
+    // unset password here, for updating later
+    if (isset($user->password)) {
 
         //check password toward the password policy
         if (!check_password_policy($user->password, $errmsg)) {
@@ -137,42 +123,25 @@ function user_update_user($user, $updatepassword = true) {
         unset($user->password);
     }
 
-    // Make sure calendartype, if set, is valid.
-    if (!empty($user->calendartype)) {
-        $availablecalendartypes = \core_calendar\type_factory::get_list_of_calendar_types();
-        // If it doesn't exist, then unset this value, we do not want to update the user's value.
-        if (empty($availablecalendartypes[$user->calendartype])) {
-            unset($user->calendartype);
-        }
-    } else {
-        // Unset this variable, must be an empty string, which we do not want to update the calendartype to.
-        unset($user->calendartype);
-    }
-
     $user->timemodified = time();
     $DB->update_record('user', $user);
 
-    if ($updatepassword) {
-        // Get full user record.
-        $updateduser = $DB->get_record('user', array('id' => $user->id));
+    // trigger user_updated event on the full database user row
+    $updateduser = $DB->get_record('user', array('id' => $user->id));
 
-        // if password was set, then update its hash
-        if (isset($passwd)) {
-            $authplugin = get_auth_plugin($updateduser->auth);
-            if ($authplugin->can_change_password()) {
-                $authplugin->user_update_password($updateduser, $passwd);
-            }
+    // if password was set, then update its hash
+    if (isset($passwd)) {
+        $authplugin = get_auth_plugin($updateduser->auth);
+        if ($authplugin->can_change_password()) {
+            $authplugin->user_update_password($updateduser, $passwd);
         }
     }
 
-    // Trigger event.
-    $event = \core\event\user_updated::create(
-            array(
-                'objectid' => $user->id,
-                'context' => context_user::instance($user->id)
-                )
-            );
-    $event->trigger();
+    events_trigger('user_updated', $updateduser);
+
+    add_to_log(SITEID, 'user', get_string('update'), '/view.php?id='.$updateduser->id,
+        fullname($updateduser));
+
 }
 
 /**
@@ -226,7 +195,7 @@ function user_get_default_fields() {
  * @param stdClass $context context object
  * @param stdClass $course moodle course
  * @param array $userfields required fields
- * @return array|null
+ * @return array
  */
 function user_get_user_details($user, $course = null, array $userfields = array()) {
     global $USER, $DB, $CFG;
@@ -275,7 +244,7 @@ function user_get_user_details($user, $course = null, array $userfields = array(
     } else {
         $canviewhiddenuserfields = has_capability('moodle/user:viewhiddendetails', $context);
     }
-    $canviewfullnames = has_capability('moodle/site:viewfullnames', $context);
+    $canviewfullnames        = has_capability('moodle/site:viewfullnames', $context);
     if (!empty($course)) {
         $canviewuseremail = has_capability('moodle/course:useremail', $context);
     } else {
@@ -513,59 +482,6 @@ function user_get_user_details($user, $course = null, array $userfields = array(
     }
 
     return $userdetails;
-}
-
-/**
- * Tries to obtain user details, either recurring directly to the user's system profile
- * or through one of the user's course enrollments (course profile).
- *
- * @param object $user The user.
- * @return array if unsuccessful or the allowed user details.
- */
-function user_get_user_details_courses($user) {
-    global $USER;
-    $userdetails = null;
-
-    //  Get the courses that the user is enrolled in (only active).
-    $courses = enrol_get_users_courses($user->id, true);
-
-    $systemprofile = false;
-    if (can_view_user_details_cap($user) || ($user->id == $USER->id) || has_coursecontact_role($user->id)) {
-        $systemprofile = true;
-    }
-
-    // Try using system profile.
-    if ($systemprofile) {
-        $userdetails = user_get_user_details($user, null);
-    } else {
-        // Try through course profile.
-        foreach ($courses as $course) {
-            if (can_view_user_details_cap($user, $course) || ($user->id == $USER->id) || has_coursecontact_role($user->id)) {
-                $userdetails = user_get_user_details($user, $course);
-            }
-        }
-    }
-
-    return $userdetails;
-}
-
-/**
- * Check if $USER have the necessary capabilities to obtain user details.
- *
- * @param object $user
- * @param object $course if null then only consider system profile otherwise also consider the course's profile.
- * @return bool true if $USER can view user details.
- */
-function can_view_user_details_cap($user, $course = null) {
-    // Check $USER has the capability to view the user details at user context.
-    $usercontext = context_user::instance($user->id);
-    $result = has_capability('moodle/user:viewdetails', $usercontext);
-    // Otherwise can $USER see them at course context.
-    if (!$result && !empty($course)) {
-        $context = context_course::instance($course->id);
-        $result = has_capability('moodle/user:viewdetails', $context);
-    }
-    return $result;
 }
 
 /**

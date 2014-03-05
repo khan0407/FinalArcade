@@ -38,29 +38,28 @@ class backup_qtype_essay_plugin extends backup_qtype_plugin {
      */
     protected function define_question_plugin_structure() {
 
-        // Define the virtual plugin element with the condition to fulfill.
+        // Define the virtual plugin element with the condition to fulfill
         $plugin = $this->get_plugin_element(null, '../../qtype', 'essay');
 
-        // Create one standard named plugin element (the visible container).
+        // Create one standard named plugin element (the visible container)
         $pluginwrapper = new backup_nested_element($this->get_recommended_name());
 
-        // Connect the visible container ASAP.
+        // connect the visible container ASAP
         $plugin->add_child($pluginwrapper);
 
-        // Now create the qtype own structures.
+        // Now create the qtype own structures
         $essay = new backup_nested_element('essay', array('id'), array(
                 'responseformat', 'responsefieldlines', 'attachments',
-                'graderinfo', 'graderinfoformat', 'responsetemplate',
-                'responsetemplateformat'));
+                'graderinfo', 'graderinfoformat'));
 
-        // Now the own qtype tree.
+        // Now the own qtype tree
         $pluginwrapper->add_child($essay);
 
-        // Set source to populate the data.
+        // set source to populate the data
         $essay->set_source_table('qtype_essay_options',
                 array('questionid' => backup::VAR_PARENTID));
 
-        // Don't need to annotate ids nor files.
+        // don't need to annotate ids nor files
 
         return $plugin;
     }

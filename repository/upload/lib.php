@@ -190,26 +190,24 @@ class repository_upload extends repository {
             $record->itemid = 0;
         }
 
-        if (($maxbytes!==-1) && (filesize($_FILES[$elname]['tmp_name']) > $maxbytes)) {
-            throw new file_exception('maxbytes');
-        }
-
         if (file_is_draft_area_limit_reached($record->itemid, $areamaxbytes, filesize($_FILES[$elname]['tmp_name']))) {
             throw new file_exception('maxareabytes');
         }
 
+        if (($maxbytes!==-1) && (filesize($_FILES[$elname]['tmp_name']) > $maxbytes)) {
+            throw new file_exception('maxbytes');
+        }
         $record->contextid = $context->id;
         $record->userid    = $USER->id;
 
         if (repository::draftfile_exists($record->itemid, $record->filepath, $record->filename)) {
-            $existingfilename = $record->filename;
-            $unused_filename = repository::get_unused_filename($record->itemid, $record->filepath, $record->filename);
-            $record->filename = $unused_filename;
-            $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
             if ($overwriteexisting) {
-                repository::overwrite_existing_draftfile($record->itemid, $record->filepath, $existingfilename, $record->filepath, $record->filename);
-                $record->filename = $existingfilename;
+                repository::delete_tempfile_from_draft($record->itemid, $record->filepath, $record->filename);
             } else {
+                $existingfilename = $record->filename;
+                $unused_filename = repository::get_unused_filename($record->itemid, $record->filepath, $record->filename);
+                $record->filename = $unused_filename;
+                $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
                 $event = array();
                 $event['event'] = 'fileexists';
                 $event['newfile'] = new stdClass;
@@ -223,9 +221,9 @@ class repository_upload extends repository {
                 $event['existingfile']->url      = moodle_url::make_draftfile_url($record->itemid, $record->filepath, $existingfilename)->out(false);
                 return $event;
             }
-        } else {
-            $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
         }
+
+        $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
 
         return array(
             'url'=>moodle_url::make_draftfile_url($record->itemid, $record->filepath, $record->filename)->out(false),
@@ -283,14 +281,5 @@ class repository_upload extends repository {
      */
     public function supported_returntypes() {
         return FILE_INTERNAL;
-    }
-
-    /**
-     * Is this repository accessing private data?
-     *
-     * @return bool
-     */
-    public function contains_private_data() {
-        return false;
     }
 }

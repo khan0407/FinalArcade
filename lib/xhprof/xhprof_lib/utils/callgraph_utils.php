@@ -25,7 +25,6 @@ $xhprof_legal_image_types = array(
     "jpg" => 1,
     "gif" => 1,
     "png" => 1,
-    "svg" => 1, // support scalable vector graphic
     "ps"  => 1,
     );
 
@@ -69,9 +68,6 @@ function xhprof_generate_mime_header($type, $length) {
     case 'png':
       $mime = 'image/png';
       break;
-    case 'svg':
-      $mime = 'image/svg+xml'; // content type for scalable vector graphic
-      break;
     case 'ps':
       $mime = 'application/postscript';
     default:
@@ -107,11 +103,11 @@ function xhprof_generate_image_by_dot($dot_script, $type) {
        2 => array("pipe", "w")
        );
 
-  // Start moodle modification: use $CFG->pathtodot for executing this.
-  // $cmd = " dot -T".$type;
+  // start moodle modification: use $CFG->pathtodot for executing this
+  //$cmd = " dot -T".$type;
   global $CFG;
   $cmd = (!empty($CFG->pathtodot) ? $CFG->pathtodot : 'dot') . ' -T' . $type;
-  // End moodle modification.
+  // end moodle modification
 
   $process = proc_open($cmd, $descriptorspec, $pipes, "/tmp", array());
   if (is_resource($process)) {

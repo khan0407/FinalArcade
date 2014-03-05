@@ -70,8 +70,9 @@ class qtype_multichoice_edit_form extends question_edit_form {
     protected function get_per_answer_fields($mform, $label, $gradeoptions,
             &$repeatedoptions, &$answersoption) {
         $repeated = array();
+        $repeated[] = $mform->createElement('header', 'answerhdr', $label);
         $repeated[] = $mform->createElement('editor', 'answer',
-                $label, array('rows' => 1), $this->editoroptions);
+                get_string('answer', 'question'), array('rows' => 1), $this->editoroptions);
         $repeated[] = $mform->createElement('select', 'fraction',
                 get_string('grade'), $gradeoptions);
         $repeated[] = $mform->createElement('editor', 'feedback',
@@ -106,7 +107,7 @@ class qtype_multichoice_edit_form extends question_edit_form {
         $maxfraction = -1;
 
         foreach ($answers as $key => $answer) {
-            // Check no of choices.
+            //check no of choices
             $trimmedanswer = trim($answer['text']);
             $fraction = (float) $data['fraction'][$key];
             if ($trimmedanswer === '' && empty($fraction)) {
@@ -118,7 +119,7 @@ class qtype_multichoice_edit_form extends question_edit_form {
 
             $answercount++;
 
-            // Check grades.
+            //check grades
             if ($data['fraction'][$key] > 0) {
                 $totalfraction += $data['fraction'][$key];
             }
@@ -135,7 +136,7 @@ class qtype_multichoice_edit_form extends question_edit_form {
 
         }
 
-        // Perform sanity checks on fractional grades.
+        /// Perform sanity checks on fractional grades
         if ($data['single']) {
             if ($maxfraction != 1) {
                 $errors['fraction[0]'] = get_string('errfractionsnomax', 'qtype_multichoice',

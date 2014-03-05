@@ -36,7 +36,6 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once($CFG->libdir.'/formslib.php');
-require_once($CFG->libdir.'/coursecatlib.php');
 
 /**
  * A form for a user to request a course.
@@ -70,10 +69,12 @@ class course_request_form extends moodleform {
         $mform->setType('shortname', PARAM_TEXT);
 
         if (!empty($CFG->requestcategoryselection)) {
-            $displaylist = coursecat::make_categories_list();
-            $mform->addElement('select', 'category', get_string('coursecategory'), $displaylist);
+            $displaylist = array();
+            $parentlist = array();
+            make_categories_list($displaylist, $parentlist, '');
+            $mform->addElement('select', 'category', get_string('category'), $displaylist);
             $mform->setDefault('category', $CFG->defaultrequestcategory);
-            $mform->addHelpButton('category', 'coursecategory');
+            $mform->addHelpButton('category', 'category');
         }
 
         $mform->addElement('editor', 'summary_editor', get_string('summary'), null, course_request::summary_editor_options());

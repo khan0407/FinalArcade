@@ -34,7 +34,6 @@ require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/txt:view', $context);
 
 print_grade_page_head($COURSE->id, 'export', 'txt', get_string('exportto', 'grades') . ' ' . get_string('pluginname', 'gradeexport_txt'));
-export_verify_grades($COURSE->id);
 
 if (!empty($CFG->gradepublishing)) {
     $CFG->gradepublishing = has_capability('gradeexport/txt:publish', $context);
@@ -52,8 +51,7 @@ if ($groupmode == SEPARATEGROUPS and !$currentgroup and !has_capability('moodle/
 
 // process post information
 if ($data = $mform->get_data()) {
-    $onlyactive = $data->export_onlyactive || !has_capability('moodle/course:viewsuspendedusers', $context);
-    $export = new grade_export_txt($course, $currentgroup, '', false, false, $data->display, $data->decimals, $data->separator, $onlyactive, true);
+    $export = new grade_export_txt($course, $currentgroup, '', false, false, $data->display, $data->decimals, $data->separator, $data->export_onlyactive, true);
 
     // print the grades on screen for feedback
 

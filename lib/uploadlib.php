@@ -582,8 +582,6 @@ function clam_handle_infected_file($file, $userid=0, $basiconly=false) {
  * @return boolean
  */
 function clam_replace_infected_file($file) {
-    global $CFG;
-
     $newcontents = get_string('virusplaceholder');
     if (!$f = fopen($file, 'w')) {
         return false;
@@ -591,7 +589,6 @@ function clam_replace_infected_file($file) {
     if (!fwrite($f, $newcontents)) {
         return false;
     }
-    @chmod($file, $CFG->filepermissions);
     return true;
 }
 

@@ -58,12 +58,7 @@ if ($action == 'delete' and confirm_sesskey() and $service and empty($service->c
     }
     //The user has confirmed the deletion, delete and redirect
     $webservicemanager->delete_service($service->id);
-    $params = array(
-        'objectid' => $service->id
-    );
-    $event = \core\event\webservice_service_deleted::create($params);
-    $event->add_record_snapshot('external_services', $service);
-    $event->trigger();
+    add_to_log(SITEID, 'webservice', 'delete', $returnurl, get_string('deleteservice', 'webservice', $service));
     redirect($returnurl);
 }
 
@@ -80,12 +75,7 @@ if ($mform->is_cancelled()) {
     //create operation
     if (empty($servicedata->id)) {
         $servicedata->id = $webservicemanager->add_external_service($servicedata);
-        $params = array(
-            'objectid' => $servicedata->id
-        );
-        $event = \core\event\webservice_service_created::create($params);
-        $event->add_record_snapshot('external_services', $servicedata);
-        $event->trigger();
+        add_to_log(SITEID, 'webservice', 'add', $returnurl, get_string('addservice', 'webservice', $servicedata));
 
         //redirect to the 'add functions to service' page
         $addfunctionpage = new moodle_url(
@@ -95,12 +85,7 @@ if ($mform->is_cancelled()) {
     } else {
         //update operation
         $webservicemanager->update_external_service($servicedata);
-        $params = array(
-            'objectid' => $servicedata->id
-        );
-        $event = \core\event\webservice_service_updated::create($params);
-        $event->add_record_snapshot('external_services', $servicedata);
-        $event->trigger();
+        add_to_log(SITEID, 'webservice', 'edit', $returnurl, get_string('editservice', 'webservice', $servicedata));
     }
 
     redirect($returnurl);

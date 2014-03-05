@@ -21,7 +21,8 @@
  * just a declaration of xml-rpc methods that this plugin publishes.
  *
  * @since      2.0
- * @package    enrol_mnet
+ * @package    enrol
+ * @subpackage mnet
  * @copyright  2010 Penny Leach
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -5,7 +5,7 @@ M.mod_assign.init_tree = function(Y, expand_all, htmlid) {
         var tree = new Y.YUI2.widget.TreeView(htmlid);
 
         tree.subscribe("clickEvent", function(node, event) {
-            // We want normal clicking which redirects to url.
+            // we want normal clicking which redirects to url
             return false;
         });
 
@@ -15,6 +15,7 @@ M.mod_assign.init_tree = function(Y, expand_all, htmlid) {
         tree.render();
     });
 };
+
 
 M.mod_assign.init_grading_table = function(Y) {
     Y.use('node', function(Y) {
@@ -65,39 +66,38 @@ M.mod_assign.init_grading_table = function(Y) {
         }
 
         var batchform = Y.one('form.gradingbatchoperationsform');
-        if (batchform) {
-            batchform.on('submit', function(e) {
-                checkboxes = Y.all('td.c0 input');
-                var selectedusers = [];
-                checkboxes.each(function(node) {
-                    if (node.get('checked')) {
-                        selectedusers[selectedusers.length] = node.get('value');
-                    }
-                });
-
-                operation = Y.one('#id_operation');
-                usersinput = Y.one('input.selectedusers');
-                usersinput.set('value', selectedusers.join(','));
-                if (selectedusers.length == 0) {
-                    alert(M.str.assign.nousersselected);
-                    e.preventDefault();
-                } else {
-                    action = operation.get('value');
-                    prefix = 'plugingradingbatchoperation_';
-                    if (action.indexOf(prefix) == 0) {
-                        pluginaction = action.substr(prefix.length);
-                        plugin = pluginaction.split('_')[0];
-                        action = pluginaction.substr(plugin.length + 1);
-                        confirmmessage = eval('M.str.assignfeedback_' + plugin + '.batchoperationconfirm' + action);
-                    } else {
-                        confirmmessage = eval('M.str.assign.batchoperationconfirm' + operation.get('value'));
-                    }
-                    if (!confirm(confirmmessage)) {
-                        e.preventDefault();
-                    }
+        batchform.on('submit', function(e) {
+            checkboxes = Y.all('td.c0 input');
+            var selectedusers = [];
+            checkboxes.each(function(node) {
+                if (node.get('checked')) {
+                    selectedusers[selectedusers.length] = node.get('value');
                 }
             });
-        }
+
+            operation = Y.one('#id_operation');
+            usersinput = Y.one('input.selectedusers');
+            usersinput.set('value', selectedusers.join(','));
+            if (selectedusers.length == 0) {
+                alert(M.str.assign.nousersselected);
+                e.preventDefault();
+            } else {
+                action = operation.get('value');
+                prefix = 'plugingradingbatchoperation_';
+                if (action.indexOf(prefix) == 0) {
+                    pluginaction = action.substr(prefix.length);
+                    plugin = pluginaction.split('_')[0];
+                    action = pluginaction.substr(plugin.length + 1);
+                    confirmmessage = eval('M.str.assignfeedback_' + plugin + '.batchoperationconfirm' + action);
+                } else {
+                    confirmmessage = eval('M.str.assign.batchoperationconfirm' + operation.get('value'));
+                }
+                if (!confirm(confirmmessage)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
 
         Y.use('node-menunav', function(Y) {
             var menus = Y.all('.gradingtable .actionmenu');
@@ -109,8 +109,13 @@ M.mod_assign.init_grading_table = function(Y) {
                     submenus.each(function (n) {
                         n.removeClass('yui3-loading');
                     });
+
                 }, "#" + menu.getAttribute('id'));
+
+
             });
+
+
         });
         var quickgrade = Y.all('.gradingtable .quickgrade');
         quickgrade.each(function(quick) {
@@ -133,28 +138,10 @@ M.mod_assign.init_grading_options = function(Y) {
                 Y.one('form.gradingoptionsform').submit();
             });
         }
-        var markerfilterelement = Y.one('#id_markerfilter');
-        if (markerfilterelement) {
-            markerfilterelement.on('change', function(e) {
-                Y.one('form.gradingoptionsform').submit();
-            });
-        }
-        var workflowfilterelement = Y.one('#id_workflowfilter');
-        if (workflowfilterelement) {
-            workflowfilterelement.on('change', function(e) {
-                Y.one('form.gradingoptionsform').submit();
-            });
-        }
         var quickgradingelement = Y.one('#id_quickgrading');
         if (quickgradingelement) {
             quickgradingelement.on('change', function(e) {
                 Y.one('form.gradingoptionsform').submit();
-            });
-        }
-        var showonlyactiveenrolelement = Y.one('#id_showonlyactiveenrol');
-        if (showonlyactiveenrolelement) {
-            showonlyactiveenrolelement.on('change', function(e) {
-            Y.one('form.gradingoptionsform').submit();
             });
         }
     });
@@ -189,12 +176,12 @@ M.mod_assign.init_plugin_summary = function(Y, subtype, type, submissionid) {
             fullclassname = 'full_' + thissuffix;
             full = Y.one('.' + fullclassname);
             if (full) {
-                full.hide(false);
+                full.hide(true);
             }
             summaryclassname = 'summary_' + thissuffix;
             summary = Y.one('.' + summaryclassname);
             if (summary) {
-                summary.show(false);
+                summary.show(true);
             }
         });
     }
@@ -203,7 +190,7 @@ M.mod_assign.init_plugin_summary = function(Y, subtype, type, submissionid) {
 
     full = Y.one('.full_' + suffix);
     if (full) {
-        full.hide(false);
+        full.hide();
         full.toggleClass('hidefull');
     }
     if (expand) {
@@ -219,13 +206,15 @@ M.mod_assign.init_plugin_summary = function(Y, subtype, type, submissionid) {
             summaryclassname = 'summary_' + thissuffix;
             summary = Y.one('.' + summaryclassname);
             if (summary) {
-                summary.hide(false);
+                summary.hide(true);
             }
             fullclassname = 'full_' + thissuffix;
             full = Y.one('.' + fullclassname);
             if (full) {
-                full.show(false);
+                full.show(true);
             }
         });
     }
+
+
 }

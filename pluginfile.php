@@ -24,8 +24,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Disable moodle specific debug messages and any errors in output.
-define('NO_DEBUG_DISPLAY', true);
+// disable moodle specific debug messages and any errors in output
+//define('NO_DEBUG_DISPLAY', true);
+//TODO: uncomment this once the file api stabilises a bit more
 
 require_once('config.php');
 require_once('lib/filelib.php');

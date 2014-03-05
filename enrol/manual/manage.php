@@ -35,17 +35,9 @@ $course = $DB->get_record('course', array('id'=>$instance->courseid), '*', MUST_
 $context = context_course::instance($course->id, MUST_EXIST);
 
 require_login($course);
-$canenrol = has_capability('enrol/manual:enrol', $context);
-$canunenrol = has_capability('enrol/manual:unenrol', $context);
-
-// Note: manage capability not used here because it is used for editing
-// of existing enrolments which is not possible here.
-
-if (!$canenrol and !$canunenrol) {
-    // No need to invent new error strings here...
-    require_capability('enrol/manual:enrol', $context);
-    require_capability('enrol/manual:unenrol', $context);
-}
+require_capability('enrol/manual:enrol', $context);
+require_capability('enrol/manual:manage', $context);
+require_capability('enrol/manual:unenrol', $context);
 
 if ($roleid < 0) {
     $roleid = $instance->roleid;
@@ -103,7 +95,7 @@ if ($course->startdate > 0) {
 $basemenu[3] = get_string('today') . ' (' . userdate($today, $timeformat) . ')' ;
 
 // Process add and removes.
-if ($canenrol && optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
+if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
     if (!empty($userstoassign)) {
         foreach($userstoassign as $adduser) {
@@ -134,7 +126,7 @@ if ($canenrol && optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) 
 }
 
 // Process incoming role unassignments.
-if ($canunenrol && optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
+if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstounassign = $currentuserselector->get_selected_users();
     if (!empty($userstounassign)) {
         foreach($userstounassign as $removeuser) {
@@ -153,9 +145,6 @@ if ($canunenrol && optional_param('remove', false, PARAM_BOOL) && confirm_sesske
 echo $OUTPUT->header();
 echo $OUTPUT->heading($instancename);
 
-$addenabled = $canenrol ? '' : 'disabled="disabled"';
-$removeenabled = $canunenrol ? '' : 'disabled="disabled"';
-
 ?>
 <form id="assignform" method="post" action="<?php echo $PAGE->url ?>"><div>
   <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />
@@ -168,7 +157,7 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
       </td>
       <td id="buttonscell">
           <div id="addcontrols">
-              <input name="add" <?php echo $addenabled; ?> id="add" type="submit" value="<?php echo $OUTPUT->larrow().'&nbsp;'.get_string('add'); ?>" title="<?php print_string('add'); ?>" /><br />
+              <input name="add" id="add" type="submit" value="<?php echo $OUTPUT->larrow().'&nbsp;'.get_string('add'); ?>" title="<?php print_string('add'); ?>" /><br />
 
               <div class="enroloptions">
 
@@ -185,7 +174,7 @@ $removeenabled = $canunenrol ? '' : 'disabled="disabled"';
           </div>
 
           <div id="removecontrols">
-              <input name="remove" id="remove" <?php echo $removeenabled; ?> type="submit" value="<?php echo get_string('remove').'&nbsp;'.$OUTPUT->rarrow(); ?>" title="<?php print_string('remove'); ?>" />
+              <input name="remove" id="remove" type="submit" value="<?php echo get_string('remove').'&nbsp;'.$OUTPUT->rarrow(); ?>" title="<?php print_string('remove'); ?>" />
           </div>
       </td>
       <td id="potentialcell">

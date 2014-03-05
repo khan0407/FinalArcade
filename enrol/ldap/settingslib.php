@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,7 +18,8 @@
 /**
  * LDAP enrolment plugin admin setting classes
  *
- * @package    enrol_ldap
+ * @package    enrol
+ * @subpackage ldap
  * @author     Iñaki Arenaza
  * @copyright  2010 Iñaki Arenaza <iarenaza@eps.mondragon.edu>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -63,7 +65,7 @@ class admin_setting_configtext_trim_lower extends admin_setting_configtext {
             return $validated;
         }
         if ($this->lowercase) {
-            $data = core_text::strtolower($data);
+            $data = textlib::strtolower($data);
         }
         if (!$this->enabled) {
             return '';
@@ -134,7 +136,7 @@ class admin_setting_ldap_rolemapping extends admin_setting {
             if (!$this->config_write('contexts_role'.$roleid, trim($data['contexts']))) {
                 $return = get_string('errorsetting', 'admin');
             }
-            if (!$this->config_write('memberattribute_role'.$roleid, core_text::strtolower(trim($data['memberattribute'])))) {
+            if (!$this->config_write('memberattribute_role'.$roleid, textlib::strtolower(trim($data['memberattribute'])))) {
                 $return = get_string('errorsetting', 'admin');
             }
         }

@@ -37,7 +37,8 @@ defined('MOODLE_INTERNAL') || die();
 class core_htmlpurifier_testcase extends basic_testcase {
 
     /**
-     * Verify _blank target is allowed.
+     * Verify _blank target is allowed
+     * @return void
      */
     public function test_allow_blank_target() {
         $text = '<a href="http://moodle.org" target="_blank">Some link</a>';
@@ -49,10 +50,11 @@ class core_htmlpurifier_testcase extends basic_testcase {
     }
 
     /**
-     * Verify our nolink tag accepted.
+     * Verify our nolink tag accepted
+     * @return void
      */
     public function test_nolink() {
-        // We can not use format text because nolink changes result.
+        // we can not use format text because nolink changes result
         $text = '<nolink><div>no filters</div></nolink>';
         $result = purify_html($text, array());
         $this->assertSame($text, $result);
@@ -63,7 +65,8 @@ class core_htmlpurifier_testcase extends basic_testcase {
     }
 
     /**
-     * Verify our tex tag accepted.
+     * Verify our tex tag accepted
+     * @return void
      */
     public function test_tex() {
         $text = '<tex>a+b=c</tex>';
@@ -72,7 +75,8 @@ class core_htmlpurifier_testcase extends basic_testcase {
     }
 
     /**
-     * Verify our algebra tag accepted.
+     * Verify our algebra tag accepted
+     * @return void
      */
     public function test_algebra() {
         $text = '<algebra>a+b=c</algebra>';
@@ -81,7 +85,8 @@ class core_htmlpurifier_testcase extends basic_testcase {
     }
 
     /**
-     * Verify our hacky multilang works.
+     * Verify our hacky multilang works
+     * @return void
      */
     public function test_multilang() {
         $text = '<lang lang="en">hmmm</lang><lang lang="anything">hm</lang>';
@@ -96,7 +101,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
         $result = purify_html($text, array());
         $this->assertNotSame($text, $result);
 
-        // Keep standard lang tags.
+        // keep standard lang tags
 
         $text = '<span lang="de_DU" class="multilang">asas</span>';
         $result = purify_html($text, array());
@@ -109,54 +114,25 @@ class core_htmlpurifier_testcase extends basic_testcase {
 
     /**
      * Tests the 'allowid' option for format_text.
+     * @return void
      */
     public function test_format_text_allowid() {
-        // Start off by not allowing ids (default).
+        // Start off by not allowing ids (default)
         $options = array(
             'nocache' => true
         );
         $result = format_text('<div id="example">Frog</div>', FORMAT_HTML, $options);
         $this->assertSame('<div>Frog</div>', $result);
 
-        // Now allow ids.
+        // Now allow ids
         $options['allowid'] = true;
         $result = format_text('<div id="example">Frog</div>', FORMAT_HTML, $options);
         $this->assertSame('<div id="example">Frog</div>', $result);
     }
 
-    public function test_allowobjectembed() {
-        global $CFG;
-
-        $this->assertSame('0', $CFG->allowobjectembed);
-
-        $text = '<object width="425" height="350">
-<param name="movie" value="http://www.youtube.com/v/AyPzM5WK8ys" />
-<param name="wmode" value="transparent" />
-<embed src="http://www.youtube.com/v/AyPzM5WK8ys" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350" />
-</object>hmmm';
-        $result = purify_html($text, array());
-        $this->assertSame('hmmm', trim($result));
-
-        $CFG->allowobjectembed = '1';
-
-        $expected = '<object width="425" height="350" data="http://www.youtube.com/v/AyPzM5WK8ys" type="application/x-shockwave-flash">
-<param name="allowScriptAccess" value="never" />
-<param name="allowNetworking" value="internal" />
-<param name="movie" value="http://www.youtube.com/v/AyPzM5WK8ys" />
-<param name="wmode" value="transparent" />
-<embed src="http://www.youtube.com/v/AyPzM5WK8ys" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350" allowscriptaccess="never" allownetworking="internal" />
-</object>hmmm';
-        $result = purify_html($text, array());
-        $this->assertSame(str_replace("\n", '', $expected), str_replace("\n", '', $result));
-
-        $CFG->allowobjectembed = '0';
-
-        $result = purify_html($text, array());
-        $this->assertSame('hmmm', trim($result));
-    }
-
     /**
      * Test if linebreaks kept unchanged.
+     * @return void
      */
     public function test_line_breaking() {
         $text = "\n\raa\rsss\nsss\r";
@@ -165,6 +141,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
 
     /**
      * Test fixing of strict problems.
+     * @return void
      */
     public function test_tidy() {
         $text = "<p>xx";
@@ -178,7 +155,8 @@ class core_htmlpurifier_testcase extends basic_testcase {
     }
 
     /**
-     * Test nesting - this used to cause problems in earlier versions.
+     * Test nesting - this used to cause problems in earlier versions
+     * @return void
      */
     public function test_nested_lists() {
         $text = "<ul><li>One<ul><li>Two</li></ul></li><li>Three</li></ul>";
@@ -187,6 +165,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
 
     /**
      * Test that XSS protection works, complete smoke tests are in htmlpurifier itself.
+     * @return void
      */
     public function test_cleaning_nastiness() {
         $text = "x<SCRIPT>alert('XSS')</SCRIPT>x";
@@ -213,9 +192,10 @@ class core_htmlpurifier_testcase extends basic_testcase {
 
     /**
      * Test internal function used for clean_text() speedup.
+     * @return void
      */
     public function test_is_purify_html_necessary() {
-        // First our shortcuts.
+        // first our shortcuts
         $text = "";
         $this->assertFalse(is_purify_html_necessary($text));
         $this->assertSame($text, purify_html($text));
@@ -236,7 +216,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
         $this->assertFalse(is_purify_html_necessary($text));
         $this->assertSame($text, purify_html($text));
 
-        // Now failures.
+        // now failures
         $text = "&nbsp;";
         $this->assertTrue(is_purify_html_necessary($text));
 
@@ -269,7 +249,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
     }
 
     public function test_allowed_schemes() {
-        // First standard schemas.
+        // first standard schemes
         $text = '<a href="http://www.example.com/course/view.php?id=5">link</a>';
         $this->assertSame($text, purify_html($text));
 
@@ -288,7 +268,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
         $text = '<a href="mailto:user@example.com">link</a>';
         $this->assertSame($text, purify_html($text));
 
-        // Extra schemes allowed in moodle.
+        // extra schemes allowed in moodle
         $text = '<a href="irc://irc.example.com/3213?pass">link</a>';
         $this->assertSame($text, purify_html($text));
 
@@ -304,7 +284,7 @@ class core_htmlpurifier_testcase extends basic_testcase {
         $text = '<a href="mms://www.example.com/movie.mms">link</a>';
         $this->assertSame($text, purify_html($text));
 
-        // Now some borked or dangerous schemes.
+        // now some borked or dangerous schemes
         $text = '<a href="javascript://www.example.com">link</a>';
         $this->assertSame('<a>link</a>', purify_html($text));
 
@@ -312,3 +292,4 @@ class core_htmlpurifier_testcase extends basic_testcase {
         $this->assertSame('<a>link</a>', purify_html($text));
     }
 }
+

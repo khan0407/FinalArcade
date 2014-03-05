@@ -24,6 +24,131 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+
+/**
+ * Event handler for category enrolment plugin.
+ *
+ * We try to keep everything in sync via listening to events,
+ * it may fail sometimes, so we always do a full sync in cron too.
+ */
+class enrol_category_handler {
+    /**
+     * Triggered when user is assigned a new role.
+     * @static
+     * @param stdClass $ra
+     * @return bool
+     */
+    public static function role_assigned($ra) {
+        global $DB;
+
+        if (!enrol_is_enabled('category')) {
+            return true;
+        }
+
+        //only category level roles are interesting
+        $parentcontext = context::instance_by_id($ra->contextid);
+        if ($parentcontext->contextlevel != CONTEXT_COURSECAT) {
+            return true;
+        }
+
+        // Make sure the role is to be actually synchronised,
+        // please note we are ignoring overrides of the synchronised capability (for performance reasons in full sync).
+        $syscontext = context_system::instance();
+        if (!$DB->record_exists('role_capabilities', array('contextid'=>$syscontext->id, 'roleid'=>$ra->roleid, 'capability'=>'enrol/category:synchronised', 'permission'=>CAP_ALLOW))) {
+            return true;
+        }
+
+        // Add necessary enrol instances.
+        $plugin = enrol_get_plugin('category');
+        $sql = "SELECT c.*
+                  FROM {course} c
+                  JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = :courselevel AND ctx.path LIKE :match)
+             LEFT JOIN {enrol} e ON (e.courseid = c.id AND e.enrol = 'category')
+                 WHERE e.id IS NULL";
+        $params = array('courselevel'=>CONTEXT_COURSE, 'match'=>$parentcontext->path.'/%');
+        $rs = $DB->get_recordset_sql($sql, $params);
+        foreach ($rs as $course) {
+            $plugin->add_instance($course);
+        }
+        $rs->close();
+
+        // Now look for missing enrolments.
+        $sql = "SELECT e.*
+                  FROM {course} c
+                  JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = :courselevel AND ctx.path LIKE :match)
+                  JOIN {enrol} e ON (e.courseid = c.id AND e.enrol = 'category')
+             LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = :userid)
+                 WHERE ue.id IS NULL";
+        $params = array('courselevel'=>CONTEXT_COURSE, 'match'=>$parentcontext->path.'/%', 'userid'=>$ra->userid);
+        $rs = $DB->get_recordset_sql($sql, $params);
+        foreach ($rs as $instance) {
+            $plugin->enrol_user($instance, $ra->userid, null, $ra->timemodified);
+        }
+        $rs->close();
+
+        return true;
+    }
+
+    /**
+     * Triggered when user role is unassigned.
+     * @static
+     * @param stdClass $ra
+     * @return bool
+     */
+    public static function role_unassigned($ra) {
+        global $DB;
+
+        if (!enrol_is_enabled('category')) {
+            return true;
+        }
+
+        // only category level roles are interesting
+        $parentcontext = context::instance_by_id($ra->contextid);
+        if ($parentcontext->contextlevel != CONTEXT_COURSECAT) {
+            return true;
+        }
+
+        // Now this is going to be a bit slow, take all enrolments in child courses and verify each separately.
+        $syscontext = context_system::instance();
+        if (!$roles = get_roles_with_capability('enrol/category:synchronised', CAP_ALLOW, $syscontext)) {
+            return true;
+        }
+
+        $plugin = enrol_get_plugin('category');
+
+        $sql = "SELECT e.*
+                  FROM {course} c
+                  JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = :courselevel AND ctx.path LIKE :match)
+                  JOIN {enrol} e ON (e.courseid = c.id AND e.enrol = 'category')
+                  JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = :userid)";
+        $params = array('courselevel'=>CONTEXT_COURSE, 'match'=>$parentcontext->path.'/%', 'userid'=>$ra->userid);
+        $rs = $DB->get_recordset_sql($sql, $params);
+
+        list($roleids, $params) = $DB->get_in_or_equal(array_keys($roles), SQL_PARAMS_NAMED, 'r');
+        $params['userid'] = $ra->userid;
+
+        foreach ($rs as $instance) {
+            $coursecontext = context_course::instance($instance->courseid);
+            $contextids = get_parent_contexts($coursecontext);
+            array_pop($contextids); // Remove system context, we are interested in categories only.
+
+            list($contextids, $contextparams) = $DB->get_in_or_equal($contextids, SQL_PARAMS_NAMED, 'c');
+            $params = array_merge($params, $contextparams);
+
+            $sql = "SELECT ra.id
+                      FROM {role_assignments} ra
+                     WHERE ra.userid = :userid AND ra.contextid $contextids AND ra.roleid $roleids";
+            if (!$DB->record_exists_sql($sql, $params)) {
+                // User does not have any interesting role in any parent context, let's unenrol.
+                $plugin->unenrol_user($instance, $ra->userid);
+            }
+        }
+        $rs->close();
+
+        return true;
+    }
+}
+
 /**
  * Sync all category enrolments in one course
  * @param stdClass $course
@@ -53,7 +178,7 @@ function enrol_category_sync_course($course) {
 
     // First find out if any parent category context contains interesting role assignments.
     $coursecontext = context_course::instance($course->id);
-    $contextids = $coursecontext->get_parent_context_ids();
+    $contextids = get_parent_contexts($coursecontext);
     array_pop($contextids); // Remove system context, we are interested in categories only.
 
     list($roleids, $params) = $DB->get_in_or_equal(array_keys($roles), SQL_PARAMS_NAMED, 'r');
@@ -88,7 +213,6 @@ function enrol_category_sync_course($course) {
     $sql = "SELECT ra.userid, ra.estart
               FROM (SELECT xra.userid, MIN(xra.timemodified) AS estart
                       FROM {role_assignments} xra
-                      JOIN {user} xu ON (xu.id = xra.userid AND xu.deleted = 0)
                      WHERE xra.roleid $roleids AND xra.contextid $contextids
                   GROUP BY xra.userid
                    ) ra
@@ -128,15 +252,14 @@ function enrol_category_sync_course($course) {
  * - reorder categories
  * - disable enrol_category and enable it again
  *
- * @param progress_trace $trace
+ * @param bool $verbose
  * @return int exit code - 0 is ok, 1 means error, 2 if plugin disabled
  */
-function enrol_category_sync_full(progress_trace $trace) {
+function enrol_category_sync_full($verbose = false) {
     global $DB;
 
 
     if (!enrol_is_enabled('category')) {
-        $trace->finished();
         return 2;
     }
 
@@ -150,20 +273,23 @@ function enrol_category_sync_full(progress_trace $trace) {
     // Any interesting roles worth synchronising?
     if (!$roles = get_roles_with_capability('enrol/category:synchronised', CAP_ALLOW, $syscontext)) {
         // yay, nothing to do, so let's remove all leftovers
-        $trace->output("No roles with 'enrol/category:synchronised' capability found.");
+        if ($verbose) {
+            mtrace("No roles with 'enrol/category:synchronised' capability found.");
+        }
         if ($instances = $DB->get_records('enrol', array('enrol'=>'category'))) {
-            $trace->output("Deleting all category enrol instances...");
             foreach ($instances as $instance) {
-                $trace->output("deleting category enrol instance from course {$instance->courseid}", 1);
+                if ($verbose) {
+                    mtrace("  deleting category enrol instance from course {$instance->courseid}");
+                }
                 $plugin->delete_instance($instance);
             }
-            $trace->output("...all instances deleted.");
         }
-        $trace->finished();
         return 0;
     }
     $rolenames = role_fix_names($roles, null, ROLENAME_SHORT, true);
-    $trace->output('Synchronising category enrolments for roles: '.implode(', ', $rolenames).'...');
+    if ($verbose) {
+        mtrace('Synchronising category enrolments for roles: '.implode(', ', $rolenames).'...');
+    }
 
     list($roleids, $params) = $DB->get_in_or_equal(array_keys($roles), SQL_PARAMS_NAMED, 'r');
     $params['courselevel'] = CONTEXT_COURSE;
@@ -231,7 +357,9 @@ function enrol_category_sync_full(progress_trace $trace) {
         unset($instance->userid);
         unset($instance->estart);
         $plugin->enrol_user($instance, $userid, null, $estart);
-        $trace->output("enrolling: user $userid ==> course $instance->courseid", 1);
+        if ($verbose) {
+            mtrace("  enrolling: user $userid ==> course $instance->courseid");
+        }
     }
     $rs->close();
 
@@ -250,12 +378,15 @@ function enrol_category_sync_full(progress_trace $trace) {
         $userid = $instance->userid;
         unset($instance->userid);
         $plugin->unenrol_user($instance, $userid);
-        $trace->output("unenrolling: user $userid ==> course $instance->courseid", 1);
+        if ($verbose) {
+            mtrace("  unenrolling: user $userid ==> course $instance->courseid");
+        }
     }
     $rs->close();
 
-    $trace->output('...user enrolment synchronisation finished.');
-    $trace->finished();
+    if ($verbose) {
+        mtrace('...user enrolment synchronisation finished.');
+    }
 
     return 0;
 }

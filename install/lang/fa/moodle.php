@@ -31,6 +31,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['language'] = 'زبان';
-$string['next'] = 'ادامه';
+$string['next'] = 'بعدی';
 $string['previous'] = 'قبلی';
 $string['reload'] = 'بررسی مجدد';

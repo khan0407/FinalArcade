@@ -34,7 +34,6 @@ require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/xml:view', $context);
 
 print_grade_page_head($COURSE->id, 'export', 'xml', get_string('exportto', 'grades') . ' ' . get_string('pluginname', 'gradeexport_xml'));
-export_verify_grades($COURSE->id);
 
 if (!empty($CFG->gradepublishing)) {
     $CFG->gradepublishing = has_capability('gradeexport/xml:publish', $context);
@@ -53,8 +52,7 @@ if ($groupmode == SEPARATEGROUPS and !$currentgroup and !has_capability('moodle/
 
 // process post information
 if ($data = $mform->get_data()) {
-    $onlyactive = $data->export_onlyactive || !has_capability('moodle/course:viewsuspendedusers', $context);
-    $export = new grade_export_xml($course, $currentgroup, '', false, $data->updatedgradesonly, $data->display, $data->decimals, $onlyactive);
+    $export = new grade_export_xml($course, $currentgroup, '', false, $data->updatedgradesonly, $data->display, $data->decimals, $data->export_onlyactive);
 
     // print the grades on screen for feedbacks
     $export->process_form($data);

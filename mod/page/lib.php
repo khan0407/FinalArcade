@@ -97,6 +97,7 @@ function page_add_instance($data, $mform = null) {
         $displayoptions['popupwidth']  = $data->popupwidth;
         $displayoptions['popupheight'] = $data->popupheight;
     }
+    $displayoptions['printheading'] = $data->printheading;
     $displayoptions['printintro']   = $data->printintro;
     $data->displayoptions = serialize($displayoptions);
 
@@ -142,6 +143,7 @@ function page_update_instance($data, $mform) {
         $displayoptions['popupwidth']  = $data->popupwidth;
         $displayoptions['popupheight'] = $data->popupheight;
     }
+    $displayoptions['printheading'] = $data->printheading;
     $displayoptions['printintro']   = $data->printintro;
     $data->displayoptions = serialize($displayoptions);
 
@@ -236,7 +238,7 @@ function page_user_complete($course, $user, $mod, $page) {
  *
  * See {@link get_array_of_activities()} in course/lib.php
  *
- * @param stdClass $coursemodule
+ * @param cm_info $coursemodule
  * @return cached_cm_info Info to customise main page display
  */
 function page_get_coursemodule_info($coursemodule) {
@@ -405,7 +407,7 @@ function page_pluginfile($course, $cm, $context, $filearea, $args, $forcedownloa
         }
 
         // finally send the file
-        send_stored_file($file, null, 0, $forcedownload, $options);
+        send_stored_file($file, 86400, 0, $forcedownload, $options);
     }
 }
 
@@ -508,6 +510,7 @@ function page_dndupload_handle($uploadinfo) {
     $data->display = $config->display;
     $data->popupheight = $config->popupheight;
     $data->popupwidth = $config->popupwidth;
+    $data->printheading = $config->printheading;
     $data->printintro = $config->printintro;
 
     return page_add_instance($data, null);

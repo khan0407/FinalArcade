@@ -808,7 +808,7 @@ function grade_get_categories_menu($courseid, $includenew=false) {
     foreach ($categories as $category) {
         $cats[$category->id] = $category->get_name();
     }
-    core_collator::asort($cats);
+    collatorlib::asort($cats);
 
     return ($result+$cats);
 }
@@ -839,7 +839,7 @@ function grade_get_letters($context=null) {
 
     $letters = array();
 
-    $contexts = $context->get_parent_context_ids();
+    $contexts = get_parent_contexts($context);
     array_unshift($contexts, $context->id);
 
     foreach ($contexts as $ctxid) {
@@ -1097,9 +1097,9 @@ function grade_regrade_final_grades($courseid, $userid=null, $updated_item=null)
                     continue; // this one is ok
                 }
                 $grade_items[$gid]->force_regrading();
-                $errors[$grade_items[$gid]->id] = get_string('errorcalculationbroken', 'grades');
+                $errors[$grade_items[$gid]->id] = 'Probably circular reference or broken calculation formula'; // TODO: localize
             }
-            break; // Found error.
+            break; // oki, found error
         }
     }
 
@@ -1138,7 +1138,7 @@ function grade_grab_course_grades($courseid, $modname=null, $userid=0) {
         return;
     }
 
-    if (!$mods = core_component::get_plugin_list('mod') ) {
+    if (!$mods = get_plugin_list('mod') ) {
         print_error('nomodules', 'debug');
     }
 

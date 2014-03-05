@@ -24,10 +24,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Restore subplugin class.
- *
- * Provides the necessary information needed
- * to restore one assign_feedback subplugin.
+ * restore subplugin class that provides the necessary information needed to restore one assign_feedback subplugin.
  *
  * @package   assignfeedback_file
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
@@ -44,11 +41,10 @@ class restore_assignfeedback_file_subplugin extends restore_subplugin {
         $paths = array();
 
         $elename = $this->get_namefor('grade');
-        // We used get_recommended_name() so this works.
-        $elepath = $this->get_pathfor('/feedback_file');
+        $elepath = $this->get_pathfor('/feedback_file'); // we used get_recommended_name() so this works
         $paths[] = new restore_path_element($elename, $elepath);
 
-        return $paths;
+        return $paths; // And we return the interesting paths
     }
 
     /**
@@ -61,8 +57,7 @@ class restore_assignfeedback_file_subplugin extends restore_subplugin {
         $data = (object)$data;
         $data->assignment = $this->get_new_parentid('assign');
         $oldgradeid = $data->grade;
-        // The mapping is set in the restore for the core assign activity
-        // when a grade node is processed.
+        // the mapping is set in the restore for the core assign activity. When a grade node is processed
         $data->grade = $this->get_mappingid('grade', $data->grade);
 
         $DB->insert_record('assignfeedback_file', $data);

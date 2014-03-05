@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,7 +18,9 @@
 /**
  * Paypal utility script
  *
- * @package    enrol_paypal
+ * @package    enrol
+ * @subpackage paypal
+ * @subpackage file
  * @copyright  2004 onwards Martin Dougiamas (http://dougiamas.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

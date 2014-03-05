@@ -53,10 +53,6 @@ class qformat_blackboard_six_qti extends qformat_blackboard_six_base {
         }
 
         $questions = array();
-
-        // Treat the assessment title as a category title.
-        $this->process_category($xml, $questions);
-
         // First step : we are only interested in the <item> tags.
         $rawquestions = $this->getpath($xml,
                 array('questestinterop', '#', 'assessment', 0, '#', 'section', 0, '#', 'item'),
@@ -141,25 +137,26 @@ class qformat_blackboard_six_qti extends qformat_blackboard_six_base {
                             $bbsubquestions = $this->getpath($pblock,
                                     array('#', 'flow'),
                                     array(), false);
+                            $sub_questions = array();
                             foreach ($bbsubquestions as $bbsubquestion) {
-                                $subquestion = new stdClass();
-                                $subquestion->ident = $this->getpath($bbsubquestion,
+                                $sub_question = new stdClass();
+                                $sub_question->ident = $this->getpath($bbsubquestion,
                                         array('#', 'response_lid', 0, '@', 'ident'),
                                         '', true);
                                 $this->process_block($this->getpath($bbsubquestion,
                                         array('#', 'flow', 0),
-                                        false, false), $subquestion);
+                                        false, false), $sub_question);
                                 $bbchoices = $this->getpath($bbsubquestion,
                                         array('#', 'response_lid', 0, '#', 'render_choice', 0,
                                         '#', 'flow_label', 0, '#', 'response_label'),
                                         array(), false);
                                 $choices = array();
                                 $this->process_choices($bbchoices, $choices);
-                                $subquestion->choices = $choices;
+                                $sub_question->choices = $choices;
                                 if (!isset($block->subquestions)) {
                                     $block->subquestions = array();
                                 }
-                                $block->subquestions[] = $subquestion;
+                                $block->subquestions[] = $sub_question;
                             }
                             break;
                         case 'Multiple Answer':
@@ -482,18 +479,18 @@ class qformat_blackboard_six_qti extends qformat_blackboard_six_base {
      * @param array $feedbacks array of feedbacks suitable for a rawquestion.
      */
     public function process_feedback($feedbackset, &$feedbacks) {
-        foreach ($feedbackset as $bbfeedback) {
+        foreach ($feedbackset as $bb_feedback) {
             $feedback = new stdClass();
-            $feedback->ident = $this->getpath($bbfeedback,
+            $feedback->ident = $this->getpath($bb_feedback,
                     array('@', 'ident'), '', true);
             $feedback->text = '';
-            if ($this->getpath($bbfeedback,
+            if ($this->getpath($bb_feedback,
                     array('#', 'flow_mat', 0), false, false)) {
-                $this->process_block($this->getpath($bbfeedback,
+                $this->process_block($this->getpath($bb_feedback,
                         array('#', 'flow_mat', 0), false, false), $feedback);
-            } else if ($this->getpath($bbfeedback,
+            } else if ($this->getpath($bb_feedback,
                     array('#', 'solution', 0, '#', 'solutionmaterial', 0, '#', 'flow_mat', 0), false, false)) {
-                $this->process_block($this->getpath($bbfeedback,
+                $this->process_block($this->getpath($bb_feedback,
                         array('#', 'solution', 0, '#', 'solutionmaterial', 0, '#', 'flow_mat', 0), false, false), $feedback);
             }
 
@@ -780,7 +777,6 @@ class qformat_blackboard_six_qti extends qformat_blackboard_six_base {
         $question->responseformat = 'editor';
         $question->responsefieldlines = 15;
         $question->attachments = 0;
-        $question->responsetemplate =  $this->text_field('');
 
         $questions[]=$question;
     }
@@ -873,21 +869,6 @@ class qformat_blackboard_six_qti extends qformat_blackboard_six_base {
         } else {
             $questions[] = $question;
         }
-    }
-
-    /**
-     * Add a category question entry based on the assessment title
-     * @param array $xml the xml tree
-     * @param array $questions the questions already parsed
-     */
-    public function process_category($xml, &$questions) {
-        $title = $this->getpath($xml, array('questestinterop', '#', 'assessment', 0, '@', 'title'), '', true);
-
-        $dummyquestion = new stdClass();
-        $dummyquestion->qtype = 'category';
-        $dummyquestion->category = $this->cleaninput($this->clean_question_name($title));
-
-        $questions[] = $dummyquestion;
     }
 
     /**

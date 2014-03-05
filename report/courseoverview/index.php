@@ -113,7 +113,11 @@ if (!empty($report) && !empty($time)) {
         echo '</td></tr></table>';
 
     } else {
-        echo '<div class="graph"><img alt="'.get_string('courseoverviewgraph').'" src="'.$CFG->wwwroot.'/report/courseoverview/reportsgraph.php?time='.$time.'&report='.$report.'&numcourses='.$numcourses.'" /></div>';
+        if (empty($CFG->gdversion)) {
+            echo '<div class="graph">(' . get_string("gdneed") .')</div>';
+        } else {
+            echo '<div class="graph"><img alt="'.get_string('courseoverviewgraph').'" src="'.$CFG->wwwroot.'/report/courseoverview/reportsgraph.php?time='.$time.'&report='.$report.'&numcourses='.$numcourses.'" /></div>';
+        }
 
         $table = new html_table();
         $table->align = array('left','center','center','center');

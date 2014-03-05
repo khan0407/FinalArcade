@@ -23,5 +23,4 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['event_assessable_uploaded'] = 'An online text has been uploaded.';
 $string['pluginname'] = 'Online';

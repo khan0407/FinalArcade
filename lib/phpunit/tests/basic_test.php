@@ -35,16 +35,6 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class core_phpunit_basic_testcase extends basic_testcase {
-    protected $testassertexecuted = false;
-
-    protected function setUp() {
-        parent::setUp();
-        if ($this->getName() === 'test_setup_assert') {
-            $this->assertTrue(true);
-            $this->testassertexecuted = true;
-            return;
-        }
-    }
 
     /**
      * Tests that bootstrapping has occurred correctly
@@ -62,7 +52,7 @@ class core_phpunit_basic_testcase extends basic_testcase {
      * @return void
      */
     public function test_assert_behaviour() {
-        // Arrays.
+        // arrays
         $a = array('a', 'b', 'c');
         $b = array('a', 'c', 'b');
         $c = array('a', 'b', 'c');
@@ -72,11 +62,11 @@ class core_phpunit_basic_testcase extends basic_testcase {
         $this->assertEquals($a, $c);
         $this->assertEquals($a, $b, '', 0, 10, true);
 
-        // Objects.
+        // objects
         $a = new stdClass();
         $a->x = 'x';
         $a->y = 'y';
-        $b = new stdClass(); // Switched order.
+        $b = new stdClass(); // switched order
         $b->y = 'y';
         $b->x = 'x';
         $c = $a;
@@ -90,7 +80,7 @@ class core_phpunit_basic_testcase extends basic_testcase {
         $this->assertSame($a, $c);
         $this->assertNotEquals($a, $d);
 
-        // String comparison.
+        // string comparison
         $this->assertEquals(1, '1');
         $this->assertEquals(null, '');
 
@@ -99,12 +89,12 @@ class core_phpunit_basic_testcase extends basic_testcase {
         $this->assertNotEquals(null, '0');
         $this->assertNotEquals(array(), '');
 
-        // Other comparison.
+        // other comparison
         $this->assertEquals(null, null);
         $this->assertEquals(false, null);
         $this->assertEquals(0, null);
 
-        // Emptiness.
+        // emptiness
         $this->assertEmpty(0);
         $this->assertEmpty(0.0);
         $this->assertEmpty('');
@@ -123,28 +113,7 @@ class core_phpunit_basic_testcase extends basic_testcase {
         $this->assertNotEmpty(new stdClass());
     }
 
-    /**
-     * Make sure there are no sloppy Windows line endings
-     * that would break our tests.
-     */
-    public function test_lineendings() {
-        $string = <<<STRING
-a
-b
-STRING;
-        $this->assertSame("a\nb", $string, 'Make sure all project files are checked out with unix line endings.');
-
-    }
-
-    /**
-     * Make sure asserts in setUp() do not create problems.
-     */
-    public function test_setup_assert() {
-        $this->assertTrue($this->testassertexecuted);
-        $this->testassertexecuted = false;
-    }
-
-    // Uncomment following tests to see logging of unexpected changes in global state and database.
+// Uncomment following tests to see logging of unexpected changes in global state and database
     /*
         public function test_db_modification() {
             global $DB;

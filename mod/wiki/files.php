@@ -80,15 +80,13 @@ $PAGE->set_url('/mod/wiki/files.php', array('pageid'=>$pageid));
 require_login($course, true, $cm);
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('wikifiles', 'wiki'));
-$PAGE->set_heading($course->fullname);
+$PAGE->set_heading(get_string('wikifiles', 'wiki'));
 $PAGE->navbar->add(format_string(get_string('wikifiles', 'wiki')));
 echo $OUTPUT->header();
-echo $OUTPUT->heading($wiki->name);
-echo $OUTPUT->box(format_module_intro('wiki', $wiki, $PAGE->cm->id), 'generalbox', 'intro');
 
 $renderer = $PAGE->get_renderer('mod_wiki');
 
-$tabitems = array('view' => 'view', 'edit' => 'edit', 'comments' => 'comments', 'history' => 'history', 'map' => 'map', 'files' => 'files', 'admin' => 'admin');
+$tabitems = array('view' => 'view', 'edit' => 'edit', 'comments' => 'comments', 'history' => 'history', 'map' => 'map', 'files' => 'files');
 
 $options = array('activetab'=>'files');
 echo $renderer->tabs($page, $tabitems, $options);

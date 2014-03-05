@@ -378,9 +378,7 @@ class block_quiz_results extends block_base {
 
             // Now grab all the users from the database
             $userids = array_merge(array_keys($best), array_keys($worst));
-            $fields = array_merge(array('id', 'idnumber'), get_all_user_name_fields());
-            $fields = implode(',', $fields);
-            $users = $DB->get_records_list('user', 'id', $userids, '', $fields);
+            $users = $DB->get_records_list('user', 'id', $userids, '', 'id, firstname, lastname, idnumber');
 
             // Ready for output!
 

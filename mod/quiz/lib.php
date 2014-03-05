@@ -106,7 +106,6 @@ function quiz_add_instance($quiz) {
  */
 function quiz_update_instance($quiz, $mform) {
     global $CFG, $DB;
-    require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 
     // Process the options from the form.
     $result = quiz_process_options($quiz);
@@ -114,16 +113,11 @@ function quiz_update_instance($quiz, $mform) {
         return $result;
     }
 
-    // Get the current value, so we can see what changed.
     $oldquiz = $DB->get_record('quiz', array('id' => $quiz->instance));
-
-    // We need two values from the existing DB record that are not in the form,
-    // in some of the function calls below.
-    $quiz->sumgrades = $oldquiz->sumgrades;
-    $quiz->grade     = $oldquiz->grade;
 
     // Repaginate, if asked to.
     if (!$quiz->shufflequestions && !empty($quiz->repaginatenow)) {
+        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
         $quiz->questions = quiz_repaginate(quiz_clean_layout($oldquiz->questions, true),
                 $quiz->questionsperpage);
     }
@@ -137,15 +131,19 @@ function quiz_update_instance($quiz, $mform) {
     quiz_after_add_or_update($quiz);
 
     if ($oldquiz->grademethod != $quiz->grademethod) {
+        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+        $quiz->sumgrades = $oldquiz->sumgrades;
+        $quiz->grade = $oldquiz->grade;
         quiz_update_all_final_grades($quiz);
         quiz_update_grades($quiz);
     }
 
-    $quizdateschanged = $oldquiz->timelimit   != $quiz->timelimit
-                     || $oldquiz->timeclose   != $quiz->timeclose
-                     || $oldquiz->graceperiod != $quiz->graceperiod;
-    if ($quizdateschanged) {
-        quiz_update_open_attempts(array('quizid' => $quiz->id));
+    $updateattempts = $oldquiz->timelimit != $quiz->timelimit
+                   || $oldquiz->timeclose != $quiz->timeclose
+                   || $oldquiz->graceperiod != $quiz->graceperiod;
+    if ($updateattempts) {
+        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+        quiz_update_open_attempts(array('quizid'=>$quiz->id));
     }
 
     // Delete any previous preview attempts.
@@ -719,18 +717,6 @@ function quiz_grade_item_update($quiz, $grades = null) {
         $params['hidden'] = 0;
     }
 
-    if (!$params['hidden']) {
-        // If the grade item is not hidden by the quiz logic, then we need to
-        // hide it if the quiz is hidden from students.
-        if (property_exists($quiz, 'visible')) {
-            // Saving the quiz form, and cm not yet updated in the database.
-            $params['hidden'] = !$quiz->visible;
-        } else {
-            $cm = get_coursemodule_from_instance('quiz', $quiz->id);
-            $params['hidden'] = !$cm->visible;
-        }
-    }
-
     if ($grades  === 'reset') {
         $params['reset'] = true;
         $grades = null;
@@ -847,10 +833,9 @@ function quiz_get_recent_mod_activity(&$activities, &$index, $timestart,
     $params['timestart'] = $timestart;
     $params['quizid'] = $quiz->id;
 
-    $ufields = user_picture::fields('u');
     if (!$attempts = $DB->get_records_sql("
               SELECT qa.*,
-                     {$ufields}
+                     u.firstname, u.lastname, u.email, u.picture, u.imagealt
                 FROM {quiz_attempts} qa
                      JOIN {user} u ON u.id = qa.userid
                      $groupjoin
@@ -920,9 +905,14 @@ function quiz_get_recent_mod_activity(&$activities, &$index, $timestart,
             $tmpactivity->content->maxgrade  = null;
         }
 
-        $tmpactivity->user = username_load_fields_from_object(new stdClass(), $attempt, null,
-                explode(',', user_picture::fields()));
-        $tmpactivity->user->fullname  = fullname($tmpactivity->user, $viewfullnames);
+        $tmpactivity->user = new stdClass();
+        $tmpactivity->user->id        = $attempt->userid;
+        $tmpactivity->user->firstname = $attempt->firstname;
+        $tmpactivity->user->lastname  = $attempt->lastname;
+        $tmpactivity->user->fullname  = fullname($attempt, $viewfullnames);
+        $tmpactivity->user->picture   = $attempt->picture;
+        $tmpactivity->user->imagealt  = $attempt->imagealt;
+        $tmpactivity->user->email     = $attempt->email;
 
         $activities[$index++] = $tmpactivity;
     }
@@ -1548,7 +1538,6 @@ function quiz_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:            return true;
         case FEATURE_SHOW_DESCRIPTION:          return true;
         case FEATURE_CONTROLS_GRADE_VISIBILITY: return true;
-        case FEATURE_USES_QUESTIONS:            return true;
 
         default: return null;
     }
@@ -1566,6 +1555,48 @@ function quiz_get_extra_capabilities() {
 }
 
 /**
+ * This fucntion extends the global navigation for the site.
+ * It is important to note that you should not rely on PAGE objects within this
+ * body of code as there is no guarantee that during an AJAX request they are
+ * available
+ *
+ * @param navigation_node $quiznode The quiz node within the global navigation
+ * @param object $course The course object returned from the DB
+ * @param object $module The module object returned from the DB
+ * @param object $cm The course module instance returned from the DB
+ */
+function quiz_extend_navigation($quiznode, $course, $module, $cm) {
+    global $CFG;
+
+    $context = context_module::instance($cm->id);
+
+    if (has_capability('mod/quiz:view', $context)) {
+        $url = new moodle_url('/mod/quiz/view.php', array('id'=>$cm->id));
+        $quiznode->add(get_string('info', 'quiz'), $url, navigation_node::TYPE_SETTING,
+                null, null, new pix_icon('i/info', ''));
+    }
+
+    if (has_any_capability(array('mod/quiz:viewreports', 'mod/quiz:grade'), $context)) {
+        require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
+        $reportlist = quiz_report_list($context);
+
+        $url = new moodle_url('/mod/quiz/report.php',
+                array('id' => $cm->id, 'mode' => reset($reportlist)));
+        $reportnode = $quiznode->add(get_string('results', 'quiz'), $url,
+                navigation_node::TYPE_SETTING,
+                null, null, new pix_icon('i/report', ''));
+
+        foreach ($reportlist as $report) {
+            $url = new moodle_url('/mod/quiz/report.php',
+                    array('id' => $cm->id, 'mode' => $report));
+            $reportnode->add(get_string($report, 'quiz_'.$report), $url,
+                    navigation_node::TYPE_SETTING,
+                    null, 'quiz_report_' . $report, new pix_icon('i/item', ''));
+        }
+    }
+}
+
+/**
  * This function extends the settings navigation block for the site.
  *
  * It is safe to rely on PAGE here as we will only ever be within the module
@@ -1573,7 +1604,6 @@ function quiz_get_extra_capabilities() {
  *
  * @param settings_navigation $settings
  * @param navigation_node $quiznode
- * @return void
  */
 function quiz_extend_settings_navigation($settings, $quiznode) {
     global $PAGE, $CFG;
@@ -1621,25 +1651,6 @@ function quiz_extend_settings_navigation($settings, $quiznode) {
                 navigation_node::TYPE_SETTING, null, 'mod_quiz_preview',
                 new pix_icon('i/preview', ''));
         $quiznode->add_node($node, $beforekey);
-    }
-
-    if (has_any_capability(array('mod/quiz:viewreports', 'mod/quiz:grade'), $PAGE->cm->context)) {
-        require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
-        $reportlist = quiz_report_list($PAGE->cm->context);
-
-        $url = new moodle_url('/mod/quiz/report.php',
-                array('id' => $PAGE->cm->id, 'mode' => reset($reportlist)));
-        $reportnode = $quiznode->add_node(navigation_node::create(get_string('results', 'quiz'), $url,
-                navigation_node::TYPE_SETTING,
-                null, null, new pix_icon('i/report', '')), $beforekey);
-
-        foreach ($reportlist as $report) {
-            $url = new moodle_url('/mod/quiz/report.php',
-                    array('id' => $PAGE->cm->id, 'mode' => $report));
-            $reportnode->add_node(navigation_node::create(get_string($report, 'quiz_'.$report), $url,
-                    navigation_node::TYPE_SETTING,
-                    null, 'quiz_report_' . $report, new pix_icon('i/item', '')));
-        }
     }
 
     question_extend_settings_navigation($quiznode, $PAGE->cm->context)->trim_if_empty();

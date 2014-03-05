@@ -67,13 +67,7 @@ if ($type === "userday.png") {
     }
 }
 
-// Trigger a content view event.
-$event = \report_log\event\content_viewed::create(array('courseid' => $course->id,
-                                                        'other'    => array('content' => 'log graph')));
-$event->set_page_detail();
-$event->set_legacy_logdata(array($course->id, 'course', 'report log',
-        "report/log/graph.php?user=$user->id&id=$course->id&type=$type&date=$date", $course->id));
-$event->trigger();
+add_to_log($course->id, 'course', 'report log', "report/log/graph.php?user=$user->id&id=$course->id&type=$type&date=$date", $course->id);
 
 $logs = array();
 
@@ -136,7 +130,6 @@ if ($type === "usercourse.png") {
 
    $graph = new graph(750, 400);
 
-   $a = new stdClass();
    $a->coursename = format_string($course->shortname, true, array('context' => $coursecontext));
    $a->username = fullname($user, true);
    $graph->parameter['title'] = get_string("hitsoncourse", "", $a);
@@ -198,7 +191,6 @@ if ($type === "usercourse.png") {
 
    $graph = new graph(750, 400);
 
-   $a = new stdClass();
    $a->coursename = format_string($course->shortname, true, array('context' => $coursecontext));
    $a->username = fullname($user, true);
    $graph->parameter['title'] = get_string("hitsoncoursetoday", "", $a);
